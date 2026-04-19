@@ -16,7 +16,7 @@ ViewData["Title"] = "คำขอใบรับรองการแปรร�
 <nav aria-label="breadcrumb" class="mb-4">
     <ol class="breadcrumb breadcrumb-style1">
         <li class="breadcrumb-item">
-            <a href="@Url.Action(" SelectType", "System_6_5" )">เลือกประเภทใบรับรอง</a>
+            <a href="@Url.Action("SelectType", "System_6_5")">เลือกประเภทใบรับรอง</a>
         </li>
         <li class="breadcrumb-item active">ใบรับรองการแปรรูปสัตว์น้ำ (Processing Statement)</li>
     </ol>
@@ -26,29 +26,29 @@ ViewData["Title"] = "คำขอใบรับรองการแปรร�
     <div class="col-12 col-xl-11">
 
         <!-- ===== Tabs ===== -->
-        <ul class="nav nav-tabs nav-fill mb-0 border-bottom-0" role="tablist">
-            <li class="nav-item">
-                <button class="nav-link active rounded-bottom-0 border-bottom-0" data-bs-toggle="tab"
-                    data-bs-target="#tab-detail" type="button">
-                    <i class="ri ri-file-list-2-line me-1"></i> รายละเอียดคำขอ
-                </button>
-            </li>
-            <li class="nav-item">
-                <button class="nav-link rounded-bottom-0 border-bottom-0" data-bs-toggle="tab"
-                    data-bs-target="#tab-production" type="button">
-                    <i class="ri ri-list-check-3 me-1"></i> รายการข้อมูลการผลิต
-                </button>
-            </li>
-            <li class="nav-item">
-                <button class="nav-link rounded-bottom-0 border-bottom-0" data-bs-toggle="tab"
-                    data-bs-target="#tab-evidence" type="button">
-                    <i class="ri ri-folder-open-line me-1"></i> หลักฐานประกอบ
-                </button>
-            </li>
-        </ul>
-
-        <div class="tab-content border rounded-end rounded-bottom p-4 bg-white mb-4">
-            <form method="post" action="#">
+        <form method="post" action="#">
+        <div class="nav-align-top nav-tabs-shadow mb-4">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#tab-detail" aria-controls="tab-detail" aria-selected="true">
+                        <i class="ri ri-file-list-2-line me-1"></i> รายละเอียดคำขอ
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#tab-production" aria-controls="tab-production" aria-selected="false">
+                        <i class="ri ri-list-check-3 me-1"></i> รายการข้อมูลการผลิต
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#tab-evidence" aria-controls="tab-evidence" aria-selected="false">
+                        <i class="ri ri-folder-open-line me-1"></i> หลักฐานประกอบ
+                    </button>
+                </li>
+            </ul>
+            <div class="tab-content">
 
                 <!-- ==================== TAB 1: รายละเอียดคำขอ ==================== -->
                 <div id="tab-detail" class="tab-pane fade show active">
@@ -71,28 +71,32 @@ ViewData["Title"] = "คำขอใบรับรองการแปรร�
                                     <!-- รายละเอียด -->
                                     <div class="p-4 border-bottom">
                                         <div class="d-flex align-items-center mb-3">
-                                            <span class="badge bg-label-primary rounded-pill me-2 p-2">
-                                                <i class="ri ri-information-line"></i>
+                                            <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-information-line fs-5"></i>
                                             </span>
                                             <h6 class="mb-0 fw-semibold">รายละเอียด</h6>
                                         </div>
                                         <div class="row g-3">
                                             <div class="col-md-4">
-                                                <p class="text-muted small mb-1">ชื่อคำขอ</p>
-                                                <p class="mb-0 fw-medium">คำขอใบรับรองการแปรรูปสัตว์น้ำ</p>
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" id="requestName"
+                                                        value="คำขอใบรับรองการแปรรูปสัตว์น้ำ" readonly />
+                                                    <label for="requestName">ชื่อคำขอ</label>
+                                                </div>
                                             </div>
                                             <div class="col-md-4">
-                                                <p class="text-muted small mb-1">ใบรับรอง</p>
-                                                <p class="mb-0 fw-medium">ใบรับรองการแปรรูปสัตว์น้ำ (Processing
-                                                    Statement)</p>
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" id="certName"
+                                                        value="ใบรับรองการแปรรูปสัตว์น้ำ (Processing Statement)" readonly />
+                                                    <label for="certName">ใบรับรอง</label>
+                                                </div>
                                             </div>
                                             <div class="col-md-4">
-                                                <p class="text-muted small mb-1">ยื่นต่อหน่วยงานกรมประมงผ่าน</p>
-                                                <p class="mb-0">
-                                                    <span class="badge bg-label-success">
-                                                        <i class="ri ri-global-line me-1"></i>ออนไลน์
-                                                    </span>
-                                                </p>
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" id="submitChannel"
+                                                        value="ออนไลน์" readonly />
+                                                    <label for="submitChannel">ยื่นต่อหน่วยงานกรมประมงผ่าน</label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -100,8 +104,8 @@ ViewData["Title"] = "คำขอใบรับรองการแปรร�
                                     <!-- ผู้ผ่านพิธีการ / ผู้รับมอบอำนาจ -->
                                     <div class="p-4 border-bottom">
                                         <div class="d-flex align-items-center mb-3">
-                                            <span class="badge bg-label-primary rounded-pill me-2 p-2">
-                                                <i class="ri ri-user-star-line"></i>
+                                            <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-user-star-line fs-5"></i>
                                             </span>
                                             <h6 class="mb-0 fw-semibold">ผู้ผ่านพิธีการ / ผู้รับมอบอำนาจ</h6>
                                         </div>
@@ -110,21 +114,20 @@ ViewData["Title"] = "คำขอใบรับรองการแปรร�
                                                 <div class="form-floating form-floating-outline">
                                                     <select id="selectBroker" class="select2 form-select" required>
                                                         <option value="">-- เลือก --</option>
-                                                        <option value="1" selected>Alpha Office Automation Co., Ltd.
-                                                            (สาขา 00001)</option>
+                                                        <option value="1" selected>บริษัท อินโนเวชั่นส์ โซลูชั่น แอนด์ เซอร์วิส จำกัด (สาขาสำนักงานใหญ่)</option>
                                                     </select>
                                                     <label for="selectBroker">ผู้ผ่านพิธีการ <span
-                                                            class="text-danger">*</span></label>
+                                                            class="text-danger">●</span></label>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-floating form-floating-outline">
                                                     <select id="selectAuthorized" class="select2 form-select" required>
                                                         <option value="">-- เลือก --</option>
-                                                        <option value="1" selected>นาย บิ นามสมมุติ</option>
+                                                        <option value="1" selected>นาย สมชาย รักษาผล</option>
                                                     </select>
                                                     <label for="selectAuthorized">ผู้รับมอบอำนาจ <span
-                                                            class="text-danger">*</span></label>
+                                                            class="text-danger">●</span></label>
                                                 </div>
                                             </div>
                                         </div>
@@ -133,27 +136,23 @@ ViewData["Title"] = "คำขอใบรับรองการแปรร�
                                     <!-- ข้อมูลผู้ส่งออก -->
                                     <div class="p-4 border-bottom">
                                         <div class="d-flex align-items-center mb-3">
-                                            <span class="badge bg-label-primary rounded-pill me-2 p-2">
-                                                <i class="ri ri-building-2-line"></i>
+                                            <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-building-2-line fs-5"></i>
                                             </span>
                                             <h6 class="mb-0 fw-semibold">ข้อมูลผู้ส่งออก</h6>
                                         </div>
                                         <div class="row g-4">
                                             <div class="col-12">
                                                 <label class="form-label">ผู้ส่งออก <span
-                                                        class="text-danger">*</span></label>
+                                                        class="text-danger">●</span></label>
                                                 <div class="input-group">
                                                     <button type="button" class="btn btn-outline-secondary"
                                                         title="ค้นหาผู้ส่งออก">
                                                         <i class="ri ri-search-line"></i>
                                                     </button>
-                                                    <button type="button" class="btn btn-outline-secondary"
-                                                        title="แท็กผู้ส่งออก">
-                                                        <i class="ri ri-price-tag-3-line"></i>
-                                                    </button>
                                                     <input type="text" id="exporterName" class="form-control"
                                                         placeholder="ชื่อผู้ส่งออก"
-                                                        value="Alpha Office Automation Co., Ltd. (สาขา 00001)"
+                                                        value="บริษัท อินโนเวชั่นส์ โซลูชั่น แอนด์ เซอร์วิส จำกัด (สาขาสำนักงานใหญ่)"
                                                         required />
                                                 </div>
                                             </div>
@@ -163,8 +162,8 @@ ViewData["Title"] = "คำขอใบรับรองการแปรร�
                                     <!-- แจ้งความประสงค์ -->
                                     <div class="p-4 border-bottom">
                                         <div class="d-flex align-items-center mb-3">
-                                            <span class="badge bg-label-primary rounded-pill me-2 p-2">
-                                                <i class="ri ri-file-text-line"></i>
+                                            <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-file-text-line fs-5"></i>
                                             </span>
                                             <h6 class="mb-0 fw-semibold">แจ้งความประสงค์</h6>
                                         </div>
@@ -176,30 +175,39 @@ ViewData["Title"] = "คำขอใบรับรองการแปรร�
                                                         <option value="1" selected>กองตรวจสอบคุณภาพสินค้าประมง</option>
                                                     </select>
                                                     <label for="selectDept">หน่วยงานหรือเอกสาร <span
-                                                            class="text-danger">*</span></label>
+                                                            class="text-danger">●</span></label>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-floating form-floating-outline">
                                                     <select id="selectOfficer" class="select2 form-select" required>
                                                         <option value="">-- เลือก --</option>
-                                                        <option value="1" selected>กองตรวจสอบคุณภาพสินค้าประมง</option>
+                                                        <option value="1" selected>นางสาว วรรณา พิมพ์ทอง</option>
                                                     </select>
                                                     <label for="selectOfficer">ชื่อเจ้าหน้าที่ <span
-                                                            class="text-danger">*</span></label>
+                                                            class="text-danger">●</span></label>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
-                                                <p class="text-muted small mb-1">ช่วงเวลาดำเนินการ</p>
-                                                <p class="mb-0 fw-medium">ก่อนนำเข้า/ส่งออก/นำผ่าน</p>
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" id="timeFrame"
+                                                        value="ก่อนนำเข้า/ส่งออก/นำผ่าน" readonly />
+                                                    <label for="timeFrame">ช่วงเวลาดำเนินการ</label>
+                                                </div>
                                             </div>
                                             <div class="col-md-4">
-                                                <p class="text-muted small mb-1">ลักษณะการขอ</p>
-                                                <p class="mb-0 fw-medium">ขอใหม่</p>
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" id="requestType"
+                                                        value="ขอใหม่" readonly />
+                                                    <label for="requestType">ลักษณะการขอ</label>
+                                                </div>
                                             </div>
                                             <div class="col-md-4">
-                                                <p class="text-muted small mb-1">ระเบียบข้อบังคับ</p>
-                                                <p class="mb-0 fw-medium">ส่งออก</p>
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" id="regulation"
+                                                        value="ส่งออก" readonly />
+                                                    <label for="regulation">ระเบียบข้อบังคับ</label>
+                                                </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-floating form-floating-outline">
@@ -217,7 +225,7 @@ ViewData["Title"] = "คำขอใบรับรองการแปรร�
                                             <div class="col-md-6">
                                                 <div class="form-floating form-floating-outline">
                                                     <input type="text" id="exportDate"
-                                                        class="form-control flatpickr-date" placeholder="วว/ดด/ปปปป" />
+                                                        class="form-control flatpickr-date" placeholder="วว/ดด/ปปปป" value="25/04/2026" />
                                                     <label for="exportDate">วันที่ส่งออก</label>
                                                 </div>
                                             </div>
@@ -227,8 +235,8 @@ ViewData["Title"] = "คำขอใบรับรองการแปรร�
                                     <!-- ข้อมูล Health Certificate -->
                                     <div class="p-4">
                                         <div class="d-flex align-items-center mb-3">
-                                            <span class="badge bg-label-primary rounded-pill me-2 p-2">
-                                                <i class="ri ri-shield-check-line"></i>
+                                            <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-shield-check-line fs-5"></i>
                                             </span>
                                             <h6 class="mb-0 fw-semibold">ข้อมูล Health Certificate</h6>
                                         </div>
@@ -236,14 +244,14 @@ ViewData["Title"] = "คำขอใบรับรองการแปรร�
                                             <div class="col-md-6">
                                                 <div class="form-floating form-floating-outline">
                                                     <input type="text" id="hcNumber" class="form-control"
-                                                        placeholder="Health Certificate Number" />
+                                                        placeholder="Health Certificate Number" value="HC-TH-2569-00847" />
                                                     <label for="hcNumber">Health Certificate Number</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-floating form-floating-outline">
                                                     <input type="text" id="hcDate" class="form-control flatpickr-date"
-                                                        placeholder="วว/ดด/ปปปป" />
+                                                        placeholder="วว/ดด/ปปปป" value="18/04/2026" />
                                                     <label for="hcDate">Date</label>
                                                 </div>
                                             </div>
@@ -269,302 +277,124 @@ ViewData["Title"] = "คำขอใบรับรองการแปรร�
                             </h2>
                             <div id="collapseDetailContent" class="accordion-collapse collapse show"
                                 aria-labelledby="headingDetail">
-                                <div class="accordion-body p-4">
+                                <div class="accordion-body p-0">
 
-                                    <!-- Description of Product -->
-                                    <div
-                                        class="d-flex align-items-center gap-2 mb-3 border-start border-3 border-primary ps-3">
-                                        <h6 class="mb-0 fw-semibold text-body">Description of Product</h6>
-                                    </div>
-                                    <div class="row g-3 mb-4">
-                                        <div class="col-md-6">
-                                            <label class="form-label small">HS Code (พิกัดศุลกากร) <span
-                                                    class="text-danger">●</span></label>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="hsCode"
-                                                    placeholder="เช่น 6014.04" />
-                                                <button type="button" class="btn btn-outline-secondary"><i
-                                                        class="ri ri-price-tag-3-line"></i></button>
+                                    <!-- ── 1. Description of Product ── -->
+                                    <div class="p-4 border-bottom">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-success rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-box-3-line fs-5"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">Description of Product</h6>
+                                        </div>
+                                        <div class="row g-3">
+                                            <div class="col-md-4">
+                                                <label class="form-label small">HS Code (พิกัดศุลกากร) <span class="text-danger">●</span></label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" id="hsCode" placeholder="เช่น 6014.04" value="0306.17" />
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <label class="form-label small">Product Name <span
-                                                    class="text-danger">●</span></label>
-                                            <div class="input-group">
-                                                <textarea class="form-control" id="productName" rows="2"
-                                                    placeholder="ชื่อสินค้า"></textarea>
-                                                <button type="button"
-                                                    class="btn btn-outline-secondary align-self-start"><i
-                                                        class="ri ri-price-tag-3-line"></i></button>
+                                            <div class="col-md-8">
+                                                <label class="form-label small">Product Name <span class="text-danger">●</span></label>
+                                                <div class="input-group">
+                                                    <textarea class="form-control" id="productName" rows="2" placeholder="ชื่อสินค้า">กุ้งขาวแปรรูปแช่แข็ง (Frozen White Shrimp, Processed) / Penaeus vannamei</textarea>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label small"># Total Weight of Product <span
-                                                    class="text-success">●</span></label>
-                                            <input type="text" class="form-control" id="totalWeight"
-                                                placeholder="ระบบจะบันทึกให้อัตโนมัติหลังบันทึกข้อมูล" readonly
-                                                disabled />
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label small"># Total Weight of Product Unit <span
-                                                    class="text-success">●</span></label>
-                                            <input type="text" class="form-control" id="totalWeightUnit"
-                                                placeholder="KGM = กิโลกรัม (ระบบจะบันทึกให้อัตโนมัติ)" readonly
-                                                disabled />
-                                        </div>
-                                    </div>
-
-                                    <hr class="my-4">
-
-                                    <!-- Establishment Plant -->
-                                    <div
-                                        class="d-flex align-items-center gap-2 mb-3 border-start border-3 border-primary ps-3">
-                                        <h6 class="mb-0 fw-semibold text-body">Establishment Plant</h6>
-                                    </div>
-                                    <div class="row g-3 mb-4">
-                                        <div class="col-md-6">
-                                            <label class="form-label small">Approval Number <span
-                                                    class="text-danger">●</span></label>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="approvalNumber" />
-                                                <button type="button" class="btn btn-outline-secondary"><i
-                                                        class="ri ri-price-tag-3-line"></i></button>
+                                            <div class="col-md-6">
+                                                <label class="form-label small text-muted"># Total Weight of Product <span class="text-success">●</span></label>
+                                                <input type="text" class="form-control bg-light" id="totalWeight"
+                                                    placeholder="ระบบจะบันทึกให้อัตโนมัติหลังบันทึกข้อมูล" readonly disabled />
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label small">Name of the Establishment <span
-                                                    class="text-danger">●</span></label>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="estName" />
-                                                <button type="button" class="btn btn-outline-secondary"><i
-                                                        class="ri ri-price-tag-3-line"></i></button>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label small">ID of the Establishment <span
-                                                    class="text-danger">●</span></label>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="estId" />
-                                                <button type="button" class="btn btn-outline-secondary"><i
-                                                        class="ri ri-price-tag-3-line"></i></button>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label small">Branch of the Establishment <span
-                                                    class="text-success">●</span></label>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="estBranch" />
-                                                <button type="button" class="btn btn-outline-secondary"><i
-                                                        class="ri ri-price-tag-3-line"></i></button>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <label class="form-label small">Address of the Establishment <span
-                                                    class="text-danger">●</span></label>
-                                            <div class="input-group">
-                                                <textarea class="form-control" id="estAddress" rows="3"></textarea>
-                                                <button type="button"
-                                                    class="btn btn-outline-secondary align-self-start"><i
-                                                        class="ri ri-price-tag-3-line"></i></button>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label small">Place of the Establishment <span
-                                                    class="text-danger">●</span></label>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="estPlace" />
-                                                <button type="button" class="btn btn-outline-secondary"><i
-                                                        class="ri ri-price-tag-3-line"></i></button>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label small">Telephone of the Establishment <span
-                                                    class="text-success">●</span></label>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="estTel" />
-                                                <button type="button" class="btn btn-outline-secondary"><i
-                                                        class="ri ri-price-tag-3-line"></i></button>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label small">Fax of the Establishment <span
-                                                    class="text-success">●</span></label>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="estFax" />
-                                                <button type="button" class="btn btn-outline-secondary"><i
-                                                        class="ri ri-price-tag-3-line"></i></button>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label small">ID of Responsible person <span
-                                                    class="text-success">●</span></label>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="respId" />
-                                                <button type="button" class="btn btn-outline-secondary"><i
-                                                        class="ri ri-price-tag-3-line"></i></button>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label small">Responsible person of the Establishment
-                                                <span class="text-danger">●</span></label>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="respPerson" />
-                                                <button type="button" class="btn btn-outline-secondary"><i
-                                                        class="ri ri-price-tag-3-line"></i></button>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label small">Signature <span
-                                                    class="text-success">●</span></label>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="signature" />
-                                                <button type="button" class="btn btn-outline-secondary"><i
-                                                        class="ri ri-price-tag-3-line"></i></button>
+                                            <div class="col-md-6">
+                                                <label class="form-label small text-muted"># Total Weight of Product Unit <span class="text-success">●</span></label>
+                                                <input type="text" class="form-control bg-light" id="totalWeightUnit"
+                                                    placeholder="KGM = กิโลกรัม (ระบบจะบันทึกให้อัตโนมัติ)" readonly disabled />
                                             </div>
                                         </div>
                                     </div>
 
-                                    <hr class="my-4">
-
-                                    <!-- Exporter -->
-                                    <div
-                                        class="d-flex align-items-center gap-2 mb-3 border-start border-3 border-primary ps-3">
-                                        <h6 class="mb-0 fw-semibold text-body">Exporter <small
-                                                class="text-muted fw-normal">(if different from the processing
-                                                plant)</small></h6>
-                                    </div>
-                                    <div class="alert alert-info alert-dismissible mb-3" role="alert">
-                                        <i class="ri ri-information-line me-2"></i>
-                                        ข้อมูลผู้ส่งออกระบบจะดึงข้อมูลของโรงงานผู้ผลิตมาเป็นค่าตั้งต้น
-                                        แต่หากผู้ผลิตไม่ได้เป็นผู้ส่งออกสินค้า
-                                        ให้ลบข้อมูลแล้วกรอกข้อมูล ชื่อ เลขประจำตัวผู้เสียภาษี ลำดับสาขา
-                                        และที่อยู่ของผู้ส่งออกให้ถูกต้อง
-                                    </div>
-                                    <div class="row g-3 mb-4">
-                                        <div class="col-md-6">
-                                            <label class="form-label small">Name of the Exporter <span
-                                                    class="text-success">●</span></label>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="expName" />
-                                                <button type="button" class="btn btn-outline-secondary"><i
-                                                        class="ri ri-price-tag-3-line"></i></button>
+                                    <!-- ── 2. Establishment Plant ── -->
+                                    <div class="p-4">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-warning rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-store-2-line fs-5"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">Establishment Plant</h6>
+                                        </div>
+                                        <div class="row g-3">
+                                            <!-- row 1: Approval No + Name -->
+                                            <div class="col-md-4">
+                                                <label class="form-label small">Approval Number <span class="text-danger">●</span></label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" id="approvalNumber" value="TH-SMK-2025-0312" />
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label small"># PK Name of the Exporter <span
-                                                    class="text-success">●</span></label>
-                                            <input type="text" class="form-control" id="expPkName"
-                                                placeholder="ระบบจะบันทึกให้อัตโนมัติหลังบันทึกข้อมูล" readonly
-                                                disabled />
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label small">ID of the Exporter <span
-                                                    class="text-success">●</span></label>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="expId" />
-                                                <button type="button" class="btn btn-outline-secondary"><i
-                                                        class="ri ri-price-tag-3-line"></i></button>
+                                            <div class="col-md-8">
+                                                <label class="form-label small">Name of the Establishment <span class="text-danger">●</span></label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" id="estName" value="บริษัท อินโนเวชั่นส์ โซลูชั่น แอนด์ เซอร์วิส จำกัด" />
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label small">Branch of the Exporter <span
-                                                    class="text-success">●</span></label>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="expBranch" />
-                                                <button type="button" class="btn btn-outline-secondary"><i
-                                                        class="ri ri-price-tag-3-line"></i></button>
+                                            <!-- row 2: ID + Branch + Place -->
+                                            <div class="col-md-4">
+                                                <label class="form-label small">ID of the Establishment <span class="text-danger">●</span></label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" id="estId" value="0105566089321" />
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <label class="form-label small">Address of the Exporter <span
-                                                    class="text-success">●</span></label>
-                                            <div class="input-group">
-                                                <textarea class="form-control" id="expAddress" rows="3"></textarea>
-                                                <button type="button"
-                                                    class="btn btn-outline-secondary align-self-start"><i
-                                                        class="ri ri-price-tag-3-line"></i></button>
+                                            <div class="col-md-4">
+                                                <label class="form-label small">Branch of the Establishment <span class="text-success">●</span></label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" id="estBranch" value="สำนักงานใหญ่" />
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label small">Telephone of the Exporter <span
-                                                    class="text-success">●</span></label>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="expTel" />
-                                                <button type="button" class="btn btn-outline-secondary"><i
-                                                        class="ri ri-price-tag-3-line"></i></button>
+                                            <div class="col-md-4">
+                                                <label class="form-label small">Place of the Establishment <span class="text-danger">●</span></label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" id="estPlace" value="สมุทรสาคร" />
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label small">Fax of the Exporter <span
-                                                    class="text-success">●</span></label>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="expFax" />
-                                                <button type="button" class="btn btn-outline-secondary"><i
-                                                        class="ri ri-price-tag-3-line"></i></button>
+                                            <!-- row 3: Address -->
+                                            <div class="col-12">
+                                                <label class="form-label small">Address of the Establishment <span class="text-danger">●</span></label>
+                                                <div class="input-group">
+                                                    <textarea class="form-control" id="estAddress" rows="2">99/1 หมู่ 5 ถนนพระราม 2 ตำบลท่าทราย อำเภอเมืองสมุทรสาคร จังหวัดสมุทรสาคร 74000</textarea>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-
-                                    <hr class="my-4">
-
-                                    <!-- Final Destination -->
-                                    <div
-                                        class="d-flex align-items-center gap-2 mb-3 border-start border-3 border-primary ps-3">
-                                        <h6 class="mb-0 fw-semibold text-body">Final Destination</h6>
-                                    </div>
-                                    <div class="row g-3 mb-4">
-                                        <div class="col-12">
-                                            <label class="form-label small text-muted">Country Group of
-                                                Destination</label>
-                                            <div class="form-check mt-1">
-                                                <input class="form-check-input" type="checkbox" id="chkEU" />
-                                                <label class="form-check-label small fw-medium" for="chkEU">EU</label>
+                                            <!-- row 4: Tel + Fax -->
+                                            <div class="col-md-6">
+                                                <label class="form-label small">Telephone of the Establishment <span class="text-success">●</span></label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" id="estTel" value="034-456-789" />
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label small">Destination code <span
-                                                    class="text-success">●</span></label>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="destCode"
-                                                    placeholder="--- เลือกข้อมูล ---" />
-                                                <button type="button" class="btn btn-outline-secondary"><i
-                                                        class="ri ri-price-tag-3-line"></i></button>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">Fax of the Establishment <span class="text-success">●</span></label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" id="estFax" value="034-456-790" />
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label small">Name of the Country <span
-                                                    class="text-danger">●</span></label>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="destCountry"
-                                                    placeholder="--- เลือกข้อมูล ---" />
-                                                <button type="button" class="btn btn-outline-secondary"><i
-                                                        class="ri ri-price-tag-3-line"></i></button>
+                                            <!-- row 5: Resp ID + Resp Person + Signature -->
+                                            <div class="col-md-4">
+                                                <label class="form-label small">ID of Responsible person <span class="text-success">●</span></label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" id="respId" value="3101200456789" />
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label small">วันที่ส่งออก <span
-                                                    class="text-danger">●</span></label>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control flatpickr-date"
-                                                    id="destExportDate" placeholder="วว/ดด/ปปปป" />
-                                                <button type="button" class="btn btn-outline-secondary"><i
-                                                        class="ri ri-calendar-line"></i></button>
-                                                <button type="button" class="btn btn-outline-secondary"><i
-                                                        class="ri ri-price-tag-3-line"></i></button>
+                                            <div class="col-md-4">
+                                                <label class="form-label small">Responsible person <span class="text-danger">●</span></label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" id="respPerson" value="นาย สมชาย รักษาผล" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label small">Signature <span class="text-success">●</span></label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" id="signature" value="สมชาย รักษาผล" />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!-- Legend -->
-                                    <div class="bg-light rounded p-3 mt-2">
-                                        <small class="text-muted">
-                                            <strong>สัญลักษณ์ :</strong>&nbsp;
-                                            <span class="text-success fw-bold">●</span> ยอมให้ว่าง &nbsp;|&nbsp;
-                                            <span class="text-danger fw-bold">●</span> ไม่ยอมให้ว่าง &nbsp;|&nbsp;
-                                            <span class="text-secondary fw-bold">#</span> ระบบจะบันทึกให้อัตโนมัติ
-                                        </small>
-                                    </div>
-
                                 </div>
                             </div>
                         </div>
@@ -572,20 +402,42 @@ ViewData["Title"] = "คำขอใบรับรองการแปรร�
                     <!-- /accordion ส่วนเนื้อหา -->
                 </div>
                 <!-- /TAB 1 -->
-            </form>
-        </div><!-- /tab-content -->
 
-        <div class="d-flex justify-content-end gap-2 mt-4">
-            <a href="@Url.Action(" SelectType", "System_6_5" )" class="btn btn-outline-secondary">
+                <!-- ==================== TAB 2: รายการข้อมูลการผลิต ==================== -->
+                <div id="tab-production" class="tab-pane fade" role="tabpanel">
+                    <div class="text-center py-5 text-muted">
+                        <i class="ri ri-list-check-3" style="font-size:3.5rem;opacity:.4;"></i>
+                        <p class="mt-3 mb-0">รายการข้อมูลการผลิตจะถูกเพิ่มในภายหลัง</p>
+                    </div>
+                </div>
+                <!-- /TAB 2 -->
+
+                <!-- ==================== TAB 3: หลักฐานประกอบ ==================== -->
+                <div id="tab-evidence" class="tab-pane fade" role="tabpanel">
+                    <div class="text-center py-5 text-muted">
+                        <i class="ri ri-folder-open-line" style="font-size:3.5rem;opacity:.4;"></i>
+                        <p class="mt-3 mb-0">หลักฐานประกอบจะถูกเพิ่มในภายหลัง</p>
+                    </div>
+                </div>
+                <!-- /TAB 3 -->
+
+            </div><!-- /tab-content -->
+        </div><!-- /nav-align-top -->
+
+        <!-- Action Buttons -->
+        <div class="d-flex justify-content-end gap-2 mt-3">
+            <a href="@Url.Action("SelectType", "System_6_5")" class="btn btn-outline-secondary">
                 <i class="ri ri-arrow-left-line me-1"></i> ยกเลิก
             </a>
             <button type="submit" class="btn btn-primary">
                 <i class="ri ri-save-line me-1"></i> บันทึก
             </button>
         </div>
-    </div>
 
-</div>
+        </form>
+
+    </div><!-- /col -->
+</div><!-- /row -->
 
 @section PageScripts {
 <script>
