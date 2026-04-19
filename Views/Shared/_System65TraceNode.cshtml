@@ -1,0 +1,20 @@
+@model AspnetCoreMvcFull.Models.System65TraceNode
+<div class="d-flex align-items-start gap-2 mb-2">
+  <span class="badge bg-label-@Model.Tone mt-1" style="min-width:10px;">&nbsp;</span>
+  <div class="flex-grow-1">
+    <div class="fw-semibold small">@Model.Title</div>
+    @if (!string.IsNullOrEmpty(Model.Subtitle))
+    {
+      <div class="text-muted x-small">@Model.Subtitle</div>
+    }
+    @if (Model.Children.Count > 0)
+    {
+      <div class="ms-3 mt-1 border-start border-2 ps-2">
+        @foreach (var child in Model.Children)
+        {
+          @await Html.PartialAsync("_System65TraceNode", child)
+        }
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,54 @@
+@model AspnetCoreMvcFull.Models.System65DetailPanel
+<div class="card shadow-sm mb-4 border-0 h-100">
+  <div class="card-header bg-transparent border-bottom d-flex align-items-center gap-2">
+    <span class="avatar-initial rounded-circle bg-label-@Model.Tone" style="width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;font-size:.75rem;">
+      <i class="ri-file-list-3-line"></i>
+    </span>
+    <div>
+      <h6 class="mb-0 fw-bold">@Model.Title</h6>
+      @if (!string.IsNullOrEmpty(Model.Description))
+      {
+        <small class="text-muted">@Model.Description</small>
+      }
+    </div>
+  </div>
+  <div class="card-body">
+
+    @if (Model.ProgressValue.HasValue)
+    {
+      <div class="mb-3">
+        <div class="d-flex justify-content-between mb-1">
+          <small>@Model.ProgressLabel</small>
+          <small class="fw-semibold">@Model.ProgressValue%</small>
+        </div>
+        <div class="progress" style="height:8px">
+          <div class="progress-bar bg-@Model.Tone" style="width:@Model.ProgressValue%"></div>
+        </div>
+      </div>
+    }
+
+    <dl class="row mb-0">
+      @foreach (var item in Model.Items)
+      {
+        <dt class="col-sm-5 text-muted small">@item.Label</dt>
+        <dd class="col-sm-7">
+          <span class="badge bg-label-@item.Tone">@item.Value</span>
+          @if (!string.IsNullOrEmpty(item.HelpText))
+          {
+            <div class="small text-muted">@item.HelpText</div>
+          }
+        </dd>
+      }
+    </dl>
+
+    @if (Model.Notes.Count > 0)
+    {
+      <ul class="mb-0 mt-2 ps-3 small text-muted">
+        @foreach (var note in Model.Notes)
+        {
+          <li>@note</li>
+        }
+      </ul>
+    }
+  </div>
+</div>

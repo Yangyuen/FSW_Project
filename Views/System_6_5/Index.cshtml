@@ -1,0 +1,99 @@
+@{
+ViewData["Title"] = "eCommerce Referral - App";
+}
+
+@section VendorStyles {
+<link rel="stylesheet" href="~/vendor/libs/datatables-bs5/datatables.bootstrap5.css" />
+<link rel="stylesheet" href="~/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css" />
+<link rel="stylesheet" href="~/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css" />
+}
+
+@section VendorScripts {
+<script src="~/vendor/libs/moment/moment.js"></script>
+<script src="~/vendor/libs/datatables-bs5/datatables-bootstrap5.js"></script>
+}
+
+@section PageScripts {
+<script src="~/js/app-ecommerce-referral.js"></script>
+}
+<div class="row mb-6 g-6">
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="content-left">
+                        <h5 class="mb-1">$24,983</h5>
+                        <small>Total Earning</small>
+                    </div>
+                    <span class="badge bg-label-primary rounded-circle p-2">
+                        <i class="icon-base ri ri-money-dollar-circle-line icon-24px"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="content-left">
+                        <h5 class="mb-1">$8,647</h5>
+                        <small>Unpaid Earning</small>
+                    </div>
+                    <span class="badge bg-label-success rounded-circle p-2">
+                        <i class="icon-base ri ri-gift-line icon-24px"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="content-left">
+                        <h5 class="mb-1">2,367</h5>
+                        <small>Signups</small>
+                    </div>
+                    <span class="badge bg-label-danger rounded-circle p-2">
+                        <i class="icon-base ri ri-group-line icon-24px"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="content-left">
+                        <h5 class="mb-1">4.5%</h5>
+                        <small>Conversion Rate</small>
+                    </div>
+                    <span class="badge bg-label-info rounded-circle p-2">
+                        <i class="icon-base ri ri-refresh-line icon-24px"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Referral List Table -->
+<div class="card">
+    <div class="card-datatable table-responsive">
+        <table class="datatables-referral table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th>Users</th>
+                    <th class="text-nowrap">Referred ID</th>
+                    <th>Status</th>
+                    <th>Value</th>
+                    <th class="text-nowrap">Earnings</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
