@@ -1129,3 +1129,4 @@
 /Users/adisaip/งาน/2026/FSW_กรมประมง/FSW_Project/obj/Debug/net9.0/AspnetCoreMvcFull.genruntimeconfig.cache
 /Users/adisaip/งาน/2026/FSW_กรมประมง/FSW_Project/obj/Debug/net9.0/ref/AspnetCoreMvcFull.dll
 /Users/adisaip/งาน/2026/FSW_กรมประมง/FSW_Project/obj/Debug/net9.0/compressed/0394dugq0u-{0}-jwe7ey0tw7-jwe7ey0tw7.gz
+/Users/adisaip/งาน/2026/FSW_กรมประมง/FSW_Project/obj/Debug/net9.0/AspnetCoreMvcFull.sourcelink.json

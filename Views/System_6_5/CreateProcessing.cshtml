@@ -1,5 +1,5 @@
 @{
-    ViewData["Title"] = "คำขอใบรับรองการแปรรูปสัตว์น้ำ";
+ViewData["Title"] = "คำขอใบรับรองการแปรรูปสัตว์น้ำ";
 }
 
 @section VendorStyles {
@@ -12,521 +12,576 @@
 <script src="~/vendor/libs/flatpickr/flatpickr.js"></script>
 }
 
-<div class="container-xxl flex-grow-1 container-p-y">
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb breadcrumb-style1">
+        <li class="breadcrumb-item">
+            <a href="@Url.Action(" SelectType", "System_6_5" )">เลือกประเภทใบรับรอง</a>
+        </li>
+        <li class="breadcrumb-item active">ใบรับรองการแปรรูปสัตว์น้ำ (Processing Statement)</li>
+    </ol>
+</nav>
 
-    <!-- Breadcrumb -->
-    <nav aria-label="breadcrumb" class="mb-4">
-        <ol class="breadcrumb breadcrumb-style1">
-            <li class="breadcrumb-item">
-                <a href="@Url.Action("SelectType", "System_6_5")">เลือกประเภทใบรับรอง</a>
+<div class="row">
+    <div class="col-12 col-xl-11">
+
+        <!-- ===== Tabs ===== -->
+        <ul class="nav nav-tabs nav-fill mb-0 border-bottom-0" role="tablist">
+            <li class="nav-item">
+                <button class="nav-link active rounded-bottom-0 border-bottom-0" data-bs-toggle="tab"
+                    data-bs-target="#tab-detail" type="button">
+                    <i class="ri ri-file-list-2-line me-1"></i> รายละเอียดคำขอ
+                </button>
             </li>
-            <li class="breadcrumb-item active">ใบรับรองการแปรรูปสัตว์น้ำ (Processing Statement)</li>
-        </ol>
-    </nav>
+            <li class="nav-item">
+                <button class="nav-link rounded-bottom-0 border-bottom-0" data-bs-toggle="tab"
+                    data-bs-target="#tab-production" type="button">
+                    <i class="ri ri-list-check-3 me-1"></i> รายการข้อมูลการผลิต
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link rounded-bottom-0 border-bottom-0" data-bs-toggle="tab"
+                    data-bs-target="#tab-evidence" type="button">
+                    <i class="ri ri-folder-open-line me-1"></i> หลักฐานประกอบ
+                </button>
+            </li>
+        </ul>
 
-    <div class="row justify-content-center">
-        <div class="col-12 col-xl-11">
-
+        <div class="tab-content border rounded-end rounded-bottom p-4 bg-white mb-4">
             <form method="post" action="#">
 
-                <!-- ===== Tabs ===== -->
-                <ul class="nav nav-tabs nav-fill mb-0 border-bottom-0" role="tablist">
-                    <li class="nav-item">
-                        <button class="nav-link active rounded-bottom-0 border-bottom-0" data-bs-toggle="tab" data-bs-target="#tab-detail" type="button">
-                            <span class="badge bg-primary rounded-pill me-1">1</span> รายละเอียดคำขอ
-                        </button>
-                    </li>
-                    <li class="nav-item">
-                        <button class="nav-link rounded-bottom-0 border-bottom-0" data-bs-toggle="tab" data-bs-target="#tab-production" type="button">
-                            <span class="badge bg-secondary rounded-pill me-1">2</span> รายการข้อมูลการผลิต
-                        </button>
-                    </li>
-                    <li class="nav-item">
-                        <button class="nav-link rounded-bottom-0 border-bottom-0" data-bs-toggle="tab" data-bs-target="#tab-evidence" type="button">
-                            <span class="badge bg-secondary rounded-pill me-1">3</span> หลักฐานประกอบ
-                        </button>
-                    </li>
-                </ul>
+                <!-- ==================== TAB 1: รายละเอียดคำขอ ==================== -->
+                <div id="tab-detail" class="tab-pane fade show active">
 
-                <div class="tab-content border rounded-end rounded-bottom p-4 bg-white mb-4">
+                    <!-- ===== Accordion: ส่วนหัว ===== -->
+                    <div class="accordion accordion-custom-button mb-4" id="accordionHeader">
+                        <div class="accordion-item active">
+                            <h2 class="accordion-header" id="headingHeader">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseHeaderContent" aria-expanded="true"
+                                    aria-controls="collapseHeaderContent">
+                                    <i class="icon-base ri ri-file-list-line me-2"></i>
+                                    รายละเอียดประเภทเอกสารส่วนหัว
+                                </button>
+                            </h2>
+                            <div id="collapseHeaderContent" class="accordion-collapse collapse show"
+                                aria-labelledby="headingHeader">
+                                <div class="accordion-body p-0">
 
-                    <!-- ==================== TAB 1: รายละเอียดคำขอ ==================== -->
-                    <div class="tab-pane fade show active" id="tab-detail">
-
-                        <!-- ===== Accordion: รายละเอียดประเภทเอกสารส่วนหัว ===== -->
-                        <div class="accordion mb-4" id="accordionHeader">
-                            <div class="accordion-item border rounded">
-                                <h2 class="accordion-header">
-                                    <button class="accordion-button py-2 bg-primary text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHeaderContent">
-                                        รายละเอียดประเภทเอกสารส่วนหัว
-                                    </button>
-                                </h2>
-                                <div id="collapseHeaderContent" class="accordion-collapse collapse show">
-                                    <div class="accordion-body p-4">
-
-                        <!-- รายละเอียด -->
-                        <div class="card mb-4">
-                            <div class="card-header bg-primary text-white py-2">
-                                <h6 class="mb-0 fw-semibold">รายละเอียด</h6>
-                            </div>
-                            <div class="card-body pt-4">
-                                <div class="row g-4">
-                                    <div class="col-md-4">
-                                        <label class="form-label text-muted small">ชื่อคำขอ</label>
-                                        <p class="mb-0">คำขอใบรับรองการแปรรูปสัตว์น้ำ</p>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label text-muted small">ใบรับรอง</label>
-                                        <p class="mb-0">ใบรับรองการแปรรูปสัตว์น้ำ (Processing Statement)</p>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label text-muted small">ยืนต่ออิทธิกรมประมงผ่าน</label>
-                                        <p class="mb-0">ออนไลน์</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ผู้ผ่านพิธีการ / ผู้รับมอบอำนาจ -->
-                        <div class="card mb-4">
-                            <div class="card-header bg-primary text-white py-2">
-                                <h6 class="mb-0 fw-semibold">ผู้ผ่านพิธีการ / ผู้รับมอบอำนาจ</h6>
-                            </div>
-                            <div class="card-body pt-4">
-                                <div class="row g-4">
-                                    <div class="col-md-6">
-                                        <div class="form-floating form-floating-outline">
-                                            <select id="selectBroker" class="select2 form-select" required>
-                                                <option value="">-- เลือก --</option>
-                                                <option value="1" selected>Alpha Office Automation Co., Ltd. (สาขา 00001)</option>
-                                            </select>
-                                            <label for="selectBroker">ผู้ผ่านพิธีการ <span class="text-danger">*</span></label>
+                                    <!-- รายละเอียด -->
+                                    <div class="p-4 border-bottom">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-primary rounded-pill me-2 p-2">
+                                                <i class="ri ri-information-line"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">รายละเอียด</h6>
+                                        </div>
+                                        <div class="row g-3">
+                                            <div class="col-md-4">
+                                                <p class="text-muted small mb-1">ชื่อคำขอ</p>
+                                                <p class="mb-0 fw-medium">คำขอใบรับรองการแปรรูปสัตว์น้ำ</p>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <p class="text-muted small mb-1">ใบรับรอง</p>
+                                                <p class="mb-0 fw-medium">ใบรับรองการแปรรูปสัตว์น้ำ (Processing
+                                                    Statement)</p>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <p class="text-muted small mb-1">ยื่นต่อหน่วยงานกรมประมงผ่าน</p>
+                                                <p class="mb-0">
+                                                    <span class="badge bg-label-success">
+                                                        <i class="ri ri-global-line me-1"></i>ออนไลน์
+                                                    </span>
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating form-floating-outline">
-                                            <select id="selectAuthorized" class="select2 form-select" required>
-                                                <option value="">-- เลือก --</option>
-                                                <option value="1" selected>นาย บิ นามสมมุติ</option>
-                                            </select>
-                                            <label for="selectAuthorized">ผู้รับมอบอำนาจ <span class="text-danger">*</span></label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
-                        <!-- ข้อมูลผู้ส่งออก -->
-                        <div class="card mb-4">
-                            <div class="card-header bg-primary text-white py-2">
-                                <h6 class="mb-0 fw-semibold">ข้อมูลผู้ส่งออก</h6>
-                            </div>
-                            <div class="card-body pt-4">
-                                <div class="row g-4">
-                                    <div class="col-12">
-                                        <label class="form-label">ผู้ส่งออก <span class="text-danger">*</span></label>
-                                        <div class="input-group">
-                                            <button type="button" class="btn btn-outline-secondary" title="ค้นหาผู้ส่งออก">
-                                                <i class="ri ri-search-line"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-outline-secondary" title="แท็กผู้ส่งออก">
-                                                <i class="ri ri-price-tag-3-line"></i>
-                                            </button>
-                                            <input type="text" id="exporterName" class="form-control"
-                                                   placeholder="ชื่อผู้ส่งออก"
-                                                   value="Alpha Office Automation Co., Ltd. (สาขา 00001)"
-                                                   required />
+                                    <!-- ผู้ผ่านพิธีการ / ผู้รับมอบอำนาจ -->
+                                    <div class="p-4 border-bottom">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-primary rounded-pill me-2 p-2">
+                                                <i class="ri ri-user-star-line"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">ผู้ผ่านพิธีการ / ผู้รับมอบอำนาจ</h6>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- แจ้งความประสงค์ -->
-                        <div class="card mb-4">
-                            <div class="card-header bg-primary text-white py-2">
-                                <h6 class="mb-0 fw-semibold">แจ้งความประสงค์</h6>
-                            </div>
-                            <div class="card-body pt-4">
-                                <div class="row g-4">
-                                    <div class="col-md-6">
-                                        <div class="form-floating form-floating-outline">
-                                            <select id="selectDept" class="select2 form-select" required>
-                                                <option value="">-- เลือก --</option>
-                                                <option value="1" selected>กองตรวจสอบคุณภาพสินค้าประมง</option>
-                                            </select>
-                                            <label for="selectDept">หน่วยงานหรือเอกสาร <span class="text-danger">*</span></label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating form-floating-outline">
-                                            <select id="selectOfficer" class="select2 form-select" required>
-                                                <option value="">-- เลือก --</option>
-                                                <option value="1" selected>กองตรวจสอบคุณภาพสินค้าประมง</option>
-                                            </select>
-                                            <label for="selectOfficer">ชื่อเจ้าหน้าที่ <span class="text-danger">*</span></label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label text-muted small">ช่วงเวลาดำเนินการ</label>
-                                        <p class="mb-0">ก่อนนำเข้า/ส่งออก/นำผ่าน</p>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label text-muted small">ลักษณะการขอ</label>
-                                        <p class="mb-0">ขอใหม่</p>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label text-muted small">ระเบียบข้อบังคับ</label>
-                                        <p class="mb-0">ส่งออก</p>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating form-floating-outline">
-                                            <select id="selectCountry" class="select2 form-select">
-                                                <option value="">-- เลือก --</option>
-                                                <option value="AR" selected>อาร์เจนตินา</option>
-                                                <option value="US">สหรัฐอเมริกา</option>
-                                                <option value="JP">ญี่ปุ่น</option>
-                                                <option value="CN">จีน</option>
-                                                <option value="EU">สหภาพยุโรป</option>
-                                            </select>
-                                            <label for="selectCountry">ชื่อประเทศปลายทาง</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating form-floating-outline">
-                                            <input type="text" id="exportDate" class="form-control flatpickr-date" placeholder="วว/ดด/ปปปป" />
-                                            <label for="exportDate">วันที่ส่งออก</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ข้อมูล Health Certificate -->
-                        <div class="card mb-4">
-                            <div class="card-header bg-primary text-white py-2">
-                                <h6 class="mb-0 fw-semibold">ข้อมูล Health Certificate</h6>
-                            </div>
-                            <div class="card-body pt-4">
-                                <div class="row g-4">
-                                    <div class="col-md-6">
-                                        <div class="form-floating form-floating-outline">
-                                            <input type="text" id="hcNumber" class="form-control" placeholder="Health Certificate Number" />
-                                            <label for="hcNumber">Health Certificate Number</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating form-floating-outline">
-                                            <input type="text" id="hcDate" class="form-control flatpickr-date" placeholder="วว/ดด/ปปปป" />
-                                            <label for="hcDate">Date</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                                    </div><!-- /accordion-body -->
-                                </div><!-- /collapseHeaderContent -->
-                            </div><!-- /accordion-item -->
-                        </div>
-                        <!-- /รายละเอียดประเภทเอกสารส่วนหัว -->
-
-                        <!-- รายละเอียดประเภทเอกสารส่วนเนื้อหา -->
-                        <div class="accordion" id="accordionDetail">
-                            <div class="accordion-item border rounded">
-                                <h2 class="accordion-header">
-                                    <button class="accordion-button py-2 bg-primary text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDetailContent">
-                                        รายละเอียดประเภทเอกสารส่วนเนื้อหา
-                                    </button>
-                                </h2>
-                                <div id="collapseDetailContent" class="accordion-collapse collapse show">
-                                    <div class="accordion-body px-0 pb-0">
-
-                                        <!-- Description of Product -->
-                                        <div class="bg-light border-top border-bottom px-4 py-2 mb-3">
-                                            <strong class="small">Description of Product</strong>
-                                        </div>
-                                        <div class="px-4 pb-3">
-                                            <div class="row g-3">
-                                                <div class="col-12">
-                                                    <label class="form-label small text-muted">HS Code (พิกัดศุลกากร)</label>
-                                                    <div class="row g-2">
-                                                        <div class="col-md-6">
-                                                            <label class="form-label small">HS Code(พิกัดศุลกากร) <span class="text-danger">●</span></label>
-                                                            <div class="input-group">
-                                                                <input type="text" class="form-control" id="hsCode" placeholder="เช่น 6014.04" />
-                                                                <button type="button" class="btn btn-outline-secondary btn-sm"><i class="ri ri-price-tag-3-line"></i></button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                        <div class="row g-4">
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <select id="selectBroker" class="select2 form-select" required>
+                                                        <option value="">-- เลือก --</option>
+                                                        <option value="1" selected>Alpha Office Automation Co., Ltd.
+                                                            (สาขา 00001)</option>
+                                                    </select>
+                                                    <label for="selectBroker">ผู้ผ่านพิธีการ <span
+                                                            class="text-danger">*</span></label>
                                                 </div>
-                                                <div class="col-12">
-                                                    <label class="form-label small text-muted">Product Name</label>
-                                                    <div class="row g-2">
-                                                        <div class="col-md-8">
-                                                            <label class="form-label small">Product Name <span class="text-danger">●</span></label>
-                                                            <div class="input-group">
-                                                                <textarea class="form-control" id="productName" rows="2" placeholder="ชื่อสินค้า"></textarea>
-                                                                <button type="button" class="btn btn-outline-secondary btn-sm align-self-start"><i class="ri ri-price-tag-3-line"></i></button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-12">
-                                                    <label class="form-label small text-muted">Total Weight of Product</label>
-                                                    <div class="row g-2">
-                                                        <div class="col-md-6">
-                                                            <label class="form-label small"># Total Weight of Product <span class="text-success">●</span></label>
-                                                            <input type="text" class="form-control bg-light" id="totalWeight" placeholder="* ระบบจะบันทึกให้อัตโนมัติหลังบันทึกข้อมูล" readonly />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-12">
-                                                    <label class="form-label small text-muted">Total Weight of Product Unit</label>
-                                                    <div class="row g-2">
-                                                        <div class="col-md-6">
-                                                            <label class="form-label small"># Total Weight of Product Unit <span class="text-success">●</span></label>
-                                                            <input type="text" class="form-control bg-light" id="totalWeightUnit" placeholder="KGM = กิโลกรัม  * ระบบจะบันทึกให้อัตโนมัติ" readonly />
-                                                        </div>
-                                                    </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <select id="selectAuthorized" class="select2 form-select" required>
+                                                        <option value="">-- เลือก --</option>
+                                                        <option value="1" selected>นาย บิ นามสมมุติ</option>
+                                                    </select>
+                                                    <label for="selectAuthorized">ผู้รับมอบอำนาจ <span
+                                                            class="text-danger">*</span></label>
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <!-- Establishment Plant -->
-                                        <div class="bg-light border-top border-bottom px-4 py-2 mb-3">
-                                            <strong class="small">Establishment Plant</strong>
-                                        </div>
-                                        <div class="px-4 pb-3">
-                                            <div class="row g-3">
-                                                <div class="col-md-6">
-                                                    <label class="form-label small">Approval Number <span class="text-danger">●</span></label>
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" id="approvalNumber" />
-                                                        <button type="button" class="btn btn-outline-secondary btn-sm"><i class="ri ri-price-tag-3-line"></i></button>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <label class="form-label small">Name of the Establishment <span class="text-danger">●</span></label>
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" id="estName" />
-                                                        <button type="button" class="btn btn-outline-secondary btn-sm"><i class="ri ri-price-tag-3-line"></i></button>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <label class="form-label small">ID of the Establishment <span class="text-danger">●</span></label>
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" id="estId" />
-                                                        <button type="button" class="btn btn-outline-secondary btn-sm"><i class="ri ri-price-tag-3-line"></i></button>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <label class="form-label small">Branch of the Establishment <span class="text-success">●</span></label>
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" id="estBranch" />
-                                                        <button type="button" class="btn btn-outline-secondary btn-sm"><i class="ri ri-price-tag-3-line"></i></button>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-8">
-                                                    <label class="form-label small">Address of the Establishment <span class="text-danger">●</span></label>
-                                                    <div class="input-group">
-                                                        <textarea class="form-control" id="estAddress" rows="3"></textarea>
-                                                        <button type="button" class="btn btn-outline-secondary btn-sm align-self-start"><i class="ri ri-price-tag-3-line"></i></button>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <label class="form-label small">Place of the Establishment <span class="text-danger">●</span></label>
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" id="estPlace" />
-                                                        <button type="button" class="btn btn-outline-secondary btn-sm"><i class="ri ri-price-tag-3-line"></i></button>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <label class="form-label small">Telephone of the Establishment <span class="text-success">●</span></label>
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" id="estTel" />
-                                                        <button type="button" class="btn btn-outline-secondary btn-sm"><i class="ri ri-price-tag-3-line"></i></button>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <label class="form-label small">Fax of the Establishment <span class="text-success">●</span></label>
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" id="estFax" />
-                                                        <button type="button" class="btn btn-outline-secondary btn-sm"><i class="ri ri-price-tag-3-line"></i></button>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <label class="form-label small">ID of Responsible person <span class="text-success">●</span></label>
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" id="respId" />
-                                                        <button type="button" class="btn btn-outline-secondary btn-sm"><i class="ri ri-price-tag-3-line"></i></button>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <label class="form-label small">Responsible person of the Establishment <span class="text-danger">●</span></label>
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" id="respPerson" />
-                                                        <button type="button" class="btn btn-outline-secondary btn-sm"><i class="ri ri-price-tag-3-line"></i></button>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <label class="form-label small">Signature <span class="text-success">●</span></label>
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" id="signature" />
-                                                        <button type="button" class="btn btn-outline-secondary btn-sm"><i class="ri ri-price-tag-3-line"></i></button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Exporter -->
-                                        <div class="bg-light border-top border-bottom px-4 py-2 mb-3">
-                                            <strong class="small">Exporter (if different from the processing plant)</strong>
-                                        </div>
-                                        <div class="px-4 pb-3">
-                                            <p class="small text-muted mb-3">
-                                                <i class="ri ri-information-line me-1"></i>
-                                                ข้อมูลผู้ส่งออกระบบจะดึงข้อมูลของโรงงานผู้ผลิตมาเป็นค่าตั้งต้น แต่หากผู้ผลิตไม่ได้เป็นผู้ส่งออกสินค้า ให้ลบข้อมูลแล้วกรอกข้อมูล ชื่อ เลขประจำตัวผู้เสียภาษี ลำดับสาขา และที่อยู่ของผู้ส่งออกให้ถูกต้อง
-                                            </p>
-                                            <div class="row g-3">
-                                                <div class="col-md-6">
-                                                    <label class="form-label small">Name of the Exporter <span class="text-success">●</span></label>
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" id="expName" />
-                                                        <button type="button" class="btn btn-outline-secondary btn-sm"><i class="ri ri-price-tag-3-line"></i></button>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <label class="form-label small"># PK Name of the Exporter <span class="text-success">●</span></label>
-                                                    <input type="text" class="form-control bg-light" id="expPkName" placeholder="* ระบบจะบันทึกให้อัตโนมัติหลังบันทึกข้อมูล" readonly />
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <label class="form-label small">ID of the Exporter <span class="text-success">●</span></label>
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" id="expId" />
-                                                        <button type="button" class="btn btn-outline-secondary btn-sm"><i class="ri ri-price-tag-3-line"></i></button>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <label class="form-label small">Branch of the Exporter <span class="text-success">●</span></label>
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" id="expBranch" />
-                                                        <button type="button" class="btn btn-outline-secondary btn-sm"><i class="ri ri-price-tag-3-line"></i></button>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-8">
-                                                    <label class="form-label small">Address of the Exporter <span class="text-success">●</span></label>
-                                                    <div class="input-group">
-                                                        <textarea class="form-control" id="expAddress" rows="3"></textarea>
-                                                        <button type="button" class="btn btn-outline-secondary btn-sm align-self-start"><i class="ri ri-price-tag-3-line"></i></button>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <label class="form-label small">Telephone of the Exporter <span class="text-success">●</span></label>
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" id="expTel" />
-                                                        <button type="button" class="btn btn-outline-secondary btn-sm"><i class="ri ri-price-tag-3-line"></i></button>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <label class="form-label small">Fax of the Exporter <span class="text-success">●</span></label>
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" id="expFax" />
-                                                        <button type="button" class="btn btn-outline-secondary btn-sm"><i class="ri ri-price-tag-3-line"></i></button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Final Destination -->
-                                        <div class="bg-light border-top border-bottom px-4 py-2 mb-3">
-                                            <strong class="small">Final Destination</strong>
-                                        </div>
-                                        <div class="px-4 pb-4">
-                                            <div class="row g-3">
-                                                <div class="col-12">
-                                                    <label class="form-label small text-muted">Country Group of Destination</label>
-                                                    <div class="form-check mt-1">
-                                                        <input class="form-check-input" type="checkbox" id="chkEU" />
-                                                        <label class="form-check-label small" for="chkEU">EU</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <label class="form-label small">Destination code <span class="text-success">●</span></label>
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" id="destCode" placeholder="--- เลือกข้อมูล ---" />
-                                                        <button type="button" class="btn btn-outline-secondary btn-sm"><i class="ri ri-price-tag-3-line"></i></button>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <label class="form-label small">Name of the Country <span class="text-danger">●</span></label>
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" id="destCountry" placeholder="--- เลือกข้อมูล ---" />
-                                                        <button type="button" class="btn btn-outline-secondary btn-sm"><i class="ri ri-price-tag-3-line"></i></button>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <label class="form-label small">วันที่ส่งออก <span class="text-danger">●</span></label>
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control flatpickr-date" id="destExportDate" placeholder="วว/ดด/ปปปป" />
-                                                        <button type="button" class="btn btn-outline-secondary btn-sm"><i class="ri ri-calendar-line"></i></button>
-                                                        <button type="button" class="btn btn-outline-secondary btn-sm"><i class="ri ri-price-tag-3-line"></i></button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Legend -->
-                                        <div class="px-4 py-2 border-top bg-light rounded-bottom">
-                                            <small class="text-muted">
-                                                <strong>M :</strong>
-                                                <span class="text-success mx-1">●</span> ยอมให้ว่าง &nbsp;
-                                                <span class="text-danger mx-1">●</span> ไม่ยอมให้ว่าง &nbsp;
-                                                <span class="text-secondary mx-1">#</span> ข้อมูลระบบจะบันทึกให้อัตโนมัติ
-                                            </small>
-                                        </div>
-
                                     </div>
+
+                                    <!-- ข้อมูลผู้ส่งออก -->
+                                    <div class="p-4 border-bottom">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-primary rounded-pill me-2 p-2">
+                                                <i class="ri ri-building-2-line"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">ข้อมูลผู้ส่งออก</h6>
+                                        </div>
+                                        <div class="row g-4">
+                                            <div class="col-12">
+                                                <label class="form-label">ผู้ส่งออก <span
+                                                        class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        title="ค้นหาผู้ส่งออก">
+                                                        <i class="ri ri-search-line"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        title="แท็กผู้ส่งออก">
+                                                        <i class="ri ri-price-tag-3-line"></i>
+                                                    </button>
+                                                    <input type="text" id="exporterName" class="form-control"
+                                                        placeholder="ชื่อผู้ส่งออก"
+                                                        value="Alpha Office Automation Co., Ltd. (สาขา 00001)"
+                                                        required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- แจ้งความประสงค์ -->
+                                    <div class="p-4 border-bottom">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-primary rounded-pill me-2 p-2">
+                                                <i class="ri ri-file-text-line"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">แจ้งความประสงค์</h6>
+                                        </div>
+                                        <div class="row g-4">
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <select id="selectDept" class="select2 form-select" required>
+                                                        <option value="">-- เลือก --</option>
+                                                        <option value="1" selected>กองตรวจสอบคุณภาพสินค้าประมง</option>
+                                                    </select>
+                                                    <label for="selectDept">หน่วยงานหรือเอกสาร <span
+                                                            class="text-danger">*</span></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <select id="selectOfficer" class="select2 form-select" required>
+                                                        <option value="">-- เลือก --</option>
+                                                        <option value="1" selected>กองตรวจสอบคุณภาพสินค้าประมง</option>
+                                                    </select>
+                                                    <label for="selectOfficer">ชื่อเจ้าหน้าที่ <span
+                                                            class="text-danger">*</span></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <p class="text-muted small mb-1">ช่วงเวลาดำเนินการ</p>
+                                                <p class="mb-0 fw-medium">ก่อนนำเข้า/ส่งออก/นำผ่าน</p>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <p class="text-muted small mb-1">ลักษณะการขอ</p>
+                                                <p class="mb-0 fw-medium">ขอใหม่</p>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <p class="text-muted small mb-1">ระเบียบข้อบังคับ</p>
+                                                <p class="mb-0 fw-medium">ส่งออก</p>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <select id="selectCountry" class="select2 form-select">
+                                                        <option value="">-- เลือก --</option>
+                                                        <option value="AR" selected>อาร์เจนตินา</option>
+                                                        <option value="US">สหรัฐอเมริกา</option>
+                                                        <option value="JP">ญี่ปุ่น</option>
+                                                        <option value="CN">จีน</option>
+                                                        <option value="EU">สหภาพยุโรป</option>
+                                                    </select>
+                                                    <label for="selectCountry">ชื่อประเทศปลายทาง</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" id="exportDate"
+                                                        class="form-control flatpickr-date" placeholder="วว/ดด/ปปปป" />
+                                                    <label for="exportDate">วันที่ส่งออก</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ข้อมูล Health Certificate -->
+                                    <div class="p-4">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-primary rounded-pill me-2 p-2">
+                                                <i class="ri ri-shield-check-line"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">ข้อมูล Health Certificate</h6>
+                                        </div>
+                                        <div class="row g-4">
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" id="hcNumber" class="form-control"
+                                                        placeholder="Health Certificate Number" />
+                                                    <label for="hcNumber">Health Certificate Number</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" id="hcDate" class="form-control flatpickr-date"
+                                                        placeholder="วว/ดด/ปปปป" />
+                                                    <label for="hcDate">Date</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
-                        </div>
-                        <!-- /รายละเอียดประเภทเอกสารส่วนเนื้อหา -->
-
-                    </div>
-                    <!-- /TAB 1 -->
-
-                    <!-- ==================== TAB 2: รายการข้อมูลการผลิต ==================== -->
-                    <div class="tab-pane fade" id="tab-production">
-                        <div class="text-center py-6 text-muted">
-                            <i class="ri ri-list-check-3" style="font-size: 3rem;"></i>
-                            <p class="mt-2">รายการข้อมูลการผลิตจะถูกเพิ่มในภายหลัง</p>
                         </div>
                     </div>
-                    <!-- /TAB 2 -->
+                    <!-- /accordion ส่วนหัว -->
 
-                    <!-- ==================== TAB 3: หลักฐานประกอบ ==================== -->
-                    <div class="tab-pane fade" id="tab-evidence">
-                        <div class="text-center py-6 text-muted">
-                            <i class="ri ri-file-list-3-line" style="font-size: 3rem;"></i>
-                            <p class="mt-2">หลักฐานประกอบจะถูกเพิ่มในภายหลัง</p>
+                    <!-- ===== Accordion: ส่วนเนื้อหา ===== -->
+                    <div class="accordion accordion-custom-button mb-4" id="accordionDetail">
+                        <div class="accordion-item active">
+                            <h2 class="accordion-header" id="headingDetail">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseDetailContent" aria-expanded="true"
+                                    aria-controls="collapseDetailContent">
+                                    <i class="icon-base ri ri-article-line me-2"></i>
+                                    รายละเอียดประเภทเอกสารส่วนเนื้อหา
+                                </button>
+                            </h2>
+                            <div id="collapseDetailContent" class="accordion-collapse collapse show"
+                                aria-labelledby="headingDetail">
+                                <div class="accordion-body p-4">
+
+                                    <!-- Description of Product -->
+                                    <div
+                                        class="d-flex align-items-center gap-2 mb-3 border-start border-3 border-primary ps-3">
+                                        <h6 class="mb-0 fw-semibold text-body">Description of Product</h6>
+                                    </div>
+                                    <div class="row g-3 mb-4">
+                                        <div class="col-md-6">
+                                            <label class="form-label small">HS Code (พิกัดศุลกากร) <span
+                                                    class="text-danger">●</span></label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="hsCode"
+                                                    placeholder="เช่น 6014.04" />
+                                                <button type="button" class="btn btn-outline-secondary"><i
+                                                        class="ri ri-price-tag-3-line"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <label class="form-label small">Product Name <span
+                                                    class="text-danger">●</span></label>
+                                            <div class="input-group">
+                                                <textarea class="form-control" id="productName" rows="2"
+                                                    placeholder="ชื่อสินค้า"></textarea>
+                                                <button type="button"
+                                                    class="btn btn-outline-secondary align-self-start"><i
+                                                        class="ri ri-price-tag-3-line"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label small"># Total Weight of Product <span
+                                                    class="text-success">●</span></label>
+                                            <input type="text" class="form-control" id="totalWeight"
+                                                placeholder="ระบบจะบันทึกให้อัตโนมัติหลังบันทึกข้อมูล" readonly
+                                                disabled />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label small"># Total Weight of Product Unit <span
+                                                    class="text-success">●</span></label>
+                                            <input type="text" class="form-control" id="totalWeightUnit"
+                                                placeholder="KGM = กิโลกรัม (ระบบจะบันทึกให้อัตโนมัติ)" readonly
+                                                disabled />
+                                        </div>
+                                    </div>
+
+                                    <hr class="my-4">
+
+                                    <!-- Establishment Plant -->
+                                    <div
+                                        class="d-flex align-items-center gap-2 mb-3 border-start border-3 border-primary ps-3">
+                                        <h6 class="mb-0 fw-semibold text-body">Establishment Plant</h6>
+                                    </div>
+                                    <div class="row g-3 mb-4">
+                                        <div class="col-md-6">
+                                            <label class="form-label small">Approval Number <span
+                                                    class="text-danger">●</span></label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="approvalNumber" />
+                                                <button type="button" class="btn btn-outline-secondary"><i
+                                                        class="ri ri-price-tag-3-line"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label small">Name of the Establishment <span
+                                                    class="text-danger">●</span></label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="estName" />
+                                                <button type="button" class="btn btn-outline-secondary"><i
+                                                        class="ri ri-price-tag-3-line"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label small">ID of the Establishment <span
+                                                    class="text-danger">●</span></label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="estId" />
+                                                <button type="button" class="btn btn-outline-secondary"><i
+                                                        class="ri ri-price-tag-3-line"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label small">Branch of the Establishment <span
+                                                    class="text-success">●</span></label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="estBranch" />
+                                                <button type="button" class="btn btn-outline-secondary"><i
+                                                        class="ri ri-price-tag-3-line"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <label class="form-label small">Address of the Establishment <span
+                                                    class="text-danger">●</span></label>
+                                            <div class="input-group">
+                                                <textarea class="form-control" id="estAddress" rows="3"></textarea>
+                                                <button type="button"
+                                                    class="btn btn-outline-secondary align-self-start"><i
+                                                        class="ri ri-price-tag-3-line"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label small">Place of the Establishment <span
+                                                    class="text-danger">●</span></label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="estPlace" />
+                                                <button type="button" class="btn btn-outline-secondary"><i
+                                                        class="ri ri-price-tag-3-line"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label small">Telephone of the Establishment <span
+                                                    class="text-success">●</span></label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="estTel" />
+                                                <button type="button" class="btn btn-outline-secondary"><i
+                                                        class="ri ri-price-tag-3-line"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label small">Fax of the Establishment <span
+                                                    class="text-success">●</span></label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="estFax" />
+                                                <button type="button" class="btn btn-outline-secondary"><i
+                                                        class="ri ri-price-tag-3-line"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label small">ID of Responsible person <span
+                                                    class="text-success">●</span></label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="respId" />
+                                                <button type="button" class="btn btn-outline-secondary"><i
+                                                        class="ri ri-price-tag-3-line"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label small">Responsible person of the Establishment
+                                                <span class="text-danger">●</span></label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="respPerson" />
+                                                <button type="button" class="btn btn-outline-secondary"><i
+                                                        class="ri ri-price-tag-3-line"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label small">Signature <span
+                                                    class="text-success">●</span></label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="signature" />
+                                                <button type="button" class="btn btn-outline-secondary"><i
+                                                        class="ri ri-price-tag-3-line"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <hr class="my-4">
+
+                                    <!-- Exporter -->
+                                    <div
+                                        class="d-flex align-items-center gap-2 mb-3 border-start border-3 border-primary ps-3">
+                                        <h6 class="mb-0 fw-semibold text-body">Exporter <small
+                                                class="text-muted fw-normal">(if different from the processing
+                                                plant)</small></h6>
+                                    </div>
+                                    <div class="alert alert-info alert-dismissible mb-3" role="alert">
+                                        <i class="ri ri-information-line me-2"></i>
+                                        ข้อมูลผู้ส่งออกระบบจะดึงข้อมูลของโรงงานผู้ผลิตมาเป็นค่าตั้งต้น
+                                        แต่หากผู้ผลิตไม่ได้เป็นผู้ส่งออกสินค้า
+                                        ให้ลบข้อมูลแล้วกรอกข้อมูล ชื่อ เลขประจำตัวผู้เสียภาษี ลำดับสาขา
+                                        และที่อยู่ของผู้ส่งออกให้ถูกต้อง
+                                    </div>
+                                    <div class="row g-3 mb-4">
+                                        <div class="col-md-6">
+                                            <label class="form-label small">Name of the Exporter <span
+                                                    class="text-success">●</span></label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="expName" />
+                                                <button type="button" class="btn btn-outline-secondary"><i
+                                                        class="ri ri-price-tag-3-line"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label small"># PK Name of the Exporter <span
+                                                    class="text-success">●</span></label>
+                                            <input type="text" class="form-control" id="expPkName"
+                                                placeholder="ระบบจะบันทึกให้อัตโนมัติหลังบันทึกข้อมูล" readonly
+                                                disabled />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label small">ID of the Exporter <span
+                                                    class="text-success">●</span></label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="expId" />
+                                                <button type="button" class="btn btn-outline-secondary"><i
+                                                        class="ri ri-price-tag-3-line"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label small">Branch of the Exporter <span
+                                                    class="text-success">●</span></label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="expBranch" />
+                                                <button type="button" class="btn btn-outline-secondary"><i
+                                                        class="ri ri-price-tag-3-line"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <label class="form-label small">Address of the Exporter <span
+                                                    class="text-success">●</span></label>
+                                            <div class="input-group">
+                                                <textarea class="form-control" id="expAddress" rows="3"></textarea>
+                                                <button type="button"
+                                                    class="btn btn-outline-secondary align-self-start"><i
+                                                        class="ri ri-price-tag-3-line"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label small">Telephone of the Exporter <span
+                                                    class="text-success">●</span></label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="expTel" />
+                                                <button type="button" class="btn btn-outline-secondary"><i
+                                                        class="ri ri-price-tag-3-line"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label small">Fax of the Exporter <span
+                                                    class="text-success">●</span></label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="expFax" />
+                                                <button type="button" class="btn btn-outline-secondary"><i
+                                                        class="ri ri-price-tag-3-line"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <hr class="my-4">
+
+                                    <!-- Final Destination -->
+                                    <div
+                                        class="d-flex align-items-center gap-2 mb-3 border-start border-3 border-primary ps-3">
+                                        <h6 class="mb-0 fw-semibold text-body">Final Destination</h6>
+                                    </div>
+                                    <div class="row g-3 mb-4">
+                                        <div class="col-12">
+                                            <label class="form-label small text-muted">Country Group of
+                                                Destination</label>
+                                            <div class="form-check mt-1">
+                                                <input class="form-check-input" type="checkbox" id="chkEU" />
+                                                <label class="form-check-label small fw-medium" for="chkEU">EU</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label small">Destination code <span
+                                                    class="text-success">●</span></label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="destCode"
+                                                    placeholder="--- เลือกข้อมูล ---" />
+                                                <button type="button" class="btn btn-outline-secondary"><i
+                                                        class="ri ri-price-tag-3-line"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label small">Name of the Country <span
+                                                    class="text-danger">●</span></label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="destCountry"
+                                                    placeholder="--- เลือกข้อมูล ---" />
+                                                <button type="button" class="btn btn-outline-secondary"><i
+                                                        class="ri ri-price-tag-3-line"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label small">วันที่ส่งออก <span
+                                                    class="text-danger">●</span></label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control flatpickr-date"
+                                                    id="destExportDate" placeholder="วว/ดด/ปปปป" />
+                                                <button type="button" class="btn btn-outline-secondary"><i
+                                                        class="ri ri-calendar-line"></i></button>
+                                                <button type="button" class="btn btn-outline-secondary"><i
+                                                        class="ri ri-price-tag-3-line"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Legend -->
+                                    <div class="bg-light rounded p-3 mt-2">
+                                        <small class="text-muted">
+                                            <strong>สัญลักษณ์ :</strong>&nbsp;
+                                            <span class="text-success fw-bold">●</span> ยอมให้ว่าง &nbsp;|&nbsp;
+                                            <span class="text-danger fw-bold">●</span> ไม่ยอมให้ว่าง &nbsp;|&nbsp;
+                                            <span class="text-secondary fw-bold">#</span> ระบบจะบันทึกให้อัตโนมัติ
+                                        </small>
+                                    </div>
+
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <!-- /TAB 3 -->
-
+                    <!-- /accordion ส่วนเนื้อหา -->
                 </div>
-                <!-- /tab-content -->
-
-                <!-- ===== Action Buttons ===== -->
-                <div class="d-flex justify-content-end gap-2 mb-6">
-                    <a href="@Url.Action("SelectType", "System_6_5")" class="btn btn-outline-secondary">
-                        <i class="ri ri-arrow-left-line me-1"></i> ยกเลิก
-                    </a>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="ri ri-save-line me-1"></i> บันทึก
-                    </button>
-                </div>
-
+                <!-- /TAB 1 -->
             </form>
+        </div><!-- /tab-content -->
+
+        <div class="d-flex justify-content-end gap-2 mt-4">
+            <a href="@Url.Action(" SelectType", "System_6_5" )" class="btn btn-outline-secondary">
+                <i class="ri ri-arrow-left-line me-1"></i> ยกเลิก
+            </a>
+            <button type="submit" class="btn btn-primary">
+                <i class="ri ri-save-line me-1"></i> บันทึก
+            </button>
         </div>
     </div>
 
@@ -534,20 +589,16 @@
 
 @section PageScripts {
 <script>
-    $(document).ready(function () {
-        $('.select2').select2({ width: '100%' });
-
+    $(document).ready(function() {
+        // Select2
+        $('.select2').select2({
+            width: '100%'
+        });
+        // Flatpickr
         flatpickr('.flatpickr-date', {
             dateFormat: 'd/m/Y',
             allowInput: true
         });
-
-        // Update tab badge colors on switch
-        $('[data-bs-toggle="tab"]').on('shown.bs.tab', function () {
-            $('[data-bs-toggle="tab"] .badge').removeClass('bg-primary').addClass('bg-secondary');
-            $(this).find('.badge').removeClass('bg-secondary').addClass('bg-primary');
-        });
     });
 </script>
 }
-
