@@ -1,0 +1,39 @@
+## ── .NET Build Output ──
+bin/
+obj/
+
+## ── ASP.NET ──
+*.user
+*.suo
+.vs/
+
+## ── NuGet ──
+*.nupkg
+*.snupkg
+packages/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+## ── Publish Output ──
+publish/
+*.publish.xml
+
+## ── dotnet watch / hot reload ──
+*.lscache
+
+## ── Node / Frontend Build ──
+node_modules/
+wwwroot/dist/
+wwwroot/css/bundled/
+wwwroot/js/bundled/
+.npm/
+
+## ── OS ──
+.DS_Store
+Thumbs.db
+
+## ── IDE ──
+.vscode/
+.idea/
+*.swp
