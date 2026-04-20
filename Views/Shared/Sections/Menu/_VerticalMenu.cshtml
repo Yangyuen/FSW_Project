@@ -11,9 +11,12 @@
   <div class='app-brand demo @((@ViewData["navbarFull"] != null && Convert.ToBoolean(@ViewData["navbarFull"])) ? "d-xl-none" : "")'>
     <a asp-controller="Dashboards" asp-action="Index" class="app-brand-link">
       <span class="app-brand-logo demo">
-        @await Html.PartialAsync("../_Partials/_Macros")
+        <img src="~/img/branding/logo.png" alt="Department of Fisheries Logo" style="width: 38px; height: 38px; object-fit: contain;" />
       </span>
-      <span class="app-brand-text demo menu-text fw-semibold ms-2">@TempData.Peek("appName")</span>
+      <span class="app-brand-text demo ms-2 lh-sm">
+        <span class="d-block menu-text fw-semibold">กรมประมง</span>
+        <small class="d-block text-muted fw-normal">Department of Fisheries</small>
+      </span>
     </a>
 
     <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
