@@ -4,7 +4,7 @@
 - เอกสารนี้กำหนดเฉพาะหน้าจอ (UI) เท่านั้น
 - ไม่ทำ API และไม่ผูกฐานข้อมูลจริง
 - ใช้ข้อมูล Mockup เท่านั้น
-- ทุกหน้าจออยู่ภายใต้ Controller System_6_5
+- ทุกหน้าจออยู่ภายใต้ Controller PSDeclaration
 - อ้างอิงความต้องการจาก raw-requirements-เจ้าหน้าที่.txt (ข้อ 2.1-2.15)
 
 ## แนวทางข้อมูล Mockup
@@ -13,32 +13,32 @@
 - หน้าจออนุมัติรองรับ Mockup แบบ single และ multi-signature
 - หน้าจอที่เกี่ยวกับตรวจปล่อยต้องมีตัวอย่างวันที่โหลด, วันที่ส่งออก, วันที่ตรวจปล่อย, issue date
 
-## โครงสร้างเส้นทางหน้าจอ (ภายใต้ Controller System_6_5)
+## โครงสร้างเส้นทางหน้าจอ (ภายใต้ Controller PSDeclaration)
 | Screen ID | Route ตัวอย่าง |
 | --- | --- |
-| OF-01 | /System_6_5/Officer/Dashboard |
-| OF-02 | /System_6_5/Officer/RMBS1PS/Review |
-| OF-03 | /System_6_5/Officer/RMBS1PS/Approve |
-| OF-04 | /System_6_5/Officer/RMBS1PS/ChangeOrCancel |
-| OF-05 | /System_6_5/Officer/Yield/Review |
-| OF-06 | /System_6_5/Officer/P1P2/Inspection |
-| OF-07 | /System_6_5/Officer/TraceabilityTree |
-| OF-08 | /System_6_5/Officer/Certificate/Register |
-| OF-09 | /System_6_5/Officer/Certificate/Prepare |
-| OF-10 | /System_6_5/Officer/Certificate/SignFlow |
-| OF-11 | /System_6_5/Officer/Certificate/PostRelease |
-| OF-12 | /System_6_5/Officer/Certificate/Search |
-| OF-13 | /System_6_5/Officer/Certificate/AmendReview |
-| OF-14 | /System_6_5/Officer/Certificate/ReissueReview |
-| OF-15 | /System_6_5/Officer/Certificate/CancelReview |
-| OF-16 | /System_6_5/Officer/ReturnWeight/Review |
-| OF-17 | /System_6_5/Officer/Certificate/PermissionSearch |
-| OF-18 | /System_6_5/Officer/SelfCertificate/Search |
-| OF-19 | /System_6_5/Officer/Reports |
-| OF-20 | /System_6_5/Officer/UserAudit/Search |
-| OF-21 | /System_6_5/Officer/AccessAndPending |
-| OF-22 | /System_6_5/Officer/RegistrationCompliance |
-| OF-23 | /System_6_5/Officer/IntakeTemplateConfig |
+| OF-01 | /PSDeclaration/Officer/Dashboard |
+| OF-02 | /PSDeclaration/Officer/RMBS1PS/Review |
+| OF-03 | /PSDeclaration/Officer/RMBS1PS/Approve |
+| OF-04 | /PSDeclaration/Officer/RMBS1PS/ChangeOrCancel |
+| OF-05 | /PSDeclaration/Officer/Yield/Review |
+| OF-06 | /PSDeclaration/Officer/P1P2/Inspection |
+| OF-07 | /PSDeclaration/Officer/TraceabilityTree |
+| OF-08 | /PSDeclaration/Officer/Certificate/Register |
+| OF-09 | /PSDeclaration/Officer/Certificate/Prepare |
+| OF-10 | /PSDeclaration/Officer/Certificate/SignFlow |
+| OF-11 | /PSDeclaration/Officer/Certificate/PostRelease |
+| OF-12 | /PSDeclaration/Officer/Certificate/Search |
+| OF-13 | /PSDeclaration/Officer/Certificate/AmendReview |
+| OF-14 | /PSDeclaration/Officer/Certificate/ReissueReview |
+| OF-15 | /PSDeclaration/Officer/Certificate/CancelReview |
+| OF-16 | /PSDeclaration/Officer/ReturnWeight/Review |
+| OF-17 | /PSDeclaration/Officer/Certificate/PermissionSearch |
+| OF-18 | /PSDeclaration/Officer/SelfCertificate/Search |
+| OF-19 | /PSDeclaration/Officer/Reports |
+| OF-20 | /PSDeclaration/Officer/UserAudit/Search |
+| OF-21 | /PSDeclaration/Officer/AccessAndPending |
+| OF-22 | /PSDeclaration/Officer/RegistrationCompliance |
+| OF-23 | /PSDeclaration/Officer/IntakeTemplateConfig |
 
 ## รายการหน้าจอและ Component Mapping
 

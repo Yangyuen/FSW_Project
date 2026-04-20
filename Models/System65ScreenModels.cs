@@ -46,7 +46,7 @@ public sealed class System65ScreenViewModel
 public static class System65ScreenCatalog
 {
   private static readonly Regex RouteRegex = new(
-    @"^\|\s*(?<id>[A-Z]{2}-\d+)\s*\|\s*(?<route>/System_6_5/[^|]+)\|",
+    @"^\|\s*(?<id>[A-Z]{2}-\d+)\s*\|\s*(?<route>/PSDeclaration/[^|]+)\|",
     RegexOptions.Compiled);
 
   private static readonly Regex HeaderRegex = new(

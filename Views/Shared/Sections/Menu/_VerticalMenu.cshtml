@@ -10,12 +10,12 @@
   @* ! Hide app brand if navbar-full *@
   <div class='app-brand demo @((@ViewData["navbarFull"] != null && Convert.ToBoolean(@ViewData["navbarFull"])) ? "d-xl-none" : "")'>
     <a asp-controller="Dashboards" asp-action="Index" class="app-brand-link">
-      <span class="app-brand-logo demo">
-        <img src="~/img/branding/logo.png" alt="Department of Fisheries Logo" style="width: 38px; height: 38px; object-fit: contain;" />
+      <span class="app-brand-logo demo flex-shrink-0" style="width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center;">
+        <img src="~/img/branding/logo.png" alt="Department of Fisheries Logo" style="width: 36px; height: 36px; object-fit: contain;" />
       </span>
-      <span class="app-brand-text demo ms-2 lh-sm">
-        <span class="d-block menu-text fw-semibold">กรมประมง</span>
-        <small class="d-block text-muted fw-normal">Department of Fisheries</small>
+      <span class="app-brand-text demo ms-2" style="font-size: 0.825rem; letter-spacing: 0; line-height: 1.25; text-transform: none;">
+        <span class="d-block fw-bold" style="font-size: 1.1rem;">กรมประมง</span>
+        <small class="d-block text-muted fw-normal" style="font-size: 0.72rem;">Department of Fisheries</small>
       </span>
     </a>
 
@@ -37,29 +37,43 @@
       <span class="menu-header-text" data-i18n="สมาชิก">สมาชิก</span>
     </li>
 
-    <li class='menu-item@(currentPage.StartsWith("/Access") ? " active open" : "")'>
+    <li class='menu-item@(currentPage.StartsWith("/ImportAdjustment") ? " active open" : "")'>
+      <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class="menu-icon icon-base ri ri-file-list-2-line"></i>
+        <div data-i18n="ขอเปลี่ยนแปลงปริมาณ">ขอเปลี่ยนแปลงปริมาณ</div>
+      </a>
+      <ul class="menu-sub">
+        <li class='menu-item@(currentPage == "/ImportAdjustment/Index" ? " active" : "")'>
+          <a asp-controller="ImportAdjustment" asp-action="Index" class="menu-link">
+            <div data-i18n="ขออนุมัติปริมาณ">ขออนุมัติปริมาณ</div>
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    <li class='menu-item@(currentPage.StartsWith("/PSDeclaration") ? " active open" : "")'>
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon icon-base ri ri-file-list-2-line"></i>
         <div data-i18n="ขอใบรับรอง">ขอใบรับรอง</div>
       </a>
       <ul class="menu-sub">
-        <li class='menu-item@(currentPage == "/System_6_5/Index" ? " active" : "")'>
-          <a asp-controller="System_6_5" asp-action="Index" class="menu-link">
+        <li class='menu-item@(currentPage == "/PSDeclaration/Index" ? " active" : "")'>
+          <a asp-controller="PSDeclaration" asp-action="Index" class="menu-link">
             <div data-i18n="สร้างคำขอ">สร้างคำขอ</div>
           </a>
         </li>
-        <li class='menu-item@(currentPage == "/System_6_5/Index" ? " active" : "")'>
-          <a asp-controller="System_6_5" asp-action="Index" class="menu-link">
+        <li class='menu-item@(currentPage == "/PSDeclaration/Index" ? " active" : "")'>
+          <a asp-controller="PSDeclaration" asp-action="Index" class="menu-link">
             <div data-i18n="ติดตามสถานะ">ติดตามสถานะ</div>
           </a>
         </li>
-        <li class='menu-item@(currentPage == "/System_6_5/Index" ? " active" : "")'>
-          <a asp-controller="System_6_5" asp-action="Index" class="menu-link">
+        <li class='menu-item@(currentPage == "/PSDeclaration/Index" ? " active" : "")'>
+          <a asp-controller="PSDeclaration" asp-action="Index" class="menu-link">
             <div data-i18n="ใบรับรอง">ใบรับรอง</div>
           </a>
         </li>
-        <li class='menu-item@(currentPage == "/System_6_5/Index" ? " active" : "")'>
-          <a asp-controller="System_6_5" asp-action="Index" class="menu-link">
+        <li class='menu-item@(currentPage == "/PSDeclaration/Index" ? " active" : "")'>
+          <a asp-controller="PSDeclaration" asp-action="Index" class="menu-link">
             <div data-i18n="ขอคืนน้ำหนัก">ขอคืนน้ำหนัก</div>
           </a>
         </li>

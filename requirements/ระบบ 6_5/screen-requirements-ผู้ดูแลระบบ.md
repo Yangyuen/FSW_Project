@@ -4,7 +4,7 @@
 - เอกสารนี้กำหนดเฉพาะหน้าจอ (UI) เท่านั้น
 - ไม่ทำ API และไม่ผูกฐานข้อมูลจริง
 - ใช้ข้อมูล Mockup เท่านั้น
-- ทุกหน้าจออยู่ภายใต้ Controller System_6_5
+- ทุกหน้าจออยู่ภายใต้ Controller PSDeclaration
 - อ้างอิงความต้องการจาก raw-requirements-ผู้ดูแลระบบ.txt (ข้อ 3.1-3.7)
 
 ## แนวทางข้อมูล Mockup
@@ -12,18 +12,18 @@
 - รองรับสถานะข้อมูลหลัก: ใช้งาน, ระงับ, ยกเลิก
 - หน้าจอ master data ทุกหน้ามีรายการประวัติการเปลี่ยนแปลงแบบ mock
 
-## โครงสร้างเส้นทางหน้าจอ (ภายใต้ Controller System_6_5)
+## โครงสร้างเส้นทางหน้าจอ (ภายใต้ Controller PSDeclaration)
 | Screen ID | Route ตัวอย่าง |
 | --- | --- |
-| AD-01 | /System_6_5/Admin/Organization |
-| AD-02 | /System_6_5/Admin/OfficerAndPermissions |
-| AD-03 | /System_6_5/Admin/Announcements |
-| AD-04 | /System_6_5/Admin/DOFList |
-| AD-05 | /System_6_5/Admin/TraceabilityList |
-| AD-06 | /System_6_5/Admin/SanitaryMeasures |
-| AD-07 | /System_6_5/Admin/CertificateDefaultConfig |
-| AD-08 | /System_6_5/Admin/Reports |
-| AD-09 | /System_6_5/Admin/CertificateFormatAndESign |
+| AD-01 | /PSDeclaration/Admin/Organization |
+| AD-02 | /PSDeclaration/Admin/OfficerAndPermissions |
+| AD-03 | /PSDeclaration/Admin/Announcements |
+| AD-04 | /PSDeclaration/Admin/DOFList |
+| AD-05 | /PSDeclaration/Admin/TraceabilityList |
+| AD-06 | /PSDeclaration/Admin/SanitaryMeasures |
+| AD-07 | /PSDeclaration/Admin/CertificateDefaultConfig |
+| AD-08 | /PSDeclaration/Admin/Reports |
+| AD-09 | /PSDeclaration/Admin/CertificateFormatAndESign |
 
 ## รายการหน้าจอและ Component Mapping
 

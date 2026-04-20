@@ -139,7 +139,7 @@ public static class System65MockupFactory
       },
       pageNotes: new[]
       {
-        "Dashboard นี้ผูกกับ mock route ของผู้ประกอบการทั้งหมดใน Controller System_6_5",
+        "Dashboard นี้ผูกกับ mock route ของผู้ประกอบการทั้งหมดใน Controller PSDeclaration",
         "ปุ่มลัดหลักตรงกับ requirement OP-01 และเน้นกลุ่มงานที่มี deadline ก่อน"
       });
   }
@@ -1799,8 +1799,8 @@ public static class System65MockupFactory
       workflowChips: requirementChips,
       primaryActions: new[]
       {
-        Action("กลับหน้า index", "/System_6_5", "ri-home-4-line", "primary"),
-        Action("เปิด role dashboard", roleScreens.FirstOrDefault()?.Route ?? "/System_6_5", "ri-dashboard-line", "info", true)
+        Action("กลับหน้า index", "/PSDeclaration", "ri-home-4-line", "primary"),
+        Action("เปิด role dashboard", roleScreens.FirstOrDefault()?.Route ?? "/PSDeclaration", "ri-dashboard-line", "info", true)
       },
       detailPanels: new[]
       {

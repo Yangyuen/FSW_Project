@@ -4,7 +4,7 @@
 - เอกสารนี้กำหนดเฉพาะหน้าจอ (UI) เท่านั้น
 - ไม่ทำ API และไม่ผูกฐานข้อมูลจริง
 - ใช้ข้อมูล Mockup เท่านั้น
-- ทุกหน้าจออยู่ภายใต้ Controller System_6_5
+- ทุกหน้าจออยู่ภายใต้ Controller PSDeclaration
 - อ้างอิงความต้องการจาก raw-requirements-ผู้ประกอบการ.txt (ข้อ 1.1-1.12)
 
 ## แนวทางข้อมูล Mockup
@@ -13,27 +13,27 @@
 - หน้า list ทุกหน้ารองรับ sort, filter, pagination, export (Excel/PDF/CSV ตามบริบท)
 - หน้า detail ทุกหน้ามีประวัติการดำเนินการแบบ mock timeline
 
-## โครงสร้างเส้นทางหน้าจอ (ภายใต้ Controller System_6_5)
+## โครงสร้างเส้นทางหน้าจอ (ภายใต้ Controller PSDeclaration)
 | Screen ID | Route ตัวอย่าง |
 | --- | --- |
-| OP-01 | /System_6_5/Operator/Dashboard |
-| OP-02 | /System_6_5/Operator/RMBS1NoPS/Request |
-| OP-03 | /System_6_5/Operator/RMBS1NoPS/List |
-| OP-04 | /System_6_5/Operator/RMBS1PS/Request |
-| OP-05 | /System_6_5/Operator/RMBS1PS/ChangeRequest |
-| OP-06 | /System_6_5/Operator/RMBS1PS/Production |
-| OP-07 | /System_6_5/Operator/RMBS2/List |
-| OP-08 | /System_6_5/Operator/P1P2/Trade |
-| OP-09 | /System_6_5/Operator/Yield/Request |
-| OP-10 | /System_6_5/Operator/Certificate/Request |
-| OP-11 | /System_6_5/Operator/Certificate/Track |
-| OP-12 | /System_6_5/Operator/Certificate/Search |
-| OP-13 | /System_6_5/Operator/Certificate/Amend |
-| OP-14 | /System_6_5/Operator/Certificate/Reissue |
-| OP-15 | /System_6_5/Operator/Certificate/Cancel |
-| OP-16 | /System_6_5/Operator/ReturnWeight/Request |
-| OP-17 | /System_6_5/Operator/ScrapTrade |
-| OP-18 | /System_6_5/Operator/TraceabilityTree |
+| OP-01 | /PSDeclaration/Operator/Dashboard |
+| OP-02 | /PSDeclaration/Operator/RMBS1NoPS/Request |
+| OP-03 | /PSDeclaration/Operator/RMBS1NoPS/List |
+| OP-04 | /PSDeclaration/Operator/RMBS1PS/Request |
+| OP-05 | /PSDeclaration/Operator/RMBS1PS/ChangeRequest |
+| OP-06 | /PSDeclaration/Operator/RMBS1PS/Production |
+| OP-07 | /PSDeclaration/Operator/RMBS2/List |
+| OP-08 | /PSDeclaration/Operator/P1P2/Trade |
+| OP-09 | /PSDeclaration/Operator/Yield/Request |
+| OP-10 | /PSDeclaration/Operator/Certificate/Request |
+| OP-11 | /PSDeclaration/Operator/Certificate/Track |
+| OP-12 | /PSDeclaration/Operator/Certificate/Search |
+| OP-13 | /PSDeclaration/Operator/Certificate/Amend |
+| OP-14 | /PSDeclaration/Operator/Certificate/Reissue |
+| OP-15 | /PSDeclaration/Operator/Certificate/Cancel |
+| OP-16 | /PSDeclaration/Operator/ReturnWeight/Request |
+| OP-17 | /PSDeclaration/Operator/ScrapTrade |
+| OP-18 | /PSDeclaration/Operator/TraceabilityTree |
 
 ## รายการหน้าจอและ Component Mapping
 

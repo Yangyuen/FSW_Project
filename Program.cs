@@ -41,18 +41,18 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "system65-index",
-    pattern: "System_6_5",
-    defaults: new { controller = "System_6_5", action = "Index" });
+    pattern: "PSDeclaration",
+    defaults: new { controller = "PSDeclaration", action = "Index" });
 
 app.MapControllerRoute(
     name: "system65-role",
-    pattern: "System_6_5/{role}",
-    defaults: new { controller = "System_6_5", action = "Screen", screenPath = "Dashboard" });
+    pattern: "PSDeclaration/{role}",
+    defaults: new { controller = "PSDeclaration", action = "Screen", screenPath = "Dashboard" });
 
 app.MapControllerRoute(
     name: "system65-screen",
-    pattern: "System_6_5/{role}/{*screenPath}",
-    defaults: new { controller = "System_6_5", action = "Screen" });
+    pattern: "PSDeclaration/{role}/{*screenPath}",
+    defaults: new { controller = "PSDeclaration", action = "Screen" });
 
 app.MapControllerRoute(
     name: "default",
