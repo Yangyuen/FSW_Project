@@ -661,7 +661,9 @@ Views/
  PSDeclaration/
   CreateDeclaration.cshtml
   CreateProcessing.cshtml
+  CreateTrackRequestStatus.cshtml
   Index.cshtml
+  IndexTrackRequestStatus.cshtml
   SelectType.cshtml
  Shared/
   Error.cshtml
@@ -918,7 +920,9 @@ Views/
  PSDeclaration/
   CreateDeclaration.cshtml
   CreateProcessing.cshtml
+  CreateTrackRequestStatus.cshtml
   Index.cshtml
+  IndexTrackRequestStatus.cshtml
   SelectType.cshtml
  Shared/
   Error.cshtml

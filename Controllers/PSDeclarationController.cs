@@ -32,4 +32,34 @@ public class PSDeclarationController : Controller
     return View();
   }
 
+  public IActionResult IndexTrackRequestStatus()
+  {
+    return View();
+  }
+
+  public IActionResult CreateTrackRequestStatus()
+  {
+    return View();
+  }
+
+  public IActionResult ManageCertificate()
+  {
+    return View();
+  }
+
+  public IActionResult UpdateCertificate()
+  {
+    return View();
+  }
+
+  public IActionResult ApproveReturnWeight()
+  {
+    return View();
+  }
+
+  public IActionResult ReturnCertificateWeight()
+  {
+    return View();
+  }
+
 }

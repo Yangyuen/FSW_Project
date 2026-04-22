@@ -1,0 +1,335 @@
+@{
+ViewData["Title"] = "คำขอใบรับรองสัตว์นํ้าไม่แปรรูป";
+}
+
+@section VendorStyles {
+<link rel="stylesheet" href="~/vendor/libs/select2/select2.css" />
+<link rel="stylesheet" href="~/vendor/libs/flatpickr/flatpickr.css" />
+}
+
+@section VendorScripts {
+<script src="~/vendor/libs/select2/select2.js"></script>
+<script src="~/vendor/libs/flatpickr/flatpickr.js"></script>
+}
+
+
+@* ************** Content ************** *@
+<h4 class="mb-1">รายละเอียดติดตามสถานะคำขอใบรับรอง</h4>
+<p class="mb-1">ติดตามสถานะของข้อมูลคำขอว่ากำลังดำเนินงาน</p>
+
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="mb-6">
+    <ol class="breadcrumb breadcrumb-style1" style="--bs-breadcrumb-divider: '>'; font-size: 0.75rem;">
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("IndexTrackRequestStatus", "PSDeclaration")" class="text-primary fw-semibold">ติดตามสถานะคำขอใบรับรอง</a>
+        </li>
+        <li class="breadcrumb-item active text-secondary">รายละเอียดติดตามสถานะคำขอใบรับรอง</li>
+    </ol>
+</nav>
+
+<div class="row">
+    <div class="col-12">
+
+        <!-- ===== Tabs ===== -->
+        <form method="post" action="#">
+        <div class="nav-align-top nav-tabs-shadow mb-4">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#tab-detail" aria-controls="tab-detail" aria-selected="true">
+                            <i class="ri ri-file-list-2-line me-1"></i> รายละเอียดติดตามสถานะคำขอใบรับรอง
+                    </button>
+                </li>
+
+            </ul>
+            <div class="tab-content">
+
+                    <!-- ==================== TAB 1: รายละเอียดติดตามสถานะคำขอใบรับรอง ==================== -->
+                <div id="tab-detail" class="tab-pane fade show active">
+
+                    <!-- ===== Accordion: ข้อมูลเอกสาร ===== -->
+                    <div class="accordion accordion-custom-button mb-4" id="accordionHeader">
+                        <div class="accordion-item active">
+                            <h2 class="accordion-header" id="headingHeader">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseHeaderContent" aria-expanded="true"
+                                    aria-controls="collapseHeaderContent">
+                                    <i class="icon-base ri ri-file-list-line me-2"></i>
+                                    ข้อมูลเอกสาร
+                                </button>
+                            </h2>
+                            <div id="collapseHeaderContent" class="accordion-collapse collapse show"
+                                aria-labelledby="headingHeader">
+                                <div class="accordion-body p-0">
+
+                                    <!-- รายละเอียด -->
+                                    <div class="p-4 border-bottom">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-information-line fs-5"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">รายละเอียด</h6>
+                                        </div>
+                                        <div class="row g-3">
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" id="requestNo"
+                                                        value="10611080131800118" readonly />
+                                                    <label for="requestNo">เลขที่คำขอ</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" id="requestDate"
+                                                        class="form-control flatpickr-date bg-light" placeholder="วว/ดด/ปปปป"
+                                                        value="21/08/2568" readonly />
+                                                    <label for="requestDate">วันที่ยื่นคำขอ <span class="text-danger">●</span></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" id="receiveDate"
+                                                        value="21/08/2568" readonly />
+                                                    <label for="receiveDate">วันที่รับคำขอ</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- จาก / ถึง -->
+                                    <div class="p-4 border-bottom">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-building-2-line fs-5"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">ผู้ส่ง / ผู้รับ</h6>
+                                        </div>
+                                        <div class="row g-4">
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                    <select id="selectFrom" class="select2 form-select bg-light" disabled>
+                                                        <option value="1" selected>Alpha Office Automation Co., Ltd. (สาขา 0000)</option>
+                                                    </select>
+                                                    <label for="selectFrom">จาก <span class="text-danger">●</span></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                    <select id="selectTo" class="select2 form-select bg-light" disabled>
+                                                        <option value="1" selected>กองตรวจสอบคุณภาพสินค้าประมง</option>
+                                                    </select>
+                                                    <label for="selectTo">ถึง <span class="text-danger">●</span></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- เรื่อง / เลขที่ใบรับรอง -->
+                                    <div class="p-4">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-file-text-line fs-5"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">เนื้อหาคำขอ</h6>
+                                        </div>
+                                        <div class="row g-4">
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" id="subject"
+                                                        value="ขอใหม่ ใบรับรองสัตว์นํ้าไม่แปรรูป (Declaration)" readonly />
+                                                    <label for="subject">เรื่อง <span class="text-danger">●</span></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" id="certNumber"
+                                                        value="180913102320715007001u3YZnHC5HY4imcOrZgO" readonly />
+                                                    <label for="certNumber">เลขที่ใบรับรอง</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- เวลาดำเนินการ -->
+                                    <div class="p-4 border-top">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-time-line fs-5"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">เวลาดำเนินการ</h6>
+                                        </div>
+                                        <div class="row g-3">
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" id="processingTime"
+                                                        value="0 วัน 0 ชั่วโมง 0 นาที" readonly />
+                                                    <label for="processingTime">เวลาที่ใช้ในการทำงาน</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /accordion ส่วนหัว -->
+
+                    <!-- ===== Accordion: ภาพกระบวนการ ===== -->
+                    <div class="accordion accordion-custom-button mb-4" id="accordionProcess">
+                        <div class="accordion-item active">
+                            <h2 class="accordion-header" id="headingProcess">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseProcessContent" aria-expanded="true"
+                                    aria-controls="collapseProcessContent">
+                                    <i class="icon-base ri ri-git-branch-line me-2"></i>
+                                    ภาพกระบวนการ
+                                </button>
+                            </h2>
+                            <div id="collapseProcessContent" class="accordion-collapse collapse show"
+                                aria-labelledby="headingProcess">
+                                <div class="accordion-body p-0">
+                                    <div class="table-responsive p-1">
+                                        <table class="table table-bordered align-middle mb-0 small">
+                                            <thead class="text-center">
+                                                <tr>
+                                                    <th style="width:2rem;"></th>
+                                                    <th style="min-width:160px;">วัน-เวลาที่ส่ง</th>
+                                                    <th style="min-width:180px;">ผู้ส่ง</th>
+                                                    <th style="min-width:180px;">ผู้รับ</th>
+                                                    <th style="min-width:160px;">รายละเอียดการดำเนินงานในแต่ละขั้นตอน</th>
+                                                    <th style="min-width:80px;">สถิติ</th>
+                                                    <th style="min-width:180px;">ข้อคิดเห็น/คำสั่งการ</th>
+                                                    <th style="width:2.5rem;"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-center">
+                                                        <i class="ri ri-mail-line text-muted fs-5"></i>
+                                                    </td>
+                                                    <td>
+                                                        13 กันยายน 2561<br />
+                                                        <span class="text-muted">10:22 น.</span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="fw-semibold">นางสาวพนิดา ฯ</div>
+                                                        <div class="text-muted small">ภักดีดี(panida@alpha-oa.com)</div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="fw-semibold">นางสาวพนิดา ฯ</div>
+                                                        <div class="text-muted small">ภักดีดี(panida@alpha-oa.com)</div>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge bg-label-primary">จัดทำใบรับรอง</span>
+                                                    </td>
+                                                    <td class="text-center text-muted">—</td>
+                                                    <td class="text-muted">—</td>
+                                                    <td class="text-center">
+                                                        <i class="ri ri-attachment-2 text-muted"></i>
+                                                    </td>
+                                                </tr>
+                                                <tr class="">
+                                                    <td class="text-center">
+                                                        <i class="ri ri-mail-line text-muted fs-5"></i>
+                                                    </td>
+                                                    <td>
+                                                        13 กันยายน 2561<br />
+                                                        <span class="text-muted">10:23 น.</span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="fw-semibold">นางสาวพนิดา ฯ</div>
+                                                        <div class="text-muted small">ภักดีดี(panida@alpha-oa.com)</div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="fw-semibold">นางสาวพนิดา ฯ</div>
+                                                        <div class="text-muted small">ภักดีดี(panida@alpha-oa.com)</div>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge bg-label-warning">พิจารณา</span>
+                                                    </td>
+                                                    <td class="text-center text-muted">—</td>
+                                                    <td class="text-muted">—</td>
+                                                    <td class="text-center">
+                                                        <i class="ri ri-attachment-2 text-muted"></i>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-center">
+                                                        <i class="ri ri-mail-line text-muted fs-5"></i>
+                                                    </td>
+                                                    <td>
+                                                        13 กันยายน 2561<br />
+                                                        <span class="text-muted">10:23 น.</span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="fw-semibold">นางสาวพนิดา ฯ</div>
+                                                        <div class="text-muted small">ภักดีดี(panida@alpha-oa.com)</div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex align-items-center gap-2">
+                                                            <div>
+                                                                <div class="fw-semibold">นางสาวพนิดา ฯ</div>
+                                                                <div class="text-muted small">ภักดีดี(panida@alpha-oa.com)</div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge bg-label-success">ลงนาม</span>
+                                                    </td>
+                                                    <td class="text-center text-muted">—</td>
+                                                    <td class="text-muted">—</td>
+                                                    <td class="text-center">
+                                                        <i class="ri ri-attachment-2 text-muted"></i>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /accordion ภาพกระบวนการ -->
+                </div>
+                <!-- /TAB 1 -->
+
+            </div><!-- /tab-content -->
+        </div><!-- /nav-align-top -->
+
+        <!-- Action Buttons -->
+        <div class="d-flex justify-content-end gap-2 mt-3">
+            <a href="@Url.Action("IndexTrackRequestStatus", "PSDeclaration")" class="btn btn-outline-secondary">
+                <i class="ri ri-arrow-left-line me-1"></i> ยกเลิก
+            </a>
+        </div>
+
+        </form>
+
+    </div><!-- /col -->
+</div><!-- /row -->
+
+
+@section PageScripts {
+<script>
+    $(document).ready(function() {
+        // ── Select2 ──
+        $('.select2').select2({ width: '100%' });
+
+        // ── Flatpickr ──
+        function initFlatpickr(el) {
+            if (el && !el._flatpickr) {
+                flatpickr(el, {
+                    dateFormat: 'd/m/Y',
+                    allowInput: true,
+                    appendTo: document.body,
+                    onReady: function(selectedDates, dateStr, instance) {
+                        instance.calendarContainer.style.zIndex = '9999';
+                    }
+                });
+            }
+        }
+        document.querySelectorAll('.flatpickr-date').forEach(function(el) { initFlatpickr(el); });
+    });
+</script>
+}

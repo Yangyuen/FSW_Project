@@ -1,0 +1,752 @@
+@{
+    ViewData["Title"] = "ติดตามสถานะคำขอใบรับรอง";
+
+    var requests = new[]
+    {
+        new
+        {
+            RequestNumber = "10611080320000049",
+            ReceiveNo = 49,
+            CertificateKey = "processing",
+            CertificateName = "ใบรับรองการแปรรูปสัตว์น้ำ (Processing Statement)",
+            HealthCertificateNumber = "AC821B2171101",
+            HsCode = "6104.14",
+            Country = "อาร์เจนตินา",
+            CountryCode = "ARGENTINA",
+            FisheryProducts = "SLICE TUNA",
+            Establishment = "บริษัท อินโนเวชั่นส์ โซลูชั่น แอนด์ เซอร์วิส จำกัด",
+            EstablishmentBranch = "สาขา 00001",
+            DraftedAt = new DateTime(2026, 4, 20, 9, 32, 10),
+            StatusText = "ร่างคำขอ",
+            StatusClass = "bg-label-secondary",
+            SignatureStatusText = "ยังไม่ลง",
+            SignatureStatusClass = "bg-label-warning",
+            DetailUrl = Url.Action("CreateTrackRequestStatus", "PSDeclaration"),
+            AllowClone = true,
+            AllowEdit = true,
+            AllowCancel = false,
+            AllowSubmit = true,
+            AllowDelete = true,
+            WrittenByText = "เจ้าหน้าที่",
+            WrittenByClass = "bg-label-primary",
+            WrittenByIcon = "ri-user-star-line",
+            AutoProcessText = "ไม่มีคุณสมบัติอัตโนมัติ",
+            AutoProcessClass = "bg-label-danger",
+            AutoProcessIcon = "ri-close-circle-line",
+            PaymentText = "กำหนดไม่ให้มีการชำระเงิน",
+            PaymentClass = "bg-label-secondary",
+            PaymentIcon = "ri-money-dollar-circle-line"
+        },
+        new
+        {
+            RequestNumber = "10611080319000003",
+            ReceiveNo = 150,
+            CertificateKey = "declaration",
+            CertificateName = "ใบรับรองสัตว์น้ำไม่แปรรูป (Declaration)",
+            HealthCertificateNumber = "HC821B211414",
+            HsCode = "0303.42",
+            Country = "ญี่ปุ่น",
+            CountryCode = "JAPAN",
+            FisheryProducts = "FROZEN TUNA LOIN",
+            Establishment = "บริษัท อินโนเวชั่นส์ โซลูชั่น แอนด์ เซอร์วิส จำกัด",
+            EstablishmentBranch = "สาขา 00001",
+            DraftedAt = new DateTime(2026, 4, 19, 10, 5, 0),
+            StatusText = "ส่งคำขอแล้ว",
+            StatusClass = "bg-label-success",
+            SignatureStatusText = "ลงลายมือชื่อแล้ว",
+            SignatureStatusClass = "bg-label-success",
+            DetailUrl = Url.Action("CreateTrackRequestStatus", "PSDeclaration"),
+            AllowClone = true,
+            AllowEdit = false,
+            AllowCancel = true,
+            AllowSubmit = false,
+            AllowDelete = false,
+            WrittenByText = "ผู้เข้าใช้ระบบ",
+            WrittenByClass = "bg-label-danger",
+            WrittenByIcon = "ri-user-3-line",
+            AutoProcessText = "อัตโนมัติหลังลงทะเบียนรับเรื่อง",
+            AutoProcessClass = "bg-label-warning",
+            AutoProcessIcon = "ri-settings-2-line",
+            PaymentText = "กำหนดให้มีการชำระเงิน",
+            PaymentClass = "bg-label-success",
+            PaymentIcon = "ri-money-dollar-circle-line"
+        },
+        new
+        {
+            RequestNumber = "10611080320000004",
+            ReceiveNo = 75,
+            CertificateKey = "processing",
+            CertificateName = "ใบรับรองการแปรรูปสัตว์น้ำ (Processing Statement)",
+            HealthCertificateNumber = "AC821B2171102",
+            HsCode = "1604.14",
+            Country = "สเปน",
+            CountryCode = "SPAIN",
+            FisheryProducts = "CANNED TUNA IN OIL",
+            Establishment = "บริษัท อินโนเวชั่นส์ โซลูชั่น แอนด์ เซอร์วิส จำกัด",
+            EstablishmentBranch = "สาขา 00001",
+            DraftedAt = new DateTime(2026, 4, 20, 11, 45, 30),
+            StatusText = "ร่างคำขอ",
+            StatusClass = "bg-label-secondary",
+            SignatureStatusText = "ยังไม่ลง",
+            SignatureStatusClass = "bg-label-warning",
+            DetailUrl = Url.Action("CreateTrackRequestStatus", "PSDeclaration"),
+            AllowClone = true,
+            AllowEdit = true,
+            AllowCancel = false,
+            AllowSubmit = true,
+            AllowDelete = true,
+            WrittenByText = "เจ้าหน้าที่",
+            WrittenByClass = "bg-label-primary",
+            WrittenByIcon = "ri-user-star-line",
+            AutoProcessText = "ไม่มีคุณสมบัติอัตโนมัติ",
+            AutoProcessClass = "bg-label-danger",
+            AutoProcessIcon = "ri-close-circle-line",
+            PaymentText = "กำหนดไม่ให้มีการชำระเงิน",
+            PaymentClass = "bg-label-secondary",
+            PaymentIcon = "ri-money-dollar-circle-line"
+        },
+        new
+        {
+            RequestNumber = "10611080321000005",
+            ReceiveNo = 200,
+            CertificateKey = "declaration",
+            CertificateName = "ใบรับรองสัตว์น้ำไม่แปรรูป (Declaration)",
+            HealthCertificateNumber = "HC821B211415",
+            HsCode = "0304.87",
+            Country = "สหรัฐอเมริกา",
+            CountryCode = "USA",
+            FisheryProducts = "YELLOWFIN TUNA STEAK",
+            Establishment = "บริษัท อินโนเวชั่นส์ โซลูชั่น แอนด์ เซอร์วิส จำกัด",
+            EstablishmentBranch = "สาขา 00001",
+            DraftedAt = new DateTime(2026, 4, 21, 8, 20, 12),
+            StatusText = "ส่งคำขอแล้ว",
+            StatusClass = "bg-label-success",
+            SignatureStatusText = "ลงลายมือชื่อแล้ว",
+            SignatureStatusClass = "bg-label-success",
+            DetailUrl = Url.Action("CreateTrackRequestStatus", "PSDeclaration"),
+            AllowClone = true,
+            AllowEdit = false,
+            AllowCancel = true,
+            AllowSubmit = false,
+            AllowDelete = false,
+            WrittenByText = "ผู้เข้าใช้ระบบ",
+            WrittenByClass = "bg-label-danger",
+            WrittenByIcon = "ri-user-3-line",
+            AutoProcessText = "อัตโนมัติทั้งกระบวนการ",
+            AutoProcessClass = "bg-label-success",
+            AutoProcessIcon = "ri-robot-line",
+            PaymentText = "กำหนดให้มีการชำระเงิน",
+            PaymentClass = "bg-label-success",
+            PaymentIcon = "ri-money-dollar-circle-line"
+        },
+        new
+        {
+            RequestNumber = "10611080321000006",
+            ReceiveNo = 88,
+            CertificateKey = "processing",
+            CertificateName = "ใบรับรองการแปรรูปสัตว์น้ำ (Processing Statement)",
+            HealthCertificateNumber = "AC821B2171103",
+            HsCode = "1604.20",
+            Country = "อิตาลี",
+            CountryCode = "ITALY",
+            FisheryProducts = "TUNA SALAD MIX",
+            Establishment = "บริษัท อินโนเวชั่นส์ โซลูชั่น แอนด์ เซอร์วิส จำกัด",
+            EstablishmentBranch = "สาขา 00001",
+            DraftedAt = new DateTime(2026, 4, 21, 13, 9, 47),
+            StatusText = "ร่างคำขอ",
+            StatusClass = "bg-label-secondary",
+            SignatureStatusText = "ยังไม่ลง",
+            SignatureStatusClass = "bg-label-warning",
+            DetailUrl = Url.Action("CreateTrackRequestStatus", "PSDeclaration"),
+            AllowClone = true,
+            AllowEdit = true,
+            AllowCancel = false,
+            AllowSubmit = true,
+            AllowDelete = true,
+            WrittenByText = "เจ้าหน้าที่",
+            WrittenByClass = "bg-label-primary",
+            WrittenByIcon = "ri-user-star-line",
+            AutoProcessText = "ไม่มีคุณสมบัติอัตโนมัติ",
+            AutoProcessClass = "bg-label-danger",
+            AutoProcessIcon = "ri-close-circle-line",
+            PaymentText = "กำหนดไม่ให้มีการชำระเงิน",
+            PaymentClass = "bg-label-secondary",
+            PaymentIcon = "ri-money-dollar-circle-line"
+        },
+        new
+        {
+            RequestNumber = "10611080322000007",
+            ReceiveNo = 225,
+            CertificateKey = "declaration",
+            CertificateName = "ใบรับรองสัตว์น้ำไม่แปรรูป (Declaration)",
+            HealthCertificateNumber = "HC821B211416",
+            HsCode = "0303.89",
+            Country = "เกาหลีใต้",
+            CountryCode = "SOUTH KOREA",
+            FisheryProducts = "FROZEN SKIPJACK",
+            Establishment = "บริษัท อินโนเวชั่นส์ โซลูชั่น แอนด์ เซอร์วิส จำกัด",
+            EstablishmentBranch = "สาขา 00001",
+            DraftedAt = new DateTime(2026, 4, 22, 9, 55, 18),
+            StatusText = "ส่งคำขอแล้ว",
+            StatusClass = "bg-label-success",
+            SignatureStatusText = "ลงลายมือชื่อแล้ว",
+            SignatureStatusClass = "bg-label-success",
+            DetailUrl = Url.Action("CreateTrackRequestStatus", "PSDeclaration"),
+            AllowClone = true,
+            AllowEdit = false,
+            AllowCancel = true,
+            AllowSubmit = false,
+            AllowDelete = false,
+            WrittenByText = "เจ้าหน้าที่",
+            WrittenByClass = "bg-label-primary",
+            WrittenByIcon = "ri-user-star-line",
+            AutoProcessText = "อัตโนมัติหลังลงทะเบียนรับเรื่อง",
+            AutoProcessClass = "bg-label-warning",
+            AutoProcessIcon = "ri-settings-2-line",
+            PaymentText = "กำหนดให้มีการชำระเงิน",
+            PaymentClass = "bg-label-success",
+            PaymentIcon = "ri-money-dollar-circle-line"
+        },
+        new
+        {
+            RequestNumber = "10611080322000008",
+            ReceiveNo = 101,
+            CertificateKey = "processing",
+            CertificateName = "ใบรับรองการแปรรูปสัตว์น้ำ (Processing Statement)",
+            HealthCertificateNumber = "AC821B2171104",
+            HsCode = "1604.19",
+            Country = "เยอรมนี",
+            CountryCode = "GERMANY",
+            FisheryProducts = "SMOKED TUNA FLAKES",
+            Establishment = "บริษัท อินโนเวชั่นส์ โซลูชั่น แอนด์ เซอร์วิส จำกัด",
+            EstablishmentBranch = "สาขา 00001",
+            DraftedAt = new DateTime(2026, 4, 22, 14, 30, 5),
+            StatusText = "ร่างคำขอ",
+            StatusClass = "bg-label-secondary",
+            SignatureStatusText = "ยังไม่ลง",
+            SignatureStatusClass = "bg-label-warning",
+            DetailUrl = Url.Action("CreateTrackRequestStatus", "PSDeclaration"),
+            AllowClone = true,
+            AllowEdit = true,
+            AllowCancel = false,
+            AllowSubmit = true,
+            AllowDelete = true,
+            WrittenByText = "ผู้เข้าใช้ระบบ",
+            WrittenByClass = "bg-label-danger",
+            WrittenByIcon = "ri-user-3-line",
+            AutoProcessText = "ไม่มีคุณสมบัติอัตโนมัติ",
+            AutoProcessClass = "bg-label-danger",
+            AutoProcessIcon = "ri-close-circle-line",
+            PaymentText = "กำหนดไม่ให้มีการชำระเงิน",
+            PaymentClass = "bg-label-secondary",
+            PaymentIcon = "ri-money-dollar-circle-line"
+        },
+        new
+        {
+            RequestNumber = "10611080323000009",
+            ReceiveNo = 175,
+            CertificateKey = "declaration",
+            CertificateName = "ใบรับรองสัตว์น้ำไม่แปรรูป (Declaration)",
+            HealthCertificateNumber = "HC821B211417",
+            HsCode = "0304.99",
+            Country = "แคนาดา",
+            CountryCode = "CANADA",
+            FisheryProducts = "TUNA FILLET",
+            Establishment = "บริษัท อินโนเวชั่นส์ โซลูชั่น แอนด์ เซอร์วิส จำกัด",
+            EstablishmentBranch = "สาขา 00001",
+            DraftedAt = new DateTime(2026, 4, 23, 7, 42, 33),
+            StatusText = "ส่งคำขอแล้ว",
+            StatusClass = "bg-label-success",
+            SignatureStatusText = "ลงลายมือชื่อแล้ว",
+            SignatureStatusClass = "bg-label-success",
+            DetailUrl = Url.Action("CreateTrackRequestStatus", "PSDeclaration"),
+            AllowClone = true,
+            AllowEdit = false,
+            AllowCancel = true,
+            AllowSubmit = false,
+            AllowDelete = false,
+            WrittenByText = "ผู้เข้าใช้ระบบ",
+            WrittenByClass = "bg-label-danger",
+            WrittenByIcon = "ri-user-3-line",
+            AutoProcessText = "อัตโนมัติทั้งกระบวนการ",
+            AutoProcessClass = "bg-label-success",
+            AutoProcessIcon = "ri-robot-line",
+            PaymentText = "กำหนดให้มีการชำระเงิน",
+            PaymentClass = "bg-label-success",
+            PaymentIcon = "ri-money-dollar-circle-line"
+        },
+        new
+        {
+            RequestNumber = "10611080323000010",
+            ReceiveNo = 60,
+            CertificateKey = "processing",
+            CertificateName = "ใบรับรองการแปรรูปสัตว์น้ำ (Processing Statement)",
+            HealthCertificateNumber = "AC821B2171105",
+            HsCode = "1604.20",
+            Country = "เนเธอร์แลนด์",
+            CountryCode = "NETHERLANDS",
+            FisheryProducts = "TUNA CHUNK IN BRINE",
+            Establishment = "บริษัท อินโนเวชั่นส์ โซลูชั่น แอนด์ เซอร์วิส จำกัด",
+            EstablishmentBranch = "สาขา 00001",
+            DraftedAt = new DateTime(2026, 4, 23, 15, 11, 26),
+            StatusText = "ร่างคำขอ",
+            StatusClass = "bg-label-secondary",
+            SignatureStatusText = "ยังไม่ลง",
+            SignatureStatusClass = "bg-label-warning",
+            DetailUrl = Url.Action("CreateTrackRequestStatus", "PSDeclaration"),
+            AllowClone = true,
+            AllowEdit = true,
+            AllowCancel = false,
+            AllowSubmit = true,
+            AllowDelete = true,
+            WrittenByText = "เจ้าหน้าที่",
+            WrittenByClass = "bg-label-primary",
+            WrittenByIcon = "ri-user-star-line",
+            AutoProcessText = "ไม่มีคุณสมบัติอัตโนมัติ",
+            AutoProcessClass = "bg-label-danger",
+            AutoProcessIcon = "ri-close-circle-line",
+            PaymentText = "กำหนดไม่ให้มีการชำระเงิน",
+            PaymentClass = "bg-label-secondary",
+            PaymentIcon = "ri-money-dollar-circle-line"
+        },
+        new
+        {
+            RequestNumber = "10611080324000011",
+            ReceiveNo = 300,
+            CertificateKey = "declaration",
+            CertificateName = "ใบรับรองสัตว์น้ำไม่แปรรูป (Declaration)",
+            HealthCertificateNumber = "HC821B211418",
+            HsCode = "0303.43",
+            Country = "ออสเตรเลีย",
+            CountryCode = "AUSTRALIA",
+            FisheryProducts = "WHOLE ROUND TUNA",
+            Establishment = "บริษัท อินโนเวชั่นส์ โซลูชั่น แอนด์ เซอร์วิส จำกัด",
+            EstablishmentBranch = "สาขา 00001",
+            DraftedAt = new DateTime(2026, 4, 24, 10, 0, 0),
+            StatusText = "ส่งคำขอแล้ว",
+            StatusClass = "bg-label-success",
+            SignatureStatusText = "ลงลายมือชื่อแล้ว",
+            SignatureStatusClass = "bg-label-success",
+            DetailUrl = Url.Action("CreateTrackRequestStatus", "PSDeclaration"),
+            AllowClone = true,
+            AllowEdit = false,
+            AllowCancel = true,
+            AllowSubmit = false,
+            AllowDelete = false,
+            WrittenByText = "ผู้เข้าใช้ระบบ",
+            WrittenByClass = "bg-label-danger",
+            WrittenByIcon = "ri-user-3-line",
+            AutoProcessText = "อัตโนมัติหลังลงทะเบียนรับเรื่อง",
+            AutoProcessClass = "bg-label-warning",
+            AutoProcessIcon = "ri-settings-2-line",
+            PaymentText = "กำหนดให้มีการชำระเงิน",
+            PaymentClass = "bg-label-success",
+            PaymentIcon = "ri-money-dollar-circle-line"
+        }
+    };
+
+    var submittedCount = requests.Count(r => r.StatusText == "ส่งคำขอแล้ว");
+
+    var totalRequestCount = requests.Length;
+    var declarationCount = requests.Count(r => r.CertificateKey == "declaration");
+    var processingCount = requests.Count(r => r.CertificateKey == "processing");
+}
+
+@section VendorStyles {
+<link rel="stylesheet" href="~/vendor/libs/flatpickr/flatpickr.css" />
+}
+
+@section PageStyles {
+<style>
+    .request-table-compact {
+        font-size: 0.78rem;
+    }
+
+    .request-table-compact th,
+    .request-table-compact td {
+        padding: 0.45rem 0.5rem;
+        vertical-align: middle;
+        line-height: 1.3;
+    }
+
+    .request-table-compact th,
+    .request-table-compact td {
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    .request-table-compact thead th {
+        white-space: normal;
+        word-break: keep-all;
+        overflow-wrap: normal;
+    }
+
+    .request-table-compact .badge {
+        font-size: 0.68rem;
+    }
+
+    .request-table-compact .btn.btn-sm {
+        --bs-btn-padding-y: 0.14rem;
+        --bs-btn-padding-x: 0.3rem;
+    }
+
+    .request-table-compact .btn-icon {
+        width: 1.65rem;
+        height: 1.65rem;
+    }
+
+    .request-table-compact .signature-indicator {
+        font-size: 0.68rem;
+    }
+
+    .request-table-compact .signature-indicator .badge {
+        width: 1.2rem;
+        height: 1.2rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+    }
+
+    .request-table-compact .signature-indicator i {
+        font-size: 0.72rem;
+    }
+
+    .filter-action-buttons .btn-square {
+        width: 48px;
+        height: 48px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+}
+
+@section VendorScripts {
+<script src="~/vendor/libs/flatpickr/flatpickr.js"></script>
+}
+
+@section PageScripts {
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var fromInput = document.getElementById('filterDraftDateFrom');
+        var toInput = document.getElementById('filterDraftDateTo');
+
+        if (fromInput) {
+            flatpickr(fromInput, {
+                dateFormat: 'd/m/Y',
+                allowInput: true
+            });
+        }
+
+        if (toInput) {
+            flatpickr(toInput, {
+                dateFormat: 'd/m/Y',
+                allowInput: true
+            });
+        }
+
+        if (window.bootstrap && bootstrap.Tooltip) {
+            document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (element) {
+                new bootstrap.Tooltip(element);
+            });
+        }
+
+        function parseDateInput(value, endOfDay) {
+            if (!value) {
+                return null;
+            }
+
+            var parts = value.split('/');
+            if (parts.length !== 3) {
+                return null;
+            }
+
+            var day = parseInt(parts[0], 10);
+            var month = parseInt(parts[1], 10) - 1;
+            var year = parseInt(parts[2], 10);
+            var hours = endOfDay ? 23 : 0;
+            var minutes = endOfDay ? 59 : 0;
+            var seconds = endOfDay ? 59 : 0;
+            var parsed = new Date(year, month, day, hours, minutes, seconds);
+
+            return Number.isNaN(parsed.getTime()) ? null : parsed;
+        }
+
+        function filterRows() {
+            var certificate = (document.getElementById('filterCertificate').value || '').trim();
+            var status = (document.getElementById('filterStatus').value || '').trim();
+            var fromDate = parseDateInput(document.getElementById('filterDraftDateFrom').value, false);
+            var toDate = parseDateInput(document.getElementById('filterDraftDateTo').value, true);
+            var excludeRange = document.getElementById('filterDateExclude').checked;
+            var rows = document.querySelectorAll('#requestTableBody tr[data-certificate]');
+            var visibleCount = 0;
+
+            rows.forEach(function (row) {
+                var rowCertificate = row.dataset.certificate || '';
+                var rowStatus = row.dataset.status || '';
+                var rowDraftDate = new Date(row.dataset.draftDate || '');
+                var certificateMatch = !certificate || rowCertificate === certificate;
+                var statusMatch = !status || rowStatus === status;
+                var dateMatch;
+                if (!fromDate && !toDate) {
+                    dateMatch = true;
+                } else if (excludeRange) {
+                    var inRange = (!fromDate || rowDraftDate >= fromDate) && (!toDate || rowDraftDate <= toDate);
+                    dateMatch = !inRange;
+                } else {
+                    dateMatch = (!fromDate || rowDraftDate >= fromDate) && (!toDate || rowDraftDate <= toDate);
+                }
+                var isVisible = certificateMatch && statusMatch && dateMatch;
+
+                row.classList.toggle('d-none', !isVisible);
+                if (isVisible) {
+                    visibleCount += 1;
+                }
+            });
+
+            document.getElementById('requestTableEmpty').classList.toggle('d-none', visibleCount !== 0);
+        }
+
+        document.getElementById('btnSearchRequests').addEventListener('click', filterRows);
+        document.getElementById('filterCertificate').addEventListener('change', filterRows);
+        document.getElementById('filterStatus').addEventListener('change', filterRows);
+        document.getElementById('filterDraftDateFrom').addEventListener('change', filterRows);
+        document.getElementById('filterDraftDateTo').addEventListener('change', filterRows);
+        document.getElementById('filterDateExclude').addEventListener('change', filterRows);
+        document.querySelectorAll('#filterCertificate, #filterStatus, #filterDraftDateFrom, #filterDraftDateTo').forEach(function (element) {
+            element.addEventListener('keydown', function (event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    filterRows();
+                }
+            });
+        });
+        document.getElementById('btnResetRequests').addEventListener('click', function () {
+            document.getElementById('filterCertificate').value = '';
+            document.getElementById('filterStatus').value = '';
+            document.getElementById('filterDraftDateFrom').value = '';
+            document.getElementById('filterDraftDateTo').value = '';
+            document.getElementById('filterDateExclude').checked = false;
+            filterRows();
+        });
+    });
+</script>
+}
+
+@* ************** Content ************** *@
+<h4 class="mb-1">ติดตามสถานะคำขอใบรับรอง</h4>
+<p class="mb-1">ติดตามสถานะการตรวจสอบและอนุมัติของคำขอใบรับรองสัตว์น้ำไม่แปรรูป และใบรับรองการแปรรูปสัตว์น้ำ รวมถึงสถานะลายมือชื่ออิเล็กทรอนิกส์</p>
+
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="mb-6">
+    <ol class="breadcrumb breadcrumb-style1" style="--bs-breadcrumb-divider: '>'; font-size: 0.75rem;">
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("Index", "PSDeclaration")" class="text-primary fw-semibold">ติดตามสถานะคำขอใบรับรอง</a>
+        </li>
+    </ol>
+</nav>
+
+<div class="card mb-4">
+    <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-3">
+        <div>
+            <h5 class="card-title mb-1">ตัวกรองการค้นหา</h5>
+            <p class="text-muted small mb-0">ค้นหารายการคำขอตามประเภทใบรับรองและช่วงวันที่ร่างคำขอ</p>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row g-3 align-items-end">
+            <div class="col-md-4 col-lg-3">
+                <label for="filterCertificate" class="form-label">ใบรับรอง</label>
+                <select id="filterCertificate" class="form-select">
+                    <option value="">ทั้งหมด</option>
+                    <option value="declaration">ใบรับรองสัตว์น้ำไม่แปรรูป (Declaration)</option>
+                    <option value="processing">ใบรับรองการแปรรูปสัตว์น้ำ (Processing Statement)</option>
+                </select>
+            </div>
+            <div class="col-md-4 col-lg-3">
+                <label for="filterStatus" class="form-label">สถานะ</label>
+                <select id="filterStatus" class="form-select">
+                    <option value="">ทั้งหมด</option>
+                    <option value="ส่งคำขอแล้ว">ส่งคำขอแล้ว</option>
+                    <option value="ร่างคำขอ">ร่างคำขอ</option>
+                </select>
+            </div>
+            <div class="col-md-12 col-lg-6">
+                <div class="row g-2 align-items-end">
+                    <div class="col-md-4">
+                        <label for="filterDraftDateFrom" class="form-label">วันที่ยื่นคำขอ</label>
+                        <input type="text" id="filterDraftDateFrom" class="form-control" placeholder="วว/ดด/ปปปป" />
+                    </div>
+                    <div class="col-md-4">
+                        <label for="filterDraftDateTo" class="form-label">ถึงวันที่</label>
+                        <input type="text" id="filterDraftDateTo" class="form-control" placeholder="วว/ดด/ปปปป" />
+                    </div>
+                    <div class="col-auto">
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="filterDateExclude" />
+                            <label class="form-check-label small" for="filterDateExclude">ไม่อยู่ในช่วง</label>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="d-flex gap-2 filter-action-buttons">
+                            <button type="button" id="btnSearchRequests" class="btn btn-outline-primary btn-square" title="ค้นหา">
+                                <i class="ri ri-search-line"></i>
+                            </button>
+                            <button type="button" id="btnResetRequests" class="btn btn-outline-secondary btn-square">
+                                <i class="ri ri-refresh-line"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div>
+            <h5 class="card-title mb-1">รายการติดตามสถานะคำขอใบรับรอง</h5>
+            <p class="text-muted small mb-0">แสดงสถานะการตรวจสอบ อนุมัติ และลายมือชื่ออิเล็กทรอนิกส์ของคำขอทั้งหมด</p>
+        </div>
+    </div>
+    <div class="table-responsive p-1">
+        <table class="table table-bordered align-middle mb-0 request-table-compact">
+            <thead class="text-center">
+                <tr>
+                    <th style="min-width:250px;">เลขที่คำขอ</th>
+                    <th style="width:70px;">เลขที่<br/>รับ</th>
+                    <th style="min-width:155px;">Health Certificate<br/>Number</th>
+                    <th style="width:90px;">HS Code</th>
+                    <th style="min-width:210px;">ใบรับรอง</th>
+                    <th style="min-width:200px;">ผู้ผลิตสินค้า</th>
+                    <th style="min-width:120px;">ประเทศปลายทาง</th>
+                    <th style="min-width:130px;">วันที่ยื่นคำขอ</th>
+                    <th style="width:100px;"></th>
+                </tr>
+            </thead>
+            <tbody id="requestTableBody">
+                @foreach (var request in requests)
+                {
+                    <tr data-certificate="@request.CertificateKey" data-status="@request.StatusText" data-draft-date="@request.DraftedAt.ToString("yyyy-MM-ddTHH:mm:ss")">
+                        <td>
+                            <a href="@request.DetailUrl" class="fw-semibold text-primary text-decoration-none">@request.RequestNumber</a>
+                            <div class="mt-1 d-flex flex-column gap-1">
+                                <div class="d-flex align-items-center gap-1 small text-muted">
+                                    <span class="badge rounded-circle @request.StatusClass d-inline-flex align-items-center justify-content-center flex-shrink-0" style="width:1.2rem;height:1.2rem;padding:0;">
+                                        @if (request.StatusText == "ส่งคำขอแล้ว")
+                                        {
+                                            <i class="ri ri-send-plane-fill" style="font-size:0.6rem;"></i>
+                                        }
+                                        else if (request.StatusText == "ร่างคำขอ")
+                                        {
+                                            <i class="ri ri-draft-line" style="font-size:0.6rem;"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="ri ri-checkbox-blank-circle-fill" style="font-size:0.6rem;"></i>
+                                        }
+                                    </span>
+                                    <span><span class="fw-semibold">สถานะ:</span> @request.StatusText</span>
+                                </div>
+                                <div class="d-flex align-items-center gap-1 small text-muted">
+                                    @if (request.SignatureStatusText == "ลงลายมือชื่อแล้ว")
+                                    {
+                                        <span class="badge rounded-circle bg-label-success d-inline-flex align-items-center justify-content-center flex-shrink-0" style="width:1.2rem;height:1.2rem;padding:0;">
+                                            <i class="ri ri-check-line" style="font-size:0.6rem;"></i>
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge rounded-circle bg-label-warning d-inline-flex align-items-center justify-content-center flex-shrink-0" style="width:1.2rem;height:1.2rem;padding:0;">
+                                            <i class="ri ri-time-line" style="font-size:0.6rem;"></i>
+                                        </span>
+                                    }
+                                    <span><span class="fw-semibold">ลายมือชื่อ:</span> @request.SignatureStatusText</span>
+                                </div>
+                                <div class="d-flex align-items-center gap-1 small text-muted">
+                                    <span class="badge rounded-circle @request.WrittenByClass d-inline-flex align-items-center justify-content-center flex-shrink-0" style="width:1.2rem;height:1.2rem;padding:0;">
+                                        <i class="ri @request.WrittenByIcon" style="font-size:0.6rem;"></i>
+                                    </span>
+                                    <span><span class="fw-semibold">เขียนคำขอโดย:</span> @request.WrittenByText</span>
+                                </div>
+                                <div class="d-flex align-items-center gap-1 small text-muted">
+                                    <span class="badge rounded-circle @request.AutoProcessClass d-inline-flex align-items-center justify-content-center flex-shrink-0" style="width:1.2rem;height:1.2rem;padding:0;">
+                                        <i class="ri @request.AutoProcessIcon" style="font-size:0.6rem;"></i>
+                                    </span>
+                                    <span><span class="fw-semibold">จัดทำอัตโนมัติ:</span> @request.AutoProcessText</span>
+                                </div>
+                                <div class="d-flex align-items-center gap-1 small text-muted">
+                                    <span class="badge rounded-circle @request.PaymentClass d-inline-flex align-items-center justify-content-center flex-shrink-0" style="width:1.2rem;height:1.2rem;padding:0;">
+                                        <i class="ri @request.PaymentIcon" style="font-size:0.6rem;"></i>
+                                    </span>
+                                    <span><span class="fw-semibold">ชำระเงิน:</span> @request.PaymentText</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="text-center text-muted">@request.ReceiveNo</td>
+                        <td>@request.HealthCertificateNumber</td>
+                        <td class="text-center">@request.HsCode</td>
+                        <td>
+                            <div>@request.CertificateName</div>
+                        </td>
+                        <td>
+                            <div>@request.Establishment</div>
+                            <div class="small text-muted">(@request.EstablishmentBranch)</div>
+                        </td>
+                        <td>
+                            <div>@request.Country</div>
+                            <div class="small text-muted">(@request.CountryCode)</div>
+                        </td>
+                        <td>
+                            @request.DraftedAt.ToString("dd/MM/yyyy")<br/>
+                            <span class="small text-muted">(@request.DraftedAt.ToString("HH:mm:ss"))</span>
+                        </td>
+                        <td>
+                            <div class="d-flex flex-wrap gap-1 justify-content-center">
+                                <a href="@request.DetailUrl" class="btn btn-sm btn-icon btn-outline-info" title="รายละเอียดข้อมูล" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="รายละเอียดข้อมูล">
+                                    <i class="ri ri-eye-line text-info"></i>
+                                </a>
+                                @if (request.AllowClone)
+                                {
+                                    <a href="@request.DetailUrl" class="btn btn-sm btn-icon btn-outline-secondary" title="บันทึกเป็นคำขอใหม่" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="บันทึกเป็นคำขอใหม่">
+                                        <i class="ri ri-file-copy-line text-secondary"></i>
+                                    </a>
+                                }
+                                @if (request.AllowEdit)
+                                {
+                                    <a href="@request.DetailUrl" class="btn btn-sm btn-icon btn-outline-warning" title="แก้ไขคำขอ" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="แก้ไขคำขอ">
+                                        <i class="ri ri-pencil-line text-warning"></i>
+                                    </a>
+                                }
+                                @if (request.AllowCancel)
+                                {
+                                    <button type="button" class="btn btn-sm btn-icon btn-outline-dark" title="ยกเลิกคำขอ" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="ยกเลิกคำขอ">
+                                        <i class="ri ri-close-circle-line text-dark"></i>
+                                    </button>
+                                }
+                                @if (request.AllowSubmit)
+                                {
+                                    <button type="button" class="btn btn-sm btn-icon btn-outline-success" title="ส่งคำขอ" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="ส่งคำขอ">
+                                        <i class="ri ri-send-plane-line text-success"></i>
+                                    </button>
+                                }
+                                @if (request.AllowDelete)
+                                {
+                                    <button type="button" class="btn btn-sm btn-icon btn-outline-danger" title="ลบคำขอ" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="ลบคำขอ">
+                                        <i class="ri ri-delete-bin-line text-danger"></i>
+                                    </button>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+                <tr id="requestTableEmpty" class="d-none">
+                    <td colspan="9" class="text-center text-muted py-4">ไม่พบข้อมูลตามเงื่อนไขที่ค้นหา</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
