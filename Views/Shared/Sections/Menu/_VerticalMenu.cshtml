@@ -87,7 +87,7 @@
         <div data-i18n="ขอใบรับรอง">ขอใบรับรอง</div>
       </a>
       <ul class="menu-sub">
-        <li class='menu-item@(currentPage == "/PSDeclaration/Index" ? " active" : "")'>
+        <li class='menu-item@(currentPage == "/PSDeclaration" ? " active" : "")'>
           <a asp-controller="PSDeclaration" asp-action="Index" class="menu-link">
             <div data-i18n="สร้างคำขอ">สร้างคำขอ</div>
           </a>
@@ -97,14 +97,24 @@
             <div data-i18n="ติดตามสถานะ">ติดตามสถานะ</div>
           </a>
         </li>
-        <li class='menu-item@(currentPage == "/PSDeclaration/Index" ? " active" : "")'>
-          <a asp-controller="PSDeclaration" asp-action="Index" class="menu-link">
-            <div data-i18n="ใบรับรอง">ใบรับรอง</div>
+        <li class='menu-item@(currentPage == "/PSDeclaration/IndexManageCertificate" ? " active" : "")'>
+          <a asp-controller="PSDeclaration" asp-action="IndexManageCertificate" class="menu-link">
+            <div data-i18n="ใบรับรองฯ">ใบรับรองฯ</div>
           </a>
         </li>
-        <li class='menu-item@(currentPage == "/PSDeclaration/Index" ? " active" : "")'>
-          <a asp-controller="PSDeclaration" asp-action="Index" class="menu-link">
-            <div data-i18n="ขอคืนน้ำหนัก">ขอคืนน้ำหนัก</div>
+        <li class='menu-item@(currentPage == "/PSDeclaration/IndexUpdateCertificate" ? " active" : "")'>
+          <a asp-controller="PSDeclaration" asp-action="IndexUpdateCertificate" class="menu-link">
+            <div data-i18n="เปลี่ยนแปลงใบรับรองฯ">เปลี่ยนแปลงใบรับรองฯ</div>
+          </a>
+        </li>
+        <li class='menu-item@(currentPage == "/PSDeclaration/IndexApproveReturnWeight" ? " active" : "")'>
+          <a asp-controller="PSDeclaration" asp-action="IndexApproveReturnWeight" class="menu-link">
+            <div data-i18n="ขอคืนน้ำหนักสินค้า">ขอคืนน้ำหนักสินค้า</div>
+          </a>
+        </li>
+        <li class='menu-item@(currentPage == "/PSDeclaration/IndexReturnCertificateWeight" ? " active" : "")'>
+          <a asp-controller="PSDeclaration" asp-action="IndexReturnCertificateWeight" class="menu-link">
+            <div data-i18n="ขอคืนน้ำหนักใบรับรอง">ขอคืนน้ำหนักใบรับรอง</div>
           </a>
         </li>
       </ul>

@@ -660,9 +660,12 @@ Views/
   ProfileUser.cshtml
  PSDeclaration/
   CreateDeclaration.cshtml
+  CreateManageCertificateNoPS.cshtml
+  CreateManageCertificatePS.cshtml
   CreateProcessing.cshtml
   CreateTrackRequestStatus.cshtml
   Index.cshtml
+  IndexManageCertificate.cshtml
   IndexTrackRequestStatus.cshtml
   SelectType.cshtml
  Shared/
@@ -919,9 +922,12 @@ Views/
   ProfileUser.cshtml
  PSDeclaration/
   CreateDeclaration.cshtml
+  CreateManageCertificateNoPS.cshtml
+  CreateManageCertificatePS.cshtml
   CreateProcessing.cshtml
   CreateTrackRequestStatus.cshtml
   Index.cshtml
+  IndexManageCertificate.cshtml
   IndexTrackRequestStatus.cshtml
   SelectType.cshtml
  Shared/

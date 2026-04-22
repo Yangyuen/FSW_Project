@@ -42,22 +42,47 @@ public class PSDeclarationController : Controller
     return View();
   }
 
-  public IActionResult ManageCertificate()
+  public IActionResult IndexManageCertificate()
   {
     return View();
   }
 
-  public IActionResult UpdateCertificate()
+  public IActionResult CreateManageCertificatePS()
   {
     return View();
   }
 
-  public IActionResult ApproveReturnWeight()
+  public IActionResult CreateManageCertificateNoPS()
   {
     return View();
   }
 
-  public IActionResult ReturnCertificateWeight()
+  public IActionResult IndexUpdateCertificate()
+  {
+    return View();
+  }
+
+  public IActionResult CreateUpdateCertificate()
+  {
+    return View();
+  }
+
+  public IActionResult IndexApproveReturnWeight()
+  {
+    return View();
+  }
+
+  public IActionResult CreateApproveReturnWeight()
+  {
+    return View();
+  }
+
+  public IActionResult IndexReturnCertificateWeight()
+  {
+    return View();
+  }
+
+  public IActionResult CreateReturnCertificateWeight()
   {
     return View();
   }
