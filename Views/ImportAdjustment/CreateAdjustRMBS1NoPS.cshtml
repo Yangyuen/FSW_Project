@@ -1,0 +1,1677 @@
+@{
+ViewData["Title"] = "คำขอใบรับรองการแปรรูปสัตว์น้ำ";
+}
+
+@section VendorStyles {
+<link rel="stylesheet" href="~/vendor/libs/select2/select2.css" />
+<link rel="stylesheet" href="~/vendor/libs/flatpickr/flatpickr.css" />
+}
+
+@section VendorScripts {
+<script src="~/vendor/libs/select2/select2.js"></script>
+<script src="~/vendor/libs/flatpickr/flatpickr.js"></script>
+}
+
+
+@* ************** Content ************** *@
+<h4 class="mb-1">รายละเอียดการควบคุมปริมาณวัตถุดิบสัตว์นํ้านำเข้า (RMBS1:NoPS)</h4>
+<p class="mb-1">แสดงรายละเอียดการควบคุมปริมาณวัตถุดิบสัตว์นํ้านำเข้า (RMBS1:NoPS)</p>
+
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="mb-6">
+    <ol class="breadcrumb breadcrumb-style1" style="--bs-breadcrumb-divider: '>'; font-size: 0.75rem;">
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("IndexAdjustRMBS1NoPS", "ImportAdjustment")" class="text-primary fw-semibold">การควบคุมปริมาณวัตถุดิบสัตว์นํ้านำเข้า (RMBS1:NoPS)</a>
+        </li>
+        <li class="breadcrumb-item active text-secondary">รายละเอียดการควบคุมปริมาณวัตถุดิบสัตว์นํ้านำเข้า (RMBS1:NoPS)</li>
+    </ol>
+</nav>
+
+<div class="row">
+    <div class="col-12">
+
+        <!-- ===== Tabs ===== -->
+        <form method="post" action="#">
+        <div class="nav-align-top nav-tabs-shadow mb-4">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#tab-detail" aria-controls="tab-detail" aria-selected="true">
+                        <i class="ri ri-file-list-2-line me-1"></i> รายละเอียดคำขอ
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#tab-production" aria-controls="tab-production" aria-selected="false">
+                        <i class="ri ri-archive-line me-1"></i> ข้อมูลการผลิต
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#tab-evidence" aria-controls="tab-evidence" aria-selected="false">
+                        <i class="ri ri-folder-open-line me-1"></i> หลักฐานประกอบ
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#tab-history" aria-controls="tab-history" aria-selected="false">
+                        <i class="ri ri-time-line me-1"></i> ประวัติการดำเนินการ
+                    </button>
+                </li>
+            </ul>
+            <div class="tab-content">
+
+                <!-- ==================== TAB 1: รายละเอียดคำขอ ==================== -->
+                <div id="tab-detail" class="tab-pane fade show active">
+                    <!-- ===== Accordion: ข้อมูลการควบคุมปริมาณวัตถุดิบสัตว์นํ้านำเข้า (RMBS1:NoPS) ===== -->
+                    <div class="accordion accordion-custom-button mb-4" id="accordionIMD">
+                        <div class="accordion-item active">
+                            <h2 class="accordion-header" id="headingIMD">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseIMDContent" aria-expanded="true"
+                                    aria-controls="collapseIMDContent">
+                                    <i class="icon-base ri ri-links-line me-2"></i>
+                                    ข้อมูลการควบคุมปริมาณวัตถุดิบสัตว์นํ้านำเข้า (RMBS1:NoPS)
+                                </button>
+                            </h2>
+                            <div id="collapseIMDContent" class="accordion-collapse collapse show"
+                                aria-labelledby="headingIMD">
+                                <div class="accordion-body p-0">
+
+                                    <!-- ── รายละเอียด ── -->
+                                    <div class="p-4 border-bottom">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-information-line fs-5"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">รายละเอียด</h6>
+                                        </div>
+                                        <div class="row g-3">
+                                            <!-- ผู้ประกอบการ -->
+                                            <div class="col-12">
+                                                <label class="form-label small">ผู้ประกอบการ </label>
+                                                <input type="text" id="imdOperator" class="form-control bg-light"
+                                                        placeholder="ชื่อผู้ประกอบการ"
+                                                        value="Alpha Office Automation Co., Ltd. (สาขา 00001)" readonly />
+                                            </div>
+                                            <!-- เลขที่ RMBS1 + วันที่ออกเอกสาร -->
+                                            <div class="col-md-6">
+                                                <label class="form-label small">เลขที่ RMBS1 </label>
+                                                <div class="form-floating form-floating-outline">
+                                                    <select id="rmbs1No" class="select2 form-select" required disabled>
+                                                        <option value="">-- เลือก --</option>
+                                                        <option value="10611280211800000561" selected>10611280211800000561</option>
+                                                        <option value="10611280211800000562">10611280211800000562</option>
+                                                        <option value="10611280211800000563">10611280211800000563</option>
+                                                    </select>
+                                                    <label for="rmbs1No">เลขที่ RMBS1</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">วันที่ออกเอกสาร RMBS1</label>
+                                                <input type="text" id="rmbs1Date" class="form-control bg-light"
+                                                    value="17 สิงหาคม 2561" readonly />
+                                            </div>
+                                            <!-- หน่วยงาน 2 ช่อง -->
+                                            <div class="col-md-6">
+                                                <label class="form-label small">หน่วยงานพิจารณาข้อมูลสั่งดำเนินการผลิต </label>
+                                                <input type="text" id="imdSourceUnit" class="form-control bg-light"
+                                                    value="ด่านตรวจสัตว์น้ำอำจังหวัดตราด" readonly />
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">หน่วยงานพิจารณาออกเลขที่ RMBS1 </label>
+                                                <div class="form-floating form-floating-outline">
+                                                    <select id="imdRmbs1Unit" class="select2 form-select" disabled>
+                                                        <option value="">-- เลือก --</option>
+                                                        <option value="1" selected>กองตรวจสอบคุณภาพสินค้าประมง</option>
+                                                    </select>
+                                                    <label for="imdRmbs1Unit">หน่วยงาน</label>
+                                                </div>
+                                            </div>
+                                            <!-- เอกสารที่นำมาดำเนินการจับคู่ -->
+                                            <div class="col-12">
+                                                <label class="form-label small">เอกสารที่นำมาดำเนินการจับคู่</label>
+                                                <input type="text" id="imdDocType" class="form-control bg-light"
+                                                    value="Catch Certificate" readonly />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ── ข้อมูลตรวจสอบการจับคู่ IMD ── -->
+                                    <div class="p-4 border-bottom">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-ship-line fs-5"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">ข้อมูลตรวจสอบการจับคู่ IMD</h6>
+                                        </div>
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label small">ชื่อเรือจับ (Fishing Vessel)</label>
+                                                <input type="text" id="imdFishingVessel" class="form-control bg-light"
+                                                    value="MARTINEZ472" readonly />
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">ธงสัญชาติของเรือ </label>
+                                                <input type="text" id="imdVesselFlag" class="form-control bg-light"
+                                                    value="ปาปัวนิวกินี (PAPUA NEW GUINEA)" readonly />
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">ชื่อเครื่องมือที่ใช้จับ </label>
+                                                <input type="text" id="imdGearType" class="form-control bg-light"
+                                                    value="อวนล้อมจับ (Purse seine)" readonly />
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">ชื่อประเทศที่นำมาบรรจุ </label>
+                                                <input type="text" id="imdPackagingCountry" class="form-control bg-light"
+                                                    value="เวียดนาม (VIET NAM)" readonly />
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">ช่วงเวลาทำการประมง (วันที่เริ่ม) </label>
+                                                <input type="text" id="imdFishingStart" class="form-control bg-light"
+                                                    value="1 พฤษภาคม 2561" readonly />
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">ช่วงเวลาทำการประมง (วันที่สิ้นสุด)</label>
+                                                <input type="text" id="imdFishingEnd" class="form-control bg-light"
+                                                    value="31 พฤษภาคม 2561" readonly />
+                                            </div>
+                                            <div class="col-12">
+                                                <label class="form-label small">ข้อมูลสัตว์น้ำ</label>
+                                                <div class="input-group" style="height:48px;">
+                                                    <input type="text" id="imdSpeciesData" class="form-control bg-light h-100"
+                                                        value="0303.89.19 000/KGM [F020545S03030001/KGM]=ปลาทูน่าโบนิโต (Sarda) ทั้งตัว แช่แข็ง" readonly />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ── ข้อมูลตรวจสอบการจับคู่ CC/SCC/Other Document ── -->
+                                    <div class="p-4 border-bottom">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-file-text-line fs-5"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">ข้อมูลตรวจสอบการจับคู่ CC/SCC/Other Document</h6>
+                                        </div>
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label small">Ref. System Document No.</label>
+                                                <input type="text" id="ccRefDocNo" class="form-control bg-light"
+                                                    value="S20180730SEA FANTASY XVI00033" readonly />
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">Reference Date</label>
+                                                <input type="text" id="ccRefDate" class="form-control bg-light"
+                                                    placeholder="วว/ดด/ปปปป" value="30/07/2561" readonly />
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">Simplified Catch Certificate Number</label>
+                                                <input type="text" id="ccNumber" class="form-control bg-light"
+                                                    placeholder="Simplified Catch Certificate Number" value="SCC801WE1609" readonly />
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">Validation date</label>
+                                                <input type="text" id="ccValidDate" class="form-control bg-light"
+                                                    placeholder="วว/ดด/ปปปป" value="30/07/2561" readonly />
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">ประเทศของหน่วยงานที่รับรอง</label>
+                                                <div class="form-floating form-floating-outline">
+                                                    <select id="ccCertCountry" class="select2 form-select" disabled>
+                                                        <option value="">-- เลือก --</option>
+                                                        <option value="FR" selected>ฝรั่งเศส (FRANCE)</option>
+                                                        <option value="US">สหรัฐอเมริกา</option>
+                                                        <option value="JP">ญี่ปุ่น</option>
+                                                    </select>
+                                                    <label for="ccCertCountry">ประเทศ</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">ชื่อหน่วยงานที่รับรอง</label>
+                                                <input type="text" id="ccCertAgency" class="form-control bg-light"
+                                                    placeholder="ชื่อหน่วยงาน"
+                                                    value="Direction de la mer Guadeloupe (Directorate of the sea Guadeloupe)" readonly />
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">ชื่อเรือจับ (Fishing Vessel)</label>
+                                                <input type="text" id="ccVessel" class="form-control bg-light"
+                                                    value="AS PER CC No.MARTINEZ472" readonly />
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">ธงสัญชาติของเรือ</label>
+                                                <div class="form-floating form-floating-outline">
+                                                    <select id="ccVesselFlag" class="select2 form-select" disabled>
+                                                        <option value="">-- เลือก --</option>
+                                                        <option value="PG" selected>ปาปัวนิวกินี (PAPUA NEW GUINEA)</option>
+                                                    </select>
+                                                    <label for="ccVesselFlag">ธงสัญชาติ</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">หมายเรียกขาน (Call Sign)</label>
+                                                <input type="text" id="ccCallSign" class="form-control bg-light"
+                                                    placeholder="Call Sign" value="MIMIX551" readonly />
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">หมายเลขไอเอ็มโอ (IMO)</label>
+                                                <input type="text" id="ccImo" class="form-control bg-light"
+                                                    placeholder="IMO Number" value="551-13" readonly />
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">ชื่อเครื่องมือที่ใช้จับ</label>
+                                                <div class="form-floating form-floating-outline">
+                                                    <select id="ccGearType" class="select2 form-select" disabled>
+                                                        <option value="">-- เลือก --</option>
+                                                        <option value="PS" selected>อวนล้อมจับ (Purse seine)</option>
+                                                        <option value="UN">ไม่สามารถระบุ (Unknow)</option>
+                                                    </select>
+                                                    <label for="ccGearType">เครื่องมือ</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">สถานที่จับ/แหล่งทำประมง</label>
+                                                <div class="row g-2">
+                                                    <div class="col-6">
+                                                        <div class="form-floating form-floating-outline">
+                                                            <select id="ccFishingArea1" class="select2 form-select" disabled>
+                                                                <option value="">-- เลือก --</option>
+                                                                <option value="PG" selected>ปาปัวนิวกินี (PAPUA NEW GUINEA)</option>
+                                                            </select>
+                                                            <label for="ccFishingArea1">ประเทศ</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-floating form-floating-outline">
+                                                            <select id="ccFishingArea2" class="select2 form-select" disabled>
+                                                                <option value="">-- เลือก --</option>
+                                                                <option value="71" selected>EEZ PG,FAO 71</option>
+                                                            </select>
+                                                            <label for="ccFishingArea2">พื้นที่</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">ช่วงเวลาทำการประมง (วันที่เริ่ม)</label>
+                                                <input type="text" id="ccFishingStart" class="form-control bg-light"
+                                                    placeholder="วว/ดด/ปปปป" value="01/05/2561" readonly />
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">ช่วงเวลาทำการประมง (วันที่สิ้นสุด)</label>
+                                                <input type="text" id="ccFishingEnd" class="form-control bg-light"
+                                                    placeholder="วว/ดด/ปปปป" value="31/05/2561" readonly />
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">ชื่อกัปตัน/ผู้บังคับการเรือ</label>
+                                                <input type="text" id="ccCaptain" class="form-control bg-light"
+                                                    placeholder="ชื่อกัปตัน" value="Mr.BaoMae" readonly />
+                                            </div>
+                                            <div class="col-12">
+                                                <label class="form-label small">Catch description (สำหรับแสดงในหนังสือรับรอง)</label>
+                                                <div class="input-group">
+                                                    <input type="text" id="ccCatchDesc" class="form-control bg-light"
+                                                        placeholder="Catch description" value="SCC801WE1609 CC100000Quota70000" readonly />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ── ข้อมูลน้ำหนักสินค้า ── -->
+                                    <div class="p-4">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-scales-line fs-5"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">ข้อมูลน้ำหนักสินค้า</h6>
+                                        </div>
+                                        <div class="row g-3">
+                                            <div class="col-md-4">
+                                                <label class="form-label small">รูปแบบการจัดสรร CC/SCC</label>
+                                                <input type="text" id="ccAllocType" class="form-control bg-light"
+                                                    value="Average (เฉลี่ย)" readonly />
+                                            </div>
+                                            <div class="w-100"></div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">ปริมาณสัตว์น้ำรวมทั้งเรือ (กก.)</label>
+                                                <div class="input-group">
+                                                    <input type="text" id="ccTotalQty" class="form-control bg-light"
+                                                        value="70,000.000" readonly />
+                                                    <span class="input-group-text">KGM = กิโลกรัม</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">ปริมาณสัตว์น้ำที่โรงงานรับซื้อ (กก.)</label>
+                                                <div class="input-group">
+                                                    <input type="text" id="ccApprovedQty" class="form-control bg-light"
+                                                        value="5,000.000" readonly />
+                                                    <span class="input-group-text">KGM = กิโลกรัม</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">ปริมาณสัตว์น้ำที่ระบุใน Catch Certificate</label>
+                                                <div class="input-group">
+                                                    <input type="text" id="ccCertQty" class="form-control bg-light"
+                                                        value="100,000.000" readonly />
+                                                    <span class="input-group-text">KGM = กิโลกรัม</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">โควตาสัตว์น้ำที่โรงงานรับซื้อ (กก.)</label>
+                                                <div class="input-group">
+                                                    <input type="text" id="ccQuota" class="form-control bg-light"
+                                                        value="5,000.000" readonly />
+                                                    <span class="input-group-text">KGM = กิโลกรัม</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <label class="form-label small">รายละเอียด</label>
+                                                <textarea id="ccNote" class="form-control bg-light" rows="3"
+                                                    placeholder="รายละเอียดเพิ่มเติม" readonly></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /accordion ข้อมูล IMD และการจับคู่ -->
+                </div>
+                <!-- /TAB 1 -->
+
+                <!-- ==================== TAB 2: ข้อมูลการผลิต ==================== -->
+                <div id="tab-production" class="tab-pane fade" role="tabpanel">
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover align-middle small mb-2" id="productionDataTable">
+                            <thead class="text-center">
+                                <tr>
+                                    <th style="min-width:100px;">วันที่ดำเนินการ</th>
+                                    <th style="min-width:260px;">ชื่อผลิตภัณฑ์ (รหัสผลิตภัณฑ์ - รหัสการผลิต)</th>
+                                    <th style="min-width:110px;">ปริมาณที่ดำเนินการ</th>
+                                    <th style="min-width:110px;">ปริมาณคงเหลือ</th>
+                                    <th style="min-width:110px;">จำนวนบรรจุภัณฑ์ (คงเหลือ)</th>
+                                    <th style="min-width:110px;">จำนวนบรรจุภัณฑ์ (จอง)</th>
+                                    <th style="min-width:120px;">% Yield (โดยระบบ)</th>
+                                    <th style="min-width:110px;">การตัดน้ำหนัก(ครั้ง)</th>
+                                    <th style="min-width:110px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="productionDataTbody">
+                                <!-- dummy row 1 -->
+                                <tr>
+                                    <td class="text-center">17/08/2561</td>
+                                    <td>
+                                        <div class="fw-semibold">CANNED O LIGHTMEAT SHREDDED IN TABASCO</div>
+                                        <div class="text-muted small">3AASNNBELNNPP &ndash; 8GDAW</div>
+                                        <div class="d-flex align-items-center gap-1 mt-1">
+                                            <span class="badge bg-label-primary rounded-circle d-inline-flex align-items-center justify-content-center flex-shrink-0"
+                                                style="width:1.4rem;height:1.4rem;">
+                                                <i class="ri ri-recycle-line" style="font-size:0.65rem;"></i>
+                                            </span>
+                                            <span class="small text-muted"><span class="fw-semibold">การดำเนินการ :</span> แปรรูปวัตถุดิบ</span>
+                                        </div>
+                                    </td>
+                                    <td class="text-end">1,000.000</td>
+                                    <td class="text-end">59,000.000</td>
+                                    <td class="text-end">4,000.000</td>
+                                    <td class="text-end">4,000</td>
+                                    <td class="text-end">0.000</td>
+                                    <td class="text-end">37.820<span class="text-danger fw-semibold">(100.000)</span></td>
+                                    <td class="text-center">0</td>
+                                </tr>
+                                <!-- dummy row 2 -->
+                                <tr>
+                                    <td class="text-center">17/08/2561</td>
+                                    <td>
+                                        <div class="fw-semibold">CANNED O SLICE IN XO SOUCE</div>
+                                        <div class="text-muted small">3AASNNBELNNKK &ndash; 8GDAX</div>
+                                        <div class="d-flex align-items-center gap-1 mt-1">
+                                            <span class="badge bg-label-primary rounded-circle d-inline-flex align-items-center justify-content-center flex-shrink-0"
+                                                style="width:1.4rem;height:1.4rem;">
+                                                <i class="ri ri-recycle-line" style="font-size:0.65rem;"></i>
+                                            </span>
+                                            <span class="small text-muted"><span class="fw-semibold">การดำเนินการ :</span> แปรรูปวัตถุดิบ</span>
+                                        </div>
+                                    </td>
+                                    <td class="text-end">800.000</td>
+                                    <td class="text-end">58,200.000</td>
+                                    <td class="text-end">1,600.000</td>
+                                    <td class="text-end">1,600</td>
+                                    <td class="text-end">0.000</td>
+                                    <td class="text-end">38.620<span class="text-danger fw-semibold">(100.000)</span></td>
+                                    <td class="text-center">0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <!-- /TAB 2 ข้อมูลการผลิต -->
+
+                <!-- ==================== TAB 3: หลักฐานประกอบ ==================== -->
+                <div id="tab-evidence" class="tab-pane fade" role="tabpanel">
+
+                    <!-- Toolbar -->
+                    <div class="d-flex align-items-center justify-content-end mb-3">
+                        <button type="button" class="btn btn-outline-primary btn-sm" id="btnAddEvidence"
+                            data-bs-toggle="modal" data-bs-target="#modalAddEvidence">
+                            <i class="ri ri-add-line me-1"></i> เพิ่มหลักฐานประกอบ
+                        </button>
+                    </div>
+
+                    <!-- Evidence Table -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle small mb-3" id="evidenceTable">
+                            <thead class="text-center">
+                                <tr>
+                                    <th style="width:2rem;">#</th>
+                                    <th>หลักฐานประกอบ</th>
+                                    <th>เลขที่เอกสาร</th>
+                                    <th>วันที่ออกเอกสาร</th>
+                                    <th>วันที่หมดอายุ / เทียบเท่า</th>
+                                    <th>ผู้ออกเอกสาร</th>
+                                    <th style="width:4rem;"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="evidenceTbody">
+                                <!-- dummy row -->
+                                <tr>
+                                    <td class="text-center text-muted small">1</td>
+                                    <td>
+                                        <div class="fw-semibold text-primary">Catch Certificate (CC) ที่ออกโดย ต่างประเทศ</div>
+                                        <div class="mt-1">
+                                            <div class="small text-muted d-flex align-items-center gap-1 mb-1"><span class="badge bg-label-success rounded-circle d-inline-flex align-items-center justify-content-center flex-shrink-0" style="width:1.4rem;height:1.4rem;"><i class="ri ri-file-check-line" style="font-size:0.65rem;"></i></span><span class="fw-semibold">แหล่งที่มา :</span> ภายนอกระบบ [FSW]</div>
+                                            <div class="small text-muted d-flex align-items-center gap-1 mb-1"><span class="badge bg-label-info rounded-circle d-inline-flex align-items-center justify-content-center flex-shrink-0" style="width:1.4rem;height:1.4rem;"><i class="ri ri-building-line" style="font-size:0.65rem;"></i></span><span class="fw-semibold">ประเภทเอกสาร :</span> Backend DOF</div>
+                                            <div class="small text-muted d-flex align-items-center gap-1 mb-1"><span class="badge bg-label-secondary rounded-circle d-inline-flex align-items-center justify-content-center flex-shrink-0" style="width:1.4rem;height:1.4rem;"><i class="ri ri-file-copy-line" style="font-size:0.65rem;"></i></span><span class="fw-semibold">ตัวเอกสาร :</span> เอกสารฉบับสำเนา</div>
+                                        </div>
+                                    </td>
+                                    <td>KP-001022017-091</td>
+                                    <td>16/02/2026</td>
+                                    <td>16/02/2027</td>
+                                    <td>IPNLF</td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-sm btn-icon btn-outline-danger btn-remove-evidence" title="ลบรายการ">
+                                            <i class="ri ri-delete-bin-line text-danger"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- /TAB 3 -->
+
+                <!-- ==================== TAB 4: ประวัติการดำเนินการ ==================== -->
+                <div id="tab-history" class="tab-pane fade" role="tabpanel">
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle small mb-0" id="historyTable">
+                            <thead class="text-center">
+                                <tr>
+                                    <th style="min-width:120px;">วันเวลาที่แจ้ง</th>
+                                    <th style="min-width:200px;">ผู้แจ้ง</th>
+                                    <th>รายละเอียด</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center text-nowrap">
+                                        17/08/2561<br>
+                                        <span class="text-muted">(11:14)</span>
+                                    </td>
+                                    <td>นางอัลฟา ออฟฟิช</td>
+                                    <td>สร้างข้อมูลส่วนหลัง (ใบอนุญาต/ใบรับรอง) &quot;แบบฟอร์มการควบคุมปริมาณวัตถุดิบสัตว์น้ำนำเข้าเพื่อแปรรูปส่งออกสหภาพยุโรป เอกสารที่ 1&quot;</td>
+                                </tr>
+                                <tr class="">
+                                    <td class="text-center text-nowrap">
+                                        17/08/2561<br>
+                                        <span class="text-muted">(11:31)</span>
+                                    </td>
+                                    <td>
+                                        Alpha Office Automation Co., Ltd.<br>
+                                        <span class="text-muted small">(สาขา 00001)</span>
+                                    </td>
+                                    <td>แก้ไขข้อมูลการผลิต &quot;แบบฟอร์มการควบคุมปริมาณวัตถุดิบสัตว์น้ำนำเข้าเพื่อแปรรูปส่งออก เอกสารที่ 1&quot;</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center text-nowrap">
+                                        17/08/2561<br>
+                                        <span class="text-muted">(13:52)</span>
+                                    </td>
+                                    <td>
+                                        Alpha Office Automation Co., Ltd.<br>
+                                        <span class="text-muted small">(สาขา 00001)</span>
+                                    </td>
+                                    <td>แก้ไขข้อมูลการผลิต &quot;แบบฟอร์มการควบคุมปริมาณวัตถุดิบสัตว์น้ำนำเข้าเพื่อแปรรูปส่งออก เอกสารที่ 1&quot;</td>
+                                </tr>
+                                <tr class="">
+                                    <td class="text-center text-nowrap">
+                                        17/08/2561<br>
+                                        <span class="text-muted">(15:17)</span>
+                                    </td>
+                                    <td>นางอัลฟา ออฟฟิช</td>
+                                    <td>ปรับปรุงข้อมูลโดย ขออนุมัติข้อมูล CC ต่างประเทศ กรณี CC มากิหลัง</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center text-nowrap">
+                                        17/08/2561<br>
+                                        <span class="text-muted">(15:48)</span>
+                                    </td>
+                                    <td>นางอัลฟา ออฟฟิช</td>
+                                    <td>ปรับเปลี่ยนสถานะ RMBS1 ให้ดำเนินการขอจัดทำใบ PS ()</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <!-- /TAB 4 ประวัติการดำเนินการ -->
+
+            </div><!-- /tab-content -->
+        </div><!-- /nav-align-top -->
+
+        <!-- Action Buttons -->
+        <div class="d-flex justify-content-end gap-2 mt-3">
+            <a href="@Url.Action("IndexAdjustRMBS1NoPS", "ImportAdjustment")" class="btn btn-outline-secondary">
+                <i class="ri ri-arrow-left-line me-1"></i> ยกเลิก
+            </a>
+            <button type="submit" class="btn btn-primary">
+                <i class="ri ri-save-line me-1"></i> บันทึก
+            </button>
+        </div>
+
+        </form>
+
+    </div><!-- /col -->
+</div><!-- /row -->
+
+<!-- ==================== Modal 1: ค้นหา RMBS1 ==================== -->
+<div class="modal fade" id="modalSearchRMBS1" tabindex="-1" aria-labelledby="modalSearchRMBS1Label" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalSearchRMBS1Label">
+                    <i class="ri ri-search-line me-2"></i>
+                    รายการข้อมูลเอกสารการควบคุมปริมาณวัตถุดิบสัตว์น้ำนำเข้า (RMBS1)
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Search Form -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label class="form-label small">เลขที่ RMBS1</label>
+                        <div class="input-group">
+                            <input type="text" id="searchRmbs1No" class="form-control form-control-sm"
+                                placeholder="ระบุเลขที่ RMBS1" />
+                            <button class="btn btn-outline-secondary btn-sm" type="button" id="btnSearchRmbs1">
+                                <i class="ri ri-search-line"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label small">วัน RMBS1 (จาก)</label>
+                        <input type="text" class="form-control form-control-sm flatpickr-date" id="searchRmbs1DateFrom"
+                            placeholder="วว/ดด/ปปปป" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label small">วัน RMBS1 (ถึง)</label>
+                        <input type="text" class="form-control form-control-sm flatpickr-date" id="searchRmbs1DateTo"
+                            placeholder="วว/ดด/ปปปป" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small">เลขทะเบียนเรือ</label>
+                        <input type="text" class="form-control form-control-sm" id="searchRegNo" placeholder="เลขทะเบียนเรือ" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small">ชื่อเรือ</label>
+                        <input type="text" class="form-control form-control-sm" id="searchShipName" placeholder="ชื่อเรือ" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small">หมายเลข Catch Certificate (ต่างประเทศ)</label>
+                        <input type="text" class="form-control form-control-sm" id="searchCcNo" placeholder="หมายเลข CC" />
+                    </div>
+                </div>
+
+                <!-- Results Table -->
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover align-middle small" id="rmbs1ResultTable">
+                        <thead class="text-center">
+                            <tr>
+                                <th style="width:3rem;"></th>
+                                <th>เลขที่ RMBS1</th>
+                                <th>วันที่</th>
+                                <th>ชื่อสัตว์ (ชื่อวิทยาศาสตร์)</th>
+                                <th>ชื่อเรือ / เลขทะเบียนเรือ</th>
+                                <th>Catch Certificate</th>
+                                <th>Validation date</th>
+                                <th>วันที่รับสัตว์น้ำเข้าโรงงาน</th>
+                                <th class="text-end">ปริมาณสัตว์น้ำที่โรงงานรับซื้อ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rmbs1ResultTbody">
+                            <!-- dummy search results -->
+                            <tr class="rmbs1-result-row" style="cursor:pointer;"
+                                data-rmbs="10604204211700000093" data-date="16/02/2026"
+                                data-species="Skipjack (Katsuwonus pelamis)" data-ship="SEA HONOR 1"
+                                data-regno="TH-REG-2024-001" data-cc="KP-001022017-091"
+                                data-valdate="16/02/2026" data-recvdate="16/02/2026" data-qty="50,000.000"
+                                data-ccdate="16/02/2026">
+                                <td class="text-center"><input type="radio" name="rmbs1Select" class="form-check-input" /></td>
+                                <td class="text-primary fw-semibold">10604204211700000093</td>
+                                <td>16/02/2026</td>
+                                <td>Skipjack (Katsuwonus pelamis)</td>
+                                <td>SEA HONOR 1</td>
+                                <td>KP-001022017-091</td>
+                                <td>16/02/2026</td>
+                                <td>16/02/2026</td>
+                                <td class="text-end">50,000.000</td>
+                            </tr>
+                            <tr class="rmbs1-result-row" style="cursor:pointer;"
+                                data-rmbs="10604204211700000109" data-date="16/02/2026"
+                                data-species="Skipjack (Katsuwonus pelamis)" data-ship="SEA HONOR 1"
+                                data-regno="TH-REG-2024-001" data-cc="KP-001022017-090"
+                                data-valdate="16/02/2026" data-recvdate="16/02/2026" data-qty="50,000.000"
+                                data-ccdate="16/02/2026">
+                                <td class="text-center"><input type="radio" name="rmbs1Select" class="form-check-input" /></td>
+                                <td class="text-primary fw-semibold">10604204211700000109</td>
+                                <td>16/02/2026</td>
+                                <td>Skipjack (Katsuwonus pelamis)</td>
+                                <td>SEA HONOR 1</td>
+                                <td>KP-001022017-090</td>
+                                <td>16/02/2026</td>
+                                <td>16/02/2026</td>
+                                <td class="text-end">50,000.000</td>
+                            </tr>
+                            <tr class="rmbs1-result-row" style="cursor:pointer;"
+                                data-rmbs="10604204211700000184" data-date="16/02/2026"
+                                data-species="Tuna yellowfin (Thunnus albacares)" data-ship="SEA HONOR 1"
+                                data-regno="TH-REG-2024-001" data-cc="KP-001022017-091"
+                                data-valdate="16/02/2026" data-recvdate="16/02/2026" data-qty="50,000.000"
+                                data-ccdate="16/02/2026">
+                                <td class="text-center"><input type="radio" name="rmbs1Select" class="form-check-input" /></td>
+                                <td class="text-primary fw-semibold">10604204211700000184</td>
+                                <td>16/02/2026</td>
+                                <td>Tuna yellowfin (Thunnus albacares)</td>
+                                <td>SEA HONOR 1</td>
+                                <td>KP-001022017-091</td>
+                                <td>16/02/2026</td>
+                                <td>16/02/2026</td>
+                                <td class="text-end">50,000.000</td>
+                            </tr>
+                            <tr class="rmbs1-result-row" style="cursor:pointer;"
+                                data-rmbs="10604204211700000266" data-date="16/02/2026"
+                                data-species="Sardine (Sardinops spp.)" data-ship="SEA HONOR 1"
+                                data-regno="TH-REG-2024-002" data-cc="KP-001022017-091"
+                                data-valdate="16/02/2026" data-recvdate="16/02/2026" data-qty="50,000.000"
+                                data-ccdate="16/02/2026">
+                                <td class="text-center"><input type="radio" name="rmbs1Select" class="form-check-input" /></td>
+                                <td class="text-primary fw-semibold">10604204211700000266</td>
+                                <td>16/02/2026</td>
+                                <td>Sardine (Sardinops spp.)</td>
+                                <td>SEA HONOR 1</td>
+                                <td>KP-001022017-091</td>
+                                <td>16/02/2026</td>
+                                <td>16/02/2026</td>
+                                <td class="text-end">50,000.000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="ri ri-close-line me-1"></i> ยกเลิก
+                </button>
+                <button type="button" class="btn btn-primary" id="btnSelectRmbs1">
+                    <i class="ri ri-check-line me-1"></i> เลือกรายการ
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Modal 1 -->
+
+<!-- ==================== Modal 2: ยืนยันและกรอกน้ำหนัก ==================== -->
+<div class="modal fade" id="modalConfirmRMBS1" tabindex="-1" aria-labelledby="modalConfirmRMBS1Label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalConfirmRMBS1Label">
+                    <i class="ri ri-file-add-line me-2"></i>
+                    เพิ่มข้อมูลการควบคุมปริมาณวัตถุดิบสัตว์น้ำนำเข้า (RMBS1)
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-sm mb-0">
+                    <tbody>
+                        <tr>
+                            <th class="table-light" style="width:45%">หมายเลข RMBS1</th>
+                            <td id="confirm_rmbs"></td>
+                        </tr>
+                        <tr>
+                            <th class="table-light">เลขที่ CC</th>
+                            <td id="confirm_cc"></td>
+                        </tr>
+                        <tr>
+                            <th class="table-light">วันที่ตรวจสอบ CC</th>
+                            <td id="confirm_ccdate"></td>
+                        </tr>
+                        <tr>
+                            <th class="table-light">ชื่อเรือ / ชะเรือ</th>
+                            <td id="confirm_ship"></td>
+                        </tr>
+                        <tr>
+                            <th class="table-light">ชื่อสัตว์น้ำ</th>
+                            <td id="confirm_species"></td>
+                        </tr>
+                        <tr>
+                            <th class="table-light">ปริมาณสัตว์น้ำใน CC</th>
+                            <td id="confirm_qty"></td>
+                        </tr>
+                        <tr class="">
+                            <th class="">น้ำหนักอื่น ๆ </th>
+                            <td>
+                                <input type="number" id="confirm_other_weight" class="form-control form-control-sm"
+                                    placeholder="0.000" step="0.001" min="0" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="btnBackToSearch">
+                    <i class="ri ri-arrow-left-line me-1"></i> ย้อนกลับ
+                </button>
+                <button type="button" class="btn btn-primary" id="btnConfirmAddRow">
+                    <i class="ri ri-save-line me-1"></i> บันทึก
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Modal 2 -->
+
+<!-- ==================== Modal 3: เพิ่มผลิตภัณฑ์ (RMBS2) ==================== -->
+<div class="modal fade" id="modalAddRMBS2" tabindex="-1" aria-labelledby="modalAddRMBS2Label" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAddRMBS2Label">
+                    <i class="ri ri-box-3-line me-2"></i>
+                    เพิ่มผลิตภัณฑ์ที่ส่งออก (RMBS2)
+                    <small class="text-muted fw-normal ms-2 small" id="rmbs2ParentLabel"></small>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+
+                <!-- ── Step 1: ค้นหาและเลือกผลิตภัณฑ์ ── -->
+                <div id="rmbs2StepSearch">
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label small">รหัสผลิตภัณฑ์</label>
+                            <div class="input-group">
+                                <input type="text" id="searchRmbs2Code" class="form-control form-control-sm" placeholder="รหัสผลิตภัณฑ์" />
+                                <button class="btn btn-outline-secondary btn-sm" type="button" id="btnSearchRmbs2">
+                                    <i class="ri ri-search-line"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small">ชื่อผลิตภัณฑ์</label>
+                            <input type="text" id="searchRmbs2Name" class="form-control form-control-sm" placeholder="ชื่อผลิตภัณฑ์" />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small">วันที่นำสัตว์น้ำมาแปรรูป</label>
+                            <input type="text" id="searchRmbs2Date" class="form-control form-control-sm flatpickr-date" placeholder="วว/ดด/ปปปป" />
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover align-middle small" id="rmbs2SearchTable">
+                            <thead class="text-center">
+                                <tr>
+                                    <th style="width:3rem;"></th>
+                                    <th>วันที่นำสัตว์น้ำมาแปรรูป</th>
+                                    <th>รหัสสายการผลิต</th>
+                                    <th>รหัสผลิตภัณฑ์</th>
+                                    <th>ชื่อผลิตภัณฑ์</th>
+                                    <th class="text-end">ปริมาณสัตว์น้ำที่นำมาแปรรูป (กก.)</th>
+                                    <th class="text-end">% Yield</th>
+                                    <th class="text-end">จำนวนบรรจุภัณฑ์คงเหลือ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="rmbs2-search-row" style="cursor:pointer;"
+                                    data-date="30/03/2026" data-line="3AAOSO34" data-code="1AK41"
+                                    data-name="CANNED TUNA IN OIL" data-produced="179.000"
+                                    data-yield="45.280" data-nw-unit="0.185" data-remaining="1,000">
+                                    <td class="text-center"><input type="radio" name="rmbs2Select" class="form-check-input" /></td>
+                                    <td>30/03/2026</td>
+                                    <td>3AAOSO34</td>
+                                    <td class="text-primary fw-semibold">1AK41</td>
+                                    <td>CANNED TUNA IN OIL</td>
+                                    <td class="text-end">179.000</td>
+                                    <td class="text-end">45.280</td>
+                                    <td class="text-end">1,000</td>
+                                </tr>
+                                <tr class="rmbs2-search-row" style="cursor:pointer;"
+                                    data-date="30/03/2026" data-line="3AAOSO34" data-code="1AK42"
+                                    data-name="CANNED TUNA IN OIL" data-produced="101.000"
+                                    data-yield="43.330" data-nw-unit="0.185" data-remaining="540">
+                                    <td class="text-center"><input type="radio" name="rmbs2Select" class="form-check-input" /></td>
+                                    <td>30/03/2026</td>
+                                    <td>3AAOSO34</td>
+                                    <td class="text-primary fw-semibold">1AK42</td>
+                                    <td>CANNED TUNA IN OIL</td>
+                                    <td class="text-end">101.000</td>
+                                    <td class="text-end">43.330</td>
+                                    <td class="text-end">540</td>
+                                </tr>
+                                <tr class="rmbs2-search-row" style="cursor:pointer;"
+                                    data-date="30/03/2026" data-line="3AAOSO34" data-code="1AK43"
+                                    data-name="CANNED TUNA IN OIL" data-produced="779.000"
+                                    data-yield="43.330" data-nw-unit="0.185" data-remaining="3,949">
+                                    <td class="text-center"><input type="radio" name="rmbs2Select" class="form-check-input" /></td>
+                                    <td>30/03/2026</td>
+                                    <td>3AAOSO34</td>
+                                    <td class="text-primary fw-semibold">1AK43</td>
+                                    <td>CANNED TUNA IN OIL</td>
+                                    <td class="text-end">779.000</td>
+                                    <td class="text-end">43.330</td>
+                                    <td class="text-end">3,949</td>
+                                </tr>
+                                <tr class="rmbs2-search-row" style="cursor:pointer;"
+                                    data-date="30/03/2026" data-line="3AAOSO34" data-code="1AK44"
+                                    data-name="CANNED TUNA IN BRINE" data-produced="446.000"
+                                    data-yield="45.570" data-nw-unit="0.185" data-remaining="2,377">
+                                    <td class="text-center"><input type="radio" name="rmbs2Select" class="form-check-input" /></td>
+                                    <td>30/03/2026</td>
+                                    <td>3AAOSO34</td>
+                                    <td class="text-primary fw-semibold">1AK44</td>
+                                    <td>CANNED TUNA IN BRINE</td>
+                                    <td class="text-end">446.000</td>
+                                    <td class="text-end">45.570</td>
+                                    <td class="text-end">2,377</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ── Step 2: กรอกข้อมูลส่งออก ── -->
+                <div id="rmbs2StepDetail" class="d-none">
+                    <table class="table table-bordered table-sm mb-3">
+                        <tbody>
+                            <tr>
+                                <th class="table-light" style="width:45%">วันที่นำสัตว์น้ำมาแปรรูป</th>
+                                <td id="d2_date"></td>
+                            </tr>
+                            <tr>
+                                <th class="table-light">รหัสสายการผลิต</th>
+                                <td id="d2_line"></td>
+                            </tr>
+                            <tr>
+                                <th class="table-light">รหัสผลิตภัณฑ์</th>
+                                <td id="d2_code"></td>
+                            </tr>
+                            <tr>
+                                <th class="table-light">ชื่อผลิตภัณฑ์</th>
+                                <td id="d2_name"></td>
+                            </tr>
+                            <tr>
+                                <th class="table-light">ปริมาณสัตว์น้ำที่นำมาแปรรูป (กก.)</th>
+                                <td id="d2_produced"></td>
+                            </tr>
+                            <tr>
+                                <th class="table-light">% Yield</th>
+                                <td id="d2_yield"></td>
+                            </tr>
+                            <tr>
+                                <th class="table-light">จำนวนบรรจุภัณฑ์คงเหลือ</th>
+                                <td id="d2_remaining"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label small">จำนวนบรรจุภัณฑ์ที่ต้องการส่งออก </label>
+                            <input type="number" id="d2_exported" class="form-control form-control-sm text-end"
+                                placeholder="0" step="1" min="0" />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small">น้ำหนักสุทธิ (N.W.) ที่ส่งออก (กก.) </label>
+                            <input type="number" id="d2_nw" class="form-control form-control-sm text-end"
+                                placeholder="0.000" step="0.001" min="0" />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small text-muted"># ปริมาณที่ส่งออกตามบรรจุภัณฑ์ (กก.) <span class="text-primary">●</span></label>
+                            <input type="text" id="d2_qty_product" class="form-control form-control-sm text-end bg-light"
+                                readonly placeholder="0.000" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <!-- Footer Step 1 -->
+                <div id="rmbs2FooterSearch" class="d-flex gap-2 w-100 justify-content-end">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="ri ri-close-line me-1"></i> ยกเลิก
+                    </button>
+                    <button type="button" class="btn btn-primary" id="btnSelectRmbs2">
+                        <i class="ri ri-check-line me-1"></i> เลือกรายการ
+                    </button>
+                </div>
+                <!-- Footer Step 2 -->
+                <div id="rmbs2FooterDetail" class="d-none d-flex gap-2 w-100 justify-content-end">
+                    <button type="button" class="btn btn-secondary" id="btnBackToRmbs2Search">
+                        <i class="ri ri-arrow-left-line me-1"></i> ย้อนกลับ
+                    </button>
+                    <button type="button" class="btn btn-primary" id="btnConfirmAddRMBS2">
+                        <i class="ri ri-save-line me-1"></i> บันทึก
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Modal 3 -->
+
+<!-- ==================== Modal 4: แก้ไขน้ำหนัก ==================== -->
+<div class="modal fade" id="modalEditWeight" tabindex="-1" aria-labelledby="modalEditWeightLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEditWeightLabel">
+                    <i class="ri ri-pencil-line me-2"></i>แก้ไขน้ำหนักอื่นๆ
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="editWeightRowId" />
+                <table class="table table-bordered table-sm mb-3">
+                    <tbody>
+                        <tr>
+                            <th class="table-light" style="width:45%">หมายเลข RMBS1</th>
+                            <td id="ew_rmbs"></td>
+                        </tr>
+                        <tr>
+                            <th class="table-light">เลขที่ CC</th>
+                            <td id="ew_cc"></td>
+                        </tr>
+                        <tr>
+                            <th class="table-light">วันที่ตรวจสอบ CC</th>
+                            <td id="ew_ccdate"></td>
+                        </tr>
+                        <tr>
+                            <th class="table-light">ชื่อเรือ / ชะเรือ</th>
+                            <td id="ew_ship"></td>
+                        </tr>
+                        <tr>
+                            <th class="table-light">Catch Description</th>
+                            <td id="ew_species"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <label class="form-label small">น้ำหนักอื่นๆ (กก.) </label>
+                <input type="number" id="editWeightValue" class="form-control text-end"
+                    placeholder="0.000" step="0.001" min="0" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="ri ri-close-line me-1"></i> ยกเลิก
+                </button>
+                <button type="button" class="btn btn-primary" id="btnSaveEditWeight">
+                    <i class="ri ri-save-line me-1"></i> บันทึก
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Modal 4 -->
+
+<!-- ==================== Modal 5: แก้ไขผลิตภัณฑ์ที่ส่งออก (RMBS2) ==================== -->
+<div class="modal fade" id="modalEditRMBS2" tabindex="-1" aria-labelledby="modalEditRMBS2Label" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEditRMBS2Label">
+                    <i class="ri ri-pencil-line me-2"></i>แก้ไขผลิตภัณฑ์ที่ส่งออก (RMBS2)
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-sm mb-3">
+                    <tbody>
+                        <tr>
+                            <th class="table-light" style="width:45%">วันที่นำสัตว์น้ำมาแปรรูป</th>
+                            <td id="er2_date"></td>
+                        </tr>
+                        <tr>
+                            <th class="table-light">รหัสสายการผลิต</th>
+                            <td id="er2_line"></td>
+                        </tr>
+                        <tr>
+                            <th class="table-light">รหัสผลิตภัณฑ์</th>
+                            <td id="er2_code"></td>
+                        </tr>
+                        <tr>
+                            <th class="table-light">ชื่อผลิตภัณฑ์</th>
+                            <td id="er2_name"></td>
+                        </tr>
+                        <tr>
+                            <th class="table-light">ปริมาณสัตว์น้ำที่นำมาแปรรูป (กก.)</th>
+                            <td id="er2_produced"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-4">
+                        <label class="form-label small">จำนวนบรรจุภัณฑ์ที่ส่งออก </label>
+                        <input type="number" id="er2_exported" class="form-control form-control-sm text-end"
+                            placeholder="0" step="1" min="0" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small">น้ำหนักสุทธิ (N.W.) ที่ส่งออก (กก.) </label>
+                        <input type="number" id="er2_nw" class="form-control form-control-sm text-end"
+                            placeholder="0.000" step="0.001" min="0" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small text-muted"># ปริมาณที่ส่งออกตามบรรจุภัณฑ์ (กก.) <span class="text-primary">●</span></label>
+                        <input type="text" id="er2_qty_product" class="form-control form-control-sm text-end bg-light"
+                            readonly placeholder="0.000" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="ri ri-close-line me-1"></i> ยกเลิก
+                </button>
+                <button type="button" class="btn btn-primary" id="btnSaveEditRMBS2">
+                    <i class="ri ri-save-line me-1"></i> บันทึก
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Modal 5 -->
+
+<!-- ==================== Modal 6: เพิ่มหลักฐานประกอบ ==================== -->
+<div class="modal fade" id="modalAddEvidence" tabindex="-1" aria-labelledby="modalAddEvidenceLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAddEvidenceLabel">
+                    <i class="ri ri-file-add-line me-2"></i>เพิ่มหลักฐานประกอบ
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-3">
+                    <!-- หมวด 1: แหล่งที่มา / ประเภทเอกสาร -->
+                    <div class="col-md-6">
+                        <label class="form-label small">แหล่งที่มา </label>
+                        <select id="ev_source" class="form-select form-select-sm">
+                            <option value="">-- เลือกแหล่งที่มา --</option>
+                            <option value="inside">สายในระบบ [FSW]</option>
+                            <option value="outside">ภายนอกระบบ [FSW]</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small">ประเภทเอกสาร</label>
+                        <select id="ev_doctype" class="form-select form-select-sm">
+                            <option value="">-- เลือกประเภทเอกสาร --</option>
+                            <option value="backend">สายในระบบ [Backend]</option>
+                            <option value="backend-dof">ภายนอกระบบ [Backend DOF]</option>
+                        </select>
+                    </div>
+                    <div class="col-md-12">
+                        <label class="form-label small">ตัวเอกสาร </label>
+                        <select id="ev_document_kind" class="form-select form-select-sm">
+                            <option value="">-- เลือกตัวเอกสาร --</option>
+                            <option value="original">เอกสารตัวจริง</option>
+                            <option value="copy">เอกสารฉบับสำเนา</option>
+                        </select>
+                    </div>
+
+                    <!-- หมวด 3: ชื่อหลักฐาน / เลขที่ / ผู้ออก -->
+                    <div class="col-12">
+                        <label class="form-label small">หลักฐานประกอบ / ชื่อของ </label>
+                        <input type="text" id="ev_name" class="form-control form-control-sm" placeholder="ชื่อหลักฐาน / ชื่อของ" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small">เลขที่เอกสาร</label>
+                        <input type="text" id="ev_docno" class="form-control form-control-sm" placeholder="เลขที่เอกสาร" />
+                    </div>                     
+                    <div class="col-md-6">
+                        <label class="form-label small">ผู้ออกเอกสาร</label>
+                        <input type="text" id="ev_issuer" class="form-control form-control-sm" placeholder="ผู้ออกเอกสาร" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small">วันที่ออกเอกสาร</label>
+                        <div class="input-group">
+                            <input type="text" id="ev_issue_date" class="form-control form-control-sm flatpickr-date" placeholder="วว/ดด/ปปปป" />
+                            <span class="input-group-text px-2"><i class="ri ri-calendar-line"></i></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small">วันที่หมดอายุ / เทียบเท่า</label>
+                        <div class="input-group">
+                            <input type="text" id="ev_expire_date" class="form-control form-control-sm flatpickr-date" placeholder="วว/ดด/ปปปป" />
+                            <span class="input-group-text px-2"><i class="ri ri-calendar-line"></i></span>
+                        </div>
+                    </div>
+
+                    <!-- หมวด 4: แนบไฟล์ -->
+                    <div class="col-12">
+                        <label class="form-label small">แนบไฟล์เอกสาร</label>
+                        <input type="file" id="ev_file" class="form-control form-control-sm"
+                            accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" />
+                        <div class="form-text text-muted text-small">รองรับ PDF, JPG, PNG, DOC (ขนาดไม่เกิน 10 MB)</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="ri ri-close-line me-1"></i> ยกเลิก
+                </button>
+                <button type="button" class="btn btn-primary" id="btnConfirmAddEvidence">
+                    <i class="ri ri-save-line me-1"></i> บันทึก
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Modal 6 -->
+
+@section PageScripts {
+<script>
+    $(document).ready(function() {
+        // ── Select2 ──
+        $('.select2').select2({ width: '100%' });
+
+        // ── Flatpickr ──
+        function initFlatpickr(el) {
+            if (el && !el._flatpickr) {
+                flatpickr(el, {
+                    dateFormat: 'd/m/Y',
+                    allowInput: true,
+                    appendTo: document.body,
+                    onReady: function(selectedDates, dateStr, instance) {
+                        instance.calendarContainer.style.zIndex = '9999';
+                    }
+                });
+            }
+        }
+        document.querySelectorAll('.flatpickr-date').forEach(function(el) { initFlatpickr(el); });
+
+        $('#modalSearchRMBS1').on('shown.bs.modal', function() {
+            $(this).find('.flatpickr-date').each(function() { initFlatpickr(this); });
+        });
+        $('#modalAddRMBS2').on('shown.bs.modal', function() {
+            $(this).find('.flatpickr-date').each(function() { initFlatpickr(this); });
+            initFlatpickr(document.getElementById('searchRmbs2Date'));
+        });
+
+        // ── Unique row ID counter ──
+        var _rowCounter = 10;
+        function nextRowId() { return 'r' + (++_rowCounter); }
+
+        // ── Reindex RMBS1 main row numbers ──
+        function reindexRows() {
+            var n = 0;
+            $('#productionTbody .rmbs1-main-row').each(function() {
+                n++;
+                $(this).find('td:nth-child(2)').text(n);
+            });
+        }
+
+        // ── Reindex RMBS2 rows inside a sub-table ──
+        function reindexRmbs2(tableId) {
+            $('#' + tableId + ' tbody tr').each(function(i) {
+                $(this).find('td:first').text(i + 1);
+            });
+        }
+
+        // ── Calculate total RMBS1 weight ──
+        function recalcTotal() {
+            var total = 0;
+            $('#productionTbody .rmbs1-main-row').each(function() {
+                total += parseFloat($(this).data('weight')) || 0;
+            });
+            $('#totalWeightSum').text(total.toLocaleString('th-TH', { minimumFractionDigits: 3 }));
+        }
+        recalcTotal();
+
+        // ── Toggle sub-row (expand/collapse) ──
+        $(document).on('click', '.btn-toggle-sub', function() {
+            var target = $(this).data('target');
+            var $sub = $('#' + target);
+            var $icon = $(this).find('i');
+            if ($sub.hasClass('d-none')) {
+                $sub.removeClass('d-none');
+                $icon.removeClass('ri-arrow-right-s-line').addClass('ri-arrow-down-s-line');
+            } else {
+                $sub.addClass('d-none');
+                $icon.removeClass('ri-arrow-down-s-line').addClass('ri-arrow-right-s-line');
+            }
+        });
+
+        // ── Click RMBS1 result row to select ──
+        $(document).on('click', '.rmbs1-result-row', function() {
+            $('.rmbs1-result-row').removeClass('table-active');
+            $(this).addClass('table-active');
+            $(this).find('input[type=radio]').prop('checked', true);
+        });
+
+        // ── เลือกรายการ RMBS1 → Modal 2 ──
+        var _selectedData = {};
+        $('#btnSelectRmbs1').on('click', function() {
+            var $sel = $('input[name=rmbs1Select]:checked').closest('tr');
+            if ($sel.length === 0) { alert('กรุณาเลือกรายการก่อน'); return; }
+            _selectedData = {
+                rmbs:    $sel.data('rmbs'),
+                cc:      $sel.data('cc'),
+                ccdate:  $sel.data('ccdate'),
+                ship:    $sel.data('ship'),
+                species: $sel.data('species'),
+                qty:     $sel.data('qty')
+            };
+            $('#confirm_rmbs').text(_selectedData.rmbs);
+            $('#confirm_cc').text(_selectedData.cc);
+            $('#confirm_ccdate').text(_selectedData.ccdate);
+            $('#confirm_ship').text(_selectedData.ship);
+            $('#confirm_species').text(_selectedData.species);
+            $('#confirm_qty').text(_selectedData.qty);
+            $('#confirm_other_weight').val('');
+            bootstrap.Modal.getInstance(document.getElementById('modalSearchRMBS1')).hide();
+            new bootstrap.Modal(document.getElementById('modalConfirmRMBS1')).show();
+        });
+
+        // ── ย้อนกลับ ──
+        $('#btnBackToSearch').on('click', function() {
+            bootstrap.Modal.getInstance(document.getElementById('modalConfirmRMBS1')).hide();
+            new bootstrap.Modal(document.getElementById('modalSearchRMBS1')).show();
+        });
+
+        // ── บันทึก RMBS1 → เพิ่มแถวใน main table ──
+        $('#btnConfirmAddRow').on('click', function() {
+            var weight = parseFloat($('#confirm_other_weight').val()) || 0;
+            if (weight <= 0) { alert('กรุณากรอกน้ำหนักให้ถูกต้อง'); return; }
+            var rowId = nextRowId();
+            var subId = 'sub-' + rowId;
+            var weightFmt = weight.toLocaleString('th-TH', { minimumFractionDigits: 3 });
+            var rmbs = _selectedData.rmbs;
+
+            var $mainRow = $(`<tr class="rmbs1-main-row"
+                    data-row-id="${rowId}"
+                    data-rmbs="${rmbs}"
+                    data-cc="${_selectedData.cc}"
+                    data-ccdate="${_selectedData.ccdate}"
+                    data-ship="${_selectedData.ship}"
+                    data-species="${_selectedData.species}"
+                    data-weight="${weight}">
+                <td class="text-center">
+                    <button type="button" class="btn btn-sm btn-link p-0 btn-toggle-sub"
+                        data-target="${subId}" title="แสดง/ซ่อนผลิตภัณฑ์">
+                        <i class="ri ri-arrow-right-s-line fs-5 text-primary"></i>
+                    </button>
+                </td>
+                <td class="text-center text-muted small"></td>
+                <td class="text-primary fw-semibold">${rmbs}</td>
+                <td>${_selectedData.cc}</td>
+                <td>${_selectedData.ccdate}</td>
+                <td>${_selectedData.ship}</td>
+                <td>${_selectedData.species}</td>
+                <td class="text-end" id="weight-${rowId}">${weightFmt}</td>
+                <td class="text-center">
+                    <div class="d-flex gap-1 justify-content-center">
+                        <button type="button"
+                            class="btn btn-sm btn-icon btn-outline-warning btn-edit-weight"
+                            data-row-id="${rowId}" title="แก้ไขน้ำหนัก">
+                            <i class="ri ri-pencil-line text-warning"></i>
+                        </button>
+                        <button type="button"
+                            class="btn btn-sm btn-icon btn-outline-danger btn-remove-row"
+                            data-target="${subId}" title="ลบรายการ">
+                            <i class="ri ri-delete-bin-line text-danger"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>`);
+
+            var $subRow = $(`<tr class="rmbs1-sub-row d-none" id="${subId}">
+                <td colspan="9" class="p-0 border-0">
+                    <div class="border-start border-4 border-primary ms-4 ps-3 pe-3 pb-3 pt-2" style="background-color:var(--bs-table-header-bg-color);">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <div class="d-flex align-items-center">
+                                <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                    <i class="ri ri-box-3-line fs-5"></i>
+                                </span>
+                                <span class="fw-semibold text-primary">ข้อมูลผลิตภัณฑ์ที่ส่งออก (RMBS2) — RMBS1: ${rmbs}</span>
+                            </div>
+                            <button type="button" class="btn btn-outline-primary btn-sm btn-add-rmbs2"
+                                data-parent-id="${rowId}" data-parent-rmbs="${rmbs}">
+                                <i class="ri ri-add-line me-1"></i> เพิ่มผลิตภัณฑ์
+                            </button>
+                        </div>
+                        <table class="table table-bordered table-sm table-hover mb-0 bg-white rmbs2-table small" id="rmbs2-${rowId}">
+                            <thead class="text-center">
+                                <tr>
+                                    <th style="width:2rem;">#</th>
+                                    <th>วันที่นำสัตว์น้ำมาแปรรูป</th>
+                                    <th>รหัสสายการผลิต</th>
+                                    <th>รหัสผลิตภัณฑ์</th>
+                                    <th>ชื่อผลิตภัณฑ์</th>
+                                    <th class="text-end">จำนวนกิโลผลิต</th>
+                                    <th class="text-end">จำนวนที่ส่งออก</th>
+                                    <th class="text-end">ปริมาณที่ส่งออกตามปริมาณภัณฑ์</th>
+                                    <th class="text-end">N.W.</th>
+                                    <th style="width:3rem;"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="text-center text-muted">
+                                    <td colspan="10" class="py-2 small fst-italic">ยังไม่มีรายการ — กด "เพิ่มผลิตภัณฑ์"</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </td>
+            </tr>`);
+
+            $('#productionTbody').append($mainRow).append($subRow);
+            reindexRows();
+            recalcTotal();
+            bootstrap.Modal.getInstance(document.getElementById('modalConfirmRMBS1')).hide();
+            $('input[name=rmbs1Select]').prop('checked', false);
+            $('.rmbs1-result-row').removeClass('table-active');
+        });
+
+        // ── แก้ไขน้ำหนัก RMBS1 ──
+        $(document).on('click', '.btn-edit-weight', function() {
+            var rowId = $(this).data('row-id');
+            var $row = $(this).closest('tr');
+            $('#editWeightRowId').val(rowId);
+            $('#ew_rmbs').text($row.data('rmbs'));
+            $('#ew_cc').text($row.data('cc'));
+            $('#ew_ccdate').text($row.data('ccdate'));
+            $('#ew_ship').text($row.data('ship'));
+            $('#ew_species').text($row.data('species'));
+            $('#editWeightValue').val($row.data('weight'));
+            new bootstrap.Modal(document.getElementById('modalEditWeight')).show();
+            setTimeout(function() { $('#editWeightValue').select(); }, 300);
+        });
+
+        $('#btnSaveEditWeight').on('click', function() {
+            var rowId = $('#editWeightRowId').val();
+            var newWeight = parseFloat($('#editWeightValue').val()) || 0;
+            if (newWeight <= 0) { alert('กรุณากรอกน้ำหนักให้ถูกต้อง'); return; }
+            var $row = $('[data-row-id="' + rowId + '"]');
+            var weightFmt = newWeight.toLocaleString('th-TH', { minimumFractionDigits: 3 });
+            $row.data('weight', newWeight);
+            $('#weight-' + rowId).text(weightFmt);
+            recalcTotal();
+            bootstrap.Modal.getInstance(document.getElementById('modalEditWeight')).hide();
+        });
+
+        // ── ลบ RMBS1 row (และ sub-row) ──
+        $(document).on('click', '.btn-remove-row', function() {
+            var subId = $(this).data('target');
+            $('#' + subId).remove();
+            $(this).closest('tr').remove();
+            reindexRows();
+            recalcTotal();
+        });
+
+        // ── เพิ่มผลิตภัณฑ์ (RMBS2) — เปิด Modal แล้ว reset กลับ Step 1 ──
+        var _rmbs2Target = '';
+        var _rmbs2NwUnit = 0;
+        $(document).on('click', '.btn-add-rmbs2', function() {
+            _rmbs2Target = 'rmbs2-' + $(this).data('parent-id');
+            var parentRmbs = $(this).data('parent-rmbs');
+            $('#rmbs2ParentLabel').text('RMBS1: ' + parentRmbs);
+            // Reset to Step 1
+            $('#rmbs2StepSearch').removeClass('d-none');
+            $('#rmbs2StepDetail').addClass('d-none');
+            $('#rmbs2FooterSearch').removeClass('d-none');
+            $('#rmbs2FooterDetail').addClass('d-none');
+            $('input[name=rmbs2Select]').prop('checked', false);
+            $('.rmbs2-search-row').removeClass('table-active');
+            $('#searchRmbs2Code, #searchRmbs2Name, #searchRmbs2Date').val('');
+            $('#d2_exported, #d2_nw').val('');
+            $('#d2_qty_product').val('');
+            new bootstrap.Modal(document.getElementById('modalAddRMBS2')).show();
+        });
+
+        // ── คลิก RMBS2 result row ──
+        $(document).on('click', '.rmbs2-search-row', function() {
+            $('.rmbs2-search-row').removeClass('table-active');
+            $(this).addClass('table-active');
+            $(this).find('input[type=radio]').prop('checked', true);
+        });
+
+        // ── เลือกรายการ RMBS2 → Step 2 ──
+        $('#btnSelectRmbs2').on('click', function() {
+            var $sel = $('input[name=rmbs2Select]:checked').closest('tr');
+            if ($sel.length === 0) { alert('กรุณาเลือกรายการก่อน'); return; }
+            _rmbs2NwUnit = parseFloat($sel.data('nw-unit')) || 0;
+            $('#d2_date').text($sel.data('date'));
+            $('#d2_line').text($sel.data('line'));
+            $('#d2_code').text($sel.data('code'));
+            $('#d2_name').text($sel.data('name'));
+            $('#d2_produced').text($sel.data('produced'));
+            $('#d2_yield').text($sel.data('yield'));
+            $('#d2_remaining').text($sel.data('remaining'));
+            $('#d2_exported, #d2_nw').val('');
+            $('#d2_qty_product').val('');
+            $('#rmbs2StepSearch').addClass('d-none');
+            $('#rmbs2StepDetail').removeClass('d-none');
+            $('#rmbs2FooterSearch').addClass('d-none');
+            $('#rmbs2FooterDetail').removeClass('d-none');
+        });
+
+        // ── ย้อนกลับ Step 1 ──
+        $('#btnBackToRmbs2Search').on('click', function() {
+            $('#rmbs2StepDetail').addClass('d-none');
+            $('#rmbs2StepSearch').removeClass('d-none');
+            $('#rmbs2FooterDetail').addClass('d-none');
+            $('#rmbs2FooterSearch').removeClass('d-none');
+        });
+
+        // ── Auto-calc ปริมาณที่ส่งออกตามบรรจุภัณฑ์ = จำนวนบรรจุ × N.W. ต่อหน่วย ──
+        $(document).on('input', '#d2_exported', function() {
+            var qty = parseFloat($(this).val()) || 0;
+            var qtyProduct = qty * _rmbs2NwUnit;
+            $('#d2_qty_product').val(qtyProduct > 0 ? qtyProduct.toLocaleString('th-TH', { minimumFractionDigits: 3 }) : '');
+        });
+
+        // ── บันทึก RMBS2 ──
+        $('#btnConfirmAddRMBS2').on('click', function() {
+            var exported = parseFloat($('#d2_exported').val()) || 0;
+            var nw       = parseFloat($('#d2_nw').val()) || 0;
+            if (exported <= 0 || nw <= 0) {
+                alert('กรุณากรอกจำนวนบรรจุภัณฑ์และน้ำหนักสุทธิให้ถูกต้อง');
+                return;
+            }
+            var fmt = function(v) {
+                var n = parseFloat(v) || 0;
+                return n.toLocaleString('th-TH', { minimumFractionDigits: 3 });
+            };
+            var qtyProduct = exported * _rmbs2NwUnit;
+            var $tbody = $('#' + _rmbs2Target + ' tbody');
+            $tbody.find('tr.text-muted').remove();
+            var rowNum = $tbody.find('tr').length + 1;
+            var $row = $(`<tr
+                data-date="${$('#d2_date').text()}"
+                data-line="${$('#d2_line').text()}"
+                data-code="${$('#d2_code').text()}"
+                data-name="${$('#d2_name').text()}"
+                data-produced="${$('#d2_produced').text()}"
+                data-nw-unit="${_rmbs2NwUnit}">
+                <td class="text-center text-muted small">${rowNum}</td>
+                <td>${$('#d2_date').text()}</td>
+                <td>${$('#d2_line').text()}</td>
+                <td>${$('#d2_code').text()}</td>
+                <td>${$('#d2_name').text()}</td>
+                <td class="text-end">${$('#d2_produced').text()}</td>
+                <td class="text-end">${fmt(exported)}</td>
+                <td class="text-end">${fmt(qtyProduct)}</td>
+                <td class="text-end">${fmt(nw)}</td>
+                <td class="text-center">
+                    <div class="d-flex gap-1 justify-content-center">
+                        <button type="button" class="btn btn-sm btn-icon btn-outline-warning btn-edit-rmbs2" title="แก้ไข">
+                            <i class="ri ri-pencil-line text-warning"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-icon btn-outline-danger btn-remove-rmbs2" title="ลบรายการ">
+                            <i class="ri ri-delete-bin-line text-danger"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>`);
+            $tbody.append($row);
+            bootstrap.Modal.getInstance(document.getElementById('modalAddRMBS2')).hide();
+        });
+
+        // ── แก้ไขผลิตภัณฑ์ RMBS2 ──
+        var _editRmbs2Row = null;
+        $(document).on('click', '.btn-edit-rmbs2', function() {
+            _editRmbs2Row = $(this).closest('tr');
+            var $row = _editRmbs2Row;
+            $('#er2_date').text($row.data('date'));
+            $('#er2_line').text($row.data('line'));
+            $('#er2_code').text($row.data('code'));
+            $('#er2_name').text($row.data('name'));
+            $('#er2_produced').text($row.data('produced'));
+            var expVal = parseFloat($row.find('td:nth-child(7)').text().replace(/,/g, '')) || '';
+            var nwVal  = parseFloat($row.find('td:nth-child(9)').text().replace(/,/g, '')) || '';
+            $('#er2_exported').val(expVal);
+            $('#er2_nw').val(nwVal);
+            var nwUnit = parseFloat($row.data('nw-unit')) || 0;
+            var qp = (parseFloat(expVal) || 0) * nwUnit;
+            $('#er2_qty_product').val(qp > 0 ? qp.toLocaleString('th-TH', { minimumFractionDigits: 3 }) : '');
+            new bootstrap.Modal(document.getElementById('modalEditRMBS2')).show();
+            setTimeout(function() { $('#er2_exported').select(); }, 300);
+        });
+
+        $(document).on('input', '#er2_exported', function() {
+            if (!_editRmbs2Row) return;
+            var qty = parseFloat($(this).val()) || 0;
+            var nwUnit = parseFloat(_editRmbs2Row.data('nw-unit')) || 0;
+            var qp = qty * nwUnit;
+            $('#er2_qty_product').val(qp > 0 ? qp.toLocaleString('th-TH', { minimumFractionDigits: 3 }) : '');
+        });
+
+        $('#btnSaveEditRMBS2').on('click', function() {
+            var exported = parseFloat($('#er2_exported').val()) || 0;
+            var nw = parseFloat($('#er2_nw').val()) || 0;
+            if (exported <= 0 || nw <= 0) { alert('กรุณากรอกจำนวนบรรจุภัณฑ์และน้ำหนักสุทธิ์ให้ถูกต้อง'); return; }
+            var nwUnit = parseFloat(_editRmbs2Row.data('nw-unit')) || 0;
+            var qtyProduct = exported * nwUnit;
+            var fmt = function(v) { return (parseFloat(v) || 0).toLocaleString('th-TH', { minimumFractionDigits: 3 }); };
+            _editRmbs2Row.find('td:nth-child(7)').text(fmt(exported));
+            _editRmbs2Row.find('td:nth-child(8)').text(fmt(qtyProduct));
+            _editRmbs2Row.find('td:nth-child(9)').text(fmt(nw));
+            bootstrap.Modal.getInstance(document.getElementById('modalEditRMBS2')).hide();
+        });
+
+        // ── ลบ RMBS2 row ──
+        $(document).on('click', '.btn-remove-rmbs2', function() {
+            var $tbody = $(this).closest('tbody');
+            var tableId = $(this).closest('table').attr('id');
+            $(this).closest('tr').remove();
+            reindexRmbs2(tableId);
+            if ($tbody.find('tr').length === 0) {
+                $tbody.append('<tr class="text-center text-muted"><td colspan="10" class="py-2 small fst-italic">ยังไม่มีรายการ — กด "เพิ่มผลิตภัณฑ์"</td></tr>');
+            }
+        });
+
+        // ── Tab 3: Evidence ──
+        function reindexEvidence() {
+            $('#evidenceTbody tr').each(function(i) {
+                $(this).find('td:first').text(i + 1);
+            });
+        }
+
+        // init flatpickr on Modal 6
+        $('#modalAddEvidence').on('shown.bs.modal', function() {
+            initFlatpickr(document.getElementById('ev_issue_date'));
+            initFlatpickr(document.getElementById('ev_expire_date'));
+            // reset fields
+            $('#ev_name, #ev_docno, #ev_issuer, #ev_issue_date, #ev_expire_date').val('');
+            $('#ev_source, #ev_doctype, #ev_document_kind').val('');
+            $('#ev_file').val('');
+        });
+
+        // Icon-line maps
+        var _evSourceMap  = {
+            'inside':          { cls: 'bg-label-warning',   icon: 'ri-file-list-line',    lbl: 'สายในระบบ [FSW]' },
+            'outside':         { cls: 'bg-label-success',   icon: 'ri-file-check-line',   lbl: 'ภายนอกระบบ [FSW]' }
+        };
+        var _evDoctypeMap = {
+            'backend':         { cls: 'bg-label-primary',   icon: 'ri-government-line',   lbl: 'Backend' },
+            'backend-dof':     { cls: 'bg-label-info',      icon: 'ri-building-line',     lbl: 'Backend DOF' }
+        };
+        var _evDocumentKindMap = {
+            'original':        { cls: 'bg-label-success',   icon: 'ri-file-paper-2-line', lbl: 'เอกสารตัวจริง' },
+            'copy':            { cls: 'bg-label-secondary', icon: 'ri-file-copy-line',    lbl: 'เอกสารฉบับสำเนา' }
+        };
+        function evBadgeHtml(map, val, fieldLabel) {
+            if (!val || !map[val]) return '';
+            var m = map[val];
+            return '<div class="small text-muted d-flex align-items-center gap-1 mb-1"><span class="badge ' + m.cls + ' rounded-circle d-inline-flex align-items-center justify-content-center flex-shrink-0" style="width:1.4rem;height:1.4rem;"><i class="ri ' + m.icon + '" style="font-size:0.65rem;"></i></span><span class="fw-semibold">' + fieldLabel + ' :</span> ' + m.lbl + '</div>';
+        }
+
+        $('#btnConfirmAddEvidence').on('click', function() {
+            var name = $.trim($('#ev_name').val());
+            if (!name) { alert('กรุณากรอกชื่อหลักฐานประกอบ'); return; }
+            var sourceVal = $('#ev_source').val() || '';
+            if (!sourceVal) { alert('กรุณาเลือกแหล่งที่มา'); return; }
+            var doctypeVal  = $('#ev_doctype').val() || '';
+            var documentKindVal = $('#ev_document_kind').val() || '';
+            if (!documentKindVal) { alert('กรุณาเลือกตัวเอกสาร'); return; }
+            var docno    = $('#ev_docno').val() || '—';
+            var issuer   = $('#ev_issuer').val() || '—';
+            var issuedt  = $('#ev_issue_date').val() || '—';
+            var expdt    = $('#ev_expire_date').val() || '—';
+            var fileName = '';
+            var fileEl   = document.getElementById('ev_file');
+            if (fileEl && fileEl.files && fileEl.files.length > 0) {
+                fileName = fileEl.files[0].name;
+            }
+            var metaBadges = evBadgeHtml(_evSourceMap, sourceVal, 'แหล่งที่มา')
+                           + evBadgeHtml(_evDoctypeMap, doctypeVal, 'ประเภทเอกสาร')
+                           + evBadgeHtml(_evDocumentKindMap, documentKindVal, 'ตัวเอกสาร');
+            var rowNum = $('#evidenceTbody tr').length + 1;
+            var $row = $(`<tr>
+                <td class="text-center text-muted small">${rowNum}</td>
+                <td>
+                    <div class="fw-semibold text-primary">${name}</div>
+                    ${metaBadges ? `<div class="mt-1">${metaBadges}</div>` : ''}
+                    ${fileName ? `<div class="text-muted small mt-1"><i class="ri ri-attachment-2 me-1"></i>${fileName}</div>` : ''}
+                </td>
+                <td>${docno}</td>
+                <td>${issuedt}</td>
+                <td>${expdt}</td>
+                <td>${issuer}</td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-sm btn-icon btn-outline-danger btn-remove-evidence" title="ลบรายการ">
+                        <i class="ri ri-delete-bin-line"></i>
+                    </button>
+                </td>
+            </tr>`);
+            $('#evidenceTbody').append($row);
+            bootstrap.Modal.getInstance(document.getElementById('modalAddEvidence')).hide();
+        });
+
+        $(document).on('click', '.btn-remove-evidence', function() {
+            $(this).closest('tr').remove();
+            reindexEvidence();
+        });
+    });
+</script>
+}

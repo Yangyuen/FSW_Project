@@ -1,0 +1,395 @@
+@{
+    ViewData["Title"] = "การควบคุมปริมาณวัตถุดิบสัตว์นํ้านำเข้า (RMBS1:PS)";
+
+    string ToThaiDate(DateTime date) => date.AddYears(543).ToString("dd/MM/yyyy");
+
+    var imdRecords = new[]
+    {
+        new
+        {
+            RowNo = 1,
+            TransactionDate = new DateTime(2018, 8, 17, 11, 14, 0),
+            Rmbs1Number = "10611280211800000561",
+            ImdNumber = "235012013161000086",
+            CcNumber = "ACC817FR1048",
+            ValidationDate = new DateTime(2018, 7, 30),
+            VesselName = "MARTINEZ472",
+            RegistrationNo = "PNG-REG-472",
+            FishingStartDate = new DateTime(2018, 5, 1),
+            FishingEndDate = new DateTime(2018, 5, 31),
+            GearType = "อวนล้อมจับ (Purse seine)",
+            CatchDescription = "ACC817FR1048",
+            FisheryProducts = "0303.49.00 000/KGM [F020076S03030001/KGM]=ปลาโอสคิปแจ็ก ทั้งตัว แช่แข็ง",
+            QtyInCC = 0m,
+            QtyEnteringFactory = 60000m,
+            DocumentType = "cc",
+            SourceText = "ภายนอกระบบ [FSW]",
+            CertificationStatusText = "CCSCC มาภายหลัง",
+            CertificationStatusClass = "bg-label-danger",
+            CertificationStatusIcon = "ri-file-warning-line",
+            StatusText = "รออนุมัติ",
+            StatusClass = "bg-label-warning"
+        },
+        new
+        {
+            RowNo = 2,
+            TransactionDate = new DateTime(2018, 8, 17, 11, 14, 0),
+            Rmbs1Number = "10611280211800000560",
+            ImdNumber = "235012013161000086",
+            CcNumber = "ACC817FR1056",
+            ValidationDate = new DateTime(2018, 7, 30),
+            VesselName = "AS PER CC No.MARTINEZ472",
+            RegistrationNo = "PNG-REG-472",
+            FishingStartDate = new DateTime(2018, 5, 1),
+            FishingEndDate = new DateTime(2018, 5, 31),
+            GearType = "อวนล้อมจับ (Purse seine)",
+            CatchDescription = "ACC817FR1056",
+            FisheryProducts = "0303.41.00 000/KGM [F020071S10030001/KGM]=ปลาทูน่าอัลบาคอร์ ทั้งตัว แช่แข็ง",
+            QtyInCC = 0m,
+            QtyEnteringFactory = 240000m,
+            DocumentType = "cc",
+            SourceText = "ภายนอกระบบ [FSW]",
+            CertificationStatusText = "CCSCC มาแล้ว",
+            CertificationStatusClass = "bg-label-success",
+            CertificationStatusIcon = "ri-file-check-line",
+            StatusText = "อนุมัติแล้ว",
+            StatusClass = "bg-label-success"
+        }
+    };
+}
+
+@section VendorStyles {
+<link rel="stylesheet" href="~/vendor/libs/flatpickr/flatpickr.css" />
+}
+
+@section PageStyles {
+<style>
+    .imd-table {
+        font-size: 0.78rem;
+    }
+
+    .imd-table th,
+    .imd-table td {
+        padding: 0.45rem 0.5rem;
+        vertical-align: middle;
+        line-height: 1.3;
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    .imd-table thead th {
+        word-break: keep-all;
+        overflow-wrap: normal;
+    }
+
+    .imd-table .badge {
+        font-size: 0.68rem;
+    }
+
+    .imd-table .btn-icon {
+        width: 1.65rem;
+        height: 1.65rem;
+    }
+
+    .doc-type-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 50%;
+        font-size: 0.55rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        flex-shrink: 0;
+        line-height: 1;
+    }
+
+    .doc-type-cc   { background: #28a745; color: #fff; }
+    .doc-type-scc  { background: #0d6efd; color: #fff; }
+    .doc-type-other { background: #6c757d; color: #fff; }
+
+    .filter-form-label {
+        font-size: 0.8rem;
+        font-weight: 500;
+        margin-bottom: 0.25rem;
+    }
+
+    .btn-square {
+        width: 40px;
+        height:  40px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .filter-range-row {
+        display: flex;
+        align-items: end;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .filter-range-row .range-separator {
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: var(--bs-secondary-color);
+        padding-bottom: 0.45rem;
+    }
+
+    .filter-range-row .range-actions {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+</style>
+}
+
+@section VendorScripts {
+<script src="~/vendor/libs/flatpickr/flatpickr.js"></script>
+}
+
+@section PageScripts {
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        ['filterLogDateFrom', 'filterLogDateTo', 'filterFishingDateFrom', 'filterFishingDateTo'].forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el) {
+                flatpickr(el, { dateFormat: 'd/m/Y', allowInput: true });
+            }
+        });
+
+        if (window.bootstrap && bootstrap.Tooltip) {
+            document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
+                new bootstrap.Tooltip(el);
+            });
+        }
+
+        function parseDateInput(value, endOfDay) {
+            if (!value) return null;
+            var parts = value.split('/');
+            if (parts.length !== 3) return null;
+            var d = parseInt(parts[0], 10);
+            var m = parseInt(parts[1], 10) - 1;
+            var y = parseInt(parts[2], 10);
+            var dt = new Date(y, m, d, endOfDay ? 23 : 0, endOfDay ? 59 : 0, endOfDay ? 59 : 0);
+            return Number.isNaN(dt.getTime()) ? null : dt;
+        }
+
+        function filterRows() {
+            var rmbs1No = (document.getElementById('filterRmbs1Number').value || '').trim().toLowerCase();
+            var imdNo = (document.getElementById('filterImdNumber').value || '').trim().toLowerCase();
+            var ccNo = (document.getElementById('filterCcNumber').value || '').trim().toLowerCase();
+            var vessel = (document.getElementById('filterVessel').value || '').trim().toLowerCase();
+            var registrationNo = (document.getElementById('filterRegistrationNo').value || '').trim().toLowerCase();
+            var logFromDate = parseDateInput(document.getElementById('filterLogDateFrom').value, false);
+            var logToDate = parseDateInput(document.getElementById('filterLogDateTo').value, true);
+            var logExcludeRange = document.getElementById('filterLogDateExclude').checked;
+            var fishingFromDate = parseDateInput(document.getElementById('filterFishingDateFrom').value, false);
+            var fishingToDate = parseDateInput(document.getElementById('filterFishingDateTo').value, true);
+
+            var rows = document.querySelectorAll('#imdTableBody tr[data-row]');
+            var visible = 0;
+
+            rows.forEach(function (row) {
+                var txDate = new Date(row.dataset.txDate);
+                var fishingStart = new Date(row.dataset.fishingStartDate);
+                var fishingEnd = new Date(row.dataset.fishingEndDate);
+                var inLogRange = (!logFromDate || txDate >= logFromDate) && (!logToDate || txDate <= logToDate);
+                var inFishingRange = (!fishingFromDate || fishingStart >= fishingFromDate) && (!fishingToDate || fishingEnd <= fishingToDate);
+                var match =
+                    (!rmbs1No || (row.dataset.rmbs1Number || '').toLowerCase().includes(rmbs1No)) &&
+                    (!imdNo || (row.dataset.imdNumber || '').toLowerCase().includes(imdNo)) &&
+                    (!ccNo || (row.dataset.ccNumber || '').toLowerCase().includes(ccNo)) &&
+                    (!vessel || (row.dataset.vessel || '').toLowerCase().includes(vessel)) &&
+                    (!registrationNo || (row.dataset.registrationNo || '').toLowerCase().includes(registrationNo)) &&
+                    ((!logFromDate && !logToDate) || (logExcludeRange ? !inLogRange : inLogRange)) &&
+                    ((!fishingFromDate && !fishingToDate) || inFishingRange);
+
+                row.classList.toggle('d-none', !match);
+                if (match) visible++;
+            });
+
+            document.getElementById('imdTableEmpty').classList.toggle('d-none', visible !== 0);
+        }
+
+        document.getElementById('btnSearch').addEventListener('click', filterRows);
+        document.getElementById('btnReset').addEventListener('click', function () {
+            ['filterRmbs1Number', 'filterImdNumber', 'filterCcNumber', 'filterVessel', 'filterRegistrationNo', 'filterLogDateFrom', 'filterLogDateTo', 'filterFishingDateFrom', 'filterFishingDateTo'].forEach(function (id) {
+                document.getElementById(id).value = '';
+            });
+            document.getElementById('filterLogDateExclude').checked = false;
+            filterRows();
+        });
+
+        document.getElementById('filterLogDateExclude').addEventListener('change', filterRows);
+
+        ['filterRmbs1Number', 'filterImdNumber', 'filterCcNumber', 'filterVessel', 'filterRegistrationNo', 'filterLogDateFrom', 'filterLogDateTo', 'filterFishingDateFrom', 'filterFishingDateTo'].forEach(function (id) {
+            document.getElementById(id).addEventListener('keydown', function (e) {
+                if (e.key === 'Enter') { e.preventDefault(); filterRows(); }
+            });
+        });
+    });
+</script>
+}
+
+@* ===== Content ===== *@
+<h4 class="mb-1">การควบคุมปริมาณวัตถุดิบสัตว์นํ้านำเข้า (RMBS1:PS)</h4>
+<p class="mb-1">แสดงรายการการควบคุมปริมาณวัตถุดิบสัตว์นํ้านำเข้า (RMBS1:PS)</p>
+
+<nav aria-label="breadcrumb" class="mb-6">
+    <ol class="breadcrumb breadcrumb-style1" style="--bs-breadcrumb-divider: '>'; font-size: 0.75rem;">
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("IndexAdjustRMBS1PS", "ImportAdjustment")" class="text-primary fw-semibold">การควบคุมปริมาณวัตถุดิบสัตว์นํ้านำเข้า (RMBS1:PS)</a>
+        </li>
+    </ol>
+</nav>
+
+<!-- Filter card -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h5 class="card-title mb-0">ค้นหารายการ</h5>
+    </div>
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="col-md-6 col-xl-4">
+                <label for="filterRmbs1Number" class="form-label filter-form-label">เลขที่ RMBS1</label>
+                <input type="text" id="filterRmbs1Number" class="form-control form-control-sm" placeholder="ระบุเลขที่ RMBS1" />
+            </div>
+            <div class="col-md-6 col-xl-4">
+                <label for="filterImdNumber" class="form-label filter-form-label">เลขที่ IMD</label>
+                <input type="text" id="filterImdNumber" class="form-control form-control-sm" placeholder="ระบุเลขที่ IMD" />
+            </div>
+            <div class="col-md-6 col-xl-4">
+                <label for="filterCcNumber" class="form-label filter-form-label">เลขที่ Catch Certificate</label>
+                <input type="text" id="filterCcNumber" class="form-control form-control-sm" placeholder="ระบุเลขที่ Catch Certificate" />
+            </div>
+            <div class="col-md-6 col-xl-4">
+                <label for="filterVessel" class="form-label filter-form-label">ชื่อเรือประมง</label>
+                <input type="text" id="filterVessel" class="form-control form-control-sm" placeholder="ระบุชื่อเรือประมง" />
+            </div>
+            <div class="col-md-6 col-xl-4">
+                <label for="filterRegistrationNo" class="form-label filter-form-label">เลขทะเบียนเรือ</label>
+                <input type="text" id="filterRegistrationNo" class="form-control form-control-sm" placeholder="ระบุเลขทะเบียนเรือ" />
+            </div>
+            <div class="col-12">
+                <div class="row g-2 align-items-end">
+                    <div class="col-12 col-md-4">
+                        <label class="form-label filter-form-label">ช่วงวันที่บันทึก</label>
+                        <input type="text" id="filterLogDateFrom" class="form-control form-control-sm" placeholder="วว/ดด/ปปปป" />
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <label for="filterLogDateTo" class="form-label filter-form-label">ถึงวันที่</label>
+                        <input type="text" id="filterLogDateTo" class="form-control form-control-sm" placeholder="วว/ดด/ปปปป" />
+                    </div>
+                    <div class="col-auto">
+                        <div class="form-check mb-1">
+                            <input class="form-check-input" type="checkbox" id="filterLogDateExclude" />
+                            <label class="form-check-label small" for="filterLogDateExclude">ไม่อยู่ในช่วง</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="row g-2 align-items-end">
+                    <div class="col-12 col-md-4">
+                        <label class="form-label filter-form-label">ช่วงเวลาทำการประมง</label>
+                        <input type="text" id="filterFishingDateFrom" class="form-control form-control-sm" placeholder="วว/ดด/ปปปป" />
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <label for="filterFishingDateTo" class="form-label filter-form-label">ถึงวันที่</label>
+                        <input type="text" id="filterFishingDateTo" class="form-control form-control-sm" placeholder="วว/ดด/ปปปป" />
+                    </div>
+                    <div class="col-auto">
+                        <div class="range-actions">
+                            <button type="button" id="btnSearch" class="btn btn-primary btn-square" title="ค้นหา">
+                                <i class="ri ri-search-line"></i>
+                            </button>
+                            <button type="button" id="btnReset" class="btn btn-outline-secondary btn-square" title="ล้างค่า">
+                                <i class="ri ri-refresh-line"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Table card -->
+<div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div>
+            <h5 class="card-title mb-1">รายการการควบคุมปริมาณวัตถุดิบสัตว์นํ้านำเข้า (RMBS1:PS)</h5>
+            <p class="text-muted small mb-0">แสดงรายการการควบคุมปริมาณวัตถุดิบสัตว์นํ้านำเข้า (RMBS1:PS)
+
+</p>
+        </div>
+    </div>
+    <div class="table-responsive p-1">
+        <table class="table table-bordered table-hover align-middle mb-0 imd-table">
+            <thead class="text-center">
+                <tr>
+                    <th style="min-width:280px;">เลขที่ RMBS1</th>
+                    <th>วันที่บันทึก</th>
+                    <th style="min-width:160px;">เลขที่ IMD (วันที่)</th>
+                    <th>ชื่อเรือประมง</th>
+                    <th>เลขที่ Catch Certificate</th>
+                    <th style="min-width:140px;">ช่วงเวลาทำการประมง</th>
+                    <th>เครื่องมือทำการประมง</th>
+                    <th style="min-width:280px;">ชนิดสัตว์น้ำ</th>
+                    <th>ปริมาณสัตว์น้ำเข้าโรงงาน</th>
+                </tr>
+            </thead>
+            <tbody id="imdTableBody">
+                @foreach (var rec in imdRecords)
+                {
+                    <tr data-row="@rec.RowNo"
+                        data-rmbs1-number="@rec.Rmbs1Number"
+                        data-imd-number="@rec.ImdNumber"
+                        data-doc-type="@rec.DocumentType"
+                        data-status="@rec.StatusText"
+                        data-vessel="@rec.VesselName"
+                        data-registration-no="@rec.RegistrationNo"
+                        data-fishing-start-date="@rec.FishingStartDate.ToString("yyyy-MM-ddTHH:mm:ss")"
+                        data-fishing-end-date="@rec.FishingEndDate.ToString("yyyy-MM-ddTHH:mm:ss")"
+                        data-gear="@rec.GearType"
+                        data-captain=""
+                        data-cc-number="@rec.CcNumber"
+                        data-product="@rec.FisheryProducts"
+                        data-allocation="all"
+                        data-change-type=""
+                        data-tx-date="@rec.TransactionDate.ToString("yyyy-MM-ddTHH:mm:ss")">
+                        <td>
+                            <a href="@Url.Action("CreateAdjustRMBS1PS", "ImportAdjustment")" class="fw-semibold text-primary text-decoration-none">@rec.Rmbs1Number</a>
+                            <div class="mt-1">
+                                <div class="small text-muted d-flex align-items-center gap-1">
+                                    <span class="badge @rec.CertificationStatusClass rounded-circle d-inline-flex align-items-center justify-content-center flex-shrink-0" style="width:1.4rem;height:1.4rem;">
+                                        <i class="ri @rec.CertificationStatusIcon" style="font-size:0.65rem;"></i>
+                                    </span>
+                                    <span class="fw-semibold">สถานะเอกสารรับรอง :</span> @rec.CertificationStatusText
+                                </div>
+                            </div>
+                        </td>
+                        <td class="text-center text-nowrap">@ToThaiDate(rec.TransactionDate)</td>
+                        <td class="text-center">
+                            <div>@rec.ImdNumber</div>
+                            <div class="text-muted">(@ToThaiDate(rec.ValidationDate))</div>
+                        </td>
+                        <td>@rec.VesselName</td>
+                        <td>@rec.CcNumber</td>
+                        <td class="text-center text-nowrap">@ToThaiDate(rec.FishingStartDate)-<br />@ToThaiDate(rec.FishingEndDate)</td>
+                        <td>@rec.GearType</td>
+                        <td style="max-width:280px;">@rec.FisheryProducts</td>
+                        <td class="text-end">@rec.QtyEnteringFactory.ToString("N2")</td>
+                    </tr>
+                }
+                <tr id="imdTableEmpty" class="d-none">
+                    <td colspan="9" class="text-center text-muted py-4">ไม่พบข้อมูลตามเงื่อนไขที่ค้นหา</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

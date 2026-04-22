@@ -606,12 +606,15 @@ Views/
   Privacy.cshtml
  Icons/RiIcons.cshtml
  ImportAdjustment/
+  CreateAdjustRMBS1NoPS.cshtml
   CreateAdjustRMBS1PS.cshtml
   CreateChangeCCSCC.cshtml
   CreateChangeRMBS1.cshtml
   CreateIMD.cshtml
   CreatePost.cshtml
   CreatePurchase.cshtml
+  IndexAdjustRMBS1NoPS.cshtml
+  IndexAdjustRMBS1PS.cshtml
   IndexChangeCCSCC.cshtml
   IndexChangeRMBS1.cshtml
   IndexIMD.cshtml
@@ -860,12 +863,15 @@ Views/
   Privacy.cshtml
  Icons/RiIcons.cshtml
  ImportAdjustment/
+  CreateAdjustRMBS1NoPS.cshtml
   CreateAdjustRMBS1PS.cshtml
   CreateChangeCCSCC.cshtml
   CreateChangeRMBS1.cshtml
   CreateIMD.cshtml
   CreatePost.cshtml
   CreatePurchase.cshtml
+  IndexAdjustRMBS1NoPS.cshtml
+  IndexAdjustRMBS1PS.cshtml
   IndexChangeCCSCC.cshtml
   IndexChangeRMBS1.cshtml
   IndexIMD.cshtml
