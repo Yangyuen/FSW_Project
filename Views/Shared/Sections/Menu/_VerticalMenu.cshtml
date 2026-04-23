@@ -112,11 +112,6 @@
             <div data-i18n="ขอคืนน้ำหนักสินค้า">ขอคืนน้ำหนักสินค้า</div>
           </a>
         </li>
-        <li class='menu-item@(currentPage == "/PSDeclaration/IndexReturnCertificateWeight" ? " active" : "")'>
-          <a asp-controller="PSDeclaration" asp-action="IndexReturnCertificateWeight" class="menu-link">
-            <div data-i18n="ขอคืนน้ำหนักใบรับรอง">ขอคืนน้ำหนักใบรับรอง</div>
-          </a>
-        </li>
       </ul>
     </li>
 
@@ -151,7 +146,7 @@
     <li class='menu-item@(currentPage == "/Officer/IndexIssueCertificate" || currentPage == "/Officer/IndexReviewChange" || currentPage == "/Officer/IndexReplacement" || currentPage == "/Officer/IndexRevoke" || currentPage == "/Officer/IndexReturnWeight" || currentPage == "/Officer/IndexSearchCertificate" || currentPage == "/Officer/IndexSearchSelfDecl" ? " active open" : "")'>
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon icon-base ri ri-article-line"></i>
-        <div data-i18n="ใบรับรอง PS/NMD">ใบรับรอง PS/NMD</div>
+        <div data-i18n="ใบรับรอง PS/NoPS">ใบรับรอง PS/NoPS</div>
       </a>
       <ul class="menu-sub">
         <li class='menu-item@(currentPage == "/Officer/IndexIssueCertificate" ? " active" : "")'>
@@ -167,11 +162,6 @@
         <li class='menu-item@(currentPage == "/Officer/IndexReplacement" ? " active" : "")'>
           <a asp-controller="Officer" asp-action="IndexReplacement" class="menu-link">
             <div data-i18n="ใบรับรองทดแทน">ใบรับรองทดแทน</div>
-          </a>
-        </li>
-        <li class='menu-item@(currentPage == "/Officer/IndexRevoke" ? " active" : "")'>
-          <a asp-controller="Officer" asp-action="IndexRevoke" class="menu-link">
-            <div data-i18n="ยกเลิกใบรับรอง">ยกเลิกใบรับรอง</div>
           </a>
         </li>
         <li class='menu-item@(currentPage == "/Officer/IndexReturnWeight" ? " active" : "")'>

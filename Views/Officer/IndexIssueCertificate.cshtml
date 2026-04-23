@@ -1,185 +1,643 @@
 @{
-    ViewData["Title"] = "ออกใบรับรอง PS/NMD";
+    ViewData["Title"] = "พิจารณาออกใบรับรอง";
 
-    var records = new[]
+    var requests = new[]
     {
-        new { RowNo=1, CertNo="PS-2026-00401", CertType="Processing Statement", CompanyName="บริษัท สยาม มารีน ฟู้ดส์ จำกัด", DestCountry="ญี่ปุ่น", ProductDesc="ทูน่ากระป๋อง", WeightKg=15000m, IssuedAt=new DateTime(2026,4,20), ExpiredAt=new DateTime(2027,4,19), StatusText="มีผลบังคับ", StatusClass="bg-label-success" },
-        new { RowNo=2, CertNo="NMD-2026-00402", CertType="Non-Manipulation Document", CompanyName="บริษัท โอเชียน ไพร์ม เอ็กซ์พอร์ต จำกัด", DestCountry="สหภาพยุโรป", ProductDesc="ปลาโอสาแช่แข็ง", WeightKg=8000m, IssuedAt=new DateTime(2026,4,21), ExpiredAt=new DateTime(2027,4,20), StatusText="มีผลบังคับ", StatusClass="bg-label-success" },
-        new { RowNo=3, CertNo="PS-2026-00403", CertType="Processing Statement", CompanyName="บริษัท กัลฟ์ แคทช์ โปรเซสซิ่ง จำกัด", DestCountry="สหรัฐอเมริกา", ProductDesc="ทูน่าครีบเหลืองแช่แข็ง", WeightKg=20000m, IssuedAt=new DateTime(2026,4,22), ExpiredAt=new DateTime(2027,4,21), StatusText="รอออก", StatusClass="bg-label-warning" },
-        new { RowNo=4, CertNo="PS-2026-00404", CertType="Processing Statement", CompanyName="บริษัท อันดามัน โคลด์สโตเรจ จำกัด", DestCountry="จีน", ProductDesc="กุ้งแปรรูป", WeightKg=5000m, IssuedAt=new DateTime(2026,4,23), ExpiredAt=new DateTime(2027,4,22), StatusText="ยกเลิก", StatusClass="bg-label-danger" },
-        new { RowNo=5, CertNo="NMD-2026-00405", CertType="Non-Manipulation Document", CompanyName="บริษัท สยาม มารีน ฟู้ดส์ จำกัด", DestCountry="เกาหลีใต้", ProductDesc="ปลาหมึกแปรรูป", WeightKg=3000m, IssuedAt=new DateTime(2026,4,23), ExpiredAt=new DateTime(2027,4,22), StatusText="มีผลบังคับ", StatusClass="bg-label-success" },
+        new
+        {
+            RowNo = 1,
+            CertificateKey = "declaration",
+            CertificateName = "ใบรับรองสัตว์น้ำไม่แปรรูป (Declaration)",
+            HealthCertificateNumber = "HC821B211413",
+            HsCode = "6014.04",
+            Country = "ฝรั่งเศส",
+            FisheryProducts = "TUNA FREEZE DRIED",
+            Establishment = "บริษัท ซีฟู้ด อินเตอร์เนชั่นแนล จำกัด",
+            SubmittedAt = new DateTime(2026, 4, 18, 15, 14, 22),
+            StatusKey = "pending",
+            StatusText = "รอพิจารณา",
+            StatusClass = "bg-label-warning",
+            SignedElectronically = true,
+            DetailUrl = Url.Action("CreateDeclaration", "PSDeclaration"),
+            AllowApprove = true,
+            AllowReturn = true,
+            AllowReject = true,
+            AllowPrint = false
+        },
+        new
+        {
+            RowNo = 2,
+            CertificateKey = "processing",
+            CertificateName = "ใบรับรองการแปรรูปสัตว์น้ำ (Processing Statement)",
+            HealthCertificateNumber = "AC821B2171101",
+            HsCode = "6104.14",
+            Country = "อาร์เจนตินา",
+            FisheryProducts = "SLICE TUNA",
+            Establishment = "บริษัท ซีฟู้ด อินเตอร์เนชั่นแนล จำกัด",
+            SubmittedAt = new DateTime(2026, 4, 20, 9, 32, 10),
+            StatusKey = "approved",
+            StatusText = "ออกใบรับรองแล้ว",
+            StatusClass = "bg-label-success",
+            SignedElectronically = true,
+            DetailUrl = Url.Action("CreateProcessing", "PSDeclaration"),
+            AllowApprove = false,
+            AllowReturn = false,
+            AllowReject = false,
+            AllowPrint = true
+        },
+        new
+        {
+            RowNo = 3,
+            CertificateKey = "declaration",
+            CertificateName = "ใบรับรองสัตว์น้ำไม่แปรรูป (Declaration)",
+            HealthCertificateNumber = "HC821B211414",
+            HsCode = "0303.42",
+            Country = "ญี่ปุ่น",
+            FisheryProducts = "FROZEN TUNA LOIN",
+            Establishment = "บริษัท ทะเลสยาม ฟู้ดส์ จำกัด",
+            SubmittedAt = new DateTime(2026, 4, 19, 10, 5, 0),
+            StatusKey = "reviewing",
+            StatusText = "กำลังพิจารณา",
+            StatusClass = "bg-label-info",
+            SignedElectronically = true,
+            DetailUrl = Url.Action("CreateDeclaration", "PSDeclaration"),
+            AllowApprove = true,
+            AllowReturn = true,
+            AllowReject = true,
+            AllowPrint = false
+        },
+        new
+        {
+            RowNo = 4,
+            CertificateKey = "processing",
+            CertificateName = "ใบรับรองการแปรรูปสัตว์น้ำ (Processing Statement)",
+            HealthCertificateNumber = "AC821B2171102",
+            HsCode = "1604.14",
+            Country = "สเปน",
+            FisheryProducts = "CANNED TUNA IN OIL",
+            Establishment = "บริษัท ทะเลสยาม ฟู้ดส์ จำกัด",
+            SubmittedAt = new DateTime(2026, 4, 20, 11, 45, 30),
+            StatusKey = "approved",
+            StatusText = "ออกใบรับรองแล้ว",
+            StatusClass = "bg-label-success",
+            SignedElectronically = true,
+            DetailUrl = Url.Action("CreateProcessing", "PSDeclaration"),
+            AllowApprove = false,
+            AllowReturn = false,
+            AllowReject = false,
+            AllowPrint = true
+        },
+        new
+        {
+            RowNo = 5,
+            CertificateKey = "declaration",
+            CertificateName = "ใบรับรองสัตว์น้ำไม่แปรรูป (Declaration)",
+            HealthCertificateNumber = "HC821B211415",
+            HsCode = "0304.87",
+            Country = "สหรัฐอเมริกา",
+            FisheryProducts = "YELLOWFIN TUNA STEAK",
+            Establishment = "บริษัท โอเชี่ยน แปซิฟิค จำกัด",
+            SubmittedAt = new DateTime(2026, 4, 21, 8, 20, 12),
+            StatusKey = "pending",
+            StatusText = "รอพิจารณา",
+            StatusClass = "bg-label-warning",
+            SignedElectronically = true,
+            DetailUrl = Url.Action("CreateDeclaration", "PSDeclaration"),
+            AllowApprove = true,
+            AllowReturn = true,
+            AllowReject = true,
+            AllowPrint = false
+        },
+        new
+        {
+            RowNo = 6,
+            CertificateKey = "processing",
+            CertificateName = "ใบรับรองการแปรรูปสัตว์น้ำ (Processing Statement)",
+            HealthCertificateNumber = "AC821B2171103",
+            HsCode = "1604.20",
+            Country = "อิตาลี",
+            FisheryProducts = "TUNA SALAD MIX",
+            Establishment = "บริษัท โอเชี่ยน แปซิฟิค จำกัด",
+            SubmittedAt = new DateTime(2026, 4, 21, 13, 9, 47),
+            StatusKey = "rejected",
+            StatusText = "ปฏิเสธคำขอ",
+            StatusClass = "bg-label-danger",
+            SignedElectronically = false,
+            DetailUrl = Url.Action("CreateProcessing", "PSDeclaration"),
+            AllowApprove = false,
+            AllowReturn = false,
+            AllowReject = false,
+            AllowPrint = false
+        },
+        new
+        {
+            RowNo = 7,
+            CertificateKey = "declaration",
+            CertificateName = "ใบรับรองสัตว์น้ำไม่แปรรูป (Declaration)",
+            HealthCertificateNumber = "HC821B211416",
+            HsCode = "0303.89",
+            Country = "เกาหลีใต้",
+            FisheryProducts = "FROZEN SKIPJACK",
+            Establishment = "บริษัท ฟิชเชอรี่ เอ็กซ์พอร์ต จำกัด",
+            SubmittedAt = new DateTime(2026, 4, 22, 9, 55, 18),
+            StatusKey = "pending",
+            StatusText = "รอพิจารณา",
+            StatusClass = "bg-label-warning",
+            SignedElectronically = true,
+            DetailUrl = Url.Action("CreateDeclaration", "PSDeclaration"),
+            AllowApprove = true,
+            AllowReturn = true,
+            AllowReject = true,
+            AllowPrint = false
+        },
+        new
+        {
+            RowNo = 8,
+            CertificateKey = "processing",
+            CertificateName = "ใบรับรองการแปรรูปสัตว์น้ำ (Processing Statement)",
+            HealthCertificateNumber = "AC821B2171104",
+            HsCode = "1604.19",
+            Country = "เยอรมนี",
+            FisheryProducts = "SMOKED TUNA FLAKES",
+            Establishment = "บริษัท ฟิชเชอรี่ เอ็กซ์พอร์ต จำกัด",
+            SubmittedAt = new DateTime(2026, 4, 22, 14, 30, 5),
+            StatusKey = "returned",
+            StatusText = "ส่งกลับแก้ไข",
+            StatusClass = "bg-label-secondary",
+            SignedElectronically = false,
+            DetailUrl = Url.Action("CreateProcessing", "PSDeclaration"),
+            AllowApprove = false,
+            AllowReturn = false,
+            AllowReject = false,
+            AllowPrint = false
+        },
+        new
+        {
+            RowNo = 9,
+            CertificateKey = "declaration",
+            CertificateName = "ใบรับรองสัตว์น้ำไม่แปรรูป (Declaration)",
+            HealthCertificateNumber = "HC821B211417",
+            HsCode = "0304.99",
+            Country = "แคนาดา",
+            FisheryProducts = "TUNA FILLET",
+            Establishment = "บริษัท ซีฟู้ด อินเตอร์เนชั่นแนล จำกัด",
+            SubmittedAt = new DateTime(2026, 4, 23, 7, 42, 33),
+            StatusKey = "reviewing",
+            StatusText = "กำลังพิจารณา",
+            StatusClass = "bg-label-info",
+            SignedElectronically = true,
+            DetailUrl = Url.Action("CreateDeclaration", "PSDeclaration"),
+            AllowApprove = true,
+            AllowReturn = true,
+            AllowReject = true,
+            AllowPrint = false
+        },
+        new
+        {
+            RowNo = 10,
+            CertificateKey = "processing",
+            CertificateName = "ใบรับรองการแปรรูปสัตว์น้ำ (Processing Statement)",
+            HealthCertificateNumber = "AC821B2171105",
+            HsCode = "1604.20",
+            Country = "เนเธอร์แลนด์",
+            FisheryProducts = "TUNA CHUNK IN BRINE",
+            Establishment = "บริษัท ทะเลสยาม ฟู้ดส์ จำกัด",
+            SubmittedAt = new DateTime(2026, 4, 23, 15, 11, 26),
+            StatusKey = "returned",
+            StatusText = "ส่งกลับแก้ไข",
+            StatusClass = "bg-label-secondary",
+            SignedElectronically = true,
+            DetailUrl = Url.Action("CreateProcessing", "PSDeclaration"),
+            AllowApprove = false,
+            AllowReturn = false,
+            AllowReject = false,
+            AllowPrint = false
+        },
+        new
+        {
+            RowNo = 11,
+            CertificateKey = "declaration",
+            CertificateName = "ใบรับรองสัตว์น้ำไม่แปรรูป (Declaration)",
+            HealthCertificateNumber = "HC821B211418",
+            HsCode = "0303.43",
+            Country = "ออสเตรเลีย",
+            FisheryProducts = "WHOLE ROUND TUNA",
+            Establishment = "บริษัท โอเชี่ยน แปซิฟิค จำกัด",
+            SubmittedAt = new DateTime(2026, 4, 24, 10, 0, 0),
+            StatusKey = "pending",
+            StatusText = "รอพิจารณา",
+            StatusClass = "bg-label-warning",
+            SignedElectronically = true,
+            DetailUrl = Url.Action("CreateDeclaration", "PSDeclaration"),
+            AllowApprove = true,
+            AllowReturn = true,
+            AllowReject = true,
+            AllowPrint = false
+        }
     };
 
-    var totalCount = records.Length;
-    var activeCount = records.Count(x => x.StatusText == "มีผลบังคับ");
-    var pendingCount = records.Count(x => x.StatusText == "รอออก");
+    var pendingCount = requests.Count(r => r.StatusKey == "pending");
+    var reviewingCount = requests.Count(r => r.StatusKey == "reviewing");
+    var approvedCount = requests.Count(r => r.StatusKey == "approved");
+    var rejectedCount = requests.Count(r => r.StatusKey == "rejected");
+    var returnedCount = requests.Count(r => r.StatusKey == "returned");
+
+    var totalRequestCount = requests.Length;
+    var declarationCount = requests.Count(r => r.CertificateKey == "declaration");
+    var processingCount = requests.Count(r => r.CertificateKey == "processing");
+}
+
+@section VendorStyles {
+<link rel="stylesheet" href="~/vendor/libs/flatpickr/flatpickr.css" />
 }
 
 @section PageStyles {
 <style>
-    .cert-table { font-size: 0.78rem; }
-    .cert-table th, .cert-table td { padding: 0.4rem 0.5rem; vertical-align: middle; }
-    .cert-table .btn-icon { width: 1.65rem; height: 1.65rem; }
-    .filter-sq { width: 48px; height: 48px; padding: 0; display: inline-flex; align-items: center; justify-content: center; }
+    .request-table-compact {
+        font-size: 0.78rem;
+    }
+
+    .request-table-compact th,
+    .request-table-compact td {
+        padding: 0.45rem 0.5rem;
+        vertical-align: middle;
+        line-height: 1.3;
+    }
+
+    .request-table-compact th,
+    .request-table-compact td {
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    .request-table-compact thead th {
+        white-space: normal;
+        word-break: keep-all;
+        overflow-wrap: normal;
+    }
+
+    .request-table-compact .badge {
+        font-size: 0.68rem;
+    }
+
+    .request-table-compact .btn.btn-sm {
+        --bs-btn-padding-y: 0.14rem;
+        --bs-btn-padding-x: 0.3rem;
+    }
+
+    .request-table-compact .btn-icon {
+        width: 1.65rem;
+        height: 1.65rem;
+    }
+
+    .request-table-compact .signature-indicator {
+        font-size: 0.68rem;
+    }
+
+    .request-table-compact .signature-indicator .badge {
+        width: 1.2rem;
+        height: 1.2rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+    }
+
+    .request-table-compact .signature-indicator i {
+        font-size: 0.72rem;
+    }
+
+    .filter-action-buttons .btn-square {
+        width: 48px;
+        height: 48px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
 </style>
+}
+
+@section VendorScripts {
+<script src="~/vendor/libs/flatpickr/flatpickr.js"></script>
 }
 
 @section PageScripts {
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    function filterRows() {
-        var keyword = (document.getElementById('filterKeyword').value || '').trim().toLowerCase();
-        var certType = (document.getElementById('filterCertType').value || '').trim();
-        var status = (document.getElementById('filterStatus').value || '').trim();
-        var rows = document.querySelectorAll('#certTableBody tr[data-id]');
-        var count = 0;
-        rows.forEach(function (row) {
-            var text = (row.dataset.searchText || '').toLowerCase();
-            var rowType = row.dataset.certType || '';
-            var rowStatus = row.dataset.status || '';
-            var show = (!keyword || text.includes(keyword)) && (!certType || rowType === certType) && (!status || rowStatus === status);
-            row.classList.toggle('d-none', !show);
-            if (show) count++;
+    document.addEventListener('DOMContentLoaded', function () {
+        var fromInput = document.getElementById('filterDraftDateFrom');
+        var toInput = document.getElementById('filterDraftDateTo');
+
+        if (fromInput) {
+            flatpickr(fromInput, {
+                dateFormat: 'd/m/Y',
+                allowInput: true
+            });
+        }
+
+        if (toInput) {
+            flatpickr(toInput, {
+                dateFormat: 'd/m/Y',
+                allowInput: true
+            });
+        }
+
+        if (window.bootstrap && bootstrap.Tooltip) {
+            document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (element) {
+                new bootstrap.Tooltip(element);
+            });
+        }
+
+        function parseDateInput(value, endOfDay) {
+            if (!value) {
+                return null;
+            }
+
+            var parts = value.split('/');
+            if (parts.length !== 3) {
+                return null;
+            }
+
+            var day = parseInt(parts[0], 10);
+            var month = parseInt(parts[1], 10) - 1;
+            var year = parseInt(parts[2], 10);
+            var hours = endOfDay ? 23 : 0;
+            var minutes = endOfDay ? 59 : 0;
+            var seconds = endOfDay ? 59 : 0;
+            var parsed = new Date(year, month, day, hours, minutes, seconds);
+
+            return Number.isNaN(parsed.getTime()) ? null : parsed;
+        }
+
+        function filterRows() {
+            var certificate = (document.getElementById('filterCertificate').value || '').trim();
+            var status = (document.getElementById('filterStatus').value || '').trim();
+            var fromDate = parseDateInput(document.getElementById('filterDraftDateFrom').value, false);
+            var toDate = parseDateInput(document.getElementById('filterDraftDateTo').value, true);
+            var rows = document.querySelectorAll('#requestTableBody tr[data-certificate]');
+            var visibleCount = 0;
+
+            rows.forEach(function (row) {
+                var rowCertificate = row.dataset.certificate || '';
+                var rowStatus = row.dataset.status || '';
+                var rowDraftDate = new Date(row.dataset.submittedDate || '');
+                var certificateMatch = !certificate || rowCertificate === certificate;
+                var statusMatch = !status || rowStatus === status;
+                var fromMatch = !fromDate || rowDraftDate >= fromDate;
+                var toMatch = !toDate || rowDraftDate <= toDate;
+                var isVisible = certificateMatch && statusMatch && fromMatch && toMatch;
+
+                row.classList.toggle('d-none', !isVisible);
+                if (isVisible) {
+                    visibleCount += 1;
+                }
+            });
+
+            document.getElementById('requestTableEmpty').classList.toggle('d-none', visibleCount !== 0);
+        }
+
+        document.getElementById('btnSearchRequests').addEventListener('click', filterRows);
+        document.getElementById('filterCertificate').addEventListener('change', filterRows);
+        document.getElementById('filterStatus').addEventListener('change', filterRows);
+        document.getElementById('filterDraftDateFrom').addEventListener('change', filterRows);
+        document.getElementById('filterDraftDateTo').addEventListener('change', filterRows);
+        document.querySelectorAll('#filterCertificate, #filterStatus, #filterDraftDateFrom, #filterDraftDateTo').forEach(function (element) {
+            element.addEventListener('keydown', function (event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    filterRows();
+                }
+            });
         });
-        document.getElementById('certTableEmpty').classList.toggle('d-none', count !== 0);
-    }
-    document.getElementById('btnSearch').addEventListener('click', filterRows);
-    document.getElementById('btnReset').addEventListener('click', function () {
-        document.getElementById('filterKeyword').value = '';
-        document.getElementById('filterCertType').value = '';
-        document.getElementById('filterStatus').value = '';
-        filterRows();
+        document.getElementById('btnResetRequests').addEventListener('click', function () {
+            document.getElementById('filterCertificate').value = '';
+            document.getElementById('filterStatus').value = '';
+            document.getElementById('filterDraftDateFrom').value = '';
+            document.getElementById('filterDraftDateTo').value = '';
+            filterRows();
+        });
     });
-    ['filterKeyword', 'filterCertType', 'filterStatus'].forEach(function (id) {
-        var el = document.getElementById(id);
-        el.addEventListener('change', filterRows);
-        if (el.type === 'text') el.addEventListener('keydown', function (e) { if (e.key === 'Enter') filterRows(); });
-    });
-    if (window.bootstrap && bootstrap.Tooltip) {
-        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) { new bootstrap.Tooltip(el); });
-    }
-});
 </script>
 }
 
-<h4 class="mb-1">ออกใบรับรอง PS/NMD</h4>
-<p class="mb-1 text-muted">ออกใบรับรอง Processing Statement (PS) และ Non-Manipulation Document (NMD)</p>
+@* ************** Content ************** *@
+<h4 class="mb-1">พิจารณาออกใบรับรอง PS/Declaration</h4>
+<p class="mb-1">รายการคำขอใบรับรองสัตว์น้ำที่รอการพิจารณาและดำเนินการออกใบรับรองโดยเจ้าหน้าที่</p>
 
 <!-- Breadcrumb -->
-<nav aria-label="breadcrumb" class="mb-4">
+<nav aria-label="breadcrumb" class="mb-6">
     <ol class="breadcrumb breadcrumb-style1" style="--bs-breadcrumb-divider: '>'; font-size: 0.75rem;">
-        <li class="breadcrumb-item"><a href="#" class="text-primary fw-semibold">เจ้าหน้าที่</a></li>
-        <li class="breadcrumb-item active text-secondary">ออกใบรับรอง PS/NMD</li>
+        <li class="breadcrumb-item">
+            <a href="#" class="text-primary fw-semibold">เจ้าหน้าที่</a>
+        </li>
+        <li class="breadcrumb-item active">พิจารณาออกใบรับรอง PS/Declaration</li>
     </ol>
 </nav>
 
-<!-- Summary Cards -->
-<div class="row g-3 mb-4">
-    <div class="col-sm-6 col-xl-4">
-        <div class="card h-100">
-            <div class="card-body d-flex align-items-center gap-3">
-                <div class="avatar flex-shrink-0"><span class="avatar-initial rounded bg-label-primary"><i class="ri ri-award-line ri-22px"></i></span></div>
-                <div><p class="mb-0 small text-muted">ใบรับรองทั้งหมด</p><h5 class="mb-0">@totalCount</h5></div>
+<div class="row mb-6 g-6">
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="content-left">
+                        <h5 id="summaryCard1Value" class="mb-1">@(pendingCount + reviewingCount)</h5>
+                        <small id="summaryCard1Label">รอพิจารณา / กำลังพิจารณา</small>
+                    </div>
+                    <span id="summaryCard1Badge" class="badge bg-label-warning rounded-circle p-2">
+                        <i id="summaryCard1Icon" class="icon-base ri ri-time-line icon-24px"></i>
+                    </span>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-sm-6 col-xl-4">
-        <div class="card h-100">
-            <div class="card-body d-flex align-items-center gap-3">
-                <div class="avatar flex-shrink-0"><span class="avatar-initial rounded bg-label-success"><i class="ri ri-shield-check-line ri-22px"></i></span></div>
-                <div><p class="mb-0 small text-muted">มีผลบังคับ</p><h5 class="mb-0">@activeCount</h5></div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="content-left">
+                        <h5 id="summaryCard2Value" class="mb-1">@approvedCount</h5>
+                        <small id="summaryCard2Label">ออกใบรับรองแล้ว</small>
+                    </div>
+                    <span id="summaryCard2Badge" class="badge bg-label-success rounded-circle p-2">
+                        <i id="summaryCard2Icon" class="icon-base ri ri-check-double-line icon-24px"></i>
+                    </span>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-sm-6 col-xl-4">
-        <div class="card h-100">
-            <div class="card-body d-flex align-items-center gap-3">
-                <div class="avatar flex-shrink-0"><span class="avatar-initial rounded bg-label-warning"><i class="ri ri-time-line ri-22px"></i></span></div>
-                <div><p class="mb-0 small text-muted">รอออก</p><h5 class="mb-0">@pendingCount</h5></div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="content-left">
+                        <h5 id="summaryCard3Value" class="mb-1">@returnedCount</h5>
+                        <small id="summaryCard3Label">ส่งกลับแก้ไข</small>
+                    </div>
+                    <span id="summaryCard3Badge" class="badge bg-label-secondary rounded-circle p-2">
+                        <i id="summaryCard3Icon" class="icon-base ri ri-arrow-go-back-line icon-24px"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="content-left">
+                        <h5 id="summaryCard4Value" class="mb-1">@rejectedCount</h5>
+                        <small id="summaryCard4Label">ปฏิเสธคำขอ</small>
+                    </div>
+                    <span id="summaryCard4Badge" class="badge bg-label-danger rounded-circle p-2">
+                        <i id="summaryCard4Icon" class="icon-base ri ri-close-circle-line icon-24px"></i>
+                    </span>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Filter -->
 <div class="card mb-4">
+    <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-3">
+        <div>
+            <h5 class="card-title mb-1">ค้นหารายการคำขอ</h5>
+            <p class="text-muted small mb-0">ค้นหาตามประเภทใบรับรอง สถานะการพิจารณา และช่วงวันที่ยื่นคำขอ</p>
+        </div>
+    </div>
     <div class="card-body">
-        <div class="row g-2 align-items-end">
-            <div class="col-12 col-sm-4">
-                <label class="form-label small mb-1">ค้นหา</label>
-                <input id="filterKeyword" type="text" class="form-control form-control-sm" placeholder="เลขที่ใบรับรอง / ชื่อบริษัท / สินค้า" />
-            </div>
-            <div class="col-12 col-sm-3">
-                <label class="form-label small mb-1">ประเภทใบรับรอง</label>
-                <select id="filterCertType" class="form-select form-select-sm">
+        <div class="row g-3 align-items-end">
+            <div class="col-md-3 col-lg-3">
+                <label for="filterCertificate" class="form-label">ประเภทใบรับรอง</label>
+                <select id="filterCertificate" class="form-select">
                     <option value="">ทั้งหมด</option>
-                    <option value="Processing Statement">PS</option>
-                    <option value="Non-Manipulation Document">NMD</option>
+                    <option value="declaration">ใบรับรองสัตว์น้ำไม่แปรรูป (Declaration)</option>
+                    <option value="processing">ใบรับรองการแปรรูปสัตว์น้ำ (Processing Statement)</option>
                 </select>
             </div>
-            <div class="col-12 col-sm-2">
-                <label class="form-label small mb-1">สถานะ</label>
-                <select id="filterStatus" class="form-select form-select-sm">
+            <div class="col-md-2 col-lg-2">
+                <label for="filterStatus" class="form-label">สถานะการพิจารณา</label>
+                <select id="filterStatus" class="form-select">
                     <option value="">ทั้งหมด</option>
-                    <option value="มีผลบังคับ">มีผลบังคับ</option>
-                    <option value="รอออก">รอออก</option>
-                    <option value="ยกเลิก">ยกเลิก</option>
+                    <option value="pending">รอพิจารณา</option>
+                    <option value="reviewing">กำลังพิจารณา</option>
+                    <option value="approved">ออกใบรับรองแล้ว</option>
+                    <option value="returned">ส่งกลับแก้ไข</option>
+                    <option value="rejected">ปฏิเสธคำขอ</option>
                 </select>
             </div>
-            <div class="col-auto d-flex gap-2">
-                <button id="btnSearch" class="btn btn-primary btn-sm filter-sq" data-bs-toggle="tooltip" title="ค้นหา"><i class="ri ri-search-line"></i></button>
-                <button id="btnReset" class="btn btn-outline-secondary btn-sm filter-sq" data-bs-toggle="tooltip" title="รีเซ็ต"><i class="ri ri-refresh-line"></i></button>
+            <div class="col-md-2 col-lg-2">
+                <label for="filterDraftDateFrom" class="form-label">วันที่ยื่นคำขอ</label>
+                <input type="text" id="filterDraftDateFrom" class="form-control" placeholder="วว/ดด/ปปปป" />
+            </div>
+            <div class="col-md-2 col-lg-2">
+                <label for="filterDraftDateTo" class="form-label">ถึงวันที่</label>
+                <input type="text" id="filterDraftDateTo" class="form-control" placeholder="วว/ดด/ปปปป" />
+            </div>
+            <div class="col-md-3 col-lg-3">
+                <div class="d-flex gap-2 filter-action-buttons">
+                    <button type="button" id="btnSearchRequests" class="btn btn-outline-primary btn-square" title="ค้นหา">
+                        <i class="ri ri-search-line"></i>
+                    </button>
+                    <button type="button" id="btnResetRequests" class="btn btn-outline-secondary btn-square">
+                        <i class="ri ri-refresh-line"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Table -->
 <div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <h6 class="mb-0">รายการใบรับรอง PS/NMD</h6>
-        <button class="btn btn-primary btn-sm"><i class="ri ri-add-line me-1"></i>ออกใบรับรองใหม่</button>
+    <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div>
+            <h5 class="card-title mb-1">รายการคำขอใบรับรองที่รอพิจารณา</h5>
+            <p class="text-muted small mb-0">แสดงคำขอที่ส่งมาจากผู้ประกอบการ พร้อมสถานะการพิจารณาของเจ้าหน้าที่</p>
+        </div>
     </div>
-    <div class="table-responsive">
-        <table class="table table-hover cert-table mb-0">
-            <thead class="table-light">
+    <div class="table-responsive p-1">
+        <table class="table table-bordered align-middle mb-0 request-table-compact">
+            <thead class="text-center">
                 <tr>
-                    <th class="text-center" style="width:50px">ลำดับ</th>
-                    <th>เลขที่ใบรับรอง</th>
-                    <th>ประเภท</th>
-                    <th>บริษัท</th>
-                    <th>ประเทศปลายทาง</th>
-                    <th>สินค้า</th>
-                    <th class="text-end">น้ำหนัก (กก.)</th>
-                    <th>วันออก</th>
-                    <th>วันหมดอายุ</th>
-                    <th class="text-center">สถานะ</th>
-                    <th class="text-center" style="width:80px">จัดการ</th>
+                    <th>ใบรับรอง</th>
+                    <th>Health Certificate Number</th>
+                    <th>HS Code</th>
+                    <th>Country</th>
+                    <th>Fishery Products</th>
+                    <th>ผู้ประกอบการโรงงาน</th>
+                    <th>วันที่ยื่นคำขอ</th>
+                    <th>สถานะการพิจารณา</th>
+                    <th>การดำเนินการ</th>
                 </tr>
             </thead>
-            <tbody id="certTableBody">
-                @foreach (var r in records)
+            <tbody id="requestTableBody">
+                @foreach (var request in requests)
                 {
-                    <tr data-id="@r.CertNo" data-cert-type="@r.CertType" data-status="@r.StatusText" data-search-text="@r.CertNo.ToLower() @r.CompanyName.ToLower() @r.ProductDesc.ToLower()">
-                        <td class="text-center text-muted">@r.RowNo</td>
-                        <td><span class="fw-semibold text-primary">@r.CertNo</span></td>
-                        <td><span class="badge bg-label-@(r.CertType == "Processing Statement" ? "info" : "secondary") rounded-pill">@(r.CertType == "Processing Statement" ? "PS" : "NMD")</span></td>
-                        <td>@r.CompanyName</td>
-                        <td>@r.DestCountry</td>
-                        <td>@r.ProductDesc</td>
-                        <td class="text-end">@r.WeightKg.ToString("N0")</td>
-                        <td>@r.IssuedAt.ToString("dd/MM/yyyy")</td>
-                        <td>@r.ExpiredAt.ToString("dd/MM/yyyy")</td>
-                        <td class="text-center"><span class="badge rounded-pill @r.StatusClass">@r.StatusText</span></td>
+                    <tr data-certificate="@request.CertificateKey" data-status="@request.StatusKey" data-submitted-date="@request.SubmittedAt.ToString("yyyy-MM-ddTHH:mm:ss")">
+
+                        <td>
+                            <a href="@request.DetailUrl" class="fw-semibold text-primary d-inline-block">@request.CertificateName</a>
+                            <div class="signature-indicator d-flex align-items-center gap-1 mt-1 text-muted">
+                                @if (request.SignedElectronically)
+                                {
+                                    <span class="badge rounded-circle bg-label-success">
+                                        <i class="ri ri-check-line"></i>
+                                    </span>
+                                    <span>ลงลายมือชื่ออิเล็กทรอนิกส์แล้ว</span>
+                                }
+                                else
+                                {
+                                    <span class="badge rounded-circle bg-label-danger">
+                                        <i class="ri ri-close-line"></i>
+                                    </span>
+                                    <span>ยังไม่ลงลายมือชื่ออิเล็กทรอนิกส์</span>
+                                }
+                            </div>
+                        </td>
+                        <td>@request.HealthCertificateNumber</td>
+                        <td class="text-center">@request.HsCode</td>
+                        <td>@request.Country</td>
+                        <td>@request.FisheryProducts</td>
+                        <td>@request.Establishment</td>
+                        <td>@request.SubmittedAt.ToString("dd/MM/yyyy HH:mm:ss")</td>
                         <td class="text-center">
-                            <button class="btn btn-icon btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="ดูรายละเอียด"><i class="ri ri-eye-line ri-16px"></i></button>
-                            <button class="btn btn-icon btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="พิมพ์"><i class="ri ri-printer-line ri-16px"></i></button>
+                            <span class="badge rounded-pill @request.StatusClass">@request.StatusText</span>
+                        </td>
+                        <td>
+                            <div class="d-flex flex-wrap gap-1 justify-content-center">
+                                <a href="@request.DetailUrl" class="btn btn-sm btn-icon btn-outline-info" title="ดูรายละเอียดคำขอ" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="ดูรายละเอียดคำขอ">
+                                    <i class="ri ri-eye-line text-info"></i>
+                                </a>
+                                @if (request.AllowApprove)
+                                {
+                                    <button type="button" class="btn btn-sm btn-icon btn-outline-success" title="อนุมัติออกใบรับรอง" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="อนุมัติออกใบรับรอง">
+                                        <i class="ri ri-check-line text-success"></i>
+                                    </button>
+                                }
+                                @if (request.AllowReturn)
+                                {
+                                    <button type="button" class="btn btn-sm btn-icon btn-outline-warning" title="ส่งกลับแก้ไข" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="ส่งกลับแก้ไข">
+                                        <i class="ri ri-arrow-go-back-line text-warning"></i>
+                                    </button>
+                                }
+                                @if (request.AllowReject)
+                                {
+                                    <button type="button" class="btn btn-sm btn-icon btn-outline-danger" title="ปฏิเสธคำขอ" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="ปฏิเสธคำขอ">
+                                        <i class="ri ri-close-circle-line text-danger"></i>
+                                    </button>
+                                }
+                                @if (request.AllowPrint)
+                                {
+                                    <button type="button" class="btn btn-sm btn-icon btn-outline-primary" title="พิมพ์ใบรับรอง" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="พิมพ์ใบรับรอง">
+                                        <i class="ri ri-printer-line text-primary"></i>
+                                    </button>
+                                }
+                            </div>
                         </td>
                     </tr>
                 }
-            </tbody>
-            <tbody id="certTableEmpty" class="d-none">
-                <tr><td colspan="11" class="text-center text-muted py-4">ไม่พบข้อมูล</td></tr>
+                <tr id="requestTableEmpty" class="d-none">
+                    <td colspan="9" class="text-center text-muted py-4">ไม่พบข้อมูลตามเงื่อนไขที่ค้นหา</td>
+                </tr>
             </tbody>
         </table>
     </div>
