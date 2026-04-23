@@ -1,0 +1,636 @@
+@{
+    ViewData["Title"] = "รายชื่อ Traceability";
+
+    var traceabilityFactories = new[]
+    {
+        new
+        {
+            RowNo = 1,
+            TraceCode = "TRC-0001",
+            FactoryCode = "FAC-TR-101",
+            FactoryName = "บริษัท สยาม มารีน ฟู้ดส์ จำกัด",
+            TraceLevel = "ครบห่วงโซ่",
+            Province = "สมุทรสาคร",
+            ProductGroup = "ปลาทูน่าแช่แข็ง",
+            LastAuditDate = new DateTime(2026, 4, 10),
+            SupplierCount = 12,
+            StatusText = "ผ่านการตรวจสอบ",
+            StatusClass = "bg-label-success",
+            RiskLevel = "ต่ำ"
+        },
+        new
+        {
+            RowNo = 2,
+            TraceCode = "TRC-0002",
+            FactoryCode = "FAC-TR-102",
+            FactoryName = "บริษัท โอเชียน ไพร์ม เอ็กซ์พอร์ต จำกัด",
+            TraceLevel = "ต้นน้ำถึงปลายทาง",
+            Province = "สงขลา",
+            ProductGroup = "ปลาทูน่าหั่นชิ้น",
+            LastAuditDate = new DateTime(2026, 3, 28),
+            SupplierCount = 8,
+            StatusText = "ผ่านแบบมีข้อสังเกต",
+            StatusClass = "bg-label-warning",
+            RiskLevel = "กลาง"
+        },
+        new
+        {
+            RowNo = 3,
+            TraceCode = "TRC-0003",
+            FactoryCode = "FAC-TR-103",
+            FactoryName = "บริษัท กัลฟ์ แคทช์ โปรเซสซิ่ง จำกัด",
+            TraceLevel = "ภายในโรงงาน",
+            Province = "ชลบุรี",
+            ProductGroup = "ปลากระป๋อง",
+            LastAuditDate = new DateTime(2026, 4, 5),
+            SupplierCount = 15,
+            StatusText = "ผ่านการตรวจสอบ",
+            StatusClass = "bg-label-success",
+            RiskLevel = "ต่ำ"
+        },
+        new
+        {
+            RowNo = 4,
+            TraceCode = "TRC-0004",
+            FactoryCode = "FAC-TR-104",
+            FactoryName = "บริษัท เซาท์เทิร์น เพลาจิก จำกัด",
+            TraceLevel = "ต้นน้ำถึงปลายทาง",
+            Province = "ภูเก็ต",
+            ProductGroup = "ปลาโอแช่เย็น",
+            LastAuditDate = new DateTime(2026, 2, 19),
+            SupplierCount = 6,
+            StatusText = "รอตรวจซ้ำ",
+            StatusClass = "bg-label-danger",
+            RiskLevel = "สูง"
+        },
+        new
+        {
+            RowNo = 5,
+            TraceCode = "TRC-0005",
+            FactoryCode = "FAC-TR-105",
+            FactoryName = "บริษัท อันดามัน โคลด์สโตเรจ จำกัด",
+            TraceLevel = "ครบห่วงโซ่",
+            Province = "ระนอง",
+            ProductGroup = "กุ้งแช่เย็น",
+            LastAuditDate = new DateTime(2026, 4, 12),
+            SupplierCount = 10,
+            StatusText = "ผ่านการตรวจสอบ",
+            StatusClass = "bg-label-success",
+            RiskLevel = "ต่ำ"
+        },
+        new
+        {
+            RowNo = 6,
+            TraceCode = "TRC-0006",
+            FactoryCode = "FAC-TR-106",
+            FactoryName = "บริษัท ไทย มารีน แพค จำกัด",
+            TraceLevel = "ภายในโรงงาน",
+            Province = "สมุทรปราการ",
+            ProductGroup = "บรรจุภัณฑ์ส่งออก",
+            LastAuditDate = new DateTime(2026, 3, 14),
+            SupplierCount = 5,
+            StatusText = "ผ่านแบบมีข้อสังเกต",
+            StatusClass = "bg-label-warning",
+            RiskLevel = "กลาง"
+        }
+    };
+
+    var totalCount = traceabilityFactories.Length;
+    var passedCount = traceabilityFactories.Count(x => x.StatusText == "ผ่านการตรวจสอบ");
+    var warningCount = traceabilityFactories.Count(x => x.StatusText == "ผ่านแบบมีข้อสังเกต");
+    var highRiskCount = traceabilityFactories.Count(x => x.RiskLevel == "สูง");
+}
+
+@section PageStyles {
+<style>
+    .trace-table-compact {
+        font-size: 0.78rem;
+    }
+
+    .trace-table-compact th,
+    .trace-table-compact td {
+        padding: 0.45rem 0.5rem;
+        vertical-align: middle;
+        line-height: 1.3;
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    .trace-table-compact thead th {
+        white-space: normal;
+        word-break: keep-all;
+        overflow-wrap: normal;
+    }
+
+    .trace-table-compact .badge {
+        font-size: 0.68rem;
+    }
+
+    .trace-table-compact .btn.btn-sm {
+        --bs-btn-padding-y: 0.14rem;
+        --bs-btn-padding-x: 0.3rem;
+    }
+
+    .trace-table-compact .btn-icon {
+        width: 1.65rem;
+        height: 1.65rem;
+    }
+
+    .filter-action-buttons .btn-square {
+        width: 48px;
+        height: 48px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .detail-kv {
+        border: 1px solid var(--bs-border-color);
+        border-radius: 0.75rem;
+        background: var(--bs-paper-bg);
+        padding: 0.85rem 1rem;
+        height: 100%;
+    }
+
+    .detail-kv .label {
+        display: block;
+        font-size: 0.75rem;
+        color: var(--bs-secondary-color);
+        margin-bottom: 0.25rem;
+    }
+
+    .detail-kv .value {
+        font-weight: 600;
+        color: var(--bs-heading-color);
+    }
+</style>
+}
+
+@section PageScripts {
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var detailsMap = {
+            'TRC-0001': {
+                registerDate: '12/01/2566',
+                nextReviewDate: '20/07/2566',
+                address: '88/8 หมู่ 4 ต.นาดี อ.เมืองสมุทรสาคร จ.สมุทรสาคร 74000',
+                phone: '034-555-100',
+                email: 'trace@siammarine.co.th',
+                note: 'ระบบ traceability ครอบคลุมวัตถุดิบ เรือประมง ห้องเย็น และ lot ผลิตทั้งหมด',
+                chainSteps: [
+                    { name: 'เรือประมงและจุดรับซื้อ', document: 'Catch Certificate / Logbook', status: 'ครบถ้วน', owner: 'ต้นน้ำ' },
+                    { name: 'รับเข้าวัตถุดิบ', document: 'RMBS1 / ใบตรวจรับ', status: 'ครบถ้วน', owner: 'โรงงาน' },
+                    { name: 'ผลิตและบรรจุ', document: 'Batch Record', status: 'ครบถ้วน', owner: 'โรงงาน' }
+                ],
+                audits: [
+                    { date: '10/04/2566', result: 'ผ่าน', officer: 'กองตรวจสอบย้อนกลับ', remark: 'เชื่อมโยง lot ได้ครบ' },
+                    { date: '15/10/2565', result: 'ผ่าน', officer: 'กองตรวจสอบย้อนกลับ', remark: 'ไม่มีข้อสังเกต' }
+                ]
+            },
+            'TRC-0002': {
+                registerDate: '03/03/2566',
+                nextReviewDate: '01/09/2566',
+                address: '199/24 ถ.กาญจนวนิช ต.หาดใหญ่ อ.หาดใหญ่ จ.สงขลา 90110',
+                phone: '074-220-919',
+                email: 'support@oceanprime.co.th',
+                note: 'ต้องปรับปรุงเอกสารเชื่อมโยงผู้จำหน่ายย่อยบางราย',
+                chainSteps: [
+                    { name: 'ผู้จำหน่ายวัตถุดิบ', document: 'Supplier Approval List', status: 'บางส่วน', owner: 'ต้นน้ำ' },
+                    { name: 'คลังสินค้า', document: 'Stock Card', status: 'ครบถ้วน', owner: 'คลัง' },
+                    { name: 'ส่งออก', document: 'Packing List / Invoice', status: 'ครบถ้วน', owner: 'ปลายทาง' }
+                ],
+                audits: [
+                    { date: '28/03/2566', result: 'ผ่านแบบมีข้อสังเกต', officer: 'สำนักงานประมงเขต 5', remark: 'ให้ปรับ master supplier' }
+                ]
+            },
+            'TRC-0003': {
+                registerDate: '22/11/2565',
+                nextReviewDate: '15/08/2566',
+                address: '88/21 นิคมอุตสาหกรรมแหลมฉบัง อ.ศรีราชา จ.ชลบุรี 20230',
+                phone: '038-771-220',
+                email: 'qa@gulfcatch.co.th',
+                note: 'ระบบติดตามย้อนกลับระดับ batch พร้อมเชื่อมข้อมูลคลังสินค้า',
+                chainSteps: [
+                    { name: 'รับเข้าและแยก lot', document: 'Receiving Lot Record', status: 'ครบถ้วน', owner: 'โรงงาน' },
+                    { name: 'ผลิต', document: 'Production Sheet', status: 'ครบถ้วน', owner: 'โรงงาน' },
+                    { name: 'จ่ายออก', document: 'Dispatch Record', status: 'ครบถ้วน', owner: 'คลัง' }
+                ],
+                audits: [
+                    { date: '05/04/2566', result: 'ผ่าน', officer: 'กองตรวจสอบย้อนกลับ', remark: 'สุ่มย้อนกลับได้ครบ' }
+                ]
+            },
+            'TRC-0004': {
+                registerDate: '18/09/2565',
+                nextReviewDate: '10/06/2566',
+                address: '15/9 ท่าเรือประมง ต.รัษฎา อ.เมืองภูเก็ต จ.ภูเก็ต 83000',
+                phone: '076-410-550',
+                email: 'ops@southernpelagic.co.th',
+                note: 'รอตรวจซ้ำเนื่องจากเอกสารเชื่อมโยงเรือประมงไม่ครบ',
+                chainSteps: [
+                    { name: 'ต้นทางเรือประมง', document: 'Fishing Trip Record', status: 'ขาดบางส่วน', owner: 'ต้นน้ำ' },
+                    { name: 'รับซื้อหน้าแพ', document: 'Purchase Note', status: 'บางส่วน', owner: 'จุดรับซื้อ' }
+                ],
+                audits: [
+                    { date: '19/02/2566', result: 'รอตรวจซ้ำ', officer: 'สำนักงานประมงจังหวัดภูเก็ต', remark: 'ต้องแนบเอกสารต้นทางเพิ่ม' }
+                ]
+            },
+            'TRC-0005': {
+                registerDate: '25/12/2565',
+                nextReviewDate: '20/07/2566',
+                address: '42/12 ต.บางริ้น อ.เมืองระนอง จ.ระนอง 85000',
+                phone: '077-440-778',
+                email: 'trace@andamancold.com',
+                note: 'เชื่อมข้อมูล lot จากห้องเย็นกับคำสั่งผลิตและใบเบิกจ่ายได้สมบูรณ์',
+                chainSteps: [
+                    { name: 'รับเข้าแช่เย็น', document: 'Cold Storage Intake', status: 'ครบถ้วน', owner: 'คลัง' },
+                    { name: 'จ่ายเข้าผลิต', document: 'Material Requisition', status: 'ครบถ้วน', owner: 'โรงงาน' },
+                    { name: 'ส่งออก', document: 'Container Loading Sheet', status: 'ครบถ้วน', owner: 'ปลายทาง' }
+                ],
+                audits: [
+                    { date: '12/04/2566', result: 'ผ่าน', officer: 'กองตรวจสอบย้อนกลับ', remark: 'ข้อมูล lot ตรงกันทุกจุด' }
+                ]
+            },
+            'TRC-0006': {
+                registerDate: '07/02/2566',
+                nextReviewDate: '05/08/2566',
+                address: '99 หมู่ 7 ต.บางปลา อ.บางพลี จ.สมุทรปราการ 10540',
+                phone: '02-700-4567',
+                email: 'trace@thaimarinepack.co.th',
+                note: 'ติดตามย้อนกลับวัตถุดิบบรรจุภัณฑ์ได้ แต่ควรปรับรหัส lot ภายในให้เป็นมาตรฐานเดียวกัน',
+                chainSteps: [
+                    { name: 'รับเข้าวัสดุบรรจุภัณฑ์', document: 'Material Inbound Log', status: 'ครบถ้วน', owner: 'คลัง' },
+                    { name: 'ใช้งานในสายผลิต', document: 'Usage Record', status: 'บางส่วน', owner: 'ผลิต' }
+                ],
+                audits: [
+                    { date: '14/03/2566', result: 'ผ่านแบบมีข้อสังเกต', officer: 'กองตรวจสอบย้อนกลับ', remark: 'แนะนำปรับรหัส lot ให้สม่ำเสมอ' }
+                ]
+            }
+        };
+
+        function filterRows() {
+            var keyword = (document.getElementById('filterKeyword').value || '').trim().toLowerCase();
+            var province = (document.getElementById('filterProvince').value || '').trim();
+            var status = (document.getElementById('filterStatus').value || '').trim();
+            var risk = (document.getElementById('filterRisk').value || '').trim();
+            var rows = document.querySelectorAll('#traceTableBody tr[data-trace-code]');
+            var visibleCount = 0;
+
+            rows.forEach(function (row) {
+                var rowText = (row.dataset.searchText || '').toLowerCase();
+                var rowProvince = row.dataset.province || '';
+                var rowStatus = row.dataset.status || '';
+                var rowRisk = row.dataset.risk || '';
+                var keywordMatch = !keyword || rowText.includes(keyword);
+                var provinceMatch = !province || rowProvince === province;
+                var statusMatch = !status || rowStatus === status;
+                var riskMatch = !risk || rowRisk === risk;
+                var isVisible = keywordMatch && provinceMatch && statusMatch && riskMatch;
+
+                row.classList.toggle('d-none', !isVisible);
+                if (isVisible) {
+                    visibleCount += 1;
+                }
+            });
+
+            document.getElementById('traceTableEmpty').classList.toggle('d-none', visibleCount !== 0);
+        }
+
+        function renderRows(items, columns, emptyMessage, rowType) {
+            if (!items || items.length === 0) {
+                return '<tr><td colspan="' + columns + '" class="text-center text-muted py-3">' + emptyMessage + '</td></tr>';
+            }
+
+            if (rowType === 'chain') {
+                return items.map(function (item, index) {
+                    var statusClass = item.status === 'ครบถ้วน' ? 'bg-label-success' : item.status === 'บางส่วน' ? 'bg-label-warning' : 'bg-label-danger';
+                    return '<tr>' +
+                        '<td class="text-center text-muted small">' + (index + 1) + '</td>' +
+                        '<td>' + item.name + '</td>' +
+                        '<td>' + item.document + '</td>' +
+                        '<td class="text-center"><span class="badge rounded-pill ' + statusClass + '">' + item.status + '</span></td>' +
+                        '<td>' + item.owner + '</td>' +
+                        '</tr>';
+                }).join('');
+            }
+
+            return items.map(function (item, index) {
+                var resultClass = item.result === 'ผ่าน' ? 'bg-label-success' : item.result === 'ผ่านแบบมีข้อสังเกต' ? 'bg-label-warning' : 'bg-label-danger';
+                return '<tr>' +
+                    '<td class="text-center text-muted small">' + (index + 1) + '</td>' +
+                    '<td>' + item.date + '</td>' +
+                    '<td class="text-center"><span class="badge rounded-pill ' + resultClass + '">' + item.result + '</span></td>' +
+                    '<td>' + item.officer + '</td>' +
+                    '<td>' + item.remark + '</td>' +
+                    '</tr>';
+            }).join('');
+        }
+
+        function openTraceDetail(traceCode) {
+            var detail = detailsMap[traceCode];
+            var row = document.querySelector('#traceTableBody tr[data-trace-code="' + traceCode + '"]');
+            if (!detail || !row) {
+                return;
+            }
+
+            document.getElementById('traceModalTitle').textContent = row.dataset.factoryName;
+            document.getElementById('detailTraceCode').textContent = traceCode;
+            document.getElementById('detailFactoryCode').textContent = row.dataset.factoryCode;
+            document.getElementById('detailProvince').textContent = row.dataset.province;
+            document.getElementById('detailProductGroup').textContent = row.dataset.productGroup;
+            document.getElementById('detailTraceLevel').textContent = row.dataset.traceLevel;
+            document.getElementById('detailSupplierCount').textContent = row.dataset.supplierCount + ' ราย';
+            document.getElementById('detailRisk').textContent = row.dataset.risk;
+            document.getElementById('detailStatus').innerHTML = '<span class="badge rounded-pill ' + row.dataset.statusClass + '">' + row.dataset.status + '</span>';
+            document.getElementById('detailRegisterDate').textContent = detail.registerDate;
+            document.getElementById('detailNextReviewDate').textContent = detail.nextReviewDate;
+            document.getElementById('detailPhone').textContent = detail.phone;
+            document.getElementById('detailEmail').textContent = detail.email;
+            document.getElementById('detailAddress').textContent = detail.address;
+            document.getElementById('detailNote').textContent = detail.note;
+            document.getElementById('chainTableBody').innerHTML = renderRows(detail.chainSteps, 5, 'ไม่พบข้อมูลขั้นตอน traceability', 'chain');
+            document.getElementById('auditTableBody').innerHTML = renderRows(detail.audits, 5, 'ไม่พบประวัติการตรวจ', 'audit');
+
+            new bootstrap.Modal(document.getElementById('traceDetailModal')).show();
+        }
+
+        document.getElementById('btnSearchTrace').addEventListener('click', filterRows);
+        document.getElementById('btnResetTrace').addEventListener('click', function () {
+            document.getElementById('filterKeyword').value = '';
+            document.getElementById('filterProvince').value = '';
+            document.getElementById('filterStatus').value = '';
+            document.getElementById('filterRisk').value = '';
+            filterRows();
+        });
+
+        document.querySelectorAll('#filterKeyword, #filterProvince, #filterStatus, #filterRisk').forEach(function (element) {
+            element.addEventListener('keydown', function (event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    filterRows();
+                }
+            });
+            element.addEventListener('change', filterRows);
+        });
+
+        if (window.bootstrap && bootstrap.Tooltip) {
+            document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (element) {
+                new bootstrap.Tooltip(element);
+            });
+        }
+
+        document.querySelectorAll('.btn-view-trace, .btn-edit-trace').forEach(function (button) {
+            button.addEventListener('click', function () {
+                openTraceDetail(this.dataset.traceCode);
+            });
+        });
+    });
+</script>
+}
+
+<h4 class="mb-1">ฐานข้อมูลโรงงานที่ผ่านการตรวจสอบย้อนกลับของกรมประมง</h4>
+<p class="mb-1 text-muted">รายการโรงงานที่ผ่านการตรวจสอบย้อนกลับ พร้อมระดับความครอบคลุม เอกสารเชื่อมโยง และผลการตรวจล่าสุด</p>
+
+<nav aria-label="breadcrumb" class="mb-6">
+    <ol class="breadcrumb breadcrumb-style1" style="--bs-breadcrumb-divider: '>'; font-size: 0.75rem;">
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("TraceabilityList", "Admin")" class="text-primary fw-semibold">ผู้ดูแลระบบ</a>
+        </li>
+        <li class="breadcrumb-item active text-secondary">รายชื่อ Traceability</li>
+    </ol>
+</nav>
+
+<div class="row mb-6 g-6">
+    <div class="col-sm-6 col-xl-3"><div class="card"><div class="card-body"><div class="d-flex align-items-center justify-content-between"><div class="content-left"><h5 class="mb-1">@totalCount</h5><small>โรงงานทั้งหมด</small></div><span class="badge bg-label-primary rounded-circle p-2"><i class="icon-base ri ri-links-line icon-24px"></i></span></div></div></div></div>
+    <div class="col-sm-6 col-xl-3"><div class="card"><div class="card-body"><div class="d-flex align-items-center justify-content-between"><div class="content-left"><h5 class="mb-1">@passedCount</h5><small>ผ่านการตรวจสอบ</small></div><span class="badge bg-label-success rounded-circle p-2"><i class="icon-base ri ri-checkbox-circle-line icon-24px"></i></span></div></div></div></div>
+    <div class="col-sm-6 col-xl-3"><div class="card"><div class="card-body"><div class="d-flex align-items-center justify-content-between"><div class="content-left"><h5 class="mb-1">@warningCount</h5><small>มีข้อสังเกต</small></div><span class="badge bg-label-warning rounded-circle p-2"><i class="icon-base ri ri-error-warning-line icon-24px"></i></span></div></div></div></div>
+    <div class="col-sm-6 col-xl-3"><div class="card"><div class="card-body"><div class="d-flex align-items-center justify-content-between"><div class="content-left"><h5 class="mb-1">@highRiskCount</h5><small>ความเสี่ยงสูง</small></div><span class="badge bg-label-danger rounded-circle p-2"><i class="icon-base ri ri-alarm-warning-line icon-24px"></i></span></div></div></div></div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-3">
+        <div>
+            <h5 class="card-title mb-1">ค้นหาข้อมูล Traceability</h5>
+            <p class="text-muted small mb-0">ค้นหาจากรหัส traceability ชื่อโรงงาน จังหวัด สถานะ และระดับความเสี่ยง</p>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row g-3 align-items-end">
+            <div class="col-md-4 col-lg-3">
+                <label for="filterKeyword" class="form-label">คำค้นหา</label>
+                <input type="text" id="filterKeyword" class="form-control" placeholder="รหัส Traceability, ชื่อโรงงาน, รหัสโรงงาน" />
+            </div>
+            <div class="col-md-3 col-lg-2">
+                <label for="filterProvince" class="form-label">จังหวัด</label>
+                <select id="filterProvince" class="form-select">
+                    <option value="">ทั้งหมด</option>
+                    <option value="ชลบุรี">ชลบุรี</option>
+                    <option value="ภูเก็ต">ภูเก็ต</option>
+                    <option value="ระนอง">ระนอง</option>
+                    <option value="สงขลา">สงขลา</option>
+                    <option value="สมุทรปราการ">สมุทรปราการ</option>
+                    <option value="สมุทรสาคร">สมุทรสาคร</option>
+                </select>
+            </div>
+            <div class="col-md-3 col-lg-3">
+                <label for="filterStatus" class="form-label">สถานะการตรวจ</label>
+                <select id="filterStatus" class="form-select">
+                    <option value="">ทั้งหมด</option>
+                    <option value="ผ่านการตรวจสอบ">ผ่านการตรวจสอบ</option>
+                    <option value="ผ่านแบบมีข้อสังเกต">ผ่านแบบมีข้อสังเกต</option>
+                    <option value="รอตรวจซ้ำ">รอตรวจซ้ำ</option>
+                </select>
+            </div>
+            <div class="col-md-3 col-lg-2">
+                <label for="filterRisk" class="form-label">ระดับความเสี่ยง</label>
+                <select id="filterRisk" class="form-select">
+                    <option value="">ทั้งหมด</option>
+                    <option value="ต่ำ">ต่ำ</option>
+                    <option value="กลาง">กลาง</option>
+                    <option value="สูง">สูง</option>
+                </select>
+            </div>
+            <div class="col-md-3 col-lg-2">
+                <div class="d-flex gap-2 filter-action-buttons">
+                    <button type="button" id="btnSearchTrace" class="btn btn-outline-primary btn-square" title="ค้นหา"><i class="ri ri-search-line"></i></button>
+                    <button type="button" id="btnResetTrace" class="btn btn-outline-secondary btn-square" title="ล้างค่า"><i class="ri ri-refresh-line"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div>
+            <h5 class="card-title mb-1">รายการโรงงาน Traceability</h5>
+            <p class="text-muted small mb-0">แสดงระดับ traceability กลุ่มสินค้า จำนวนผู้ส่งมอบ และผลการตรวจล่าสุด</p>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#traceDetailModal">
+                <i class="ri ri-add-line me-1"></i> เพิ่มข้อมูล
+            </button>
+        </div>
+    </div>
+    <div class="table-responsive p-1">
+        <table class="table table-bordered align-middle mb-0 trace-table-compact">
+            <thead class="text-center">
+                <tr>
+                    <th style="width:56px;">#</th>
+                    <th>รหัส Traceability</th>
+                    <th>โรงงาน</th>
+                    <th>จังหวัด</th>
+                    <th>ระดับ Traceability</th>
+                    <th>กลุ่มสินค้า</th>
+                    <th>ผู้ส่งมอบ</th>
+                    <th>ตรวจล่าสุด</th>
+                    <th>ความเสี่ยง</th>
+                    <th>สถานะ</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="traceTableBody">
+                @foreach (var factory in traceabilityFactories)
+                {
+                    <tr data-trace-code="@factory.TraceCode"
+                        data-factory-code="@factory.FactoryCode"
+                        data-factory-name="@factory.FactoryName"
+                        data-province="@factory.Province"
+                        data-product-group="@factory.ProductGroup"
+                        data-trace-level="@factory.TraceLevel"
+                        data-supplier-count="@factory.SupplierCount"
+                        data-risk="@factory.RiskLevel"
+                        data-status="@factory.StatusText"
+                        data-status-class="@factory.StatusClass"
+                        data-search-text="@($"{factory.TraceCode} {factory.FactoryName} {factory.FactoryCode} {factory.ProductGroup} {factory.Province}")">
+                        <td class="text-center text-muted">@factory.RowNo</td>
+                        <td class="fw-semibold text-primary">@factory.TraceCode</td>
+                        <td>
+                            <div class="fw-semibold">@factory.FactoryName</div>
+                            <div class="text-muted small">@factory.FactoryCode</div>
+                        </td>
+                        <td>@factory.Province</td>
+                        <td>@factory.TraceLevel</td>
+                        <td>@factory.ProductGroup</td>
+                        <td class="text-center">@factory.SupplierCount ราย</td>
+                        <td class="text-center">@factory.LastAuditDate.ToString("dd/MM/yyyy")</td>
+                        <td class="text-center">
+                            <span class="badge rounded-pill @(factory.RiskLevel == "ต่ำ" ? "bg-label-success" : factory.RiskLevel == "กลาง" ? "bg-label-warning" : "bg-label-danger")">@factory.RiskLevel</span>
+                        </td>
+                        <td class="text-center"><span class="badge rounded-pill @factory.StatusClass">@factory.StatusText</span></td>
+                        <td>
+                            <div class="d-flex flex-wrap gap-1 justify-content-center">
+                                <button type="button" class="btn btn-sm btn-icon btn-outline-info btn-view-trace" data-trace-code="@factory.TraceCode" title="รายละเอียดข้อมูล" data-bs-toggle="tooltip" data-bs-placement="top"><i class="ri ri-eye-line text-info"></i></button>
+                                <button type="button" class="btn btn-sm btn-icon btn-outline-warning btn-edit-trace" data-trace-code="@factory.TraceCode" title="แก้ไขข้อมูล" data-bs-toggle="tooltip" data-bs-placement="top"><i class="ri ri-pencil-line text-warning"></i></button>
+                                <button type="button" class="btn btn-sm btn-icon btn-outline-secondary" title="ดูเส้นทางข้อมูล" data-bs-toggle="tooltip" data-bs-placement="top"><i class="ri ri-route-line text-secondary"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                <tr id="traceTableEmpty" class="d-none">
+                    <td colspan="11" class="text-center text-muted py-4">ไม่พบข้อมูลตามเงื่อนไขที่ค้นหา</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="traceDetailModal" tabindex="-1" aria-labelledby="traceDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="traceDetailModalLabel">
+                    <i class="ri ri-links-box-line me-2"></i><span id="traceModalTitle">รายละเอียด Traceability</span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="nav-align-top nav-tabs-shadow">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item"><button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#tab-trace-detail" aria-selected="true"><i class="ri ri-file-list-2-line me-1"></i> ข้อมูลหลัก</button></li>
+                        <li class="nav-item"><button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#tab-trace-chain" aria-selected="false"><i class="ri ri-git-branch-line me-1"></i> ขั้นตอนเชื่อมโยง</button></li>
+                        <li class="nav-item"><button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#tab-trace-audit" aria-selected="false"><i class="ri ri-survey-line me-1"></i> ประวัติการตรวจ</button></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="tab-trace-detail" class="tab-pane fade show active">
+                            <div class="accordion accordion-custom-button" id="traceAccordion">
+                                <div class="accordion-item active">
+                                    <h2 class="accordion-header" id="headingTraceGeneral">
+                                        <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#collapseTraceGeneral" aria-expanded="true"><i class="icon-base ri ri-information-line me-2"></i> ข้อมูลทั่วไป</button>
+                                    </h2>
+                                    <div id="collapseTraceGeneral" class="accordion-collapse collapse show">
+                                        <div class="accordion-body">
+                                            <div class="row g-3">
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">รหัส Traceability</span><span class="value" id="detailTraceCode">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">รหัสโรงงาน</span><span class="value" id="detailFactoryCode">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">สถานะ</span><span class="value" id="detailStatus">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">จังหวัด</span><span class="value" id="detailProvince">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">กลุ่มสินค้า</span><span class="value" id="detailProductGroup">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">ระดับความเสี่ยง</span><span class="value" id="detailRisk">-</span></div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item active">
+                                    <h2 class="accordion-header" id="headingTraceRegistration">
+                                        <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#collapseTraceRegistration" aria-expanded="true"><i class="icon-base ri ri-file-shield-2-line me-2"></i> ระดับการเชื่อมโยงและการติดต่อ</button>
+                                    </h2>
+                                    <div id="collapseTraceRegistration" class="accordion-collapse collapse show">
+                                        <div class="accordion-body">
+                                            <div class="row g-3">
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">ระดับ Traceability</span><span class="value" id="detailTraceLevel">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">จำนวนผู้ส่งมอบ</span><span class="value" id="detailSupplierCount">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">วันที่ลงทะเบียน</span><span class="value" id="detailRegisterDate">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">ทบทวนครั้งถัดไป</span><span class="value" id="detailNextReviewDate">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">โทรศัพท์</span><span class="value" id="detailPhone">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">อีเมล</span><span class="value" id="detailEmail">-</span></div></div>
+                                                <div class="col-md-6"><div class="detail-kv"><span class="label">ที่อยู่</span><span class="value" id="detailAddress">-</span></div></div>
+                                                <div class="col-md-6"><div class="detail-kv"><span class="label">หมายเหตุ</span><span class="value" id="detailNote">-</span></div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tab-trace-chain" class="tab-pane fade">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-sm align-middle mb-0 trace-table-compact">
+                                    <thead class="text-center">
+                                        <tr>
+                                            <th style="width:56px;">#</th>
+                                            <th>ขั้นตอน</th>
+                                            <th>เอกสารอ้างอิง</th>
+                                            <th>สถานะข้อมูล</th>
+                                            <th>ผู้รับผิดชอบ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="chainTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div id="tab-trace-audit" class="tab-pane fade">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-sm align-middle mb-0 trace-table-compact">
+                                    <thead class="text-center">
+                                        <tr>
+                                            <th style="width:56px;">#</th>
+                                            <th>วันที่ตรวจ</th>
+                                            <th>ผลการตรวจ</th>
+                                            <th>หน่วยตรวจ</th>
+                                            <th>หมายเหตุ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="auditTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i class="ri ri-close-line me-1"></i> ปิด</button>
+                <button type="button" class="btn btn-primary"><i class="ri ri-save-line me-1"></i> บันทึกข้อมูล</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,186 @@
+@{
+    ViewData["Title"] = "ออกใบรับรอง PS/NMD";
+
+    var records = new[]
+    {
+        new { RowNo=1, CertNo="PS-2026-00401", CertType="Processing Statement", CompanyName="บริษัท สยาม มารีน ฟู้ดส์ จำกัด", DestCountry="ญี่ปุ่น", ProductDesc="ทูน่ากระป๋อง", WeightKg=15000m, IssuedAt=new DateTime(2026,4,20), ExpiredAt=new DateTime(2027,4,19), StatusText="มีผลบังคับ", StatusClass="bg-label-success" },
+        new { RowNo=2, CertNo="NMD-2026-00402", CertType="Non-Manipulation Document", CompanyName="บริษัท โอเชียน ไพร์ม เอ็กซ์พอร์ต จำกัด", DestCountry="สหภาพยุโรป", ProductDesc="ปลาโอสาแช่แข็ง", WeightKg=8000m, IssuedAt=new DateTime(2026,4,21), ExpiredAt=new DateTime(2027,4,20), StatusText="มีผลบังคับ", StatusClass="bg-label-success" },
+        new { RowNo=3, CertNo="PS-2026-00403", CertType="Processing Statement", CompanyName="บริษัท กัลฟ์ แคทช์ โปรเซสซิ่ง จำกัด", DestCountry="สหรัฐอเมริกา", ProductDesc="ทูน่าครีบเหลืองแช่แข็ง", WeightKg=20000m, IssuedAt=new DateTime(2026,4,22), ExpiredAt=new DateTime(2027,4,21), StatusText="รอออก", StatusClass="bg-label-warning" },
+        new { RowNo=4, CertNo="PS-2026-00404", CertType="Processing Statement", CompanyName="บริษัท อันดามัน โคลด์สโตเรจ จำกัด", DestCountry="จีน", ProductDesc="กุ้งแปรรูป", WeightKg=5000m, IssuedAt=new DateTime(2026,4,23), ExpiredAt=new DateTime(2027,4,22), StatusText="ยกเลิก", StatusClass="bg-label-danger" },
+        new { RowNo=5, CertNo="NMD-2026-00405", CertType="Non-Manipulation Document", CompanyName="บริษัท สยาม มารีน ฟู้ดส์ จำกัด", DestCountry="เกาหลีใต้", ProductDesc="ปลาหมึกแปรรูป", WeightKg=3000m, IssuedAt=new DateTime(2026,4,23), ExpiredAt=new DateTime(2027,4,22), StatusText="มีผลบังคับ", StatusClass="bg-label-success" },
+    };
+
+    var totalCount = records.Length;
+    var activeCount = records.Count(x => x.StatusText == "มีผลบังคับ");
+    var pendingCount = records.Count(x => x.StatusText == "รอออก");
+}
+
+@section PageStyles {
+<style>
+    .cert-table { font-size: 0.78rem; }
+    .cert-table th, .cert-table td { padding: 0.4rem 0.5rem; vertical-align: middle; }
+    .cert-table .btn-icon { width: 1.65rem; height: 1.65rem; }
+    .filter-sq { width: 48px; height: 48px; padding: 0; display: inline-flex; align-items: center; justify-content: center; }
+</style>
+}
+
+@section PageScripts {
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    function filterRows() {
+        var keyword = (document.getElementById('filterKeyword').value || '').trim().toLowerCase();
+        var certType = (document.getElementById('filterCertType').value || '').trim();
+        var status = (document.getElementById('filterStatus').value || '').trim();
+        var rows = document.querySelectorAll('#certTableBody tr[data-id]');
+        var count = 0;
+        rows.forEach(function (row) {
+            var text = (row.dataset.searchText || '').toLowerCase();
+            var rowType = row.dataset.certType || '';
+            var rowStatus = row.dataset.status || '';
+            var show = (!keyword || text.includes(keyword)) && (!certType || rowType === certType) && (!status || rowStatus === status);
+            row.classList.toggle('d-none', !show);
+            if (show) count++;
+        });
+        document.getElementById('certTableEmpty').classList.toggle('d-none', count !== 0);
+    }
+    document.getElementById('btnSearch').addEventListener('click', filterRows);
+    document.getElementById('btnReset').addEventListener('click', function () {
+        document.getElementById('filterKeyword').value = '';
+        document.getElementById('filterCertType').value = '';
+        document.getElementById('filterStatus').value = '';
+        filterRows();
+    });
+    ['filterKeyword', 'filterCertType', 'filterStatus'].forEach(function (id) {
+        var el = document.getElementById(id);
+        el.addEventListener('change', filterRows);
+        if (el.type === 'text') el.addEventListener('keydown', function (e) { if (e.key === 'Enter') filterRows(); });
+    });
+    if (window.bootstrap && bootstrap.Tooltip) {
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) { new bootstrap.Tooltip(el); });
+    }
+});
+</script>
+}
+
+<h4 class="mb-1">ออกใบรับรอง PS/NMD</h4>
+<p class="mb-1 text-muted">ออกใบรับรอง Processing Statement (PS) และ Non-Manipulation Document (NMD)</p>
+
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb breadcrumb-style1" style="--bs-breadcrumb-divider: '>'; font-size: 0.75rem;">
+        <li class="breadcrumb-item"><a href="#" class="text-primary fw-semibold">เจ้าหน้าที่</a></li>
+        <li class="breadcrumb-item active text-secondary">ออกใบรับรอง PS/NMD</li>
+    </ol>
+</nav>
+
+<!-- Summary Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-sm-6 col-xl-4">
+        <div class="card h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+                <div class="avatar flex-shrink-0"><span class="avatar-initial rounded bg-label-primary"><i class="ri ri-award-line ri-22px"></i></span></div>
+                <div><p class="mb-0 small text-muted">ใบรับรองทั้งหมด</p><h5 class="mb-0">@totalCount</h5></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-4">
+        <div class="card h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+                <div class="avatar flex-shrink-0"><span class="avatar-initial rounded bg-label-success"><i class="ri ri-shield-check-line ri-22px"></i></span></div>
+                <div><p class="mb-0 small text-muted">มีผลบังคับ</p><h5 class="mb-0">@activeCount</h5></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-4">
+        <div class="card h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+                <div class="avatar flex-shrink-0"><span class="avatar-initial rounded bg-label-warning"><i class="ri ri-time-line ri-22px"></i></span></div>
+                <div><p class="mb-0 small text-muted">รอออก</p><h5 class="mb-0">@pendingCount</h5></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Filter -->
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="row g-2 align-items-end">
+            <div class="col-12 col-sm-4">
+                <label class="form-label small mb-1">ค้นหา</label>
+                <input id="filterKeyword" type="text" class="form-control form-control-sm" placeholder="เลขที่ใบรับรอง / ชื่อบริษัท / สินค้า" />
+            </div>
+            <div class="col-12 col-sm-3">
+                <label class="form-label small mb-1">ประเภทใบรับรอง</label>
+                <select id="filterCertType" class="form-select form-select-sm">
+                    <option value="">ทั้งหมด</option>
+                    <option value="Processing Statement">PS</option>
+                    <option value="Non-Manipulation Document">NMD</option>
+                </select>
+            </div>
+            <div class="col-12 col-sm-2">
+                <label class="form-label small mb-1">สถานะ</label>
+                <select id="filterStatus" class="form-select form-select-sm">
+                    <option value="">ทั้งหมด</option>
+                    <option value="มีผลบังคับ">มีผลบังคับ</option>
+                    <option value="รอออก">รอออก</option>
+                    <option value="ยกเลิก">ยกเลิก</option>
+                </select>
+            </div>
+            <div class="col-auto d-flex gap-2">
+                <button id="btnSearch" class="btn btn-primary btn-sm filter-sq" data-bs-toggle="tooltip" title="ค้นหา"><i class="ri ri-search-line"></i></button>
+                <button id="btnReset" class="btn btn-outline-secondary btn-sm filter-sq" data-bs-toggle="tooltip" title="รีเซ็ต"><i class="ri ri-refresh-line"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Table -->
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h6 class="mb-0">รายการใบรับรอง PS/NMD</h6>
+        <button class="btn btn-primary btn-sm"><i class="ri ri-add-line me-1"></i>ออกใบรับรองใหม่</button>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover cert-table mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th class="text-center" style="width:50px">ลำดับ</th>
+                    <th>เลขที่ใบรับรอง</th>
+                    <th>ประเภท</th>
+                    <th>บริษัท</th>
+                    <th>ประเทศปลายทาง</th>
+                    <th>สินค้า</th>
+                    <th class="text-end">น้ำหนัก (กก.)</th>
+                    <th>วันออก</th>
+                    <th>วันหมดอายุ</th>
+                    <th class="text-center">สถานะ</th>
+                    <th class="text-center" style="width:80px">จัดการ</th>
+                </tr>
+            </thead>
+            <tbody id="certTableBody">
+                @foreach (var r in records)
+                {
+                    <tr data-id="@r.CertNo" data-cert-type="@r.CertType" data-status="@r.StatusText" data-search-text="@r.CertNo.ToLower() @r.CompanyName.ToLower() @r.ProductDesc.ToLower()">
+                        <td class="text-center text-muted">@r.RowNo</td>
+                        <td><span class="fw-semibold text-primary">@r.CertNo</span></td>
+                        <td><span class="badge bg-label-@(r.CertType == "Processing Statement" ? "info" : "secondary") rounded-pill">@(r.CertType == "Processing Statement" ? "PS" : "NMD")</span></td>
+                        <td>@r.CompanyName</td>
+                        <td>@r.DestCountry</td>
+                        <td>@r.ProductDesc</td>
+                        <td class="text-end">@r.WeightKg.ToString("N0")</td>
+                        <td>@r.IssuedAt.ToString("dd/MM/yyyy")</td>
+                        <td>@r.ExpiredAt.ToString("dd/MM/yyyy")</td>
+                        <td class="text-center"><span class="badge rounded-pill @r.StatusClass">@r.StatusText</span></td>
+                        <td class="text-center">
+                            <button class="btn btn-icon btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="ดูรายละเอียด"><i class="ri ri-eye-line ri-16px"></i></button>
+                            <button class="btn btn-icon btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="พิมพ์"><i class="ri ri-printer-line ri-16px"></i></button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tbody id="certTableEmpty" class="d-none">
+                <tr><td colspan="11" class="text-center text-muted py-4">ไม่พบข้อมูล</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,646 @@
+@{
+    ViewData["Title"] = "ออกใบรับรอง PS/NMD";
+
+    var presetPhrases = new[]
+    {
+        new
+        {
+            RowNo = 1,
+            PresetCode = "PS-TH-001",
+            PresetName = "ค่าเริ่มต้นใบรับรอง PS (ไทย) - ทั่วไป",
+            CertificateType = "PS",
+            Language = "TH",
+            Scope = "ทั่วไป",
+            Version = "v2.1",
+            UpdatedAt = new DateTime(2026, 4, 20),
+            StatusText = "ใช้งาน",
+            StatusClass = "bg-label-success",
+            OwnerUnit = "กลุ่มออกใบรับรอง"
+        },
+        new
+        {
+            RowNo = 2,
+            PresetCode = "PS-EN-002",
+            PresetName = "Default Opening for PS Certificate (EN)",
+            CertificateType = "PS",
+            Language = "EN",
+            Scope = "ส่งออกสหภาพยุโรป",
+            Version = "v1.9",
+            UpdatedAt = new DateTime(2026, 4, 18),
+            StatusText = "ใช้งาน",
+            StatusClass = "bg-label-success",
+            OwnerUnit = "กลุ่มออกใบรับรอง"
+        },
+        new
+        {
+            RowNo = 3,
+            PresetCode = "NMD-TH-003",
+            PresetName = "ค่าเริ่มต้นใบรับรอง NMD (ไทย) - ปลาทูน่า",
+            CertificateType = "NMD",
+            Language = "TH",
+            Scope = "ปลาทูน่าและผลิตภัณฑ์",
+            Version = "v1.4",
+            UpdatedAt = new DateTime(2026, 4, 10),
+            StatusText = "ใช้งาน",
+            StatusClass = "bg-label-success",
+            OwnerUnit = "ฝ่ายมาตรฐานเอกสาร"
+        },
+        new
+        {
+            RowNo = 4,
+            PresetCode = "NMD-EN-004",
+            PresetName = "Default Opening for NMD Certificate (EN)",
+            CertificateType = "NMD",
+            Language = "EN",
+            Scope = "สหรัฐอเมริกา",
+            Version = "v1.2",
+            UpdatedAt = new DateTime(2026, 3, 28),
+            StatusText = "รอทบทวน",
+            StatusClass = "bg-label-warning",
+            OwnerUnit = "ฝ่ายมาตรฐานเอกสาร"
+        },
+        new
+        {
+            RowNo = 5,
+            PresetCode = "PS-TH-005",
+            PresetName = "ค่าเริ่มต้นใบรับรอง PS (ไทย) - กรณีพิเศษ",
+            CertificateType = "PS",
+            Language = "TH",
+            Scope = "กรณีเอกสารเพิ่มเติม",
+            Version = "v0.9",
+            UpdatedAt = new DateTime(2026, 4, 5),
+            StatusText = "ฉบับร่าง",
+            StatusClass = "bg-label-secondary",
+            OwnerUnit = "กลุ่มออกใบรับรอง"
+        },
+        new
+        {
+            RowNo = 6,
+            PresetCode = "NMD-TH-006",
+            PresetName = "ค่าเริ่มต้นใบรับรอง NMD (ไทย) - ญี่ปุ่น",
+            CertificateType = "NMD",
+            Language = "TH",
+            Scope = "ญี่ปุ่น",
+            Version = "v1.0",
+            UpdatedAt = new DateTime(2026, 4, 21),
+            StatusText = "ใช้งาน",
+            StatusClass = "bg-label-success",
+            OwnerUnit = "กลุ่มออกใบรับรอง"
+        }
+    };
+
+    var totalCount = presetPhrases.Length;
+    var activeCount = presetPhrases.Count(x => x.StatusText == "ใช้งาน");
+    var reviewCount = presetPhrases.Count(x => x.StatusText == "รอทบทวน");
+    var draftCount = presetPhrases.Count(x => x.StatusText == "ฉบับร่าง");
+}
+
+@section PageStyles {
+<style>
+    .preset-table-compact {
+        font-size: 0.78rem;
+    }
+
+    .preset-table-compact th,
+    .preset-table-compact td {
+        padding: 0.45rem 0.5rem;
+        vertical-align: middle;
+        line-height: 1.3;
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    .preset-table-compact thead th {
+        white-space: normal;
+        word-break: keep-all;
+        overflow-wrap: normal;
+    }
+
+    .preset-table-compact .badge {
+        font-size: 0.68rem;
+    }
+
+    .preset-table-compact .btn.btn-sm {
+        --bs-btn-padding-y: 0.14rem;
+        --bs-btn-padding-x: 0.3rem;
+    }
+
+    .preset-table-compact .btn-icon {
+        width: 1.65rem;
+        height: 1.65rem;
+    }
+
+    .filter-action-buttons .btn-square {
+        width: 48px;
+        height: 48px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .detail-kv {
+        border: 1px solid var(--bs-border-color);
+        border-radius: 0.75rem;
+        background: var(--bs-paper-bg);
+        padding: 0.85rem 1rem;
+        height: 100%;
+    }
+
+    .detail-kv .label {
+        display: block;
+        font-size: 0.75rem;
+        color: var(--bs-secondary-color);
+        margin-bottom: 0.25rem;
+    }
+
+    .detail-kv .value {
+        font-weight: 600;
+        color: var(--bs-heading-color);
+    }
+
+    .text-preview-box {
+        border: 1px dashed var(--bs-border-color);
+        border-radius: 0.6rem;
+        background: var(--bs-paper-bg);
+        padding: 0.8rem;
+        min-height: 96px;
+        font-size: 0.84rem;
+        line-height: 1.45;
+    }
+</style>
+}
+
+@section PageScripts {
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var detailsMap = {
+            'PS-TH-001': {
+                objective: 'ใช้เป็นค่าเริ่มต้นมาตรฐานสำหรับการออกใบรับรอง PS ภาษาไทยในกรณีทั่วไป',
+                createdBy: 'เจ้าหน้าที่ระบบกลาง',
+                approvedBy: 'หัวหน้ากลุ่มออกใบรับรอง',
+                updateDate: '20/04/2569',
+                note: 'ใช้คู่กับ template PS Standard TH',
+                openingTextTh: 'กรมประมงขอรับรองว่า ผลิตภัณฑ์สัตว์น้ำตามรายละเอียดแนบท้าย ได้ผ่านการตรวจสอบตามหลักเกณฑ์ที่กำหนดแล้ว',
+                openingTextEn: 'The Department of Fisheries certifies that the fishery products described herein have been inspected and found compliant with the applicable requirements.',
+                variables: [
+                    { key: '{certificate_no}', meaning: 'เลขที่ใบรับรอง', required: 'บังคับ', example: 'PS-2026-0001' },
+                    { key: '{issue_date}', meaning: 'วันที่ออกใบรับรอง', required: 'บังคับ', example: '23/04/2569' },
+                    { key: '{establishment_name}', meaning: 'ชื่อสถานประกอบการ', required: 'บังคับ', example: 'บริษัท ตัวอย่าง จำกัด' }
+                ],
+                history: [
+                    { date: '20/04/2569', action: 'ปรับถ้อยคำส่วนแรก', editor: 'admin.ps01', result: 'ใช้งาน' },
+                    { date: '12/03/2569', action: 'เพิ่มตัวแปร issue_date', editor: 'admin.ps02', result: 'ใช้งาน' }
+                ]
+            },
+            'PS-EN-002': {
+                objective: 'กำหนดข้อความภาษาอังกฤษสำหรับใบรับรอง PS ที่ยื่นให้ประเทศคู่ค้าในกลุ่มยุโรป',
+                createdBy: 'เจ้าหน้าที่เอกสารส่งออก',
+                approvedBy: 'ผู้จัดการงานรับรอง',
+                updateDate: '18/04/2569',
+                note: 'ต้องคงถ้อยคำตามคู่มือฉบับ EN-PS ล่าสุด',
+                openingTextTh: 'เอกสารชุดนี้ใช้สำหรับการแปลถ้อยคำมาตรฐานภาษาอังกฤษของใบรับรอง PS',
+                openingTextEn: 'This certificate is issued based on the official verification carried out by the competent authority of the Department of Fisheries.',
+                variables: [
+                    { key: '{destination_country}', meaning: 'ประเทศปลายทาง', required: 'บังคับ', example: 'France' },
+                    { key: '{product_name}', meaning: 'ชื่อสินค้า', required: 'บังคับ', example: 'Frozen Tuna Loin' }
+                ],
+                history: [
+                    { date: '18/04/2569', action: 'ปรับคำว่า competent authority', editor: 'admin.ps03', result: 'ใช้งาน' }
+                ]
+            },
+            'NMD-TH-003': {
+                objective: 'ใช้กับใบรับรอง NMD ภาษาไทยสำหรับสินค้ากลุ่มปลาทูน่า',
+                createdBy: 'ผู้ดูแล NMD',
+                approvedBy: 'หัวหน้าฝ่ายมาตรฐานเอกสาร',
+                updateDate: '10/04/2569',
+                note: 'รองรับการใส่ข้อความเพิ่มในกรณีข้อกำหนดประเทศคู่ค้า',
+                openingTextTh: 'กรมประมงรับรองว่าข้อความในใบรับรองฉบับนี้จัดทำตามข้อมูลที่ผ่านการตรวจสอบจากระบบกลางแล้ว',
+                openingTextEn: 'The certificate content is prepared based on verified records available in the central fisheries control system.',
+                variables: [
+                    { key: '{nmd_ref_no}', meaning: 'เลขอ้างอิง NMD', required: 'บังคับ', example: 'NMD-2026-9012' }
+                ],
+                history: [
+                    { date: '10/04/2569', action: 'แก้ข้อความรับรองให้กระชับ', editor: 'admin.nmd01', result: 'ใช้งาน' }
+                ]
+            },
+            'NMD-EN-004': {
+                objective: 'ค่าเริ่มต้นภาษาอังกฤษสำหรับใบรับรอง NMD ที่ต้องทบทวนก่อนใช้งานจริง',
+                createdBy: 'เจ้าหน้าที่เอกสารต่างประเทศ',
+                approvedBy: 'รออนุมัติ',
+                updateDate: '28/03/2569',
+                note: 'รอความเห็นจากฝ่ายกฎหมายระหว่างประเทศ',
+                openingTextTh: 'อยู่ระหว่างการทบทวนข้อความฉบับภาษาอังกฤษ',
+                openingTextEn: 'This draft opening statement is pending legal review prior to activation.',
+                variables: [
+                    { key: '{inspector_name}', meaning: 'ชื่อผู้ตรวจสอบ', required: 'ทางเลือก', example: 'John Smith' }
+                ],
+                history: [
+                    { date: '28/03/2569', action: 'จัดทำร่างเริ่มต้น', editor: 'admin.nmd02', result: 'รอทบทวน' }
+                ]
+            },
+            'PS-TH-005': {
+                objective: 'ร่างค่าเริ่มต้นสำหรับกรณีที่ต้องแนบเอกสารเพิ่มเติมก่อนออกใบรับรอง PS',
+                createdBy: 'ทีมพัฒนาระบบ',
+                approvedBy: 'ยังไม่เสนออนุมัติ',
+                updateDate: '05/04/2569',
+                note: 'ใช้ใน sandbox เท่านั้น',
+                openingTextTh: 'เอกสารฉบับนี้เป็นร่างสำหรับการทดสอบกระบวนการอนุมัติและการแสดงผลข้อความเริ่มต้น',
+                openingTextEn: 'Draft content for testing document workflow and opening paragraph rendering.',
+                variables: [
+                    { key: '{draft_note}', meaning: 'หมายเหตุร่าง', required: 'ทางเลือก', example: 'For review only' }
+                ],
+                history: [
+                    { date: '05/04/2569', action: 'สร้าง template ร่าง', editor: 'dev.admin', result: 'ฉบับร่าง' }
+                ]
+            },
+            'NMD-TH-006': {
+                objective: 'ค่าเริ่มต้น NMD ภาษาไทยเฉพาะข้อกำหนดตลาดญี่ปุ่น',
+                createdBy: 'เจ้าหน้าที่ประจำภูมิภาคเอเชีย',
+                approvedBy: 'หัวหน้ากลุ่มออกใบรับรอง',
+                updateDate: '21/04/2569',
+                note: 'เพิ่มการอ้างอิงข้อกำหนดสุขอนามัยญี่ปุ่นปีล่าสุด',
+                openingTextTh: 'กรมประมงรับรองว่าผลิตภัณฑ์ในใบรับรองนี้เป็นไปตามข้อกำหนดสุขอนามัยของประเทศปลายทางตามที่ประกาศล่าสุด',
+                openingTextEn: 'The Department of Fisheries certifies compliance with the latest sanitary requirements of the importing country.',
+                variables: [
+                    { key: '{import_rule_code}', meaning: 'รหัสข้อกำหนดนำเข้า', required: 'บังคับ', example: 'JP-SAN-2026-04' }
+                ],
+                history: [
+                    { date: '21/04/2569', action: 'เพิ่มข้ออ้างอิง import_rule_code', editor: 'admin.nmd03', result: 'ใช้งาน' }
+                ]
+            }
+        };
+
+        function filterRows() {
+            var keyword = (document.getElementById('filterKeyword').value || '').trim().toLowerCase();
+            var certType = (document.getElementById('filterCertificateType').value || '').trim();
+            var language = (document.getElementById('filterLanguage').value || '').trim();
+            var status = (document.getElementById('filterStatus').value || '').trim();
+            var rows = document.querySelectorAll('#presetTableBody tr[data-preset-code]');
+            var visibleCount = 0;
+
+            rows.forEach(function (row) {
+                var rowText = (row.dataset.searchText || '').toLowerCase();
+                var rowCertType = row.dataset.certificateType || '';
+                var rowLanguage = row.dataset.language || '';
+                var rowStatus = row.dataset.status || '';
+                var keywordMatch = !keyword || rowText.includes(keyword);
+                var certTypeMatch = !certType || rowCertType === certType;
+                var languageMatch = !language || rowLanguage === language;
+                var statusMatch = !status || rowStatus === status;
+                var isVisible = keywordMatch && certTypeMatch && languageMatch && statusMatch;
+
+                row.classList.toggle('d-none', !isVisible);
+                if (isVisible) {
+                    visibleCount += 1;
+                }
+            });
+
+            document.getElementById('presetTableEmpty').classList.toggle('d-none', visibleCount !== 0);
+        }
+
+        function renderVariableRows(items, emptyMessage) {
+            if (!items || items.length === 0) {
+                return '<tr><td colspan="5" class="text-center text-muted py-3">' + emptyMessage + '</td></tr>';
+            }
+
+            return items.map(function (item, index) {
+                var requiredClass = item.required === 'บังคับ' ? 'bg-label-danger' : 'bg-label-secondary';
+                return '<tr>' +
+                    '<td class="text-center text-muted small">' + (index + 1) + '</td>' +
+                    '<td><code>' + item.key + '</code></td>' +
+                    '<td>' + item.meaning + '</td>' +
+                    '<td class="text-center"><span class="badge rounded-pill ' + requiredClass + '">' + item.required + '</span></td>' +
+                    '<td>' + item.example + '</td>' +
+                    '</tr>';
+            }).join('');
+        }
+
+        function renderHistoryRows(items, emptyMessage) {
+            if (!items || items.length === 0) {
+                return '<tr><td colspan="5" class="text-center text-muted py-3">' + emptyMessage + '</td></tr>';
+            }
+
+            return items.map(function (item, index) {
+                var statusClass = item.result === 'ใช้งาน' ? 'bg-label-success' : item.result === 'รอทบทวน' ? 'bg-label-warning' : 'bg-label-secondary';
+                return '<tr>' +
+                    '<td class="text-center text-muted small">' + (index + 1) + '</td>' +
+                    '<td>' + item.date + '</td>' +
+                    '<td>' + item.action + '</td>' +
+                    '<td>' + item.editor + '</td>' +
+                    '<td class="text-center"><span class="badge rounded-pill ' + statusClass + '">' + item.result + '</span></td>' +
+                    '</tr>';
+            }).join('');
+        }
+
+        function openPresetDetail(presetCode) {
+            var detail = detailsMap[presetCode];
+            var row = document.querySelector('#presetTableBody tr[data-preset-code="' + presetCode + '"]');
+            if (!detail || !row) {
+                return;
+            }
+
+            document.getElementById('presetModalTitle').textContent = row.dataset.presetName;
+            document.getElementById('detailPresetCode').textContent = presetCode;
+            document.getElementById('detailPresetName').textContent = row.dataset.presetName;
+            document.getElementById('detailCertificateType').textContent = row.dataset.certificateType;
+            document.getElementById('detailLanguage').textContent = row.dataset.language;
+            document.getElementById('detailScope').textContent = row.dataset.scope;
+            document.getElementById('detailVersion').textContent = row.dataset.version;
+            document.getElementById('detailOwnerUnit').textContent = row.dataset.ownerUnit;
+            document.getElementById('detailStatus').innerHTML = '<span class="badge rounded-pill ' + row.dataset.statusClass + '">' + row.dataset.status + '</span>';
+            document.getElementById('detailUpdatedAt').textContent = row.dataset.updatedAt;
+            document.getElementById('detailObjective').textContent = detail.objective;
+            document.getElementById('detailCreatedBy').textContent = detail.createdBy;
+            document.getElementById('detailApprovedBy').textContent = detail.approvedBy;
+            document.getElementById('detailUpdateDate').textContent = detail.updateDate;
+            document.getElementById('detailNote').textContent = detail.note;
+            document.getElementById('detailOpeningTextTh').textContent = detail.openingTextTh;
+            document.getElementById('detailOpeningTextEn').textContent = detail.openingTextEn;
+            document.getElementById('variableTableBody').innerHTML = renderVariableRows(detail.variables, 'ไม่พบตัวแปรที่กำหนด');
+            document.getElementById('historyTableBody').innerHTML = renderHistoryRows(detail.history, 'ไม่พบประวัติการแก้ไข');
+
+            new bootstrap.Modal(document.getElementById('presetDetailModal')).show();
+        }
+
+        document.getElementById('btnSearchPreset').addEventListener('click', filterRows);
+        document.getElementById('btnResetPreset').addEventListener('click', function () {
+            document.getElementById('filterKeyword').value = '';
+            document.getElementById('filterCertificateType').value = '';
+            document.getElementById('filterLanguage').value = '';
+            document.getElementById('filterStatus').value = '';
+            filterRows();
+        });
+
+        document.querySelectorAll('#filterKeyword, #filterCertificateType, #filterLanguage, #filterStatus').forEach(function (element) {
+            element.addEventListener('keydown', function (event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    filterRows();
+                }
+            });
+            element.addEventListener('change', filterRows);
+        });
+
+        if (window.bootstrap && bootstrap.Tooltip) {
+            document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (element) {
+                new bootstrap.Tooltip(element);
+            });
+        }
+
+        document.querySelectorAll('.btn-view-preset, .btn-edit-preset').forEach(function (button) {
+            button.addEventListener('click', function () {
+                openPresetDetail(this.dataset.presetCode);
+            });
+        });
+    });
+</script>
+}
+
+<h4 class="mb-1">การออกใบรับรอง PS/NMD : การกำหนดค่าเริ่มต้น</h4>
+<p class="mb-1 text-muted">จัดการชุดค่าเริ่มต้นของใบรับรอง PS/NMD ตามประเภทเอกสาร ภาษา และประเทศปลายทาง</p>
+
+<nav aria-label="breadcrumb" class="mb-6">
+    <ol class="breadcrumb breadcrumb-style1" style="--bs-breadcrumb-divider: '>'; font-size: 0.75rem;">
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("IssueReason", "Admin")" class="text-primary fw-semibold">ผู้ดูแลระบบ</a>
+        </li>
+        <li class="breadcrumb-item active text-secondary">ออกใบรับรอง PS/NMD</li>
+    </ol>
+</nav>
+
+<div class="row mb-6 g-6">
+    <div class="col-sm-6 col-xl-3"><div class="card"><div class="card-body"><div class="d-flex align-items-center justify-content-between"><div class="content-left"><h5 class="mb-1">@totalCount</h5><small>ชุดค่าทั้งหมด</small></div><span class="badge bg-label-primary rounded-circle p-2"><i class="icon-base ri ri-file-list-3-line icon-24px"></i></span></div></div></div></div>
+    <div class="col-sm-6 col-xl-3"><div class="card"><div class="card-body"><div class="d-flex align-items-center justify-content-between"><div class="content-left"><h5 class="mb-1">@activeCount</h5><small>ใช้งาน</small></div><span class="badge bg-label-success rounded-circle p-2"><i class="icon-base ri ri-checkbox-circle-line icon-24px"></i></span></div></div></div></div>
+    <div class="col-sm-6 col-xl-3"><div class="card"><div class="card-body"><div class="d-flex align-items-center justify-content-between"><div class="content-left"><h5 class="mb-1">@reviewCount</h5><small>รอทบทวน</small></div><span class="badge bg-label-warning rounded-circle p-2"><i class="icon-base ri ri-time-line icon-24px"></i></span></div></div></div></div>
+    <div class="col-sm-6 col-xl-3"><div class="card"><div class="card-body"><div class="d-flex align-items-center justify-content-between"><div class="content-left"><h5 class="mb-1">@draftCount</h5><small>ฉบับร่าง</small></div><span class="badge bg-label-secondary rounded-circle p-2"><i class="icon-base ri ri-draft-line icon-24px"></i></span></div></div></div></div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-3">
+        <div>
+            <h5 class="card-title mb-1">ค้นหาชุดค่าเริ่มต้น</h5>
+            <p class="text-muted small mb-0">ค้นหาตามรหัส ชื่อชุดค่า ประเภทใบรับรอง ภาษา และสถานะ</p>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row g-3 align-items-end">
+            <div class="col-md-4 col-lg-3">
+                <label for="filterKeyword" class="form-label">คำค้นหา</label>
+                <input type="text" id="filterKeyword" class="form-control" placeholder="รหัส, ชื่อชุดค่า, ขอบเขต" />
+            </div>
+            <div class="col-md-3 col-lg-2">
+                <label for="filterCertificateType" class="form-label">ประเภทใบรับรอง</label>
+                <select id="filterCertificateType" class="form-select">
+                    <option value="">ทั้งหมด</option>
+                    <option value="PS">PS</option>
+                    <option value="NMD">NMD</option>
+                </select>
+            </div>
+            <div class="col-md-3 col-lg-2">
+                <label for="filterLanguage" class="form-label">ภาษา</label>
+                <select id="filterLanguage" class="form-select">
+                    <option value="">ทั้งหมด</option>
+                    <option value="TH">ไทย</option>
+                    <option value="EN">อังกฤษ</option>
+                </select>
+            </div>
+            <div class="col-md-3 col-lg-3">
+                <label for="filterStatus" class="form-label">สถานะ</label>
+                <select id="filterStatus" class="form-select">
+                    <option value="">ทั้งหมด</option>
+                    <option value="ใช้งาน">ใช้งาน</option>
+                    <option value="รอทบทวน">รอทบทวน</option>
+                    <option value="ฉบับร่าง">ฉบับร่าง</option>
+                </select>
+            </div>
+            <div class="col-md-3 col-lg-2">
+                <div class="d-flex gap-2 filter-action-buttons">
+                    <button type="button" id="btnSearchPreset" class="btn btn-outline-primary btn-square" title="ค้นหา"><i class="ri ri-search-line"></i></button>
+                    <button type="button" id="btnResetPreset" class="btn btn-outline-secondary btn-square" title="ล้างค่า"><i class="ri ri-refresh-line"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div>
+            <h5 class="card-title mb-1">รายการชุดค่าเริ่มต้น</h5>
+            <p class="text-muted small mb-0">กำหนดและทบทวนค่าเริ่มต้นที่ใช้ในใบรับรอง PS/NMD</p>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#presetDetailModal">
+                <i class="ri ri-add-line me-1"></i> เพิ่มชุดค่า
+            </button>
+        </div>
+    </div>
+    <div class="table-responsive p-1">
+        <table class="table table-bordered align-middle mb-0 preset-table-compact">
+            <thead class="text-center">
+                <tr>
+                    <th style="width:56px;">#</th>
+                    <th>รหัสชุดค่า</th>
+                    <th>ชื่อชุดค่าเริ่มต้น</th>
+                    <th>ประเภท</th>
+                    <th>ภาษา</th>
+                    <th>ขอบเขตการใช้</th>
+                    <th>เวอร์ชัน</th>
+                    <th>อัปเดตล่าสุด</th>
+                    <th>สถานะ</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="presetTableBody">
+                @foreach (var preset in presetPhrases)
+                {
+                    <tr data-preset-code="@preset.PresetCode"
+                        data-preset-name="@preset.PresetName"
+                        data-certificate-type="@preset.CertificateType"
+                        data-language="@preset.Language"
+                        data-scope="@preset.Scope"
+                        data-version="@preset.Version"
+                        data-updated-at="@preset.UpdatedAt.ToString("dd/MM/yyyy")"
+                        data-status="@preset.StatusText"
+                        data-status-class="@preset.StatusClass"
+                        data-owner-unit="@preset.OwnerUnit"
+                        data-search-text="@($"{preset.PresetCode} {preset.PresetName} {preset.Scope} {preset.CertificateType} {preset.Language}")">
+                        <td class="text-center text-muted">@preset.RowNo</td>
+                        <td class="fw-semibold text-primary">@preset.PresetCode</td>
+                        <td>
+                            <div class="fw-semibold">@preset.PresetName</div>
+                            <div class="text-muted small">@preset.OwnerUnit</div>
+                        </td>
+                        <td class="text-center">@preset.CertificateType</td>
+                        <td class="text-center">@preset.Language</td>
+                        <td>@preset.Scope</td>
+                        <td class="text-center">@preset.Version</td>
+                        <td class="text-center">@preset.UpdatedAt.ToString("dd/MM/yyyy")</td>
+                        <td class="text-center"><span class="badge rounded-pill @preset.StatusClass">@preset.StatusText</span></td>
+                        <td>
+                            <div class="d-flex flex-wrap gap-1 justify-content-center">
+                                <button type="button" class="btn btn-sm btn-icon btn-outline-info btn-view-preset" data-preset-code="@preset.PresetCode" title="รายละเอียดข้อมูล" data-bs-toggle="tooltip" data-bs-placement="top"><i class="ri ri-eye-line text-info"></i></button>
+                                <button type="button" class="btn btn-sm btn-icon btn-outline-warning btn-edit-preset" data-preset-code="@preset.PresetCode" title="แก้ไขข้อมูล" data-bs-toggle="tooltip" data-bs-placement="top"><i class="ri ri-pencil-line text-warning"></i></button>
+                                <button type="button" class="btn btn-sm btn-icon btn-outline-secondary" title="คัดลอกชุดคำ" data-bs-toggle="tooltip" data-bs-placement="top"><i class="ri ri-file-copy-line text-secondary"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                <tr id="presetTableEmpty" class="d-none">
+                    <td colspan="10" class="text-center text-muted py-4">ไม่พบข้อมูลตามเงื่อนไขที่ค้นหา</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="presetDetailModal" tabindex="-1" aria-labelledby="presetDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="presetDetailModalLabel">
+                    <i class="ri ri-file-text-line me-2"></i><span id="presetModalTitle">รายละเอียดชุดค่าเริ่มต้น</span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="nav-align-top nav-tabs-shadow">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item"><button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#tab-preset-detail" aria-selected="true"><i class="ri ri-file-list-2-line me-1"></i> ข้อมูลหลัก</button></li>
+                        <li class="nav-item"><button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#tab-preset-variable" aria-selected="false"><i class="ri ri-braces-line me-1"></i> ตัวแปรข้อความ</button></li>
+                        <li class="nav-item"><button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#tab-preset-history" aria-selected="false"><i class="ri ri-history-line me-1"></i> ประวัติปรับปรุง</button></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="tab-preset-detail" class="tab-pane fade show active">
+                            <div class="accordion accordion-custom-button" id="presetAccordion">
+                                <div class="accordion-item active">
+                                    <h2 class="accordion-header" id="headingPresetGeneral">
+                                        <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#collapsePresetGeneral" aria-expanded="true"><i class="icon-base ri ri-information-line me-2"></i> ข้อมูลทั่วไป</button>
+                                    </h2>
+                                    <div id="collapsePresetGeneral" class="accordion-collapse collapse show">
+                                        <div class="accordion-body">
+                                            <div class="row g-3">
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">รหัสชุดค่า</span><span class="value" id="detailPresetCode">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">ประเภทใบรับรอง</span><span class="value" id="detailCertificateType">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">ภาษา</span><span class="value" id="detailLanguage">-</span></div></div>
+                                                <div class="col-md-6"><div class="detail-kv"><span class="label">ชื่อชุดค่า</span><span class="value" id="detailPresetName">-</span></div></div>
+                                                <div class="col-md-6"><div class="detail-kv"><span class="label">ขอบเขตการใช้</span><span class="value" id="detailScope">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">เวอร์ชัน</span><span class="value" id="detailVersion">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">หน่วยงานรับผิดชอบ</span><span class="value" id="detailOwnerUnit">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">สถานะ</span><span class="value" id="detailStatus">-</span></div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item active">
+                                    <h2 class="accordion-header" id="headingPresetText">
+                                        <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#collapsePresetText" aria-expanded="true"><i class="icon-base ri ri-article-line me-2"></i> ค่าเริ่มต้นและการอนุมัติ</button>
+                                    </h2>
+                                    <div id="collapsePresetText" class="accordion-collapse collapse show">
+                                        <div class="accordion-body">
+                                            <div class="row g-3 mb-3">
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">อัปเดตล่าสุด</span><span class="value" id="detailUpdatedAt">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">ผู้สร้าง</span><span class="value" id="detailCreatedBy">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">ผู้อนุมัติ</span><span class="value" id="detailApprovedBy">-</span></div></div>
+                                                <div class="col-md-6"><div class="detail-kv"><span class="label">วัตถุประสงค์</span><span class="value" id="detailObjective">-</span></div></div>
+                                                <div class="col-md-3"><div class="detail-kv"><span class="label">วันที่ปรับปรุง</span><span class="value" id="detailUpdateDate">-</span></div></div>
+                                                <div class="col-md-3"><div class="detail-kv"><span class="label">หมายเหตุ</span><span class="value" id="detailNote">-</span></div></div>
+                                            </div>
+                                            <div class="row g-3">
+                                                <div class="col-md-6">
+                                                    <label class="form-label small fw-semibold mb-1">ค่าเริ่มต้น (TH)</label>
+                                                    <div class="text-preview-box" id="detailOpeningTextTh">-</div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label small fw-semibold mb-1">Opening Text (EN)</label>
+                                                    <div class="text-preview-box" id="detailOpeningTextEn">-</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tab-preset-variable" class="tab-pane fade">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-sm align-middle mb-0 preset-table-compact">
+                                    <thead class="text-center">
+                                        <tr>
+                                            <th style="width:56px;">#</th>
+                                            <th>ตัวแปร</th>
+                                            <th>ความหมาย</th>
+                                            <th>บังคับ/ทางเลือก</th>
+                                            <th>ตัวอย่างค่า</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="variableTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div id="tab-preset-history" class="tab-pane fade">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-sm align-middle mb-0 preset-table-compact">
+                                    <thead class="text-center">
+                                        <tr>
+                                            <th style="width:56px;">#</th>
+                                            <th>วันที่</th>
+                                            <th>รายการแก้ไข</th>
+                                            <th>ผู้แก้ไข</th>
+                                            <th>ผลลัพธ์</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="historyTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i class="ri ri-close-line me-1"></i> ปิด</button>
+                <button type="button" class="btn btn-primary"><i class="ri ri-save-line me-1"></i> บันทึกข้อมูล</button>
+            </div>
+        </div>
+    </div>
+</div>

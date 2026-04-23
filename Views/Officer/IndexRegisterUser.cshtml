@@ -1,0 +1,237 @@
+@{
+    ViewData["Title"] = "ลงทะเบียนผู้ใช้";
+
+    var pendingRegistrations = new[]
+    {
+        new { RowNo=1, ReqNo="REG-2026-00101", FullName="นายสุรชาติ เกษมสุข", Email="surachat@newcompany.co.th", Organization="บริษัท นิว ซีฟู้ด เทรด จำกัด", RequestedRole="สมาชิก", SubmittedAt=new DateTime(2026,4,22,10,0,0), StatusText="รอตรวจสอบ", StatusClass="bg-label-warning" },
+        new { RowNo=2, ReqNo="REG-2026-00102", FullName="นางสาววรรณพร ดีงาม", Email="wannaporn@bluefish.co.th", Organization="บริษัท บลู ฟิช เอ็กซ์พอร์ต จำกัด", RequestedRole="สมาชิก", SubmittedAt=new DateTime(2026,4,22,14,15,0), StatusText="รอตรวจสอบ", StatusClass="bg-label-warning" },
+        new { RowNo=3, ReqNo="REG-2026-00103", FullName="นายกิตติภัทร พงษ์ไพร", Email="kittipat@andaman2.co.th", Organization="บริษัท อันดามัน 2 โปรเซสซิ่ง จำกัด", RequestedRole="สมาชิก", SubmittedAt=new DateTime(2026,4,23,9,0,0), StatusText="รอตรวจสอบ", StatusClass="bg-label-warning" },
+        new { RowNo=4, ReqNo="REG-2026-00099", FullName="นางสาวมณีรัตน์ สุขใจ", Email="maneerat@siammarine.co.th", Organization="บริษัท สยาม มารีน ฟู้ดส์ จำกัด", RequestedRole="สมาชิก", SubmittedAt=new DateTime(2026,4,21,11,0,0), StatusText="อนุมัติแล้ว", StatusClass="bg-label-success" },
+        new { RowNo=5, ReqNo="REG-2026-00098", FullName="นายอิทธิพล รักดี", Email="itthiphon@fake.co.th", Organization="ไม่ระบุ", RequestedRole="สมาชิก", SubmittedAt=new DateTime(2026,4,20,8,30,0), StatusText="ปฏิเสธ", StatusClass="bg-label-danger" },
+    };
+
+    var pendingCount = pendingRegistrations.Count(x => x.StatusText == "รอตรวจสอบ");
+    var approvedCount = pendingRegistrations.Count(x => x.StatusText == "อนุมัติแล้ว");
+    var rejectedCount = pendingRegistrations.Count(x => x.StatusText == "ปฏิเสธ");
+}
+
+@section PageStyles {
+<style>
+    .reg-table-compact { font-size: 0.78rem; }
+    .reg-table-compact th,
+    .reg-table-compact td { padding: 0.45rem 0.5rem; vertical-align: middle; }
+    .reg-table-compact .btn-icon { width: 1.65rem; height: 1.65rem; }
+    .filter-action-buttons .btn-square {
+        width: 48px; height: 48px; padding: 0;
+        display: inline-flex; align-items: center; justify-content: center;
+    }
+</style>
+}
+
+@section PageScripts {
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    function filterRows() {
+        var keyword = (document.getElementById('filterKeyword').value || '').trim().toLowerCase();
+        var status = (document.getElementById('filterStatus').value || '').trim();
+        var rows = document.querySelectorAll('#regTableBody tr[data-id]');
+        var count = 0;
+        rows.forEach(function (row) {
+            var text = (row.dataset.searchText || '').toLowerCase();
+            var rowStatus = row.dataset.status || '';
+            var show = (!keyword || text.includes(keyword)) && (!status || rowStatus === status);
+            row.classList.toggle('d-none', !show);
+            if (show) count++;
+        });
+        document.getElementById('regTableEmpty').classList.toggle('d-none', count !== 0);
+    }
+    document.getElementById('btnSearch').addEventListener('click', filterRows);
+    document.getElementById('btnReset').addEventListener('click', function () {
+        document.getElementById('filterKeyword').value = '';
+        document.getElementById('filterStatus').value = '';
+        filterRows();
+    });
+    document.getElementById('filterKeyword').addEventListener('keydown', function (e) { if (e.key === 'Enter') filterRows(); });
+    document.getElementById('filterStatus').addEventListener('change', filterRows);
+    if (window.bootstrap && bootstrap.Tooltip) {
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) { new bootstrap.Tooltip(el); });
+    }
+});
+</script>
+}
+
+@* ************** Content ************** *@
+<h4 class="mb-1">ลงทะเบียนผู้ใช้งาน</h4>
+<p class="mb-1">พิจารณาอนุมัติคำขอลงทะเบียนผู้ใช้งานระบบใบรับรองสัตว์น้ำ</p>
+
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="mb-6">
+    <ol class="breadcrumb breadcrumb-style1" style="--bs-breadcrumb-divider: '>'; font-size: 0.75rem;">
+        <li class="breadcrumb-item"><a href="#" class="text-primary fw-semibold">เจ้าหน้าที่</a></li>
+        <li class="breadcrumb-item active text-secondary">ลงทะเบียนผู้ใช้งาน</li>
+    </ol>
+</nav>
+
+<!-- Summary Cards -->
+<div class="row mb-6 g-6">
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="content-left">
+                        <h5 class="mb-1">@pendingRegistrations.Length</h5>
+                        <small>คำขอทั้งหมด</small>
+                    </div>
+                    <span class="badge bg-label-primary rounded-circle p-2">
+                        <i class="icon-base ri ri-user-settings-line icon-24px"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="content-left">
+                        <h5 class="mb-1">@pendingCount</h5>
+                        <small>รอตรวจสอบ</small>
+                    </div>
+                    <span class="badge bg-label-warning rounded-circle p-2">
+                        <i class="icon-base ri ri-user-add-line icon-24px"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="content-left">
+                        <h5 class="mb-1">@approvedCount</h5>
+                        <small>อนุมัติแล้ว</small>
+                    </div>
+                    <span class="badge bg-label-success rounded-circle p-2">
+                        <i class="icon-base ri ri-user-follow-line icon-24px"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="content-left">
+                        <h5 class="mb-1">@rejectedCount</h5>
+                        <small>ปฏิเสธ</small>
+                    </div>
+                    <span class="badge bg-label-danger rounded-circle p-2">
+                        <i class="icon-base ri ri-user-unfollow-line icon-24px"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Filter Card -->
+<div class="card mb-4">
+    <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-3">
+        <div>
+            <h5 class="card-title mb-1">ค้นหาคำขอลงทะเบียน</h5>
+            <p class="text-muted small mb-0">ค้นหาตามชื่อ อีเมล องค์กร หรือสถานะคำขอ</p>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row g-3 align-items-end">
+            <div class="col-md-5 col-lg-5">
+                <label for="filterKeyword" class="form-label">ค้นหา</label>
+                <input id="filterKeyword" type="text" class="form-control" placeholder="ชื่อ / อีเมล / องค์กร" />
+            </div>
+            <div class="col-md-3 col-lg-3">
+                <label for="filterStatus" class="form-label">สถานะ</label>
+                <select id="filterStatus" class="form-select">
+                    <option value="">ทั้งหมด</option>
+                    <option value="รอตรวจสอบ">รอตรวจสอบ</option>
+                    <option value="อนุมัติแล้ว">อนุมัติแล้ว</option>
+                    <option value="ปฏิเสธ">ปฏิเสธ</option>
+                </select>
+            </div>
+            <div class="col-md-4 col-lg-4">
+                <div class="d-flex gap-2 filter-action-buttons">
+                    <button type="button" id="btnSearch" class="btn btn-outline-primary btn-square" title="ค้นหา">
+                        <i class="ri ri-search-line"></i>
+                    </button>
+                    <button type="button" id="btnReset" class="btn btn-outline-secondary btn-square">
+                        <i class="ri ri-refresh-line"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Table Card -->
+<div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div>
+            <h5 class="card-title mb-1">รายการขอลงทะเบียน</h5>
+            <p class="text-muted small mb-0">แสดงคำขอลงทะเบียนผู้ใช้งานระบบใบรับรองสัตว์น้ำ</p>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <button class="btn btn-primary btn-sm">
+                <i class="ri ri-user-add-line me-1"></i>สร้างบัญชีผู้ใช้
+            </button>
+        </div>
+    </div>
+    <div class="table-responsive p-1">
+        <table class="table table-bordered align-middle mb-0 reg-table-compact">
+            <thead class="text-center">
+                <tr>
+                    <th style="width:50px">#</th>
+                    <th>เลขที่คำขอ</th>
+                    <th>ชื่อ-สกุล</th>
+                    <th>อีเมล</th>
+                    <th>องค์กร</th>
+                    <th>บทบาทที่ขอ</th>
+                    <th>วันที่ยื่น</th>
+                    <th>สถานะ</th>
+                    <th style="width:110px"></th>
+                </tr>
+            </thead>
+            <tbody id="regTableBody">
+                @foreach (var r in pendingRegistrations)
+                {
+                    <tr data-id="@r.ReqNo" data-status="@r.StatusText" data-search-text="@r.FullName.ToLower() @r.Email.ToLower() @r.Organization.ToLower()">
+                        <td class="text-center text-muted">@r.RowNo</td>
+                        <td><span class="fw-semibold text-primary">@r.ReqNo</span></td>
+                        <td>@r.FullName</td>
+                        <td>@r.Email</td>
+                        <td>@r.Organization</td>
+                        <td class="text-center"><span class="badge bg-label-secondary rounded-pill">@r.RequestedRole</span></td>
+                        <td>@r.SubmittedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td class="text-center"><span class="badge rounded-pill @r.StatusClass">@r.StatusText</span></td>
+                        <td class="text-center">
+                            <div class="d-flex gap-1 justify-content-center">
+                                <button class="btn btn-icon btn-sm btn-outline-info" data-bs-toggle="tooltip" title="ดูรายละเอียด">
+                                    <i class="ri ri-eye-line text-info"></i>
+                                </button>
+                                <button class="btn btn-icon btn-sm btn-outline-success" data-bs-toggle="tooltip" title="อนุมัติ">
+                                    <i class="ri ri-check-line text-success"></i>
+                                </button>
+                                <button class="btn btn-icon btn-sm btn-outline-danger" data-bs-toggle="tooltip" title="ปฏิเสธ">
+                                    <i class="ri ri-close-line text-danger"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                <tr id="regTableEmpty" class="d-none">
+                    <td colspan="9" class="text-center text-muted py-4">ไม่พบข้อมูลตามเงื่อนไขที่ค้นหา</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

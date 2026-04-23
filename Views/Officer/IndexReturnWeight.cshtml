@@ -1,0 +1,172 @@
+@{
+    ViewData["Title"] = "คืนน้ำหนักสินค้าสัตว์น้ำ";
+
+    var records = new[]
+    {
+        new { RowNo=1, RequestNo="RW-2026-00801", CertNo="PS-2026-00401", CompanyName="บริษัท สยาม มารีน ฟู้ดส์ จำกัด", ProductDesc="ทูน่ากระป๋อง", ReturnWeightKg=500m, Reason="สินค้าเสียหายระหว่างขนส่ง", SubmittedAt=new DateTime(2026,4,21,9,0,0), StatusText="รอพิจารณา", StatusClass="bg-label-warning" },
+        new { RowNo=2, RequestNo="RW-2026-00802", CertNo="NMD-2026-00402", CompanyName="บริษัท โอเชียน ไพร์ม เอ็กซ์พอร์ต จำกัด", ProductDesc="ปลาโอสาแช่แข็ง", ReturnWeightKg=200m, Reason="ผู้ซื้อส่งคืน", SubmittedAt=new DateTime(2026,4,22,10,0,0), StatusText="อนุมัติ", StatusClass="bg-label-success" },
+        new { RowNo=3, RequestNo="RW-2026-00803", CertNo="PS-2026-00403", CompanyName="บริษัท กัลฟ์ แคทช์ โปรเซสซิ่ง จำกัด", ProductDesc="ทูน่าครีบเหลืองแช่แข็ง", ReturnWeightKg=1200m, Reason="น้ำหนักไม่ตรงตามสัญญา", SubmittedAt=new DateTime(2026,4,22,14,30,0), StatusText="รอพิจารณา", StatusClass="bg-label-warning" },
+        new { RowNo=4, RequestNo="RW-2026-00804", CertNo="PS-2025-00188", CompanyName="บริษัท อันดามัน โคลด์สโตเรจ จำกัด", ProductDesc="กุ้งแปรรูป", ReturnWeightKg=300m, Reason="สินค้าไม่ผ่านมาตรฐาน", SubmittedAt=new DateTime(2026,4,23,8,30,0), StatusText="ปฏิเสธ", StatusClass="bg-label-danger" },
+    };
+
+    var totalCount = records.Length;
+    var pendingCount = records.Count(x => x.StatusText == "รอพิจารณา");
+    var approvedCount = records.Count(x => x.StatusText == "อนุมัติ");
+    var totalReturnWeight = records.Sum(x => x.ReturnWeightKg);
+}
+
+@section PageStyles {
+<style>
+    .rw-table { font-size: 0.78rem; }
+    .rw-table th, .rw-table td { padding: 0.4rem 0.5rem; vertical-align: middle; }
+    .rw-table .btn-icon { width: 1.65rem; height: 1.65rem; }
+    .filter-sq { width: 48px; height: 48px; padding: 0; display: inline-flex; align-items: center; justify-content: center; }
+</style>
+}
+
+@section PageScripts {
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    function filterRows() {
+        var keyword = (document.getElementById('filterKeyword').value || '').trim().toLowerCase();
+        var status = (document.getElementById('filterStatus').value || '').trim();
+        var rows = document.querySelectorAll('#rwTableBody tr[data-id]');
+        var count = 0;
+        rows.forEach(function (row) {
+            var text = (row.dataset.searchText || '').toLowerCase();
+            var rowStatus = row.dataset.status || '';
+            var show = (!keyword || text.includes(keyword)) && (!status || rowStatus === status);
+            row.classList.toggle('d-none', !show);
+            if (show) count++;
+        });
+        document.getElementById('rwTableEmpty').classList.toggle('d-none', count !== 0);
+    }
+    document.getElementById('btnSearch').addEventListener('click', filterRows);
+    document.getElementById('btnReset').addEventListener('click', function () {
+        document.getElementById('filterKeyword').value = '';
+        document.getElementById('filterStatus').value = '';
+        filterRows();
+    });
+    document.getElementById('filterKeyword').addEventListener('keydown', function (e) { if (e.key === 'Enter') filterRows(); });
+    document.getElementById('filterStatus').addEventListener('change', filterRows);
+    if (window.bootstrap && bootstrap.Tooltip) {
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) { new bootstrap.Tooltip(el); });
+    }
+});
+</script>
+}
+
+<h4 class="mb-1">คืนน้ำหนักสินค้าสัตว์น้ำ</h4>
+<p class="mb-1 text-muted">พิจารณาคำขอคืนน้ำหนักสินค้าสัตว์น้ำที่เกี่ยวข้องกับใบรับรอง PS/NMD</p>
+
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb breadcrumb-style1" style="--bs-breadcrumb-divider: '>'; font-size: 0.75rem;">
+        <li class="breadcrumb-item"><a href="#" class="text-primary fw-semibold">เจ้าหน้าที่</a></li>
+        <li class="breadcrumb-item active text-secondary">คืนน้ำหนักสินค้าสัตว์น้ำ</li>
+    </ol>
+</nav>
+
+<div class="row g-3 mb-4">
+    <div class="col-sm-6 col-xl-3">
+        <div class="card h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+                <div class="avatar flex-shrink-0"><span class="avatar-initial rounded bg-label-primary"><i class="ri ri-scales-3-line ri-22px"></i></span></div>
+                <div><p class="mb-0 small text-muted">คำขอทั้งหมด</p><h5 class="mb-0">@totalCount</h5></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+                <div class="avatar flex-shrink-0"><span class="avatar-initial rounded bg-label-warning"><i class="ri ri-time-line ri-22px"></i></span></div>
+                <div><p class="mb-0 small text-muted">รอพิจารณา</p><h5 class="mb-0">@pendingCount</h5></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+                <div class="avatar flex-shrink-0"><span class="avatar-initial rounded bg-label-success"><i class="ri ri-checkbox-circle-line ri-22px"></i></span></div>
+                <div><p class="mb-0 small text-muted">อนุมัติแล้ว</p><h5 class="mb-0">@approvedCount</h5></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+                <div class="avatar flex-shrink-0"><span class="avatar-initial rounded bg-label-info"><i class="ri ri-weight-line ri-22px"></i></span></div>
+                <div><p class="mb-0 small text-muted">น้ำหนักรวม (กก.)</p><h5 class="mb-0">@totalReturnWeight.ToString("N0")</h5></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="row g-2 align-items-end">
+            <div class="col-12 col-sm-5">
+                <label class="form-label small mb-1">ค้นหา</label>
+                <input id="filterKeyword" type="text" class="form-control form-control-sm" placeholder="เลขที่คำขอ / เลขที่ใบรับรอง / ชื่อบริษัท" />
+            </div>
+            <div class="col-12 col-sm-3">
+                <label class="form-label small mb-1">สถานะ</label>
+                <select id="filterStatus" class="form-select form-select-sm">
+                    <option value="">ทั้งหมด</option>
+                    <option value="รอพิจารณา">รอพิจารณา</option>
+                    <option value="อนุมัติ">อนุมัติ</option>
+                    <option value="ปฏิเสธ">ปฏิเสธ</option>
+                </select>
+            </div>
+            <div class="col-auto d-flex gap-2">
+                <button id="btnSearch" class="btn btn-primary btn-sm filter-sq" data-bs-toggle="tooltip" title="ค้นหา"><i class="ri ri-search-line"></i></button>
+                <button id="btnReset" class="btn btn-outline-secondary btn-sm filter-sq" data-bs-toggle="tooltip" title="รีเซ็ต"><i class="ri ri-refresh-line"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header"><h6 class="mb-0">รายการขอคืนน้ำหนักสินค้า</h6></div>
+    <div class="table-responsive">
+        <table class="table table-hover rw-table mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th class="text-center" style="width:50px">ลำดับ</th>
+                    <th>เลขที่คำขอ</th>
+                    <th>เลขที่ใบรับรอง</th>
+                    <th>บริษัท</th>
+                    <th>สินค้า</th>
+                    <th class="text-end">น้ำหนักขอคืน (กก.)</th>
+                    <th>เหตุผล</th>
+                    <th>วันที่ยื่น</th>
+                    <th class="text-center">สถานะ</th>
+                    <th class="text-center" style="width:100px">จัดการ</th>
+                </tr>
+            </thead>
+            <tbody id="rwTableBody">
+                @foreach (var r in records)
+                {
+                    <tr data-id="@r.RequestNo" data-status="@r.StatusText" data-search-text="@r.RequestNo.ToLower() @r.CertNo.ToLower() @r.CompanyName.ToLower()">
+                        <td class="text-center text-muted">@r.RowNo</td>
+                        <td><span class="fw-semibold text-primary">@r.RequestNo</span></td>
+                        <td class="text-muted">@r.CertNo</td>
+                        <td>@r.CompanyName</td>
+                        <td>@r.ProductDesc</td>
+                        <td class="text-end fw-semibold">@r.ReturnWeightKg.ToString("N0")</td>
+                        <td>@r.Reason</td>
+                        <td>@r.SubmittedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td class="text-center"><span class="badge rounded-pill @r.StatusClass">@r.StatusText</span></td>
+                        <td class="text-center">
+                            <button class="btn btn-icon btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="ดูรายละเอียด"><i class="ri ri-eye-line ri-16px"></i></button>
+                            <button class="btn btn-icon btn-sm btn-outline-success" data-bs-toggle="tooltip" title="อนุมัติ"><i class="ri ri-check-line ri-16px"></i></button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tbody id="rwTableEmpty" class="d-none">
+                <tr><td colspan="10" class="text-center text-muted py-4">ไม่พบข้อมูล</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -119,6 +119,159 @@
         </li>
       </ul>
     </li>
+
+    <li class="menu-header mt-2">
+      <span class="menu-header-text" data-i18n="เจ้าหน้าที่">เจ้าหน้าที่</span>
+    </li>
+
+    <li class='menu-item@(currentPage.StartsWith("/Officer/Index") && (currentPage == "/Officer/IndexRMBS1PS" || currentPage == "/Officer/IndexApproveYield" || currentPage == "/Officer/IndexQuantityControl") ? " active open" : currentPage.StartsWith("/Officer/IndexRMBS1PS") || currentPage.StartsWith("/Officer/IndexApproveYield") || currentPage.StartsWith("/Officer/IndexQuantityControl") ? " active open" : "")'>
+      <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class="menu-icon icon-base ri ri-file-text-line"></i>
+        <div data-i18n="เอกสาร RMBS1">เอกสาร RMBS1</div>
+      </a>
+      <ul class="menu-sub">
+        <li class='menu-item@(currentPage == "/Officer/IndexRMBS1PS" ? " active" : "")'>
+          <a asp-controller="Officer" asp-action="IndexRMBS1PS" class="menu-link">
+            <div data-i18n="ออก RMBS1 PS">ออก RMBS1 PS</div>
+          </a>
+        </li>
+        <li class='menu-item@(currentPage == "/Officer/IndexApproveYield" ? " active" : "")'>
+          <a asp-controller="Officer" asp-action="IndexApproveYield" class="menu-link">
+            <div data-i18n="อนุมัติ %Yield">อนุมัติ %Yield</div>
+          </a>
+        </li>
+        <li class='menu-item@(currentPage == "/Officer/IndexQuantityControl" ? " active" : "")'>
+          <a asp-controller="Officer" asp-action="IndexQuantityControl" class="menu-link">
+            <div data-i18n="ควบคุมปริมาณสินค้า">ควบคุมปริมาณสินค้า</div>
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    <li class='menu-item@(currentPage == "/Officer/IndexIssueCertificate" || currentPage == "/Officer/IndexReviewChange" || currentPage == "/Officer/IndexReplacement" || currentPage == "/Officer/IndexRevoke" || currentPage == "/Officer/IndexReturnWeight" || currentPage == "/Officer/IndexSearchCertificate" || currentPage == "/Officer/IndexSearchSelfDecl" ? " active open" : "")'>
+      <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class="menu-icon icon-base ri ri-article-line"></i>
+        <div data-i18n="ใบรับรอง PS/NMD">ใบรับรอง PS/NMD</div>
+      </a>
+      <ul class="menu-sub">
+        <li class='menu-item@(currentPage == "/Officer/IndexIssueCertificate" ? " active" : "")'>
+          <a asp-controller="Officer" asp-action="IndexIssueCertificate" class="menu-link">
+            <div data-i18n="ออกใบรับรอง">ออกใบรับรอง</div>
+          </a>
+        </li>
+        <li class='menu-item@(currentPage == "/Officer/IndexReviewChange" ? " active" : "")'>
+          <a asp-controller="Officer" asp-action="IndexReviewChange" class="menu-link">
+            <div data-i18n="พิจารณาเปลี่ยนแปลง">พิจารณาเปลี่ยนแปลง</div>
+          </a>
+        </li>
+        <li class='menu-item@(currentPage == "/Officer/IndexReplacement" ? " active" : "")'>
+          <a asp-controller="Officer" asp-action="IndexReplacement" class="menu-link">
+            <div data-i18n="ใบรับรองทดแทน">ใบรับรองทดแทน</div>
+          </a>
+        </li>
+        <li class='menu-item@(currentPage == "/Officer/IndexRevoke" ? " active" : "")'>
+          <a asp-controller="Officer" asp-action="IndexRevoke" class="menu-link">
+            <div data-i18n="ยกเลิกใบรับรอง">ยกเลิกใบรับรอง</div>
+          </a>
+        </li>
+        <li class='menu-item@(currentPage == "/Officer/IndexReturnWeight" ? " active" : "")'>
+          <a asp-controller="Officer" asp-action="IndexReturnWeight" class="menu-link">
+            <div data-i18n="คืนน้ำหนักสินค้า">คืนน้ำหนักสินค้า</div>
+          </a>
+        </li>
+        <li class='menu-item@(currentPage == "/Officer/IndexSearchCertificate" ? " active" : "")'>
+          <a asp-controller="Officer" asp-action="IndexSearchCertificate" class="menu-link">
+            <div data-i18n="ค้นหาใบรับรอง">ค้นหาใบรับรอง</div>
+          </a>
+        </li>
+        <li class='menu-item@(currentPage == "/Officer/IndexSearchSelfDecl" ? " active" : "")'>
+          <a asp-controller="Officer" asp-action="IndexSearchSelfDecl" class="menu-link">
+            <div data-i18n="ค้นหาใบสำรองตนเอง">ค้นหาใบสำรองตนเอง</div>
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    <li class='menu-item@(currentPage == "/Officer/IndexReports" || currentPage == "/Officer/IndexUserData" || currentPage == "/Officer/IndexStatistics" || currentPage == "/Officer/IndexRegisterUser" || currentPage == "/Officer/IndexCertTemplate" ? " active open" : "")'>
+      <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class="menu-icon icon-base ri ri-settings-3-line"></i>
+        <div data-i18n="จัดการระบบ">จัดการระบบ</div>
+      </a>
+      <ul class="menu-sub">
+        <li class='menu-item@(currentPage == "/Officer/IndexReports" ? " active" : "")'>
+          <a asp-controller="Officer" asp-action="IndexReports" class="menu-link">
+            <div data-i18n="รายงาน">รายงาน</div>
+          </a>
+        </li>
+        <li class='menu-item@(currentPage == "/Officer/IndexUserData" ? " active" : "")'>
+          <a asp-controller="Officer" asp-action="IndexUserData" class="menu-link">
+            <div data-i18n="ข้อมูลผู้ใช้งาน">ข้อมูลผู้ใช้งาน</div>
+          </a>
+        </li>
+        <li class='menu-item@(currentPage == "/Officer/IndexStatistics" ? " active" : "")'>
+          <a asp-controller="Officer" asp-action="IndexStatistics" class="menu-link">
+            <div data-i18n="สถิติการใช้งาน">สถิติการใช้งาน</div>
+          </a>
+        </li>
+        <li class='menu-item@(currentPage == "/Officer/IndexRegisterUser" ? " active" : "")'>
+          <a asp-controller="Officer" asp-action="IndexRegisterUser" class="menu-link">
+            <div data-i18n="ลงทะเบียนผู้ใช้">ลงทะเบียนผู้ใช้</div>
+          </a>
+        </li>
+        <li class='menu-item@(currentPage == "/Officer/IndexCertTemplate" ? " active" : "")'>
+          <a asp-controller="Officer" asp-action="IndexCertTemplate" class="menu-link">
+            <div data-i18n="รูปแบบใบรับรอง">รูปแบบใบรับรอง</div>
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    <li class="menu-header mt-2">
+      <span class="menu-header-text" data-i18n="ผู้ดูแลระบบ">ผู้ดูแลระบบ</span>
+    </li>
+
+    <li class='menu-item@(currentPage == "/Admin/Organization" ? " active" : "")'>
+      <a asp-controller="Admin" asp-action="Organization" class="menu-link">
+        <i class="menu-icon icon-base ri ri-building-line"></i>
+        <div data-i18n="จัดการองค์กร">จัดการองค์กร</div>
+      </a>
+    </li>
+    <li class='menu-item@(currentPage == "/Admin/DofList" ? " active" : "")'>
+      <a asp-controller="Admin" asp-action="DofList" class="menu-link">
+        <i class="menu-icon icon-base ri ri-list-check-2"></i>
+        <div data-i18n="ทะเบียน DOF">ทะเบียน DOF</div>
+      </a>
+    </li>
+    <li class='menu-item@(currentPage == "/Admin/TraceabilityList" ? " active" : "")'>
+      <a asp-controller="Admin" asp-action="TraceabilityList" class="menu-link">
+        <i class="menu-icon icon-base ri ri-search-eye-line"></i>
+        <div data-i18n="รายชื่อ Traceability">รายชื่อ Traceability</div>
+      </a>
+    </li>
+    <li class='menu-item@(currentPage == "/Admin/NotificationReason" ? " active" : "")'>
+      <a asp-controller="Admin" asp-action="NotificationReason" class="menu-link">
+        <i class="menu-icon icon-base ri ri-notification-3-line"></i>
+        <div data-i18n="มาตรการสุขอนามัย">มาตรการสุขอนามัย</div>
+      </a>
+    </li>
+    <li class='menu-item@(currentPage == "/Admin/IssueReason" ? " active" : "")'>
+      <a asp-controller="Admin" asp-action="IssueReason" class="menu-link">
+        <i class="menu-icon icon-base ri ri-file-paper-2-line"></i>
+        <div data-i18n="ออกใบรับรอง PS/NMD">ออกใบรับรอง PS/NMD</div>
+      </a>
+    </li>
+    <li class='menu-item@(currentPage == "/Admin/Reports" ? " active" : "")'>
+      <a asp-controller="Admin" asp-action="Reports" class="menu-link">
+        <i class="menu-icon icon-base ri ri-bar-chart-box-line"></i>
+        <div data-i18n="รายงาน">รายงาน</div>
+      </a>
+    </li>
+    <li class='menu-item@(currentPage == "/Admin/CertificateTemplate" ? " active" : "")'>
+      <a asp-controller="Admin" asp-action="CertificateTemplate" class="menu-link">
+        <i class="menu-icon icon-base ri ri-layout-4-line"></i>
+        <div data-i18n="รูปแบบใบรับรอง">รูปแบบใบรับรอง</div>
+      </a>
+    </li>
   </ul>
 
 </aside>

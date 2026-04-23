@@ -1,0 +1,179 @@
+@{
+    ViewData["Title"] = "สถิติการใช้งาน";
+
+    var monthlyStats = new[]
+    {
+        new { Month="ม.ค. 2569", LoginCount=412, RequestCount=88, IssuedCertCount=75, AvgProcessDays=2.1m },
+        new { Month="ก.พ. 2569", LoginCount=389, RequestCount=72, IssuedCertCount=68, AvgProcessDays=1.9m },
+        new { Month="มี.ค. 2569", LoginCount=445, RequestCount=95, IssuedCertCount=89, AvgProcessDays=2.3m },
+        new { Month="เม.ย. 2569", LoginCount=310, RequestCount=62, IssuedCertCount=55, AvgProcessDays=1.8m },
+    };
+
+    var topUsers = new[]
+    {
+        new { RowNo=1, FullName="นางสาวปรียา ศรีสุข", Organization="บริษัท สยาม มารีน ฟู้ดส์ จำกัด", LoginCount=48, RequestCount=12 },
+        new { RowNo=2, FullName="นายภาณุพงศ์ รัตน์ชัย", Organization="บริษัท โอเชียน ไพร์ม เอ็กซ์พอร์ต จำกัด", LoginCount=35, RequestCount=9 },
+        new { RowNo=3, FullName="นางสาวกนกพร สายชล", Organization="บริษัท โอเชียน ไพร์ม เอ็กซ์พอร์ต จำกัด", LoginCount=30, RequestCount=7 },
+        new { RowNo=4, FullName="นางสาวชุติกาญจน์ ภูผา", Organization="บริษัท กัลฟ์ แคทช์ โปรเซสซิ่ง จำกัด", LoginCount=28, RequestCount=6 },
+        new { RowNo=5, FullName="นางสาวสุชาดา อินทร์ทอง", Organization="บริษัท อันดามัน โคลด์สโตเรจ จำกัด", LoginCount=22, RequestCount=5 },
+    };
+
+    var totalLoginThisMonth = monthlyStats.Last().LoginCount;
+    var totalRequestThisMonth = monthlyStats.Last().RequestCount;
+    var totalIssuedThisMonth = monthlyStats.Last().IssuedCertCount;
+    var avgProcessDaysThisMonth = monthlyStats.Last().AvgProcessDays;
+}
+
+@section PageStyles {
+<style>
+    .stat-table-compact { font-size: 0.78rem; }
+    .stat-table-compact th,
+    .stat-table-compact td { padding: 0.45rem 0.5rem; vertical-align: middle; }
+</style>
+}
+
+@* ************** Content ************** *@
+<h4 class="mb-1">สถิติการใช้งาน</h4>
+<p class="mb-1">ภาพรวมสถิติการเข้าใช้งานระบบและปริมาณงานรายเดือน</p>
+
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="mb-6">
+    <ol class="breadcrumb breadcrumb-style1" style="--bs-breadcrumb-divider: '>'; font-size: 0.75rem;">
+        <li class="breadcrumb-item"><a href="#" class="text-primary fw-semibold">เจ้าหน้าที่</a></li>
+        <li class="breadcrumb-item active text-secondary">สถิติการใช้งาน</li>
+    </ol>
+</nav>
+
+<!-- Summary Cards (เดือนนี้) -->
+<div class="row mb-6 g-6">
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="content-left">
+                        <h5 class="mb-1">@totalLoginThisMonth.ToString("N0")</h5>
+                        <small>การเข้าใช้งาน (เดือนนี้)</small>
+                    </div>
+                    <span class="badge bg-label-primary rounded-circle p-2">
+                        <i class="icon-base ri ri-login-circle-line icon-24px"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="content-left">
+                        <h5 class="mb-1">@totalRequestThisMonth.ToString("N0")</h5>
+                        <small>คำขอที่ยื่น (เดือนนี้)</small>
+                    </div>
+                    <span class="badge bg-label-warning rounded-circle p-2">
+                        <i class="icon-base ri ri-file-list-3-line icon-24px"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="content-left">
+                        <h5 class="mb-1">@totalIssuedThisMonth.ToString("N0")</h5>
+                        <small>ใบรับรองที่ออก (เดือนนี้)</small>
+                    </div>
+                    <span class="badge bg-label-success rounded-circle p-2">
+                        <i class="icon-base ri ri-award-line icon-24px"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="content-left">
+                        <h5 class="mb-1">@avgProcessDaysThisMonth.ToString("F1") วัน</h5>
+                        <small>เฉลี่ยวันดำเนินการ</small>
+                    </div>
+                    <span class="badge bg-label-info rounded-circle p-2">
+                        <i class="icon-base ri ri-time-line icon-24px"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Monthly Summary Table -->
+<div class="card mb-4">
+    <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div>
+            <h5 class="card-title mb-1">สรุปรายเดือน</h5>
+            <p class="text-muted small mb-0">ปริมาณการเข้าใช้งาน คำขอ และการออกใบรับรองแยกตามเดือน</p>
+        </div>
+    </div>
+    <div class="table-responsive p-1">
+        <table class="table table-bordered align-middle mb-0 stat-table-compact">
+            <thead class="text-center">
+                <tr>
+                    <th>เดือน</th>
+                    <th>การเข้าใช้งาน</th>
+                    <th>คำขอทั้งหมด</th>
+                    <th>ออกใบรับรอง</th>
+                    <th>เฉลี่ยวันดำเนินการ</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var s in monthlyStats)
+                {
+                    <tr>
+                        <td class="fw-semibold">@s.Month</td>
+                        <td class="text-end">@s.LoginCount.ToString("N0")</td>
+                        <td class="text-end">@s.RequestCount.ToString("N0")</td>
+                        <td class="text-end">@s.IssuedCertCount.ToString("N0")</td>
+                        <td class="text-center">@s.AvgProcessDays.ToString("F1") วัน</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Top Users Table -->
+<div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div>
+            <h5 class="card-title mb-1">ผู้ใช้งานสูงสุด (เดือนนี้)</h5>
+            <p class="text-muted small mb-0">จัดอันดับผู้ใช้งานที่มีปริมาณการเข้าใช้สูงสุดในเดือนปัจจุบัน</p>
+        </div>
+    </div>
+    <div class="table-responsive p-1">
+        <table class="table table-bordered align-middle mb-0 stat-table-compact">
+            <thead class="text-center">
+                <tr>
+                    <th style="width:50px">#</th>
+                    <th>ชื่อ-สกุล</th>
+                    <th>องค์กร</th>
+                    <th>การเข้าใช้งาน</th>
+                    <th>คำขอที่ยื่น</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var u in topUsers)
+                {
+                    <tr>
+                        <td class="text-center text-muted">@u.RowNo</td>
+                        <td>@u.FullName</td>
+                        <td>@u.Organization</td>
+                        <td class="text-end fw-semibold">@u.LoginCount</td>
+                        <td class="text-end fw-semibold">@u.RequestCount</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

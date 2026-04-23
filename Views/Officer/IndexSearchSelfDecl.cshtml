@@ -1,0 +1,137 @@
+@{
+    ViewData["Title"] = "ค้นหาใบสำรองตนเอง";
+
+    var results = new[]
+    {
+        new { RowNo=1, DocNo="SD-2026-00901", CompanyName="บริษัท สยาม มารีน ฟู้ดส์ จำกัด", ProductDesc="ทูน่ากระป๋อง", WeightKg=5000m, CreatedAt=new DateTime(2026,4,18), ExpiresAt=new DateTime(2026,7,18), UsedWeightKg=3200m, RemainingKg=1800m, StatusText="ใช้งาน", StatusClass="bg-label-success" },
+        new { RowNo=2, DocNo="SD-2026-00902", CompanyName="บริษัท โอเชียน ไพร์ม เอ็กซ์พอร์ต จำกัด", ProductDesc="ปลาโอสาแช่แข็ง", WeightKg=2000m, CreatedAt=new DateTime(2026,4,19), ExpiresAt=new DateTime(2026,7,19), UsedWeightKg=2000m, RemainingKg=0m, StatusText="หมดแล้ว", StatusClass="bg-label-secondary" },
+        new { RowNo=3, DocNo="SD-2026-00903", CompanyName="บริษัท กัลฟ์ แคทช์ โปรเซสซิ่ง จำกัด", ProductDesc="ทูน่าครีบเหลืองแช่แข็ง", WeightKg=8000m, CreatedAt=new DateTime(2026,4,20), ExpiresAt=new DateTime(2026,7,20), UsedWeightKg=1500m, RemainingKg=6500m, StatusText="ใช้งาน", StatusClass="bg-label-success" },
+        new { RowNo=4, DocNo="SD-2025-00411", CompanyName="บริษัท สยาม มารีน ฟู้ดส์ จำกัด", ProductDesc="ปลาหมึกแปรรูป", WeightKg=1000m, CreatedAt=new DateTime(2025,10,10), ExpiresAt=new DateTime(2026,1,10), UsedWeightKg=800m, RemainingKg=200m, StatusText="หมดอายุ", StatusClass="bg-label-danger" },
+        new { RowNo=5, DocNo="SD-2026-00904", CompanyName="บริษัท อันดามัน โคลด์สโตเรจ จำกัด", ProductDesc="กุ้งแปรรูป", WeightKg=3000m, CreatedAt=new DateTime(2026,4,22), ExpiresAt=new DateTime(2026,7,22), UsedWeightKg=0m, RemainingKg=3000m, StatusText="ใช้งาน", StatusClass="bg-label-success" },
+    };
+}
+
+@section PageStyles {
+<style>
+    .sd-table { font-size: 0.78rem; }
+    .sd-table th, .sd-table td { padding: 0.4rem 0.5rem; vertical-align: middle; }
+    .sd-table .btn-icon { width: 1.65rem; height: 1.65rem; }
+    .filter-sq { width: 48px; height: 48px; padding: 0; display: inline-flex; align-items: center; justify-content: center; }
+</style>
+}
+
+@section PageScripts {
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    function filterRows() {
+        var keyword = (document.getElementById('filterKeyword').value || '').trim().toLowerCase();
+        var status = (document.getElementById('filterStatus').value || '').trim();
+        var rows = document.querySelectorAll('#sdTableBody tr[data-id]');
+        var count = 0;
+        rows.forEach(function (row) {
+            var text = (row.dataset.searchText || '').toLowerCase();
+            var rowStatus = row.dataset.status || '';
+            var show = (!keyword || text.includes(keyword)) && (!status || rowStatus === status);
+            row.classList.toggle('d-none', !show);
+            if (show) count++;
+        });
+        document.getElementById('sdTableEmpty').classList.toggle('d-none', count !== 0);
+    }
+    document.getElementById('btnSearch').addEventListener('click', filterRows);
+    document.getElementById('btnReset').addEventListener('click', function () {
+        document.getElementById('filterKeyword').value = '';
+        document.getElementById('filterStatus').value = '';
+        filterRows();
+    });
+    document.getElementById('filterKeyword').addEventListener('keydown', function (e) { if (e.key === 'Enter') filterRows(); });
+    document.getElementById('filterStatus').addEventListener('change', filterRows);
+    if (window.bootstrap && bootstrap.Tooltip) {
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) { new bootstrap.Tooltip(el); });
+    }
+});
+</script>
+}
+
+<h4 class="mb-1">ค้นหาใบสำรองตนเอง</h4>
+<p class="mb-1 text-muted">ค้นหาและตรวจสอบใบสำรองตนเอง (Self-Declaration) พร้อมสถานะน้ำหนักคงเหลือ</p>
+
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb breadcrumb-style1" style="--bs-breadcrumb-divider: '>'; font-size: 0.75rem;">
+        <li class="breadcrumb-item"><a href="#" class="text-primary fw-semibold">เจ้าหน้าที่</a></li>
+        <li class="breadcrumb-item active text-secondary">ค้นหาใบสำรองตนเอง</li>
+    </ol>
+</nav>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="row g-2 align-items-end">
+            <div class="col-12 col-sm-5">
+                <label class="form-label small mb-1">ค้นหา</label>
+                <input id="filterKeyword" type="text" class="form-control form-control-sm" placeholder="เลขที่เอกสาร / ชื่อบริษัท / สินค้า" />
+            </div>
+            <div class="col-12 col-sm-3">
+                <label class="form-label small mb-1">สถานะ</label>
+                <select id="filterStatus" class="form-select form-select-sm">
+                    <option value="">ทั้งหมด</option>
+                    <option value="ใช้งาน">ใช้งาน</option>
+                    <option value="หมดแล้ว">หมดแล้ว</option>
+                    <option value="หมดอายุ">หมดอายุ</option>
+                </select>
+            </div>
+            <div class="col-auto d-flex gap-2">
+                <button id="btnSearch" class="btn btn-primary btn-sm filter-sq" data-bs-toggle="tooltip" title="ค้นหา"><i class="ri ri-search-line"></i></button>
+                <button id="btnReset" class="btn btn-outline-secondary btn-sm filter-sq" data-bs-toggle="tooltip" title="รีเซ็ต"><i class="ri ri-refresh-line"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h6 class="mb-0">รายการใบสำรองตนเอง</h6>
+        <button class="btn btn-outline-secondary btn-sm"><i class="ri ri-download-2-line me-1"></i>Export</button>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover sd-table mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th class="text-center" style="width:50px">ลำดับ</th>
+                    <th>เลขที่เอกสาร</th>
+                    <th>บริษัท</th>
+                    <th>สินค้า</th>
+                    <th class="text-end">น้ำหนักทั้งหมด</th>
+                    <th class="text-end">ใช้ไปแล้ว</th>
+                    <th class="text-end">คงเหลือ</th>
+                    <th>วันสร้าง</th>
+                    <th>วันหมดอายุ</th>
+                    <th class="text-center">สถานะ</th>
+                    <th class="text-center" style="width:60px">จัดการ</th>
+                </tr>
+            </thead>
+            <tbody id="sdTableBody">
+                @foreach (var r in results)
+                {
+                    <tr data-id="@r.DocNo" data-status="@r.StatusText" data-search-text="@r.DocNo.ToLower() @r.CompanyName.ToLower() @r.ProductDesc.ToLower()">
+                        <td class="text-center text-muted">@r.RowNo</td>
+                        <td><span class="fw-semibold text-primary">@r.DocNo</span></td>
+                        <td>@r.CompanyName</td>
+                        <td>@r.ProductDesc</td>
+                        <td class="text-end">@r.WeightKg.ToString("N0")</td>
+                        <td class="text-end text-muted">@r.UsedWeightKg.ToString("N0")</td>
+                        <td class="text-end fw-bold @(r.RemainingKg == 0 ? "text-danger" : r.RemainingKg < r.WeightKg * 0.2m ? "text-warning" : "text-success")">@r.RemainingKg.ToString("N0")</td>
+                        <td>@r.CreatedAt.ToString("dd/MM/yyyy")</td>
+                        <td>@r.ExpiresAt.ToString("dd/MM/yyyy")</td>
+                        <td class="text-center"><span class="badge rounded-pill @r.StatusClass">@r.StatusText</span></td>
+                        <td class="text-center">
+                            <button class="btn btn-icon btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="ดูรายละเอียด"><i class="ri ri-eye-line ri-16px"></i></button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tbody id="sdTableEmpty" class="d-none">
+                <tr><td colspan="11" class="text-center text-muted py-4">ไม่พบข้อมูล</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,242 @@
+@{
+    ViewData["Title"] = "ข้อมูลผู้ใช้งาน";
+
+    var users = new[]
+    {
+        new { RowNo=1, UserId="USR-0001", FullName="นางสาวปรียา ศรีสุข", Email="priya@siammarine.co.th", Organization="บริษัท สยาม มารีน ฟู้ดส์ จำกัด", Role="สมาชิก", LastLoginAt=new DateTime(2026,4,23,9,15,0), StatusText="ใช้งาน", StatusClass="bg-label-success" },
+        new { RowNo=2, UserId="USR-0002", FullName="นายภาณุพงศ์ รัตน์ชัย", Email="phanu@oceanprime.co.th", Organization="บริษัท โอเชียน ไพร์ม เอ็กซ์พอร์ต จำกัด", Role="สมาชิก", LastLoginAt=new DateTime(2026,4,22,14,30,0), StatusText="ใช้งาน", StatusClass="bg-label-success" },
+        new { RowNo=3, UserId="USR-0003", FullName="นางสาวสมหญิง ใจดี", Email="officer1@dof.go.th", Organization="กรมประมง", Role="เจ้าหน้าที่", LastLoginAt=new DateTime(2026,4,23,8,0,0), StatusText="ใช้งาน", StatusClass="bg-label-success" },
+        new { RowNo=4, UserId="USR-0004", FullName="นายประสิทธิ์ วงค์ดี", Email="admin@dof.go.th", Organization="กรมประมง", Role="ผู้ดูแลระบบ", LastLoginAt=new DateTime(2026,4,23,7,45,0), StatusText="ใช้งาน", StatusClass="bg-label-success" },
+        new { RowNo=5, UserId="USR-0005", FullName="นายธนกฤต วงศ์ดี", Email="thanakrit@siammarine.co.th", Organization="บริษัท สยาม มารีน ฟู้ดส์ จำกัด", Role="สมาชิก", LastLoginAt=new DateTime(2026,4,20,11,0,0), StatusText="ระงับ", StatusClass="bg-label-warning" },
+        new { RowNo=6, UserId="USR-0006", FullName="นางสาวกนกพร สายชล", Email="kanokporn@oceanprime.co.th", Organization="บริษัท โอเชียน ไพร์ม เอ็กซ์พอร์ต จำกัด", Role="สมาชิก", LastLoginAt=new DateTime(2026,4,15,16,30,0), StatusText="ใช้งาน", StatusClass="bg-label-success" },
+    };
+
+    var totalCount = users.Length;
+    var activeCount = users.Count(x => x.StatusText == "ใช้งาน");
+    var suspendedCount = users.Count(x => x.StatusText == "ระงับ");
+    var officerCount = users.Count(x => x.Role == "เจ้าหน้าที่" || x.Role == "ผู้ดูแลระบบ");
+}
+
+@section PageStyles {
+<style>
+    .user-table-compact { font-size: 0.78rem; }
+    .user-table-compact th,
+    .user-table-compact td { padding: 0.45rem 0.5rem; vertical-align: middle; }
+    .user-table-compact .btn-icon { width: 1.65rem; height: 1.65rem; }
+    .filter-action-buttons .btn-square {
+        width: 48px; height: 48px; padding: 0;
+        display: inline-flex; align-items: center; justify-content: center;
+    }
+</style>
+}
+
+@section PageScripts {
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    function filterRows() {
+        var keyword = (document.getElementById('filterKeyword').value || '').trim().toLowerCase();
+        var role = (document.getElementById('filterRole').value || '').trim();
+        var status = (document.getElementById('filterStatus').value || '').trim();
+        var rows = document.querySelectorAll('#userTableBody tr[data-id]');
+        var count = 0;
+        rows.forEach(function (row) {
+            var text = (row.dataset.searchText || '').toLowerCase();
+            var rowRole = row.dataset.role || '';
+            var rowStatus = row.dataset.status || '';
+            var show = (!keyword || text.includes(keyword)) && (!role || rowRole === role) && (!status || rowStatus === status);
+            row.classList.toggle('d-none', !show);
+            if (show) count++;
+        });
+        document.getElementById('userTableEmpty').classList.toggle('d-none', count !== 0);
+    }
+    document.getElementById('btnSearch').addEventListener('click', filterRows);
+    document.getElementById('btnReset').addEventListener('click', function () {
+        document.getElementById('filterKeyword').value = '';
+        document.getElementById('filterRole').value = '';
+        document.getElementById('filterStatus').value = '';
+        filterRows();
+    });
+    ['filterKeyword', 'filterRole', 'filterStatus'].forEach(function (id) {
+        var el = document.getElementById(id);
+        el.addEventListener('change', filterRows);
+        if (el.tagName === 'INPUT') el.addEventListener('keydown', function (e) { if (e.key === 'Enter') filterRows(); });
+    });
+    if (window.bootstrap && bootstrap.Tooltip) {
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) { new bootstrap.Tooltip(el); });
+    }
+});
+</script>
+}
+
+@* ************** Content ************** *@
+<h4 class="mb-1">ข้อมูลผู้ใช้งาน</h4>
+<p class="mb-1">ค้นหาและตรวจสอบข้อมูลผู้เข้าใช้งานระบบ</p>
+
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="mb-6">
+    <ol class="breadcrumb breadcrumb-style1" style="--bs-breadcrumb-divider: '>'; font-size: 0.75rem;">
+        <li class="breadcrumb-item"><a href="#" class="text-primary fw-semibold">เจ้าหน้าที่</a></li>
+        <li class="breadcrumb-item active text-secondary">ข้อมูลผู้ใช้งาน</li>
+    </ol>
+</nav>
+
+<!-- Summary Cards -->
+<div class="row mb-6 g-6">
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="content-left">
+                        <h5 class="mb-1">@totalCount</h5>
+                        <small>ผู้ใช้งานทั้งหมด</small>
+                    </div>
+                    <span class="badge bg-label-primary rounded-circle p-2">
+                        <i class="icon-base ri ri-group-line icon-24px"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="content-left">
+                        <h5 class="mb-1">@activeCount</h5>
+                        <small>ใช้งานอยู่</small>
+                    </div>
+                    <span class="badge bg-label-success rounded-circle p-2">
+                        <i class="icon-base ri ri-user-follow-line icon-24px"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="content-left">
+                        <h5 class="mb-1">@suspendedCount</h5>
+                        <small>ระงับการใช้งาน</small>
+                    </div>
+                    <span class="badge bg-label-warning rounded-circle p-2">
+                        <i class="icon-base ri ri-user-forbid-line icon-24px"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="content-left">
+                        <h5 class="mb-1">@officerCount</h5>
+                        <small>เจ้าหน้าที่ / Admin</small>
+                    </div>
+                    <span class="badge bg-label-info rounded-circle p-2">
+                        <i class="icon-base ri ri-shield-user-line icon-24px"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Filter Card -->
+<div class="card mb-4">
+    <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-3">
+        <div>
+            <h5 class="card-title mb-1">ค้นหาผู้ใช้งาน</h5>
+            <p class="text-muted small mb-0">ค้นหาตามชื่อ อีเมล องค์กร บทบาท หรือสถานะ</p>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row g-3 align-items-end">
+            <div class="col-md-4 col-lg-4">
+                <label for="filterKeyword" class="form-label">ค้นหา</label>
+                <input id="filterKeyword" type="text" class="form-control" placeholder="ชื่อผู้ใช้ / อีเมล / องค์กร" />
+            </div>
+            <div class="col-md-3 col-lg-3">
+                <label for="filterRole" class="form-label">บทบาท</label>
+                <select id="filterRole" class="form-select">
+                    <option value="">ทั้งหมด</option>
+                    <option value="สมาชิก">สมาชิก</option>
+                    <option value="เจ้าหน้าที่">เจ้าหน้าที่</option>
+                    <option value="ผู้ดูแลระบบ">ผู้ดูแลระบบ</option>
+                </select>
+            </div>
+            <div class="col-md-2 col-lg-2">
+                <label for="filterStatus" class="form-label">สถานะ</label>
+                <select id="filterStatus" class="form-select">
+                    <option value="">ทั้งหมด</option>
+                    <option value="ใช้งาน">ใช้งาน</option>
+                    <option value="ระงับ">ระงับ</option>
+                </select>
+            </div>
+            <div class="col-md-3 col-lg-3">
+                <div class="d-flex gap-2 filter-action-buttons">
+                    <button type="button" id="btnSearch" class="btn btn-outline-primary btn-square" title="ค้นหา">
+                        <i class="ri ri-search-line"></i>
+                    </button>
+                    <button type="button" id="btnReset" class="btn btn-outline-secondary btn-square">
+                        <i class="ri ri-refresh-line"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Table Card -->
+<div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div>
+            <h5 class="card-title mb-1">รายชื่อผู้ใช้งาน</h5>
+            <p class="text-muted small mb-0">แสดงข้อมูลผู้ใช้งานทั้งหมดในระบบ</p>
+        </div>
+    </div>
+    <div class="table-responsive p-1">
+        <table class="table table-bordered align-middle mb-0 user-table-compact">
+            <thead class="text-center">
+                <tr>
+                    <th style="width:50px">#</th>
+                    <th>รหัสผู้ใช้</th>
+                    <th>ชื่อ-สกุล</th>
+                    <th>อีเมล</th>
+                    <th>องค์กร</th>
+                    <th>บทบาท</th>
+                    <th>เข้าใช้ล่าสุด</th>
+                    <th>สถานะ</th>
+                    <th style="width:60px"></th>
+                </tr>
+            </thead>
+            <tbody id="userTableBody">
+                @foreach (var u in users)
+                {
+                    <tr data-id="@u.UserId" data-role="@u.Role" data-status="@u.StatusText" data-search-text="@u.FullName.ToLower() @u.Email.ToLower() @u.Organization.ToLower()">
+                        <td class="text-center text-muted">@u.RowNo</td>
+                        <td><span class="fw-semibold text-primary">@u.UserId</span></td>
+                        <td>@u.FullName</td>
+                        <td>@u.Email</td>
+                        <td>@u.Organization</td>
+                        <td class="text-center">
+                            <span class="badge rounded-pill bg-label-@(u.Role == "ผู้ดูแลระบบ" ? "danger" : u.Role == "เจ้าหน้าที่" ? "info" : "secondary")">@u.Role</span>
+                        </td>
+                        <td>@u.LastLoginAt.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td class="text-center"><span class="badge rounded-pill @u.StatusClass">@u.StatusText</span></td>
+                        <td class="text-center">
+                            <button class="btn btn-icon btn-sm btn-outline-info" data-bs-toggle="tooltip" title="ดูรายละเอียด">
+                                <i class="ri ri-eye-line text-info"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+                <tr id="userTableEmpty" class="d-none">
+                    <td colspan="9" class="text-center text-muted py-4">ไม่พบข้อมูลตามเงื่อนไขที่ค้นหา</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

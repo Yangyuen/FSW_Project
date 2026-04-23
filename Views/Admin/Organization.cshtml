@@ -1,0 +1,727 @@
+@{
+    ViewData["Title"] = "จัดการองค์กร";
+
+    var organizations = new[]
+    {
+        new
+        {
+            RowNo = 1,
+            OrganizationCode = "ORG-1001",
+            OrganizationName = "บริษัท สยาม มารีน ฟู้ดส์ จำกัด",
+            OrganizationType = "โรงงานแปรรูป",
+            TaxId = "0105558012345",
+            Province = "สมุทรสาคร",
+            BranchCount = 3,
+            ContactCount = 2,
+            StatusText = "ใช้งาน",
+            StatusClass = "bg-label-success",
+            UpdatedAt = new DateTime(2026, 4, 22, 14, 30, 0)
+        },
+        new
+        {
+            RowNo = 2,
+            OrganizationCode = "ORG-1002",
+            OrganizationName = "บริษัท โอเชียน ไพร์ม เอ็กซ์พอร์ต จำกัด",
+            OrganizationType = "ผู้ส่งออก",
+            TaxId = "0105559015678",
+            Province = "สงขลา",
+            BranchCount = 2,
+            ContactCount = 3,
+            StatusText = "ใช้งาน",
+            StatusClass = "bg-label-success",
+            UpdatedAt = new DateTime(2026, 4, 21, 9, 45, 0)
+        },
+        new
+        {
+            RowNo = 3,
+            OrganizationCode = "ORG-1003",
+            OrganizationName = "ห้างหุ้นส่วน ภูเก็ต ซีฟู้ด เทรดดิ้ง",
+            OrganizationType = "แพปลา/ท่าเทียบเรือ",
+            TaxId = "0833554001122",
+            Province = "ภูเก็ต",
+            BranchCount = 1,
+            ContactCount = 2,
+            StatusText = "ระงับชั่วคราว",
+            StatusClass = "bg-label-warning",
+            UpdatedAt = new DateTime(2026, 4, 20, 16, 10, 0)
+        },
+        new
+        {
+            RowNo = 4,
+            OrganizationCode = "ORG-1004",
+            OrganizationName = "บริษัท อันดามัน โคลด์สโตเรจ จำกัด",
+            OrganizationType = "คลังห้องเย็น",
+            TaxId = "0835557003344",
+            Province = "ระนอง",
+            BranchCount = 4,
+            ContactCount = 4,
+            StatusText = "ใช้งาน",
+            StatusClass = "bg-label-success",
+            UpdatedAt = new DateTime(2026, 4, 23, 11, 5, 0)
+        },
+        new
+        {
+            RowNo = 5,
+            OrganizationCode = "ORG-1005",
+            OrganizationName = "บริษัท กัลฟ์ แคทช์ โปรเซสซิ่ง จำกัด",
+            OrganizationType = "โรงงานแปรรูป",
+            TaxId = "0105560007788",
+            Province = "ชลบุรี",
+            BranchCount = 2,
+            ContactCount = 1,
+            StatusText = "ใช้งาน",
+            StatusClass = "bg-label-success",
+            UpdatedAt = new DateTime(2026, 4, 19, 13, 20, 0)
+        },
+        new
+        {
+            RowNo = 6,
+            OrganizationCode = "ORG-1006",
+            OrganizationName = "บริษัท บลู ฮาร์เบอร์ โลจิสติกส์ จำกัด",
+            OrganizationType = "ผู้ให้บริการโลจิสติกส์",
+            TaxId = "0105561022233",
+            Province = "กรุงเทพมหานคร",
+            BranchCount = 5,
+            ContactCount = 3,
+            StatusText = "ยกเลิก",
+            StatusClass = "bg-label-danger",
+            UpdatedAt = new DateTime(2026, 4, 18, 10, 15, 0)
+        }
+    };
+
+    var totalCount = organizations.Length;
+    var activeCount = organizations.Count(x => x.StatusText == "ใช้งาน");
+    var factoryCount = organizations.Count(x => x.OrganizationType == "โรงงานแปรรูป");
+    var totalBranchCount = organizations.Sum(x => x.BranchCount);
+}
+
+@section PageStyles {
+<style>
+    .organization-table-compact {
+        font-size: 0.78rem;
+    }
+
+    .organization-table-compact th,
+    .organization-table-compact td {
+        padding: 0.45rem 0.5rem;
+        vertical-align: middle;
+        line-height: 1.3;
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    .organization-table-compact thead th {
+        white-space: normal;
+        word-break: keep-all;
+        overflow-wrap: normal;
+    }
+
+    .organization-table-compact .badge {
+        font-size: 0.68rem;
+    }
+
+    .organization-table-compact .btn.btn-sm {
+        --bs-btn-padding-y: 0.14rem;
+        --bs-btn-padding-x: 0.3rem;
+    }
+
+    .organization-table-compact .btn-icon {
+        width: 1.65rem;
+        height: 1.65rem;
+    }
+
+    .filter-action-buttons .btn-square {
+        width: 48px;
+        height: 48px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .detail-kv {
+        border: 1px solid var(--bs-border-color);
+        border-radius: 0.75rem;
+        background: var(--bs-paper-bg);
+        padding: 0.85rem 1rem;
+        height: 100%;
+    }
+
+    .detail-kv .label {
+        display: block;
+        font-size: 0.75rem;
+        color: var(--bs-secondary-color);
+        margin-bottom: 0.25rem;
+    }
+
+    .detail-kv .value {
+        font-weight: 600;
+        color: var(--bs-heading-color);
+    }
+</style>
+}
+
+@section PageScripts {
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var detailsMap = {
+            'ORG-1001': {
+                registeredDate: '12/02/2563',
+                dofNumber: 'DOF-FAC-00128',
+                licenseNumber: 'LIC-TH-PP-2291',
+                email: 'admin@siammarine.co.th',
+                phone: '034-555-100',
+                address: '88/8 หมู่ 4 ต.นาดี อ.เมืองสมุทรสาคร จ.สมุทรสาคร 74000',
+                statusNote: 'ผ่านการตรวจประเมินล่าสุด และพร้อมใช้งานในระบบ',
+                branches: [
+                    { name: 'สำนักงานใหญ่', province: 'สมุทรสาคร', code: 'B-001', status: 'ใช้งาน' },
+                    { name: 'สาขามหาชัย', province: 'สมุทรสาคร', code: 'B-002', status: 'ใช้งาน' },
+                    { name: 'สาขาท่าฉลอม', province: 'สมุทรสาคร', code: 'B-003', status: 'ใช้งาน' }
+                ],
+                contacts: [
+                    { name: 'นางสาวปรียา ศรีสุข', role: 'ผู้ประสานงานหลัก', phone: '081-222-4455', email: 'priya@siammarine.co.th' },
+                    { name: 'นายธนกฤต วงศ์ดี', role: 'ผู้ดูแลเอกสาร', phone: '082-888-1900', email: 'thanakrit@siammarine.co.th' }
+                ]
+            },
+            'ORG-1002': {
+                registeredDate: '05/06/2564',
+                dofNumber: 'DOF-EXP-00914',
+                licenseNumber: 'LIC-TH-EX-1182',
+                email: 'support@oceanprime.co.th',
+                phone: '074-220-919',
+                address: '199/24 ถ.กาญจนวนิช ต.หาดใหญ่ อ.หาดใหญ่ จ.สงขลา 90110',
+                statusNote: 'ผู้ส่งออกได้รับสิทธิ์ยื่นคำขอและติดตามสถานะครบทุกประเภท',
+                branches: [
+                    { name: 'สำนักงานใหญ่', province: 'สงขลา', code: 'B-011', status: 'ใช้งาน' },
+                    { name: 'สาขาสะเดา', province: 'สงขลา', code: 'B-012', status: 'ใช้งาน' }
+                ],
+                contacts: [
+                    { name: 'นายภาณุพงศ์ รัตน์ชัย', role: 'ผู้มีอำนาจลงนาม', phone: '089-100-1010', email: 'phanu@oceanprime.co.th' },
+                    { name: 'นางสาวกนกพร สายชล', role: 'เจ้าหน้าที่ส่งออก', phone: '086-220-8899', email: 'kanokporn@oceanprime.co.th' },
+                    { name: 'นางสาวพิชญา มีสุข', role: 'ผู้ประสานงานระบบ', phone: '081-717-1000', email: 'pitchaya@oceanprime.co.th' }
+                ]
+            },
+            'ORG-1003': {
+                registeredDate: '17/11/2562',
+                dofNumber: 'DOF-TRC-00231',
+                licenseNumber: 'LIC-TH-PI-4438',
+                email: 'ops@phuketseafood.co.th',
+                phone: '076-410-550',
+                address: '15/9 ท่าเรือประมง ต.รัษฎา อ.เมืองภูเก็ต จ.ภูเก็ต 83000',
+                statusNote: 'อยู่ระหว่างปรับปรุงเอกสารการตรวจสอบย้อนกลับ',
+                branches: [
+                    { name: 'จุดรับซื้อหลัก', province: 'ภูเก็ต', code: 'B-021', status: 'ระงับชั่วคราว' }
+                ],
+                contacts: [
+                    { name: 'นายชญานนท์ เกียรติยศ', role: 'ผู้จัดการท่าเทียบเรือ', phone: '083-110-0044', email: 'chayanon@phuketseafood.co.th' },
+                    { name: 'นางสาวอรทัย ประทีป', role: 'ผู้ประสานงานเอกสาร', phone: '085-444-2323', email: 'orathai@phuketseafood.co.th' }
+                ]
+            },
+            'ORG-1004': {
+                registeredDate: '09/08/2565',
+                dofNumber: 'DOF-CLD-00772',
+                licenseNumber: 'LIC-TH-CS-5871',
+                email: 'contact@andamancold.com',
+                phone: '077-440-778',
+                address: '42/12 ต.บางริ้น อ.เมืองระนอง จ.ระนอง 85000',
+                statusNote: 'คลังห้องเย็นเชื่อมต่อข้อมูลการรับเข้า-จ่ายออกกับระบบได้แล้ว',
+                branches: [
+                    { name: 'สำนักงานใหญ่', province: 'ระนอง', code: 'B-031', status: 'ใช้งาน' },
+                    { name: 'คลัง 2', province: 'ระนอง', code: 'B-032', status: 'ใช้งาน' },
+                    { name: 'คลัง 3', province: 'ระนอง', code: 'B-033', status: 'ใช้งาน' },
+                    { name: 'คลังแช่แข็งท่าเรือ', province: 'ระนอง', code: 'B-034', status: 'ใช้งาน' }
+                ],
+                contacts: [
+                    { name: 'นายพีรพงศ์ แก้วใจ', role: 'ผู้จัดการคลัง', phone: '089-665-1111', email: 'peerapong@andamancold.com' },
+                    { name: 'นางสาวสุชาดา อินทร์ทอง', role: 'ผู้ดูแลสิทธิ์ผู้ใช้', phone: '086-225-0001', email: 'suchada@andamancold.com' },
+                    { name: 'นายวสันต์ ทองคำ', role: 'เจ้าหน้าที่ระบบ', phone: '094-999-4141', email: 'wasan@andamancold.com' },
+                    { name: 'นางสาวเมธาวี สุวรรณ', role: 'ผู้ประสานงาน', phone: '081-900-2020', email: 'methawee@andamancold.com' }
+                ]
+            },
+            'ORG-1005': {
+                registeredDate: '14/01/2564',
+                dofNumber: 'DOF-FAC-00449',
+                licenseNumber: 'LIC-TH-PP-3018',
+                email: 'reg@gulfcatch.co.th',
+                phone: '038-771-220',
+                address: '88/21 นิคมอุตสาหกรรมแหลมฉบัง อ.ศรีราชา จ.ชลบุรี 20230',
+                statusNote: 'พร้อมใช้งานและมีประวัติการยื่นคำขอสม่ำเสมอ',
+                branches: [
+                    { name: 'สำนักงานใหญ่', province: 'ชลบุรี', code: 'B-041', status: 'ใช้งาน' },
+                    { name: 'สาขาแหลมฉบัง', province: 'ชลบุรี', code: 'B-042', status: 'ใช้งาน' }
+                ],
+                contacts: [
+                    { name: 'นางสาวชุติกาญจน์ ภูผา', role: 'ผู้ประสานงานหลัก', phone: '082-100-4545', email: 'chutikarn@gulfcatch.co.th' }
+                ]
+            },
+            'ORG-1006': {
+                registeredDate: '28/09/2561',
+                dofNumber: 'DOF-LOG-00082',
+                licenseNumber: 'LIC-TH-LG-1920',
+                email: 'it@blueharbor.co.th',
+                phone: '02-555-7800',
+                address: '99 อาคารฮาร์เบอร์ทาวเวอร์ แขวงบางนาเหนือ เขตบางนา กรุงเทพมหานคร 10260',
+                statusNote: 'บัญชีองค์กรถูกยกเลิกจากคำขอของผู้ดูแลระบบ',
+                branches: [
+                    { name: 'สำนักงานใหญ่', province: 'กรุงเทพมหานคร', code: 'B-051', status: 'ยกเลิก' },
+                    { name: 'สาขาบางนา', province: 'กรุงเทพมหานคร', code: 'B-052', status: 'ยกเลิก' },
+                    { name: 'สาขาท่าเรือ', province: 'สมุทรปราการ', code: 'B-053', status: 'ยกเลิก' },
+                    { name: 'ศูนย์กระจายสินค้า 1', province: 'ปทุมธานี', code: 'B-054', status: 'ยกเลิก' },
+                    { name: 'ศูนย์กระจายสินค้า 2', province: 'ชลบุรี', code: 'B-055', status: 'ยกเลิก' }
+                ],
+                contacts: [
+                    { name: 'นายเอกภพ รุ่งเรือง', role: 'อดีตผู้ดูแลระบบองค์กร', phone: '089-441-4000', email: 'ekkapop@blueharbor.co.th' },
+                    { name: 'นางสาวกุลธิดา พรชัย', role: 'เจ้าหน้าที่ประสานงาน', phone: '085-663-1133', email: 'kuntida@blueharbor.co.th' },
+                    { name: 'นายธีรภัทร วัฒนกิจ', role: 'ผู้จัดการปฏิบัติการ', phone: '081-722-0099', email: 'teerapat@blueharbor.co.th' }
+                ]
+            }
+        };
+
+        function filterRows() {
+            var keyword = (document.getElementById('filterKeyword').value || '').trim().toLowerCase();
+            var type = (document.getElementById('filterType').value || '').trim();
+            var province = (document.getElementById('filterProvince').value || '').trim();
+            var status = (document.getElementById('filterStatus').value || '').trim();
+            var rows = document.querySelectorAll('#organizationTableBody tr[data-code]');
+            var visibleCount = 0;
+
+            rows.forEach(function (row) {
+                var rowText = (row.dataset.searchText || '').toLowerCase();
+                var rowType = row.dataset.type || '';
+                var rowProvince = row.dataset.province || '';
+                var rowStatus = row.dataset.status || '';
+                var keywordMatch = !keyword || rowText.includes(keyword);
+                var typeMatch = !type || rowType === type;
+                var provinceMatch = !province || rowProvince === province;
+                var statusMatch = !status || rowStatus === status;
+                var isVisible = keywordMatch && typeMatch && provinceMatch && statusMatch;
+
+                row.classList.toggle('d-none', !isVisible);
+                if (isVisible) {
+                    visibleCount += 1;
+                }
+            });
+
+            document.getElementById('organizationTableEmpty').classList.toggle('d-none', visibleCount !== 0);
+        }
+
+        function renderSimpleRows(items, emptyMessage, columns) {
+            if (!items || items.length === 0) {
+                return '<tr><td colspan="' + columns + '" class="text-center text-muted py-3">' + emptyMessage + '</td></tr>';
+            }
+
+            return items.map(function (item, index) {
+                if (columns === 4) {
+                    return '<tr>' +
+                        '<td class="text-center text-muted small">' + (index + 1) + '</td>' +
+                        '<td>' + item.name + '<div class="text-muted small">' + item.code + '</div></td>' +
+                        '<td>' + item.province + '</td>' +
+                        '<td class="text-center"><span class="badge rounded-pill ' + (item.status === 'ใช้งาน' ? 'bg-label-success' : item.status === 'ระงับชั่วคราว' ? 'bg-label-warning' : 'bg-label-danger') + '">' + item.status + '</span></td>' +
+                        '</tr>';
+                }
+
+                return '<tr>' +
+                    '<td class="text-center text-muted small">' + (index + 1) + '</td>' +
+                    '<td>' + item.name + '</td>' +
+                    '<td>' + item.role + '</td>' +
+                    '<td>' + item.phone + '</td>' +
+                    '<td>' + item.email + '</td>' +
+                    '</tr>';
+            }).join('');
+        }
+
+        function openOrganizationDetail(code) {
+            var detail = detailsMap[code];
+            if (!detail) {
+                return;
+            }
+
+            var trigger = document.querySelector('[data-code="' + code + '"] .btn-view-org') || document.querySelector('[data-code="' + code + '"] .btn-edit-org');
+            var row = trigger ? trigger.closest('tr') : null;
+            if (!row) {
+                return;
+            }
+
+            document.getElementById('orgModalTitle').textContent = row.dataset.name;
+            document.getElementById('detailCode').textContent = code;
+            document.getElementById('detailType').textContent = row.dataset.type;
+            document.getElementById('detailTaxId').textContent = row.dataset.taxId;
+            document.getElementById('detailProvince').textContent = row.dataset.province;
+            document.getElementById('detailStatus').innerHTML = '<span class="badge rounded-pill ' + row.dataset.statusClass + '">' + row.dataset.status + '</span>';
+            document.getElementById('detailRegisteredDate').textContent = detail.registeredDate;
+            document.getElementById('detailDofNumber').textContent = detail.dofNumber;
+            document.getElementById('detailLicenseNumber').textContent = detail.licenseNumber;
+            document.getElementById('detailAddress').textContent = detail.address;
+            document.getElementById('detailEmail').textContent = detail.email;
+            document.getElementById('detailPhone').textContent = detail.phone;
+            document.getElementById('detailStatusNote').textContent = detail.statusNote;
+            document.getElementById('branchTableBody').innerHTML = renderSimpleRows(detail.branches, 'ไม่พบข้อมูลสาขา', 4);
+            document.getElementById('contactTableBody').innerHTML = renderSimpleRows(detail.contacts, 'ไม่พบข้อมูลผู้ติดต่อ', 5);
+
+            new bootstrap.Modal(document.getElementById('organizationDetailModal')).show();
+        }
+
+        document.getElementById('btnSearchOrganizations').addEventListener('click', filterRows);
+        document.getElementById('btnResetOrganizations').addEventListener('click', function () {
+            document.getElementById('filterKeyword').value = '';
+            document.getElementById('filterType').value = '';
+            document.getElementById('filterProvince').value = '';
+            document.getElementById('filterStatus').value = '';
+            filterRows();
+        });
+
+        document.querySelectorAll('#filterKeyword, #filterType, #filterProvince, #filterStatus').forEach(function (element) {
+            element.addEventListener('keydown', function (event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    filterRows();
+                }
+            });
+            element.addEventListener('change', filterRows);
+        });
+
+        if (window.bootstrap && bootstrap.Tooltip) {
+            document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (element) {
+                new bootstrap.Tooltip(element);
+            });
+        }
+
+        document.querySelectorAll('.btn-view-org, .btn-edit-org').forEach(function (button) {
+            button.addEventListener('click', function () {
+                openOrganizationDetail(this.dataset.code);
+            });
+        });
+    });
+</script>
+}
+
+<h4 class="mb-1">จัดการองค์กร</h4>
+<p class="mb-1 text-muted">รายการองค์กรที่ขึ้นทะเบียนในระบบ พร้อมข้อมูลสถานะ สาขา และผู้ประสานงาน</p>
+
+<nav aria-label="breadcrumb" class="mb-6">
+    <ol class="breadcrumb breadcrumb-style1" style="--bs-breadcrumb-divider: '>'; font-size: 0.75rem;">
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("Organization", "Admin")" class="text-primary fw-semibold">ผู้ดูแลระบบ</a>
+        </li>
+        <li class="breadcrumb-item active text-secondary">จัดการองค์กร</li>
+    </ol>
+</nav>
+
+<div class="row mb-6 g-6">
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="content-left">
+                        <h5 class="mb-1">@totalCount</h5>
+                        <small>องค์กรทั้งหมด</small>
+                    </div>
+                    <span class="badge bg-label-primary rounded-circle p-2">
+                        <i class="icon-base ri ri-building-2-line icon-24px"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="content-left">
+                        <h5 class="mb-1">@activeCount</h5>
+                        <small>องค์กรที่ใช้งาน</small>
+                    </div>
+                    <span class="badge bg-label-success rounded-circle p-2">
+                        <i class="icon-base ri ri-shield-check-line icon-24px"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="content-left">
+                        <h5 class="mb-1">@factoryCount</h5>
+                        <small>โรงงานแปรรูป</small>
+                    </div>
+                    <span class="badge bg-label-warning rounded-circle p-2">
+                        <i class="icon-base ri ri-community-line icon-24px"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="content-left">
+                        <h5 class="mb-1">@totalBranchCount</h5>
+                        <small>จำนวนสาขา</small>
+                    </div>
+                    <span class="badge bg-label-info rounded-circle p-2">
+                        <i class="icon-base ri ri-git-branch-line icon-24px"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-3">
+        <div>
+            <h5 class="card-title mb-1">ค้นหาองค์กร</h5>
+            <p class="text-muted small mb-0">ค้นหาจากชื่อองค์กร ประเภท จังหวัด และสถานะการใช้งาน</p>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row g-3 align-items-end">
+            <div class="col-md-4 col-lg-3">
+                <label for="filterKeyword" class="form-label">คำค้นหา</label>
+                <input type="text" id="filterKeyword" class="form-control" placeholder="ชื่อองค์กร, รหัสองค์กร, เลขผู้เสียภาษี" />
+            </div>
+            <div class="col-md-4 col-lg-3">
+                <label for="filterType" class="form-label">ประเภทองค์กร</label>
+                <select id="filterType" class="form-select">
+                    <option value="">ทั้งหมด</option>
+                    <option value="โรงงานแปรรูป">โรงงานแปรรูป</option>
+                    <option value="ผู้ส่งออก">ผู้ส่งออก</option>
+                    <option value="แพปลา/ท่าเทียบเรือ">แพปลา/ท่าเทียบเรือ</option>
+                    <option value="คลังห้องเย็น">คลังห้องเย็น</option>
+                    <option value="ผู้ให้บริการโลจิสติกส์">ผู้ให้บริการโลจิสติกส์</option>
+                </select>
+            </div>
+            <div class="col-md-4 col-lg-2">
+                <label for="filterProvince" class="form-label">จังหวัด</label>
+                <select id="filterProvince" class="form-select">
+                    <option value="">ทั้งหมด</option>
+                    <option value="กรุงเทพมหานคร">กรุงเทพมหานคร</option>
+                    <option value="ชลบุรี">ชลบุรี</option>
+                    <option value="ภูเก็ต">ภูเก็ต</option>
+                    <option value="ระนอง">ระนอง</option>
+                    <option value="สงขลา">สงขลา</option>
+                    <option value="สมุทรสาคร">สมุทรสาคร</option>
+                </select>
+            </div>
+            <div class="col-md-4 col-lg-2">
+                <label for="filterStatus" class="form-label">สถานะ</label>
+                <select id="filterStatus" class="form-select">
+                    <option value="">ทั้งหมด</option>
+                    <option value="ใช้งาน">ใช้งาน</option>
+                    <option value="ระงับชั่วคราว">ระงับชั่วคราว</option>
+                    <option value="ยกเลิก">ยกเลิก</option>
+                </select>
+            </div>
+            <div class="col-md-4 col-lg-2">
+                <div class="d-flex gap-2 filter-action-buttons">
+                    <button type="button" id="btnSearchOrganizations" class="btn btn-outline-primary btn-square" title="ค้นหา">
+                        <i class="ri ri-search-line"></i>
+                    </button>
+                    <button type="button" id="btnResetOrganizations" class="btn btn-outline-secondary btn-square" title="ล้างค่า">
+                        <i class="ri ri-refresh-line"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div>
+            <h5 class="card-title mb-1">รายการองค์กร</h5>
+            <p class="text-muted small mb-0">แสดงข้อมูลรหัสองค์กร ประเภท สถานะการใช้งาน และการเข้าถึงข้อมูลรายละเอียด</p>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#organizationDetailModal">
+                <i class="ri ri-add-line me-1"></i> เพิ่มองค์กร
+            </button>
+        </div>
+    </div>
+    <div class="table-responsive p-1">
+        <table class="table table-bordered align-middle mb-0 organization-table-compact">
+            <thead class="text-center">
+                <tr>
+                    <th style="width: 56px;">#</th>
+                    <th>รหัสองค์กร</th>
+                    <th>ชื่อองค์กร</th>
+                    <th>ประเภท</th>
+                    <th>เลขผู้เสียภาษี</th>
+                    <th>จังหวัด</th>
+                    <th>สาขา</th>
+                    <th>ผู้ติดต่อ</th>
+                    <th>สถานะ</th>
+                    <th>อัปเดตล่าสุด</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="organizationTableBody">
+                @foreach (var organization in organizations)
+                {
+                    <tr data-code="@organization.OrganizationCode"
+                        data-name="@organization.OrganizationName"
+                        data-type="@organization.OrganizationType"
+                        data-tax-id="@organization.TaxId"
+                        data-province="@organization.Province"
+                        data-status="@organization.StatusText"
+                        data-status-class="@organization.StatusClass"
+                        data-search-text="@($"{organization.OrganizationCode} {organization.OrganizationName} {organization.TaxId} {organization.Province}")">
+                        <td class="text-center text-muted">@organization.RowNo</td>
+                        <td class="fw-semibold text-primary">@organization.OrganizationCode</td>
+                        <td>
+                            <div class="fw-semibold">@organization.OrganizationName</div>
+                            <div class="text-muted small">ข้อมูลตัวอย่างสำหรับ mockup หน้าผู้ดูแลระบบ</div>
+                        </td>
+                        <td>@organization.OrganizationType</td>
+                        <td class="text-center">@organization.TaxId</td>
+                        <td>@organization.Province</td>
+                        <td class="text-center">@organization.BranchCount</td>
+                        <td class="text-center">@organization.ContactCount</td>
+                        <td class="text-center">
+                            <span class="badge rounded-pill @organization.StatusClass">@organization.StatusText</span>
+                        </td>
+                        <td class="text-center">@organization.UpdatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>
+                            <div class="d-flex flex-wrap gap-1 justify-content-center">
+                                <button type="button" class="btn btn-sm btn-icon btn-outline-info btn-view-org" data-code="@organization.OrganizationCode" title="รายละเอียดข้อมูล" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="รายละเอียดข้อมูล">
+                                    <i class="ri ri-eye-line text-info"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-icon btn-outline-warning btn-edit-org" data-code="@organization.OrganizationCode" title="แก้ไของค์กร" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="แก้ไของค์กร">
+                                    <i class="ri ri-pencil-line text-warning"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-icon btn-outline-secondary" title="จัดการสิทธิ์" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="จัดการสิทธิ์">
+                                    <i class="ri ri-shield-user-line text-secondary"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                <tr id="organizationTableEmpty" class="d-none">
+                    <td colspan="11" class="text-center text-muted py-4">ไม่พบข้อมูลตามเงื่อนไขที่ค้นหา</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="organizationDetailModal" tabindex="-1" aria-labelledby="organizationDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="organizationDetailModalLabel">
+                    <i class="ri ri-building-line me-2"></i><span id="orgModalTitle">รายละเอียดองค์กร</span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="nav-align-top nav-tabs-shadow">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#tab-org-detail" aria-selected="true">
+                                <i class="ri ri-file-list-2-line me-1"></i> ข้อมูลองค์กร
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#tab-org-branch" aria-selected="false">
+                                <i class="ri ri-git-branch-line me-1"></i> สาขา
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#tab-org-contact" aria-selected="false">
+                                <i class="ri ri-contacts-book-3-line me-1"></i> ผู้ติดต่อ
+                            </button>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="tab-org-detail" class="tab-pane fade show active">
+                            <div class="accordion accordion-custom-button" id="organizationAccordion">
+                                <div class="accordion-item active">
+                                    <h2 class="accordion-header" id="headingGeneral">
+                                        <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#collapseGeneral" aria-expanded="true" aria-controls="collapseGeneral">
+                                            <i class="icon-base ri ri-information-line me-2"></i>
+                                            ข้อมูลทั่วไป
+                                        </button>
+                                    </h2>
+                                    <div id="collapseGeneral" class="accordion-collapse collapse show" aria-labelledby="headingGeneral">
+                                        <div class="accordion-body">
+                                            <div class="row g-3">
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">รหัสองค์กร</span><span class="value" id="detailCode">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">ประเภทองค์กร</span><span class="value" id="detailType">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">สถานะ</span><span class="value" id="detailStatus">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">เลขผู้เสียภาษี</span><span class="value" id="detailTaxId">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">จังหวัด</span><span class="value" id="detailProvince">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">วันที่ขึ้นทะเบียน</span><span class="value" id="detailRegisteredDate">-</span></div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item active">
+                                    <h2 class="accordion-header" id="headingRegistration">
+                                        <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#collapseRegistration" aria-expanded="true" aria-controls="collapseRegistration">
+                                            <i class="icon-base ri ri-file-shield-2-line me-2"></i>
+                                            การขึ้นทะเบียนและการติดต่อ
+                                        </button>
+                                    </h2>
+                                    <div id="collapseRegistration" class="accordion-collapse collapse show" aria-labelledby="headingRegistration">
+                                        <div class="accordion-body">
+                                            <div class="row g-3">
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">เลขทะเบียน DOF</span><span class="value" id="detailDofNumber">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">เลขใบอนุญาต</span><span class="value" id="detailLicenseNumber">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">โทรศัพท์</span><span class="value" id="detailPhone">-</span></div></div>
+                                                <div class="col-md-6"><div class="detail-kv"><span class="label">อีเมล</span><span class="value" id="detailEmail">-</span></div></div>
+                                                <div class="col-md-6"><div class="detail-kv"><span class="label">ที่อยู่</span><span class="value" id="detailAddress">-</span></div></div>
+                                                <div class="col-12"><div class="detail-kv"><span class="label">หมายเหตุสถานะ</span><span class="value" id="detailStatusNote">-</span></div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tab-org-branch" class="tab-pane fade">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-sm align-middle mb-0 organization-table-compact">
+                                    <thead class="text-center">
+                                        <tr>
+                                            <th style="width: 56px;">#</th>
+                                            <th>สาขา</th>
+                                            <th>จังหวัด</th>
+                                            <th>สถานะ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="branchTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div id="tab-org-contact" class="tab-pane fade">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-sm align-middle mb-0 organization-table-compact">
+                                    <thead class="text-center">
+                                        <tr>
+                                            <th style="width: 56px;">#</th>
+                                            <th>ชื่อผู้ติดต่อ</th>
+                                            <th>บทบาท</th>
+                                            <th>โทรศัพท์</th>
+                                            <th>อีเมล</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="contactTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="ri ri-close-line me-1"></i> ปิด
+                </button>
+                <button type="button" class="btn btn-primary">
+                    <i class="ri ri-save-line me-1"></i> บันทึกข้อมูล
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

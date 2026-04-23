@@ -1,0 +1,879 @@
+@{
+    ViewData["Title"] = "กำหนดรูปแบบใบรับรอง";
+
+    var templates = new[]
+    {
+        new
+        {
+            Id = 1,
+            TemplateName = "Declaration – สหภาพยุโรป (มาตรฐาน)",
+            CertificateType = "declaration",
+            CertificateTypeName = "ใบรับรองสัตว์น้ำไม่แปรรูป (Declaration)",
+            TargetGroup = "สหภาพยุโรป (EU)",
+            Countries = new[] { "ฝรั่งเศส", "เยอรมนี", "อิตาลี", "สเปน", "เนเธอร์แลนด์" },
+            HsCodePattern = "0301–0308",
+            Version = "v2.4",
+            IsActive = true,
+            UpdatedAt = new DateTime(2026, 3, 10),
+            UpdatedBy = "ผู้ดูแลระบบ"
+        },
+        new
+        {
+            Id = 2,
+            TemplateName = "Declaration – ญี่ปุ่น",
+            CertificateType = "declaration",
+            CertificateTypeName = "ใบรับรองสัตว์น้ำไม่แปรรูป (Declaration)",
+            TargetGroup = "ญี่ปุ่น",
+            Countries = new[] { "ญี่ปุ่น" },
+            HsCodePattern = "0303, 0304",
+            Version = "v1.8",
+            IsActive = true,
+            UpdatedAt = new DateTime(2026, 2, 28),
+            UpdatedBy = "ผู้ดูแลระบบ"
+        },
+        new
+        {
+            Id = 3,
+            TemplateName = "Declaration – สหรัฐอเมริกา",
+            CertificateType = "declaration",
+            CertificateTypeName = "ใบรับรองสัตว์น้ำไม่แปรรูป (Declaration)",
+            TargetGroup = "อเมริกาเหนือ",
+            Countries = new[] { "สหรัฐอเมริกา", "แคนาดา" },
+            HsCodePattern = "0301–0308",
+            Version = "v3.1",
+            IsActive = true,
+            UpdatedAt = new DateTime(2026, 4, 1),
+            UpdatedBy = "ผู้ดูแลระบบ"
+        },
+        new
+        {
+            Id = 4,
+            TemplateName = "Declaration – เกาหลีใต้",
+            CertificateType = "declaration",
+            CertificateTypeName = "ใบรับรองสัตว์น้ำไม่แปรรูป (Declaration)",
+            TargetGroup = "เกาหลีใต้",
+            Countries = new[] { "เกาหลีใต้" },
+            HsCodePattern = "0303, 0304",
+            Version = "v1.2",
+            IsActive = false,
+            UpdatedAt = new DateTime(2025, 11, 15),
+            UpdatedBy = "ผู้ดูแลระบบ"
+        },
+        new
+        {
+            Id = 5,
+            TemplateName = "Declaration – ออสเตรเลีย",
+            CertificateType = "declaration",
+            CertificateTypeName = "ใบรับรองสัตว์น้ำไม่แปรรูป (Declaration)",
+            TargetGroup = "โอเชียเนีย",
+            Countries = new[] { "ออสเตรเลีย" },
+            HsCodePattern = "0301–0308",
+            Version = "v1.5",
+            IsActive = true,
+            UpdatedAt = new DateTime(2026, 1, 20),
+            UpdatedBy = "ผู้ดูแลระบบ"
+        },
+        new
+        {
+            Id = 6,
+            TemplateName = "Processing Statement – สหภาพยุโรป (มาตรฐาน)",
+            CertificateType = "processing",
+            CertificateTypeName = "ใบรับรองการแปรรูปสัตว์น้ำ (Processing Statement)",
+            TargetGroup = "สหภาพยุโรป (EU)",
+            Countries = new[] { "ฝรั่งเศส", "เยอรมนี", "อิตาลี", "สเปน", "เนเธอร์แลนด์" },
+            HsCodePattern = "1604, 1605",
+            Version = "v2.0",
+            IsActive = true,
+            UpdatedAt = new DateTime(2026, 3, 15),
+            UpdatedBy = "ผู้ดูแลระบบ"
+        },
+        new
+        {
+            Id = 7,
+            TemplateName = "Processing Statement – สหรัฐอเมริกา",
+            CertificateType = "processing",
+            CertificateTypeName = "ใบรับรองการแปรรูปสัตว์น้ำ (Processing Statement)",
+            TargetGroup = "อเมริกาเหนือ",
+            Countries = new[] { "สหรัฐอเมริกา", "แคนาดา" },
+            HsCodePattern = "1604, 1605",
+            Version = "v2.3",
+            IsActive = true,
+            UpdatedAt = new DateTime(2026, 4, 5),
+            UpdatedBy = "ผู้ดูแลระบบ"
+        },
+        new
+        {
+            Id = 8,
+            TemplateName = "Processing Statement – อาร์เจนตินา",
+            CertificateType = "processing",
+            CertificateTypeName = "ใบรับรองการแปรรูปสัตว์น้ำ (Processing Statement)",
+            TargetGroup = "อเมริกาใต้",
+            Countries = new[] { "อาร์เจนตินา", "บราซิล" },
+            HsCodePattern = "1604, 1605",
+            Version = "v1.0",
+            IsActive = false,
+            UpdatedAt = new DateTime(2025, 9, 30),
+            UpdatedBy = "ผู้ดูแลระบบ"
+        },
+        new
+        {
+            Id = 9,
+            TemplateName = "Processing Statement – ญี่ปุ่น",
+            CertificateType = "processing",
+            CertificateTypeName = "ใบรับรองการแปรรูปสัตว์น้ำ (Processing Statement)",
+            TargetGroup = "ญี่ปุ่น",
+            Countries = new[] { "ญี่ปุ่น" },
+            HsCodePattern = "1604, 6014",
+            Version = "v1.6",
+            IsActive = true,
+            UpdatedAt = new DateTime(2026, 2, 10),
+            UpdatedBy = "ผู้ดูแลระบบ"
+        },
+    };
+
+    var totalCount       = templates.Length;
+    var activeCount      = templates.Count(t => t.IsActive);
+    var declarationCount = templates.Count(t => t.CertificateType == "declaration");
+    var processingCount  = templates.Count(t => t.CertificateType == "processing");
+}
+
+@section PageStyles {
+<style>
+    .template-table-compact {
+        font-size: 0.8rem;
+    }
+    .template-table-compact th,
+    .template-table-compact td {
+        padding: 0.5rem 0.6rem;
+        vertical-align: middle;
+        line-height: 1.4;
+    }
+    .template-table-compact .badge {
+        font-size: 0.68rem;
+    }
+    .template-table-compact .btn.btn-sm {
+        --bs-btn-padding-y: 0.14rem;
+        --bs-btn-padding-x: 0.3rem;
+    }
+    .template-table-compact .btn-icon {
+        width: 1.65rem;
+        height: 1.65rem;
+    }
+    .filter-action-buttons .btn-square {
+        width: 48px;
+        height: 48px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .country-tags .badge {
+        font-size: 0.65rem;
+    }
+    .version-badge {
+        font-family: monospace;
+        font-size: 0.72rem;
+    }
+    /* Field builder (modal) */
+    #fieldBuilderList .field-item {
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 0.375rem;
+        padding: 0.55rem 0.75rem;
+        cursor: grab;
+    }
+    #fieldBuilderList .field-item:active { cursor: grabbing; }
+    #fieldBuilderList .field-item .field-drag-handle {
+        color: #adb5bd;
+        cursor: grab;
+    }
+    .field-section-header {
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #6c757d;
+        font-weight: 600;
+    }
+</style>
+}
+
+@* ************** Content ************** *@
+<h4 class="mb-1">กำหนดรูปแบบใบรับรอง</h4>
+<p class="mb-1">กำหนดและจัดการรูปแบบการจัดทำใบรับรองสำหรับแต่ละประเภทและประเทศปลายทาง</p>
+
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="mb-6">
+    <ol class="breadcrumb breadcrumb-style1" style="--bs-breadcrumb-divider: '>'; font-size: 0.75rem;">
+        <li class="breadcrumb-item">
+            <a href="#" class="text-primary fw-semibold">ผู้ดูแลระบบ</a>
+        </li>
+        <li class="breadcrumb-item active text-secondary">กำหนดรูปแบบใบรับรอง</li>
+    </ol>
+</nav>
+
+<!-- Summary Cards -->
+<div class="row mb-6 g-6">
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="content-left">
+                        <h5 class="mb-1">@totalCount</h5>
+                        <small>รูปแบบทั้งหมด</small>
+                    </div>
+                    <span class="badge bg-label-primary rounded-circle p-2">
+                        <i class="icon-base ri ri-file-text-line icon-24px"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="content-left">
+                        <h5 class="mb-1">@activeCount</h5>
+                        <small>รูปแบบที่ใช้งานอยู่</small>
+                    </div>
+                    <span class="badge bg-label-success rounded-circle p-2">
+                        <i class="icon-base ri ri-checkbox-circle-line icon-24px"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="content-left">
+                        <h5 class="mb-1">@declarationCount</h5>
+                        <small>Declaration</small>
+                    </div>
+                    <span class="badge bg-label-info rounded-circle p-2">
+                        <i class="icon-base ri ri-leaf-line icon-24px"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="content-left">
+                        <h5 class="mb-1">@processingCount</h5>
+                        <small>Processing Statement</small>
+                    </div>
+                    <span class="badge bg-label-warning rounded-circle p-2">
+                        <i class="icon-base ri ri-settings-3-line icon-24px"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Filter Card -->
+<div class="card mb-4">
+    <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-3">
+        <div>
+            <h5 class="card-title mb-1">ค้นหารูปแบบใบรับรอง</h5>
+            <p class="text-muted small mb-0">กรองตามประเภทใบรับรอง กลุ่มประเทศ และสถานะการใช้งาน</p>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row g-3 align-items-end">
+            <div class="col-md-4 col-lg-3">
+                <label for="filterType" class="form-label">ประเภทใบรับรอง</label>
+                <select id="filterType" class="form-select">
+                    <option value="">ทั้งหมด</option>
+                    <option value="declaration">ใบรับรองสัตว์น้ำไม่แปรรูป (Declaration)</option>
+                    <option value="processing">ใบรับรองการแปรรูปสัตว์น้ำ (Processing Statement)</option>
+                </select>
+            </div>
+            <div class="col-md-4 col-lg-3">
+                <label for="filterCountry" class="form-label">กลุ่มประเทศ / ประเทศปลายทาง</label>
+                <input type="text" id="filterCountry" class="form-control" placeholder="เช่น EU, ญี่ปุ่น, สหรัฐอเมริกา" />
+            </div>
+            <div class="col-md-2 col-lg-3">
+                <label for="filterStatus" class="form-label">สถานะ</label>
+                <select id="filterStatus" class="form-select">
+                    <option value="">ทั้งหมด</option>
+                    <option value="active">ใช้งานอยู่</option>
+                    <option value="inactive">ปิดใช้งาน</option>
+                </select>
+            </div>
+            <div class="col-md-2 col-lg-3">
+                <div class="d-flex gap-2 filter-action-buttons">
+                    <button type="button" id="btnSearchTemplates" class="btn btn-outline-primary btn-square" title="ค้นหา" data-bs-toggle="tooltip" data-bs-placement="top">
+                        <i class="ri ri-search-line"></i>
+                    </button>
+                    <button type="button" id="btnResetTemplates" class="btn btn-outline-secondary btn-square" title="ล้างเงื่อนไข" data-bs-toggle="tooltip" data-bs-placement="top">
+                        <i class="ri ri-refresh-line"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Table Card -->
+<div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div>
+            <h5 class="card-title mb-1">รายการรูปแบบใบรับรอง</h5>
+            <p class="text-muted small mb-0">จัดการรูปแบบ เนื้อหา และเงื่อนไขการออกใบรับรองแต่ละประเภท</p>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalAddTemplate">
+                <i class="ri ri-add-line me-1"></i> เพิ่มรูปแบบ
+            </button>
+        </div>
+    </div>
+    <div class="table-responsive p-1">
+        <table class="table table-bordered align-middle mb-0 template-table-compact">
+            <thead class="text-center">
+                <tr>
+                    <th style="width:50px;">#</th>
+                    <th>ชื่อรูปแบบ</th>
+                    <th>ประเภทใบรับรอง</th>
+                    <th>กลุ่มประเทศ / ประเทศ</th>
+                    <th>HS Code</th>
+                    <th>เวอร์ชัน</th>
+                    <th>อัปเดตล่าสุด</th>
+                    <th>สถานะ</th>
+                    <th style="width:140px;"></th>
+                </tr>
+            </thead>
+            <tbody id="templateTableBody">
+                @foreach (var t in templates)
+                {
+                    <tr data-type="@t.CertificateType"
+                        data-country="@string.Join(" ", t.Countries).ToLower()"
+                        data-status="@(t.IsActive ? "active" : "inactive")">
+                        <td class="text-center text-muted">@t.Id</td>
+                        <td>
+                            <div class="fw-semibold">@t.TemplateName</div>
+                            <small class="text-muted">แก้ไขโดย @t.UpdatedBy</small>
+                        </td>
+                        <td>
+                            @if (t.CertificateType == "declaration")
+                            {
+                                <span class="badge bg-label-info">Declaration</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-label-warning">Processing</span>
+                            }
+                        </td>
+                        <td>
+                            <div class="fw-semibold mb-1">@t.TargetGroup</div>
+                            <div class="country-tags d-flex flex-wrap gap-1">
+                                @foreach (var c in t.Countries.Take(3))
+                                {
+                                    <span class="badge bg-label-secondary">@c</span>
+                                }
+                                @if (t.Countries.Length > 3)
+                                {
+                                    <span class="badge bg-label-secondary">+@(t.Countries.Length - 3)</span>
+                                }
+                            </div>
+                        </td>
+                        <td class="text-center"><code class="version-badge">@t.HsCodePattern</code></td>
+                        <td class="text-center">
+                            <span class="badge bg-label-primary version-badge">@t.Version</span>
+                        </td>
+                        <td class="text-center">@t.UpdatedAt.ToString("dd/MM/yyyy")</td>
+                        <td class="text-center">
+                            @if (t.IsActive)
+                            {
+                                <span class="badge rounded-pill bg-label-success">ใช้งานอยู่</span>
+                            }
+                            else
+                            {
+                                <span class="badge rounded-pill bg-label-secondary">ปิดใช้งาน</span>
+                            }
+                        </td>
+                        <td>
+                            <div class="d-flex flex-wrap gap-1 justify-content-center">
+                                <button type="button" class="btn btn-sm btn-icon btn-outline-info"
+                                    title="ดูตัวอย่าง" data-bs-toggle="modal" data-bs-target="#modalPreview"
+                                    data-id="@t.Id" data-name="@t.TemplateName"
+                                    aria-label="ดูตัวอย่าง">
+                                    <i class="ri ri-eye-line text-info"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-icon btn-outline-warning"
+                                    title="แก้ไขรูปแบบ" data-bs-toggle="modal" data-bs-target="#modalEditTemplate"
+                                    data-id="@t.Id" data-name="@t.TemplateName"
+                                    aria-label="แก้ไขรูปแบบ">
+                                    <i class="ri ri-pencil-line text-warning"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-icon btn-outline-primary"
+                                    title="กำหนดช่องข้อมูล" data-bs-toggle="modal" data-bs-target="#modalFieldBuilder"
+                                    data-id="@t.Id" data-name="@t.TemplateName"
+                                    aria-label="กำหนดช่องข้อมูล">
+                                    <i class="ri ri-layout-column-line text-primary"></i>
+                                </button>
+                                @if (t.IsActive)
+                                {
+                                    <button type="button" class="btn btn-sm btn-icon btn-outline-dark"
+                                        title="ปิดใช้งาน" aria-label="ปิดใช้งาน">
+                                        <i class="ri ri-toggle-line text-dark"></i>
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button type="button" class="btn btn-sm btn-icon btn-outline-success"
+                                        title="เปิดใช้งาน" aria-label="เปิดใช้งาน">
+                                        <i class="ri ri-toggle-fill text-success"></i>
+                                    </button>
+                                }
+                                <button type="button" class="btn btn-sm btn-icon btn-outline-danger"
+                                    title="ลบรูปแบบ" aria-label="ลบรูปแบบ">
+                                    <i class="ri ri-delete-bin-line text-danger"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                <tr id="templateTableEmpty" class="d-none">
+                    <td colspan="9" class="text-center text-muted py-4">ไม่พบข้อมูลตามเงื่อนไขที่ค้นหา</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!-- ==================== Modal: เพิ่มรูปแบบใบรับรอง ==================== -->
+<div class="modal fade" id="modalAddTemplate" tabindex="-1" aria-labelledby="modalAddTemplateLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAddTemplateLabel">
+                    <i class="ri ri-file-add-line me-2 text-primary"></i>เพิ่มรูปแบบใบรับรอง
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-4">
+                    <div class="col-md-12">
+                        <div class="form-floating form-floating-outline">
+                            <input type="text" class="form-control" id="add_templateName" placeholder="ชื่อรูปแบบ" />
+                            <label for="add_templateName">ชื่อรูปแบบ <span class="text-danger">●</span></label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            <select id="add_certType" class="form-select">
+                                <option value="">-- เลือก --</option>
+                                <option value="declaration">ใบรับรองสัตว์น้ำไม่แปรรูป (Declaration)</option>
+                                <option value="processing">ใบรับรองการแปรรูปสัตว์น้ำ (Processing Statement)</option>
+                            </select>
+                            <label for="add_certType">ประเภทใบรับรอง <span class="text-danger">●</span></label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            <input type="text" class="form-control" id="add_targetGroup" placeholder="กลุ่มประเทศ" />
+                            <label for="add_targetGroup">กลุ่มประเทศ / ชื่อกลุ่ม <span class="text-danger">●</span></label>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <label class="form-label">ประเทศปลายทาง <span class="text-danger">●</span></label>
+                        <select id="add_countries" class="form-select" multiple size="5">
+                            <option value="france">ฝรั่งเศส</option>
+                            <option value="germany">เยอรมนี</option>
+                            <option value="italy">อิตาลี</option>
+                            <option value="spain">สเปน</option>
+                            <option value="netherlands">เนเธอร์แลนด์</option>
+                            <option value="japan">ญี่ปุ่น</option>
+                            <option value="usa">สหรัฐอเมริกา</option>
+                            <option value="canada">แคนาดา</option>
+                            <option value="korea">เกาหลีใต้</option>
+                            <option value="australia">ออสเตรเลีย</option>
+                            <option value="argentina">อาร์เจนตินา</option>
+                            <option value="brazil">บราซิล</option>
+                        </select>
+                        <small class="text-muted">กด Ctrl/⌘ เพื่อเลือกหลายประเทศ</small>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            <input type="text" class="form-control" id="add_hsCode" placeholder="HS Code" />
+                            <label for="add_hsCode">HS Code (ช่วงหรือรายการ)</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            <input type="text" class="form-control" id="add_version" placeholder="เวอร์ชัน" value="v1.0" />
+                            <label for="add_version">เวอร์ชัน <span class="text-danger">●</span></label>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">คำอธิบายรูปแบบ</label>
+                        <textarea class="form-control" id="add_description" rows="3" placeholder="อธิบายวัตถุประสงค์และข้อกำหนดพิเศษของรูปแบบนี้"></textarea>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="add_isActive" checked />
+                            <label class="form-check-label" for="add_isActive">เปิดใช้งานทันที</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="ri ri-close-line me-1"></i>ยกเลิก
+                </button>
+                <button type="button" class="btn btn-primary">
+                    <i class="ri ri-save-line me-1"></i>บันทึก
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Modal Add -->
+
+
+<!-- ==================== Modal: แก้ไขรูปแบบใบรับรอง ==================== -->
+<div class="modal fade" id="modalEditTemplate" tabindex="-1" aria-labelledby="modalEditTemplateLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEditTemplateLabel">
+                    <i class="ri ri-edit-line me-2 text-warning"></i>แก้ไขรูปแบบใบรับรอง
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info d-flex align-items-center gap-2 py-2 mb-4">
+                    <i class="ri ri-information-line"></i>
+                    <span id="editTemplateNameDisplay" class="fw-semibold">Declaration – สหภาพยุโรป (มาตรฐาน)</span>
+                </div>
+                <div class="row g-4">
+                    <div class="col-md-12">
+                        <div class="form-floating form-floating-outline">
+                            <input type="text" class="form-control" id="edit_templateName"
+                                value="Declaration – สหภาพยุโรป (มาตรฐาน)" />
+                            <label for="edit_templateName">ชื่อรูปแบบ <span class="text-danger">●</span></label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            <select id="edit_certType" class="form-select">
+                                <option value="declaration" selected>ใบรับรองสัตว์น้ำไม่แปรรูป (Declaration)</option>
+                                <option value="processing">ใบรับรองการแปรรูปสัตว์น้ำ (Processing Statement)</option>
+                            </select>
+                            <label for="edit_certType">ประเภทใบรับรอง <span class="text-danger">●</span></label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            <input type="text" class="form-control" id="edit_targetGroup" value="สหภาพยุโรป (EU)" />
+                            <label for="edit_targetGroup">กลุ่มประเทศ / ชื่อกลุ่ม <span class="text-danger">●</span></label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            <input type="text" class="form-control" id="edit_hsCode" value="0301–0308" />
+                            <label for="edit_hsCode">HS Code (ช่วงหรือรายการ)</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            <input type="text" class="form-control" id="edit_version" value="v2.4" />
+                            <label for="edit_version">เวอร์ชัน <span class="text-danger">●</span></label>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">คำอธิบายรูปแบบ</label>
+                        <textarea class="form-control" id="edit_description" rows="3">ใช้สำหรับการส่งออกสัตว์น้ำไม่แปรรูปไปยังกลุ่มประเทศสหภาพยุโรป ตามข้อกำหนด EC No. 1005/2008</textarea>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="edit_isActive" checked />
+                            <label class="form-check-label" for="edit_isActive">เปิดใช้งาน</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="ri ri-close-line me-1"></i>ยกเลิก
+                </button>
+                <button type="button" class="btn btn-warning text-white">
+                    <i class="ri ri-save-line me-1"></i>บันทึกการแก้ไข
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Modal Edit -->
+
+
+<!-- ==================== Modal: กำหนดช่องข้อมูล (Field Builder) ==================== -->
+<div class="modal fade" id="modalFieldBuilder" tabindex="-1" aria-labelledby="modalFieldBuilderLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalFieldBuilderLabel">
+                    <i class="ri ri-layout-column-line me-2 text-primary"></i>กำหนดช่องข้อมูลในใบรับรอง
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="alert alert-primary m-3 py-2 d-flex align-items-center gap-2">
+                    <i class="ri ri-information-line"></i>
+                    <span>รูปแบบ: <strong id="fieldBuilderTemplateName">Declaration – สหภาพยุโรป (มาตรฐาน)</strong></span>
+                </div>
+                <div class="row g-0">
+                    <!-- Left: Available fields -->
+                    <div class="col-md-4 border-end p-3">
+                        <p class="field-section-header mb-2">ช่องข้อมูลที่พร้อมใช้งาน</p>
+                        <div class="input-group input-group-sm mb-3">
+                            <span class="input-group-text"><i class="ri ri-search-line"></i></span>
+                            <input type="text" class="form-control" placeholder="ค้นหาช่องข้อมูล..." />
+                        </div>
+                        <div class="d-flex flex-column gap-2" id="availableFieldList">
+                            @{
+                                var availableFields = new[]
+                                {
+                                    new { Icon = "ri-hashtag", Label = "เลขที่ใบรับรอง (HC Number)", Type = "text", Tag = "header" },
+                                    new { Icon = "ri-calendar-line", Label = "วันที่ออกเอกสาร", Type = "date", Tag = "header" },
+                                    new { Icon = "ri-building-2-line", Label = "ชื่อผู้ส่งออก", Type = "text", Tag = "exporter" },
+                                    new { Icon = "ri-map-pin-line", Label = "ที่อยู่ผู้ส่งออก", Type = "text", Tag = "exporter" },
+                                    new { Icon = "ri-ship-line", Label = "เรือบรรทุก / ยานพาหนะ", Type = "text", Tag = "transport" },
+                                    new { Icon = "ri-anchor-line", Label = "ท่าเรือต้นทาง", Type = "text", Tag = "transport" },
+                                    new { Icon = "ri-flag-line", Label = "ท่าเรือปลายทาง", Type = "text", Tag = "transport" },
+                                    new { Icon = "ri-fish-line", Label = "ชนิดสัตว์น้ำ (Species)", Type = "text", Tag = "product" },
+                                    new { Icon = "ri-weight-line", Label = "น้ำหนักสุทธิ์ (Net Weight)", Type = "number", Tag = "product" },
+                                    new { Icon = "ri-barcode-line", Label = "HS Code", Type = "text", Tag = "product" },
+                                    new { Icon = "ri-user-star-line", Label = "ลายมือชื่อผู้รับรอง", Type = "signature", Tag = "footer" },
+                                    new { Icon = "ri-seal-line", Label = "ตราประทับหน่วยงาน", Type = "image", Tag = "footer" },
+                                };
+                                var tagColorMap = new Dictionary<string, string> {
+                                    { "header", "bg-label-primary" },
+                                    { "exporter", "bg-label-info" },
+                                    { "transport", "bg-label-warning" },
+                                    { "product", "bg-label-success" },
+                                    { "footer", "bg-label-secondary" },
+                                };
+                                foreach (var f in availableFields)
+                                {
+                                    var tagColor = tagColorMap.ContainsKey(f.Tag) ? tagColorMap[f.Tag] : "bg-label-secondary";
+                                    <div class="field-item d-flex align-items-center gap-2">
+                                        <i class="ri @f.Icon text-muted"></i>
+                                        <span class="flex-grow-1 small">@f.Label</span>
+                                        <span class="badge @tagColor" style="font-size:0.6rem;">@f.Tag</span>
+                                        <button type="button" class="btn btn-xs btn-icon btn-outline-primary" title="เพิ่ม" style="width:1.3rem;height:1.3rem;">
+                                            <i class="ri ri-add-line" style="font-size:0.7rem;"></i>
+                                        </button>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                    <!-- Right: Selected fields / layout -->
+                    <div class="col-md-8 p-3">
+                        <p class="field-section-header mb-2">ช่องข้อมูลในใบรับรอง (ลำดับการแสดงผล)</p>
+                        <div class="d-flex flex-column gap-2" id="fieldBuilderList">
+                            @{
+                                var selectedFields = new[]
+                                {
+                                    new { No = 1, Label = "เลขที่ใบรับรอง (HC Number)", Type = "text", Required = true, Section = "ส่วนหัว", SectionColor = "bg-label-primary" },
+                                    new { No = 2, Label = "วันที่ออกเอกสาร", Type = "date", Required = true, Section = "ส่วนหัว", SectionColor = "bg-label-primary" },
+                                    new { No = 3, Label = "ชื่อผู้ส่งออก", Type = "text", Required = true, Section = "ข้อมูลผู้ส่งออก", SectionColor = "bg-label-info" },
+                                    new { No = 4, Label = "ที่อยู่ผู้ส่งออก", Type = "text", Required = false, Section = "ข้อมูลผู้ส่งออก", SectionColor = "bg-label-info" },
+                                    new { No = 5, Label = "เรือบรรทุก / ยานพาหนะ", Type = "text", Required = true, Section = "ข้อมูลการขนส่ง", SectionColor = "bg-label-warning" },
+                                    new { No = 6, Label = "ท่าเรือปลายทาง", Type = "text", Required = true, Section = "ข้อมูลการขนส่ง", SectionColor = "bg-label-warning" },
+                                    new { No = 7, Label = "ชนิดสัตว์น้ำ (Species)", Type = "text", Required = true, Section = "ข้อมูลผลิตภัณฑ์", SectionColor = "bg-label-success" },
+                                    new { No = 8, Label = "HS Code", Type = "text", Required = true, Section = "ข้อมูลผลิตภัณฑ์", SectionColor = "bg-label-success" },
+                                    new { No = 9, Label = "น้ำหนักสุทธิ์ (Net Weight)", Type = "number", Required = true, Section = "ข้อมูลผลิตภัณฑ์", SectionColor = "bg-label-success" },
+                                    new { No = 10, Label = "ลายมือชื่อผู้รับรอง", Type = "signature", Required = true, Section = "ส่วนท้าย", SectionColor = "bg-label-secondary" },
+                                };
+                                foreach (var sf in selectedFields)
+                                {
+                                    <div class="field-item d-flex align-items-center gap-2">
+                                        <i class="ri ri-draggable field-drag-handle"></i>
+                                        <span class="text-muted small" style="min-width:1.4rem;">@sf.No.</span>
+                                        <span class="flex-grow-1 small fw-semibold">@sf.Label</span>
+                                        <span class="badge @sf.SectionColor" style="font-size:0.6rem;">@sf.Section</span>
+                                        <span class="badge bg-label-dark" style="font-size:0.6rem;">@sf.Type</span>
+                                        @if (sf.Required)
+                                        {
+                                            <span class="badge bg-label-danger" style="font-size:0.6rem;">required</span>
+                                        }
+                                        <button type="button" class="btn btn-xs btn-icon btn-outline-danger" title="ลบออก" style="width:1.3rem;height:1.3rem;">
+                                            <i class="ri ri-close-line" style="font-size:0.7rem;"></i>
+                                        </button>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="ri ri-close-line me-1"></i>ยกเลิก
+                </button>
+                <button type="button" class="btn btn-primary">
+                    <i class="ri ri-save-line me-1"></i>บันทึกการกำหนดช่องข้อมูล
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Modal Field Builder -->
+
+
+<!-- ==================== Modal: ดูตัวอย่างใบรับรอง ==================== -->
+<div class="modal fade" id="modalPreview" tabindex="-1" aria-labelledby="modalPreviewLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalPreviewLabel">
+                    <i class="ri ri-eye-line me-2 text-info"></i>ตัวอย่างรูปแบบใบรับรอง
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Simulated certificate preview -->
+                <div class="border rounded p-4" style="background:#fff; font-size:0.82rem; font-family: 'Times New Roman', serif; min-height:600px;">
+                    <!-- Header -->
+                    <div class="text-center mb-4">
+                        <div class="fw-bold" style="font-size:1rem; letter-spacing:0.05em;">KINGDOM OF THAILAND</div>
+                        <div class="fw-bold">DEPARTMENT OF FISHERIES</div>
+                        <div style="font-size:0.9rem; margin-top:4px;">HEALTH CERTIFICATE FOR FISHERY PRODUCTS</div>
+                        <div class="mt-2 text-muted" style="font-size:0.75rem;">Declaration – สหภาพยุโรป (มาตรฐาน) · v2.4</div>
+                    </div>
+                    <hr />
+                    <!-- HC Number & Date row -->
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <div class="text-muted" style="font-size:0.7rem;">HC Number</div>
+                            <div class="border-bottom pb-1" style="min-height:1.5rem;">HC821B______</div>
+                        </div>
+                        <div class="col-6">
+                            <div class="text-muted" style="font-size:0.7rem;">Date of Issue</div>
+                            <div class="border-bottom pb-1" style="min-height:1.5rem;">__ / __ / ____</div>
+                        </div>
+                    </div>
+                    <!-- Exporter -->
+                    <div class="mb-3">
+                        <div class="text-muted" style="font-size:0.7rem;">Exporter (Name &amp; Address)</div>
+                        <div class="border p-2 rounded" style="min-height:3rem; background:#f9f9f9;"></div>
+                    </div>
+                    <!-- Transport -->
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <div class="text-muted" style="font-size:0.7rem;">Means of Transport / Vessel</div>
+                            <div class="border-bottom pb-1" style="min-height:1.5rem;"></div>
+                        </div>
+                        <div class="col-6">
+                            <div class="text-muted" style="font-size:0.7rem;">Port of Destination</div>
+                            <div class="border-bottom pb-1" style="min-height:1.5rem;"></div>
+                        </div>
+                    </div>
+                    <!-- Product table -->
+                    <div class="mb-3">
+                        <div class="text-muted mb-1" style="font-size:0.7rem;">Description of Fishery Products</div>
+                        <table class="table table-bordered" style="font-size:0.75rem;">
+                            <thead style="background:#f0f0f0;">
+                                <tr>
+                                    <th>Species</th>
+                                    <th>HS Code</th>
+                                    <th>Net Weight (kg)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td style="height:1.8rem;"></td><td></td><td></td></tr>
+                                <tr><td style="height:1.8rem;"></td><td></td><td></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Signature -->
+                    <div class="row mt-4">
+                        <div class="col-6 offset-6 text-center">
+                            <div style="min-height:50px; border-bottom:1px solid #000; margin-bottom:4px;"></div>
+                            <div style="font-size:0.7rem;">Authorized Signature / Official Stamp</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">ปิด</button>
+                <button type="button" class="btn btn-outline-primary">
+                    <i class="ri ri-printer-line me-1"></i>พิมพ์ตัวอย่าง
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Modal Preview -->
+
+
+@section PageScripts {
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        // ── Tooltips ──
+        if (window.bootstrap && bootstrap.Tooltip) {
+            document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
+                new bootstrap.Tooltip(el);
+            });
+        }
+
+        // ── Filter logic ──
+        function filterRows() {
+            var type    = (document.getElementById('filterType').value || '').trim();
+            var country = (document.getElementById('filterCountry').value || '').trim().toLowerCase();
+            var status  = (document.getElementById('filterStatus').value || '').trim();
+            var rows    = document.querySelectorAll('#templateTableBody tr[data-type]');
+            var visible = 0;
+
+            rows.forEach(function (row) {
+                var typeMatch    = !type    || row.dataset.type    === type;
+                var countryMatch = !country || row.dataset.country.includes(country);
+                var statusMatch  = !status  || row.dataset.status  === status;
+                var show = typeMatch && countryMatch && statusMatch;
+                row.classList.toggle('d-none', !show);
+                if (show) { visible++; }
+            });
+
+            document.getElementById('templateTableEmpty').classList.toggle('d-none', visible !== 0);
+        }
+
+        document.getElementById('btnSearchTemplates').addEventListener('click', filterRows);
+        document.getElementById('filterType').addEventListener('change', filterRows);
+        document.getElementById('filterStatus').addEventListener('change', filterRows);
+        document.getElementById('filterCountry').addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') { filterRows(); }
+        });
+
+        document.getElementById('btnResetTemplates').addEventListener('click', function () {
+            document.getElementById('filterType').value    = '';
+            document.getElementById('filterCountry').value = '';
+            document.getElementById('filterStatus').value  = '';
+            filterRows();
+        });
+
+        // ── Populate edit modal name ──
+        document.getElementById('modalEditTemplate').addEventListener('show.bs.modal', function (e) {
+            var btn  = e.relatedTarget;
+            var name = btn ? (btn.dataset.name || '') : '';
+            document.getElementById('editTemplateNameDisplay').textContent = name;
+            document.getElementById('edit_templateName').value = name;
+        });
+
+        // ── Populate field builder modal title ──
+        document.getElementById('modalFieldBuilder').addEventListener('show.bs.modal', function (e) {
+            var btn  = e.relatedTarget;
+            var name = btn ? (btn.dataset.name || '') : '';
+            document.getElementById('fieldBuilderTemplateName').textContent = name;
+        });
+    });
+</script>
+}

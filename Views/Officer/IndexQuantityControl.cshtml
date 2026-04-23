@@ -1,0 +1,175 @@
+@{
+    ViewData["Title"] = "ควบคุมปริมาณสินค้า (เอกสารที่ 1)";
+
+    var records = new[]
+    {
+        new { RowNo=1, DocNo="QC-2026-00301", CompanyName="บริษัท สยาม มารีน ฟู้ดส์ จำกัด", ProductName="ทูน่ากระป๋อง", InputWeightKg=240000m, OutputWeightKg=173000m, ActualYield=72.1m, DocDate=new DateTime(2026,4,20), StatusText="อนุมัติแล้ว", StatusClass="bg-label-success" },
+        new { RowNo=2, DocNo="QC-2026-00302", CompanyName="บริษัท กัลฟ์ แคทช์ โปรเซสซิ่ง จำกัด", ProductName="ปลาทูน่าแช่แข็ง", InputWeightKg=120000m, OutputWeightKg=81600m, ActualYield=68.0m, DocDate=new DateTime(2026,4,21), StatusText="รอตรวจสอบ", StatusClass="bg-label-warning" },
+        new { RowNo=3, DocNo="QC-2026-00303", CompanyName="บริษัท โอเชียน ไพร์ม เอ็กซ์พอร์ต จำกัด", ProductName="ปลาโอสาแช่แข็ง", InputWeightKg=60000m, OutputWeightKg=38400m, ActualYield=64.0m, DocDate=new DateTime(2026,4,21), StatusText="ค่าเบี่ยงเบน", StatusClass="bg-label-danger" },
+        new { RowNo=4, DocNo="QC-2026-00304", CompanyName="บริษัท อันดามัน โคลด์สโตเรจ จำกัด", ProductName="กุ้งแปรรูป", InputWeightKg=30000m, OutputWeightKg=23400m, ActualYield=78.0m, DocDate=new DateTime(2026,4,22), StatusText="อนุมัติแล้ว", StatusClass="bg-label-success" },
+        new { RowNo=5, DocNo="QC-2026-00305", CompanyName="บริษัท สยาม มารีน ฟู้ดส์ จำกัด", ProductName="ปลาหมึกแปรรูป", InputWeightKg=15000m, OutputWeightKg=9000m, ActualYield=60.0m, DocDate=new DateTime(2026,4,23), StatusText="รอตรวจสอบ", StatusClass="bg-label-warning" },
+    };
+
+    var totalCount = records.Length;
+    var pendingCount = records.Count(x => x.StatusText == "รอตรวจสอบ");
+    var approvedCount = records.Count(x => x.StatusText == "อนุมัติแล้ว");
+    var deviationCount = records.Count(x => x.StatusText == "ค่าเบี่ยงเบน");
+}
+
+@section PageStyles {
+<style>
+    .qc-table { font-size: 0.78rem; }
+    .qc-table th, .qc-table td { padding: 0.4rem 0.5rem; vertical-align: middle; }
+    .qc-table .btn-icon { width: 1.65rem; height: 1.65rem; }
+    .filter-sq { width: 48px; height: 48px; padding: 0; display: inline-flex; align-items: center; justify-content: center; }
+</style>
+}
+
+@section PageScripts {
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    function filterRows() {
+        var keyword = (document.getElementById('filterKeyword').value || '').trim().toLowerCase();
+        var status = (document.getElementById('filterStatus').value || '').trim();
+        var rows = document.querySelectorAll('#qcTableBody tr[data-id]');
+        var count = 0;
+        rows.forEach(function (row) {
+            var text = (row.dataset.searchText || '').toLowerCase();
+            var rowStatus = row.dataset.status || '';
+            var show = (!keyword || text.includes(keyword)) && (!status || rowStatus === status);
+            row.classList.toggle('d-none', !show);
+            if (show) count++;
+        });
+        document.getElementById('qcTableEmpty').classList.toggle('d-none', count !== 0);
+    }
+    document.getElementById('btnSearch').addEventListener('click', filterRows);
+    document.getElementById('btnReset').addEventListener('click', function () {
+        document.getElementById('filterKeyword').value = '';
+        document.getElementById('filterStatus').value = '';
+        filterRows();
+    });
+    document.getElementById('filterKeyword').addEventListener('keydown', function (e) { if (e.key === 'Enter') filterRows(); });
+    document.getElementById('filterStatus').addEventListener('change', filterRows);
+    if (window.bootstrap && bootstrap.Tooltip) {
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) { new bootstrap.Tooltip(el); });
+    }
+});
+</script>
+}
+
+<h4 class="mb-1">ควบคุมปริมาณสินค้า (เอกสารที่ 1)</h4>
+<p class="mb-1 text-muted">เอกสารการควบคุมปริมาณสินค้า เอกสารที่ 1 — ตรวจสอบอัตราผลผลิตจริงเทียบกับที่ได้รับอนุมัติ</p>
+
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb breadcrumb-style1" style="--bs-breadcrumb-divider: '>'; font-size: 0.75rem;">
+        <li class="breadcrumb-item"><a href="#" class="text-primary fw-semibold">เจ้าหน้าที่</a></li>
+        <li class="breadcrumb-item active text-secondary">ควบคุมปริมาณสินค้า (เอกสารที่ 1)</li>
+    </ol>
+</nav>
+
+<!-- Summary Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-sm-6 col-xl-3">
+        <div class="card h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+                <div class="avatar flex-shrink-0"><span class="avatar-initial rounded bg-label-primary"><i class="ri ri-file-chart-line ri-22px"></i></span></div>
+                <div><p class="mb-0 small text-muted">เอกสารทั้งหมด</p><h5 class="mb-0">@totalCount</h5></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+                <div class="avatar flex-shrink-0"><span class="avatar-initial rounded bg-label-warning"><i class="ri ri-time-line ri-22px"></i></span></div>
+                <div><p class="mb-0 small text-muted">รอตรวจสอบ</p><h5 class="mb-0">@pendingCount</h5></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+                <div class="avatar flex-shrink-0"><span class="avatar-initial rounded bg-label-success"><i class="ri ri-checkbox-circle-line ri-22px"></i></span></div>
+                <div><p class="mb-0 small text-muted">อนุมัติแล้ว</p><h5 class="mb-0">@approvedCount</h5></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+                <div class="avatar flex-shrink-0"><span class="avatar-initial rounded bg-label-danger"><i class="ri ri-error-warning-line ri-22px"></i></span></div>
+                <div><p class="mb-0 small text-muted">ค่าเบี่ยงเบน</p><h5 class="mb-0">@deviationCount</h5></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Filter -->
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="row g-2 align-items-end">
+            <div class="col-12 col-sm-5">
+                <label class="form-label small mb-1">ค้นหา</label>
+                <input id="filterKeyword" type="text" class="form-control form-control-sm" placeholder="เลขที่เอกสาร / ชื่อบริษัท / สินค้า" />
+            </div>
+            <div class="col-12 col-sm-3">
+                <label class="form-label small mb-1">สถานะ</label>
+                <select id="filterStatus" class="form-select form-select-sm">
+                    <option value="">ทั้งหมด</option>
+                    <option value="รอตรวจสอบ">รอตรวจสอบ</option>
+                    <option value="อนุมัติแล้ว">อนุมัติแล้ว</option>
+                    <option value="ค่าเบี่ยงเบน">ค่าเบี่ยงเบน</option>
+                </select>
+            </div>
+            <div class="col-auto d-flex gap-2">
+                <button id="btnSearch" class="btn btn-primary btn-sm filter-sq" data-bs-toggle="tooltip" title="ค้นหา"><i class="ri ri-search-line"></i></button>
+                <button id="btnReset" class="btn btn-outline-secondary btn-sm filter-sq" data-bs-toggle="tooltip" title="รีเซ็ต"><i class="ri ri-refresh-line"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Table -->
+<div class="card">
+    <div class="card-header"><h6 class="mb-0">รายการเอกสารควบคุมปริมาณสินค้า</h6></div>
+    <div class="table-responsive">
+        <table class="table table-hover qc-table mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th class="text-center" style="width:50px">ลำดับ</th>
+                    <th>เลขที่เอกสาร</th>
+                    <th>บริษัท</th>
+                    <th>สินค้า</th>
+                    <th class="text-end">น้ำหนักนำเข้า</th>
+                    <th class="text-end">น้ำหนักผลผลิต</th>
+                    <th class="text-center">Yield จริง</th>
+                    <th>วันที่เอกสาร</th>
+                    <th class="text-center">สถานะ</th>
+                    <th class="text-center" style="width:80px">จัดการ</th>
+                </tr>
+            </thead>
+            <tbody id="qcTableBody">
+                @foreach (var r in records)
+                {
+                    <tr data-id="@r.DocNo" data-status="@r.StatusText" data-search-text="@r.DocNo.ToLower() @r.CompanyName.ToLower() @r.ProductName.ToLower()">
+                        <td class="text-center text-muted">@r.RowNo</td>
+                        <td><span class="fw-semibold text-primary">@r.DocNo</span></td>
+                        <td>@r.CompanyName</td>
+                        <td>@r.ProductName</td>
+                        <td class="text-end">@r.InputWeightKg.ToString("N0")</td>
+                        <td class="text-end">@r.OutputWeightKg.ToString("N0")</td>
+                        <td class="text-center @(r.StatusText == "ค่าเบี่ยงเบน" ? "text-danger fw-bold" : "")">@r.ActualYield.ToString("F1")%</td>
+                        <td>@r.DocDate.ToString("dd/MM/yyyy")</td>
+                        <td class="text-center"><span class="badge rounded-pill @r.StatusClass">@r.StatusText</span></td>
+                        <td class="text-center">
+                            <button class="btn btn-icon btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="ดูรายละเอียด"><i class="ri ri-eye-line ri-16px"></i></button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tbody id="qcTableEmpty" class="d-none">
+                <tr><td colspan="10" class="text-center text-muted py-4">ไม่พบข้อมูล</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>

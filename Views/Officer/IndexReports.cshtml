@@ -1,0 +1,452 @@
+@{
+    ViewData["Title"] = "รายงาน";
+
+    var staticReports = new[]
+    {
+        new { RowNo=1, ReportCode="ST-001", ReportName="รายงานสรุปคำขอใบรับรองรายเดือน", Category="คำขอใบรับรอง", OutputFormat="PDF", Frequency="รายเดือน", LastRunAt=new DateTime(2026,4,22,8,30,0), OwnerUnit="กลุ่มวิเคราะห์ข้อมูล", StatusText="ใช้งาน", StatusClass="bg-label-success" },
+        new { RowNo=2, ReportCode="ST-002", ReportName="รายงานโรงงาน DOF ที่หมดอายุภายใน 90 วัน", Category="DOF", OutputFormat="Excel", Frequency="รายสัปดาห์", LastRunAt=new DateTime(2026,4,21,16,10,0), OwnerUnit="ฝ่ายทะเบียนโรงงาน", StatusText="ใช้งาน", StatusClass="bg-label-success" },
+        new { RowNo=3, ReportCode="ST-003", ReportName="รายงานสถานะ Traceability แยกจังหวัด", Category="Traceability", OutputFormat="PDF", Frequency="รายเดือน", LastRunAt=new DateTime(2026,4,20,10,0,0), OwnerUnit="ฝ่ายข้อมูลย้อนกลับ", StatusText="รอทบทวน", StatusClass="bg-label-warning" },
+        new { RowNo=4, ReportCode="ST-004", ReportName="รายงานความครบถ้วนเอกสารสุขอนามัยประเทศคู่ค้า", Category="มาตรการสุขอนามัย", OutputFormat="PDF", Frequency="รายไตรมาส", LastRunAt=new DateTime(2026,4,15,14,45,0), OwnerUnit="ฝ่ายมาตรฐานเอกสาร", StatusText="ฉบับร่าง", StatusClass="bg-label-secondary" }
+    };
+
+    var dynamicReports = new[]
+    {
+        new { RowNo=1, ReportCode="DY-101", ReportName="Dynamic Dashboard: คำขอใบรับรอง", Category="คำขอใบรับรอง", DataSource="PSDeclaration + ApprovalLogs", RefreshPolicy="ทุก 15 นาที", LastRefreshAt=new DateTime(2026,4,23,10,12,0), OwnerUnit="ทีม BI", StatusText="ออนไลน์", StatusClass="bg-label-success" },
+        new { RowNo=2, ReportCode="DY-102", ReportName="Dynamic Monitoring: DOF/Traceability", Category="DOF + Traceability", DataSource="DOFRegistry + TraceRegistry", RefreshPolicy="ทุก 30 นาที", LastRefreshAt=new DateTime(2026,4,23,9,50,0), OwnerUnit="ฝ่ายข้อมูลย้อนกลับ", StatusText="ออนไลน์", StatusClass="bg-label-success" },
+        new { RowNo=3, ReportCode="DY-103", ReportName="Dynamic Alert: เอกสารใกล้หมดอายุ", Category="แจ้งเตือน", DataSource="CertificateStore", RefreshPolicy="ทุก 60 นาที", LastRefreshAt=new DateTime(2026,4,23,8,0,0), OwnerUnit="ฝ่ายรับรอง", StatusText="บำรุงรักษา", StatusClass="bg-label-danger" },
+        new { RowNo=4, ReportCode="DY-104", ReportName="Dynamic Scorecard: KPI งานรับรอง", Category="KPI", DataSource="PSDeclaration + AdminMetrics", RefreshPolicy="ทุก 24 ชั่วโมง", LastRefreshAt=new DateTime(2026,4,22,23,59,0), OwnerUnit="กลุ่มวิเคราะห์ข้อมูล", StatusText="ออนไลน์", StatusClass="bg-label-success" }
+    };
+
+    var totalCount = staticReports.Length + dynamicReports.Length;
+    var onlineDynCount = dynamicReports.Count(x => x.StatusText == "ออนไลน์");
+}
+
+@section PageStyles {
+<style>
+    .rpt-table { font-size: 0.78rem; }
+    .rpt-table th, .rpt-table td { padding: 0.4rem 0.5rem; vertical-align: middle; }
+    .rpt-table .btn-icon { width: 1.65rem; height: 1.65rem; }
+    .filter-btn-sq { width: 48px; height: 48px; padding: 0; display: inline-flex; align-items: center; justify-content: center; }
+    .detail-kv { border: 1px solid var(--bs-border-color); border-radius: 0.75rem; background: var(--bs-paper-bg); padding: 0.85rem 1rem; height: 100%; }
+    .detail-kv .lbl { display: block; font-size: 0.75rem; color: var(--bs-secondary-color); margin-bottom: 0.2rem; }
+    .detail-kv .val { font-weight: 600; color: var(--bs-heading-color); }
+</style>
+}
+
+@section PageScripts {
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var detailsMap = {
+        'ST-001': { rtype:'static', objective:'สรุปปริมาณคำขอใบรับรองรายเดือนเพื่อรายงานผู้บริหาร', owner:'กลุ่มวิเคราะห์ข้อมูล', updatedBy:'admin.report01', updatedAt:'22/04/2569 08:30', note:'ใช้ข้อมูลจากวันทำการล่าสุดของเดือน', params:[{key:'month',label:'เดือนรายงาน',req:'บังคับ',sample:'04/2569'},{key:'certificateType',label:'ประเภทใบรับรอง',req:'ทางเลือก',sample:'PS,NMD'}], histories:[{date:'22/04/2569',action:'สร้างไฟล์รายงาน',user:'scheduler',result:'สำเร็จ'},{date:'22/03/2569',action:'สร้างไฟล์รายงาน',user:'scheduler',result:'สำเร็จ'}] },
+        'ST-002': { rtype:'static', objective:'ติดตามโรงงานที่ใบรับรองใกล้หมดอายุในช่วง 90 วัน', owner:'ฝ่ายทะเบียนโรงงาน', updatedBy:'admin.report02', updatedAt:'21/04/2569 16:10', note:'ส่งออก Excel ทุกวันจันทร์', params:[{key:'expireWithinDays',label:'จำนวนวันก่อนหมดอายุ',req:'บังคับ',sample:'90'}], histories:[{date:'21/04/2569',action:'สร้างไฟล์รายงาน',user:'scheduler',result:'สำเร็จ'}] },
+        'ST-003': { rtype:'static', objective:'วิเคราะห์สถานะ Traceability รายจังหวัด', owner:'ฝ่ายข้อมูลย้อนกลับ', updatedBy:'admin.report03', updatedAt:'20/04/2569 10:00', note:'รอทบทวนรูปแบบกราฟ', params:[{key:'province',label:'จังหวัด',req:'ทางเลือก',sample:'ทั้งหมด'}], histories:[{date:'20/04/2569',action:'สร้างไฟล์รายงาน',user:'scheduler',result:'สำเร็จ'},{date:'20/03/2569',action:'สร้างไฟล์รายงาน',user:'scheduler',result:'สำเร็จ'}] },
+        'ST-004': { rtype:'static', objective:'สรุปความครบถ้วนเอกสารสุขอนามัยประเทศคู่ค้า', owner:'ฝ่ายมาตรฐานเอกสาร', updatedBy:'admin.report04', updatedAt:'15/04/2569 14:45', note:'อยู่ระหว่างจัดรูปแบบบทสรุปผู้บริหาร', params:[{key:'partnerCountry',label:'ประเทศคู่ค้า',req:'ทางเลือก',sample:'JP,EU,US'}], histories:[{date:'15/04/2569',action:'บันทึกฉบับร่าง',user:'admin.report04',result:'สำเร็จ'}] },
+        'DY-101': { rtype:'dynamic', objective:'ติดตามคำขอใบรับรองแบบ near real-time', owner:'ทีม BI', updatedBy:'bi.admin01', updatedAt:'23/04/2569 10:12', note:'แหล่งข้อมูลพร้อมใช้งานทุก 15 นาที', params:[{key:'dateRange',label:'ช่วงวันที่',req:'บังคับ',sample:'30 วันล่าสุด'},{key:'status',label:'สถานะคำขอ',req:'ทางเลือก',sample:'ทุกสถานะ'}], histories:[{date:'23/04/2569 10:12',action:'refresh dataset',user:'system',result:'สำเร็จ'},{date:'23/04/2569 09:57',action:'refresh dataset',user:'system',result:'สำเร็จ'}] },
+        'DY-102': { rtype:'dynamic', objective:'เฝ้าระวังสถานะ DOF/Traceability พร้อม drill-down', owner:'ฝ่ายข้อมูลย้อนกลับ', updatedBy:'bi.admin02', updatedAt:'23/04/2569 09:50', note:'ใช้ติดตาม KPI ระดับจังหวัด', params:[{key:'province',label:'จังหวัด',req:'ทางเลือก',sample:'สมุทรสาคร'}], histories:[{date:'23/04/2569 09:50',action:'refresh dataset',user:'system',result:'สำเร็จ'}] },
+        'DY-103': { rtype:'dynamic', objective:'แจ้งเตือนเอกสารใกล้หมดอายุแบบต่อเนื่อง', owner:'ฝ่ายรับรอง', updatedBy:'bi.admin03', updatedAt:'23/04/2569 08:00', note:'อยู่ระหว่างบำรุงรักษาระบบแจ้งเตือนอีเมล', params:[{key:'expireWithinDays',label:'จำนวนวันก่อนหมดอายุ',req:'บังคับ',sample:'60'}], histories:[{date:'23/04/2569 08:00',action:'refresh dataset',user:'system',result:'ล้มเหลว'},{date:'23/04/2569 07:00',action:'refresh dataset',user:'system',result:'สำเร็จ'}] },
+        'DY-104': { rtype:'dynamic', objective:'วิเคราะห์ KPI งานรับรองแบบรายวัน', owner:'กลุ่มวิเคราะห์ข้อมูล', updatedBy:'bi.admin04', updatedAt:'22/04/2569 23:59', note:'อัปเดตทุกสิ้นวัน', params:[{key:'kpiSet',label:'ชุด KPI',req:'บังคับ',sample:'Certification Ops'}], histories:[{date:'22/04/2569 23:59',action:'refresh dataset',user:'system',result:'สำเร็จ'}] }
+    };
+
+    var curType = 'static';
+
+    function getRows() {
+        return document.querySelectorAll(curType === 'static' ? '#stTBody tr[data-rc]' : '#dyTBody tr[data-rc]');
+    }
+    function getEmptyRow() {
+        return document.getElementById(curType === 'static' ? 'stEmpty' : 'dyEmpty');
+    }
+
+    function filterRows() {
+        var kw  = (document.getElementById('fKw').value  || '').trim().toLowerCase();
+        var cat = (document.getElementById('fCat').value || '').trim();
+        var st  = (document.getElementById('fSt').value  || '').trim();
+        var visible = 0;
+        getRows().forEach(function(r) {
+            var show = (!kw  || r.dataset.st.toLowerCase().includes(kw)) &&
+                       (!cat || r.dataset.cat    === cat) &&
+                       (!st  || r.dataset.status === st);
+            r.classList.toggle('d-none', !show);
+            if (show) visible++;
+        });
+        getEmptyRow().classList.toggle('d-none', visible !== 0);
+    }
+
+    function renderParams(items) {
+        if (!items || !items.length) return '<tr><td colspan="5" class="text-center text-muted py-3">ไม่พบพารามิเตอร์</td></tr>';
+        return items.map(function(p, i) {
+            var cls = p.req === 'บังคับ' ? 'bg-label-danger' : 'bg-label-secondary';
+            return '<tr><td class="text-center text-muted">'+(i+1)+'</td><td><code>'+p.key+'</code></td><td>'+p.label+'</td><td class="text-center"><span class="badge rounded-pill '+cls+'">'+p.req+'</span></td><td>'+p.sample+'</td></tr>';
+        }).join('');
+    }
+
+    function renderHistory(items) {
+        if (!items || !items.length) return '<tr><td colspan="5" class="text-center text-muted py-3">ไม่พบประวัติ</td></tr>';
+        return items.map(function(h, i) {
+            var cls = h.result === 'สำเร็จ' ? 'bg-label-success' : 'bg-label-danger';
+            return '<tr><td class="text-center text-muted">'+(i+1)+'</td><td>'+h.date+'</td><td>'+h.action+'</td><td>'+h.user+'</td><td class="text-center"><span class="badge rounded-pill '+cls+'">'+h.result+'</span></td></tr>';
+        }).join('');
+    }
+
+    function openDetail(rc) {
+        var d   = detailsMap[rc];
+        var row = document.querySelector('tr[data-rc="'+rc+'"]');
+        if (!d || !row) return;
+        document.getElementById('modalTitle').textContent = row.dataset.rname;
+        document.getElementById('dCode').textContent  = rc;
+        document.getElementById('dName').textContent  = row.dataset.rname;
+        document.getElementById('dType').textContent  = d.rtype === 'static' ? 'Static' : 'Dynamic';
+        document.getElementById('dCat').textContent   = row.dataset.cat;
+        document.getElementById('dOwner').textContent = d.owner;
+        document.getElementById('dStatus').innerHTML  = '<span class="badge rounded-pill '+row.dataset.scls+'">'+row.dataset.status+'</span>';
+        document.getElementById('dObj').textContent   = d.objective;
+        document.getElementById('dBy').textContent    = d.updatedBy;
+        document.getElementById('dAt').textContent    = d.updatedAt;
+        document.getElementById('dNote').textContent  = d.note;
+        document.getElementById('paramTBody').innerHTML = renderParams(d.params);
+        document.getElementById('histTBody').innerHTML  = renderHistory(d.histories);
+        bootstrap.Modal.getOrCreateInstance(document.getElementById('rptModal')).show();
+    }
+
+    function switchType(t) {
+        curType = t;
+        document.getElementById('tabSt').classList.toggle('active', t === 'static');
+        document.getElementById('tabDy').classList.toggle('active', t === 'dynamic');
+        document.getElementById('secSt').classList.toggle('d-none', t !== 'static');
+        document.getElementById('secDy').classList.toggle('d-none', t !== 'dynamic');
+        filterRows();
+    }
+
+    document.getElementById('tabSt').addEventListener('click', function() { switchType('static'); });
+    document.getElementById('tabDy').addEventListener('click', function() { switchType('dynamic'); });
+    document.getElementById('btnSearch').addEventListener('click', filterRows);
+    document.getElementById('btnReset').addEventListener('click', function() {
+        document.getElementById('fKw').value  = '';
+        document.getElementById('fCat').value = '';
+        document.getElementById('fSt').value  = '';
+        filterRows();
+    });
+    ['fKw','fCat','fSt'].forEach(function(id) {
+        var el = document.getElementById(id);
+        el.addEventListener('change', filterRows);
+        el.addEventListener('keydown', function(e) { if (e.key === 'Enter') { e.preventDefault(); filterRows(); } });
+    });
+    document.querySelectorAll('.btn-rpt-detail').forEach(function(b) {
+        b.addEventListener('click', function() { openDetail(this.dataset.rc); });
+    });
+    if (window.bootstrap && bootstrap.Tooltip) {
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function(el) { new bootstrap.Tooltip(el); });
+    }
+    switchType('static');
+});
+</script>
+}
+
+<h4 class="mb-1">รายงาน Static และรายงาน Dynamic</h4>
+<p class="mb-1 text-muted">จัดการรายงานเชิงเอกสารและรายงานแบบโต้ตอบ พร้อมติดตามสถานะและประวัติการประมวลผล</p>
+
+<nav aria-label="breadcrumb" class="mb-6">
+    <ol class="breadcrumb breadcrumb-style1" style="--bs-breadcrumb-divider: '>'; font-size:0.75rem;">
+        <li class="breadcrumb-item"><a href="#" class="text-primary fw-semibold">เจ้าหน้าที่</a></li>
+        <li class="breadcrumb-item active text-secondary">รายงาน</li>
+    </ol>
+</nav>
+
+<div class="row mb-6 g-6">
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div><h5 class="mb-1">@totalCount</h5><small>รายงานทั้งหมด</small></div>
+                    <span class="badge bg-label-primary rounded-circle p-2"><i class="icon-base ri ri-bar-chart-box-line icon-24px"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div><h5 class="mb-1">@staticReports.Length</h5><small>Static Reports</small></div>
+                    <span class="badge bg-label-info rounded-circle p-2"><i class="icon-base ri ri-file-chart-line icon-24px"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div><h5 class="mb-1">@dynamicReports.Length</h5><small>Dynamic Reports</small></div>
+                    <span class="badge bg-label-warning rounded-circle p-2"><i class="icon-base ri ri-dashboard-3-line icon-24px"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div><h5 class="mb-1">@onlineDynCount</h5><small>Dynamic ออนไลน์</small></div>
+                    <span class="badge bg-label-success rounded-circle p-2"><i class="icon-base ri ri-pulse-line icon-24px"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h5 class="card-title mb-1">ค้นหารายงาน</h5>
+        <p class="text-muted small mb-0">ค้นหาจากรหัส ชื่อรายงาน หมวดหมู่ และสถานะ</p>
+    </div>
+    <div class="card-body">
+        <div class="row g-3 align-items-end">
+            <div class="col-md-4 col-lg-4">
+                <label for="fKw" class="form-label">คำค้นหา</label>
+                <input type="text" id="fKw" class="form-control" placeholder="รหัส, ชื่อรายงาน, แหล่งข้อมูล" />
+            </div>
+            <div class="col-md-3 col-lg-3">
+                <label for="fCat" class="form-label">หมวดหมู่</label>
+                <select id="fCat" class="form-select">
+                    <option value="">ทั้งหมด</option>
+                    <option value="คำขอใบรับรอง">คำขอใบรับรอง</option>
+                    <option value="DOF">DOF</option>
+                    <option value="Traceability">Traceability</option>
+                    <option value="มาตรการสุขอนามัย">มาตรการสุขอนามัย</option>
+                    <option value="DOF + Traceability">DOF + Traceability</option>
+                    <option value="แจ้งเตือน">แจ้งเตือน</option>
+                    <option value="KPI">KPI</option>
+                </select>
+            </div>
+            <div class="col-md-3 col-lg-3">
+                <label for="fSt" class="form-label">สถานะ</label>
+                <select id="fSt" class="form-select">
+                    <option value="">ทั้งหมด</option>
+                    <option value="ใช้งาน">ใช้งาน</option>
+                    <option value="รอทบทวน">รอทบทวน</option>
+                    <option value="ฉบับร่าง">ฉบับร่าง</option>
+                    <option value="ออนไลน์">ออนไลน์</option>
+                    <option value="บำรุงรักษา">บำรุงรักษา</option>
+                </select>
+            </div>
+            <div class="col-md-2 col-lg-2">
+                <div class="d-flex gap-2">
+                    <button type="button" id="btnSearch" class="btn btn-outline-primary filter-btn-sq" title="ค้นหา"><i class="ri ri-search-line"></i></button>
+                    <button type="button" id="btnReset"  class="btn btn-outline-secondary filter-btn-sq" title="ล้างค่า"><i class="ri ri-refresh-line"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div>
+            <h5 class="card-title mb-1">รายการรายงาน</h5>
+            <p class="text-muted small mb-0">สลับดูรายงาน Static และ Dynamic จากแท็บด้านล่าง</p>
+        </div>
+        <button type="button" class="btn btn-primary btn-sm"><i class="ri ri-add-line me-1"></i> เพิ่มรายงาน</button>
+    </div>
+
+    <div class="px-4 pt-3">
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="tabSt" type="button"><i class="ri ri-file-chart-line me-1"></i> Static Reports</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="tabDy" type="button"><i class="ri ri-dashboard-3-line me-1"></i> Dynamic Reports</button>
+            </li>
+        </ul>
+    </div>
+
+    <div class="table-responsive p-1" id="secSt">
+        <table class="table table-bordered align-middle mb-0 rpt-table">
+            <thead class="text-center">
+                <tr>
+                    <th style="width:50px;">#</th>
+                    <th>รหัสรายงาน</th>
+                    <th>ชื่อรายงาน</th>
+                    <th>หมวดหมู่</th>
+                    <th>รูปแบบ</th>
+                    <th>รอบรายงาน</th>
+                    <th>รันล่าสุด</th>
+                    <th>สถานะ</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="stTBody">
+                @foreach (var r in staticReports)
+                {
+                    <tr data-rc="@r.ReportCode"
+                        data-rname="@r.ReportName"
+                        data-cat="@r.Category"
+                        data-status="@r.StatusText"
+                        data-scls="@r.StatusClass"
+                        data-st="@($"{r.ReportCode} {r.ReportName} {r.Category} {r.OutputFormat} {r.OwnerUnit}")">
+                        <td class="text-center text-muted">@r.RowNo</td>
+                        <td class="fw-semibold text-primary">@r.ReportCode</td>
+                        <td>
+                            <div class="fw-semibold">@r.ReportName</div>
+                            <div class="text-muted small">@r.OwnerUnit</div>
+                        </td>
+                        <td>@r.Category</td>
+                        <td class="text-center">@r.OutputFormat</td>
+                        <td class="text-center">@r.Frequency</td>
+                        <td class="text-center">@r.LastRunAt.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td class="text-center"><span class="badge rounded-pill @r.StatusClass">@r.StatusText</span></td>
+                        <td>
+                            <div class="d-flex gap-1 justify-content-center">
+                                <button type="button" class="btn btn-sm btn-icon btn-outline-info btn-rpt-detail" data-rc="@r.ReportCode" title="รายละเอียด" data-bs-toggle="tooltip" data-bs-placement="top"><i class="ri ri-eye-line text-info"></i></button>
+                                <button type="button" class="btn btn-sm btn-icon btn-outline-warning btn-rpt-detail" data-rc="@r.ReportCode" title="แก้ไข" data-bs-toggle="tooltip" data-bs-placement="top"><i class="ri ri-pencil-line text-warning"></i></button>
+                                <button type="button" class="btn btn-sm btn-icon btn-outline-success" title="ดาวน์โหลด" data-bs-toggle="tooltip" data-bs-placement="top"><i class="ri ri-download-2-line text-success"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                <tr id="stEmpty" class="d-none">
+                    <td colspan="9" class="text-center text-muted py-4">ไม่พบข้อมูลตามเงื่อนไขที่ค้นหา</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="table-responsive p-1 d-none" id="secDy">
+        <table class="table table-bordered align-middle mb-0 rpt-table">
+            <thead class="text-center">
+                <tr>
+                    <th style="width:50px;">#</th>
+                    <th>รหัสรายงาน</th>
+                    <th>ชื่อรายงาน</th>
+                    <th>หมวดหมู่</th>
+                    <th>แหล่งข้อมูล</th>
+                    <th>รอบ Refresh</th>
+                    <th>Refresh ล่าสุด</th>
+                    <th>สถานะ</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="dyTBody">
+                @foreach (var r in dynamicReports)
+                {
+                    <tr data-rc="@r.ReportCode"
+                        data-rname="@r.ReportName"
+                        data-cat="@r.Category"
+                        data-status="@r.StatusText"
+                        data-scls="@r.StatusClass"
+                        data-st="@($"{r.ReportCode} {r.ReportName} {r.Category} {r.DataSource} {r.OwnerUnit}")">
+                        <td class="text-center text-muted">@r.RowNo</td>
+                        <td class="fw-semibold text-primary">@r.ReportCode</td>
+                        <td>
+                            <div class="fw-semibold">@r.ReportName</div>
+                            <div class="text-muted small">@r.OwnerUnit</div>
+                        </td>
+                        <td>@r.Category</td>
+                        <td>@r.DataSource</td>
+                        <td class="text-center">@r.RefreshPolicy</td>
+                        <td class="text-center">@r.LastRefreshAt.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td class="text-center"><span class="badge rounded-pill @r.StatusClass">@r.StatusText</span></td>
+                        <td>
+                            <div class="d-flex gap-1 justify-content-center">
+                                <button type="button" class="btn btn-sm btn-icon btn-outline-info btn-rpt-detail" data-rc="@r.ReportCode" title="รายละเอียด" data-bs-toggle="tooltip" data-bs-placement="top"><i class="ri ri-eye-line text-info"></i></button>
+                                <button type="button" class="btn btn-sm btn-icon btn-outline-warning btn-rpt-detail" data-rc="@r.ReportCode" title="แก้ไข" data-bs-toggle="tooltip" data-bs-placement="top"><i class="ri ri-pencil-line text-warning"></i></button>
+                                <button type="button" class="btn btn-sm btn-icon btn-outline-secondary" title="รีเฟรช" data-bs-toggle="tooltip" data-bs-placement="top"><i class="ri ri-refresh-line text-secondary"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                <tr id="dyEmpty" class="d-none">
+                    <td colspan="9" class="text-center text-muted py-4">ไม่พบข้อมูลตามเงื่อนไขที่ค้นหา</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="rptModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="ri ri-bar-chart-box-line me-2"></i>
+                    <span id="modalTitle">รายละเอียดรายงาน</span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="nav-align-top nav-tabs-shadow">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabDetail" type="button"><i class="ri ri-file-list-2-line me-1"></i> ข้อมูลหลัก</button></li>
+                        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabParams" type="button"><i class="ri ri-settings-3-line me-1"></i> พารามิเตอร์</button></li>
+                        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabHist" type="button"><i class="ri ri-history-line me-1"></i> ประวัติการทำงาน</button></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="tabDetail" class="tab-pane fade show active">
+                            <div class="accordion accordion-custom-button" id="rptAccordion">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accInfo" type="button">
+                                            <i class="icon-base ri ri-information-line me-2"></i> ข้อมูลรายงาน
+                                        </button>
+                                    </h2>
+                                    <div id="accInfo" class="accordion-collapse collapse show">
+                                        <div class="accordion-body">
+                                            <div class="row g-3">
+                                                <div class="col-md-4"><div class="detail-kv"><span class="lbl">รหัสรายงาน</span><span class="val" id="dCode">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="lbl">ประเภทรายงาน</span><span class="val" id="dType">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="lbl">สถานะ</span><span class="val" id="dStatus">-</span></div></div>
+                                                <div class="col-md-6"><div class="detail-kv"><span class="lbl">ชื่อรายงาน</span><span class="val" id="dName">-</span></div></div>
+                                                <div class="col-md-3"><div class="detail-kv"><span class="lbl">หมวดหมู่</span><span class="val" id="dCat">-</span></div></div>
+                                                <div class="col-md-3"><div class="detail-kv"><span class="lbl">เจ้าของรายงาน</span><span class="val" id="dOwner">-</span></div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accOps" type="button">
+                                            <i class="icon-base ri ri-settings-4-line me-2"></i> การตั้งค่าและการดูแล
+                                        </button>
+                                    </h2>
+                                    <div id="accOps" class="accordion-collapse collapse show">
+                                        <div class="accordion-body">
+                                            <div class="row g-3">
+                                                <div class="col-md-6"><div class="detail-kv"><span class="lbl">วัตถุประสงค์</span><span class="val" id="dObj">-</span></div></div>
+                                                <div class="col-md-2"><div class="detail-kv"><span class="lbl">อัปเดตโดย</span><span class="val" id="dBy">-</span></div></div>
+                                                <div class="col-md-2"><div class="detail-kv"><span class="lbl">เวลาอัปเดต</span><span class="val" id="dAt">-</span></div></div>
+                                                <div class="col-md-2"><div class="detail-kv"><span class="lbl">หมายเหตุ</span><span class="val" id="dNote">-</span></div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tabParams" class="tab-pane fade">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-sm align-middle mb-0 rpt-table">
+                                    <thead class="text-center">
+                                        <tr><th style="width:50px;">#</th><th>Key</th><th>ชื่อพารามิเตอร์</th><th>บังคับ/ทางเลือก</th><th>ค่าเริ่มต้นตัวอย่าง</th></tr>
+                                    </thead>
+                                    <tbody id="paramTBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div id="tabHist" class="tab-pane fade">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-sm align-middle mb-0 rpt-table">
+                                    <thead class="text-center">
+                                        <tr><th style="width:50px;">#</th><th>เวลา</th><th>กิจกรรม</th><th>ผู้ดำเนินการ</th><th>ผลลัพธ์</th></tr>
+                                    </thead>
+                                    <tbody id="histTBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i class="ri ri-close-line me-1"></i> ปิด</button>
+                <button type="button" class="btn btn-primary"><i class="ri ri-save-line me-1"></i> บันทึกข้อมูล</button>
+            </div>
+        </div>
+    </div>
+</div>

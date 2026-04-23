@@ -1,0 +1,639 @@
+@{
+    ViewData["Title"] = "ทะเบียน DOF";
+
+    var dofFactories = new[]
+    {
+        new
+        {
+            RowNo = 1,
+            DofNumber = "DOF-FAC-00128",
+            FactoryCode = "FAC-0001",
+            FactoryName = "บริษัท สยาม มารีน ฟู้ดส์ จำกัด",
+            EstablishmentNo = "EST-TH-1145",
+            Province = "สมุทรสาคร",
+            ApprovalScope = "ปลาทูน่าแช่เยือกแข็ง / แปรรูป",
+            ExportMarkets = 4,
+            ExpireDate = new DateTime(2027, 2, 28),
+            StatusText = "รับรองแล้ว",
+            StatusClass = "bg-label-success",
+            AuditResult = "ผ่าน"
+        },
+        new
+        {
+            RowNo = 2,
+            DofNumber = "DOF-FAC-00449",
+            FactoryCode = "FAC-0002",
+            FactoryName = "บริษัท กัลฟ์ แคทช์ โปรเซสซิ่ง จำกัด",
+            EstablishmentNo = "EST-TH-1288",
+            Province = "ชลบุรี",
+            ApprovalScope = "ปลากระป๋อง / สัตว์น้ำพร้อมบริโภค",
+            ExportMarkets = 6,
+            ExpireDate = new DateTime(2026, 12, 15),
+            StatusText = "รับรองแล้ว",
+            StatusClass = "bg-label-success",
+            AuditResult = "ผ่าน"
+        },
+        new
+        {
+            RowNo = 3,
+            DofNumber = "DOF-FAC-00613",
+            FactoryCode = "FAC-0003",
+            FactoryName = "บริษัท โอเชียน ไพร์ม เอ็กซ์พอร์ต จำกัด",
+            EstablishmentNo = "EST-TH-1390",
+            Province = "สงขลา",
+            ApprovalScope = "คัดแยก / บรรจุส่งออก",
+            ExportMarkets = 3,
+            ExpireDate = new DateTime(2026, 10, 10),
+            StatusText = "ใกล้หมดอายุ",
+            StatusClass = "bg-label-warning",
+            AuditResult = "ผ่านแบบมีข้อสังเกต"
+        },
+        new
+        {
+            RowNo = 4,
+            DofNumber = "DOF-FAC-00772",
+            FactoryCode = "FAC-0004",
+            FactoryName = "บริษัท อันดามัน โคลด์สโตเรจ จำกัด",
+            EstablishmentNo = "EST-TH-1450",
+            Province = "ระนอง",
+            ApprovalScope = "ห้องเย็น / เก็บรักษาสัตว์น้ำ",
+            ExportMarkets = 2,
+            ExpireDate = new DateTime(2027, 5, 20),
+            StatusText = "รับรองแล้ว",
+            StatusClass = "bg-label-success",
+            AuditResult = "ผ่าน"
+        },
+        new
+        {
+            RowNo = 5,
+            DofNumber = "DOF-FAC-00818",
+            FactoryCode = "FAC-0005",
+            FactoryName = "บริษัท เซาท์เทิร์น เพลาจิก จำกัด",
+            EstablishmentNo = "EST-TH-1502",
+            Province = "ภูเก็ต",
+            ApprovalScope = "สัตว์น้ำสด / ห้องเย็น",
+            ExportMarkets = 2,
+            ExpireDate = new DateTime(2026, 8, 31),
+            StatusText = "ระงับชั่วคราว",
+            StatusClass = "bg-label-danger",
+            AuditResult = "รอตรวจซ้ำ"
+        },
+        new
+        {
+            RowNo = 6,
+            DofNumber = "DOF-FAC-00901",
+            FactoryCode = "FAC-0006",
+            FactoryName = "บริษัท ไทย มารีน แพค จำกัด",
+            EstablishmentNo = "EST-TH-1604",
+            Province = "สมุทรปราการ",
+            ApprovalScope = "บรรจุภัณฑ์ / ฉลากส่งออก",
+            ExportMarkets = 5,
+            ExpireDate = new DateTime(2027, 1, 5),
+            StatusText = "รับรองแล้ว",
+            StatusClass = "bg-label-success",
+            AuditResult = "ผ่าน"
+        }
+    };
+
+    var totalCount = dofFactories.Length;
+    var certifiedCount = dofFactories.Count(x => x.StatusText == "รับรองแล้ว");
+    var warningCount = dofFactories.Count(x => x.StatusText == "ใกล้หมดอายุ");
+    var suspendedCount = dofFactories.Count(x => x.StatusText == "ระงับชั่วคราว");
+}
+
+@section PageStyles {
+<style>
+    .dof-table-compact {
+        font-size: 0.78rem;
+    }
+
+    .dof-table-compact th,
+    .dof-table-compact td {
+        padding: 0.45rem 0.5rem;
+        vertical-align: middle;
+        line-height: 1.3;
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    .dof-table-compact thead th {
+        white-space: normal;
+        word-break: keep-all;
+        overflow-wrap: normal;
+    }
+
+    .dof-table-compact .badge {
+        font-size: 0.68rem;
+    }
+
+    .dof-table-compact .btn.btn-sm {
+        --bs-btn-padding-y: 0.14rem;
+        --bs-btn-padding-x: 0.3rem;
+    }
+
+    .dof-table-compact .btn-icon {
+        width: 1.65rem;
+        height: 1.65rem;
+    }
+
+    .filter-action-buttons .btn-square {
+        width: 48px;
+        height: 48px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .detail-kv {
+        border: 1px solid var(--bs-border-color);
+        border-radius: 0.75rem;
+        background: var(--bs-paper-bg);
+        padding: 0.85rem 1rem;
+        height: 100%;
+    }
+
+    .detail-kv .label {
+        display: block;
+        font-size: 0.75rem;
+        color: var(--bs-secondary-color);
+        margin-bottom: 0.25rem;
+    }
+
+    .detail-kv .value {
+        font-weight: 600;
+        color: var(--bs-heading-color);
+    }
+</style>
+}
+
+@section PageScripts {
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var detailsMap = {
+            'DOF-FAC-00128': {
+                certDate: '01/03/2566',
+                nextAuditDate: '15/01/2567',
+                address: '88/8 หมู่ 4 ต.นาดี อ.เมืองสมุทรสาคร จ.สมุทรสาคร 74000',
+                phone: '034-555-100',
+                email: 'qa@siammarine.co.th',
+                note: 'โรงงานอยู่ในกลุ่มความเสี่ยงต่ำ และส่งออกสหภาพยุโรปต่อเนื่อง',
+                products: [
+                    { name: 'ปลาทูน่าแช่แข็ง', hsCode: '0303.42', market: 'EU / JP', status: 'ใช้งาน' },
+                    { name: 'ทูน่าปรุงสุกแช่แข็ง', hsCode: '1604.14', market: 'EU', status: 'ใช้งาน' }
+                ],
+                audits: [
+                    { date: '15/01/2566', result: 'ผ่าน', officer: 'กองตรวจสอบคุณภาพ', remark: 'ไม่พบข้อบกพร่อง' },
+                    { date: '12/01/2565', result: 'ผ่าน', officer: 'กองตรวจสอบคุณภาพ', remark: 'ติดตามผลปกติ' }
+                ]
+            },
+            'DOF-FAC-00449': {
+                certDate: '15/12/2565',
+                nextAuditDate: '10/12/2566',
+                address: '88/21 นิคมอุตสาหกรรมแหลมฉบัง อ.ศรีราชา จ.ชลบุรี 20230',
+                phone: '038-771-220',
+                email: 'reg@gulfcatch.co.th',
+                note: 'โรงงานผ่านเกณฑ์ GMP/HACCP และขยายตลาดอเมริกาเหนือ',
+                products: [
+                    { name: 'ปลากระป๋องในน้ำเกลือ', hsCode: '1604.14', market: 'US / EU', status: 'ใช้งาน' },
+                    { name: 'สลัดทูน่า', hsCode: '1604.20', market: 'US', status: 'ใช้งาน' }
+                ],
+                audits: [
+                    { date: '10/12/2565', result: 'ผ่าน', officer: 'สำนักงานประมงเขต 2', remark: 'เอกสารครบถ้วน' },
+                    { date: '08/12/2564', result: 'ผ่าน', officer: 'สำนักงานประมงเขต 2', remark: 'แนะนำปรับป้ายจุดล้างมือ' }
+                ]
+            },
+            'DOF-FAC-00613': {
+                certDate: '11/10/2565',
+                nextAuditDate: '05/10/2566',
+                address: '199/24 ถ.กาญจนวนิช ต.หาดใหญ่ อ.หาดใหญ่ จ.สงขลา 90110',
+                phone: '074-220-919',
+                email: 'support@oceanprime.co.th',
+                note: 'ต้องติดตามการปรับปรุงพื้นที่บรรจุแยกวัตถุดิบและสินค้าสำเร็จรูป',
+                products: [
+                    { name: 'ปลาทูน่าหั่นชิ้น', hsCode: '0304.87', market: 'JP / KR', status: 'เฝ้าระวัง' }
+                ],
+                audits: [
+                    { date: '05/10/2566', result: 'ผ่านแบบมีข้อสังเกต', officer: 'สำนักงานประมงเขต 5', remark: 'กำหนด corrective action 30 วัน' },
+                    { date: '03/10/2565', result: 'ผ่าน', officer: 'สำนักงานประมงเขต 5', remark: 'สภาพโรงงานเหมาะสม' }
+                ]
+            },
+            'DOF-FAC-00772': {
+                certDate: '20/05/2566',
+                nextAuditDate: '10/05/2567',
+                address: '42/12 ต.บางริ้น อ.เมืองระนอง จ.ระนอง 85000',
+                phone: '077-440-778',
+                email: 'contact@andamancold.com',
+                note: 'ผ่านเกณฑ์ด้านห้องเย็นและการควบคุมอุณหภูมิ',
+                products: [
+                    { name: 'ปลาหมึกแช่แข็ง', hsCode: '0307.49', market: 'CN / EU', status: 'ใช้งาน' },
+                    { name: 'กุ้งแช่เย็น', hsCode: '0306.17', market: 'JP', status: 'ใช้งาน' }
+                ],
+                audits: [
+                    { date: '10/05/2566', result: 'ผ่าน', officer: 'ด่านตรวจสัตว์น้ำระนอง', remark: 'ห้องเย็นผ่านเกณฑ์' }
+                ]
+            },
+            'DOF-FAC-00818': {
+                certDate: '01/09/2565',
+                nextAuditDate: '20/08/2566',
+                address: '15/9 ท่าเรือประมง ต.รัษฎา อ.เมืองภูเก็ต จ.ภูเก็ต 83000',
+                phone: '076-410-550',
+                email: 'ops@southernpelagic.co.th',
+                note: 'ระงับชั่วคราวจนกว่าจะส่งเอกสาร corrective action ครบ',
+                products: [
+                    { name: 'ปลาโอแช่เย็น', hsCode: '0302.35', market: 'TH / MY', status: 'ระงับ' }
+                ],
+                audits: [
+                    { date: '20/08/2566', result: 'รอตรวจซ้ำ', officer: 'สำนักงานประมงจังหวัดภูเก็ต', remark: 'พบข้อบกพร่องด้าน sanitation' }
+                ]
+            },
+            'DOF-FAC-00901': {
+                certDate: '05/01/2566',
+                nextAuditDate: '22/12/2566',
+                address: '99 หมู่ 7 ต.บางปลา อ.บางพลี จ.สมุทรปราการ 10540',
+                phone: '02-700-4567',
+                email: 'factory@thaimarinepack.co.th',
+                note: 'รองรับการพิมพ์ฉลากส่งออกตามมาตรฐาน EU และ US',
+                products: [
+                    { name: 'ซองบรรจุปลาทูน่า', hsCode: '3923.29', market: 'US / EU', status: 'ใช้งาน' },
+                    { name: 'ฉลากสินค้าส่งออก', hsCode: '4821.10', market: 'US / AU', status: 'ใช้งาน' }
+                ],
+                audits: [
+                    { date: '22/12/2565', result: 'ผ่าน', officer: 'กองรับรองมาตรฐาน', remark: 'เอกสารและตัวอย่างฉลากครบ' }
+                ]
+            }
+        };
+
+        function filterRows() {
+            var keyword = (document.getElementById('filterKeyword').value || '').trim().toLowerCase();
+            var province = (document.getElementById('filterProvince').value || '').trim();
+            var status = (document.getElementById('filterStatus').value || '').trim();
+            var audit = (document.getElementById('filterAudit').value || '').trim();
+            var rows = document.querySelectorAll('#dofTableBody tr[data-dof-number]');
+            var visibleCount = 0;
+
+            rows.forEach(function (row) {
+                var text = (row.dataset.searchText || '').toLowerCase();
+                var rowProvince = row.dataset.province || '';
+                var rowStatus = row.dataset.status || '';
+                var rowAudit = row.dataset.audit || '';
+                var keywordMatch = !keyword || text.includes(keyword);
+                var provinceMatch = !province || rowProvince === province;
+                var statusMatch = !status || rowStatus === status;
+                var auditMatch = !audit || rowAudit === audit;
+                var isVisible = keywordMatch && provinceMatch && statusMatch && auditMatch;
+
+                row.classList.toggle('d-none', !isVisible);
+                if (isVisible) {
+                    visibleCount += 1;
+                }
+            });
+
+            document.getElementById('dofTableEmpty').classList.toggle('d-none', visibleCount !== 0);
+        }
+
+        function renderRows(items, columns, emptyMessage) {
+            if (!items || items.length === 0) {
+                return '<tr><td colspan="' + columns + '" class="text-center text-muted py-3">' + emptyMessage + '</td></tr>';
+            }
+
+            if (columns === 5) {
+                return items.map(function (item, index) {
+                    return '<tr>' +
+                        '<td class="text-center text-muted small">' + (index + 1) + '</td>' +
+                        '<td>' + item.name + '</td>' +
+                        '<td class="text-center">' + item.hsCode + '</td>' +
+                        '<td>' + item.market + '</td>' +
+                        '<td class="text-center"><span class="badge rounded-pill ' + (item.status === 'ใช้งาน' ? 'bg-label-success' : item.status === 'เฝ้าระวัง' ? 'bg-label-warning' : 'bg-label-danger') + '">' + item.status + '</span></td>' +
+                        '</tr>';
+                }).join('');
+            }
+
+            return items.map(function (item, index) {
+                return '<tr>' +
+                    '<td class="text-center text-muted small">' + (index + 1) + '</td>' +
+                    '<td>' + item.date + '</td>' +
+                    '<td><span class="badge rounded-pill ' + (item.result === 'ผ่าน' ? 'bg-label-success' : item.result === 'ผ่านแบบมีข้อสังเกต' ? 'bg-label-warning' : 'bg-label-danger') + '">' + item.result + '</span></td>' +
+                    '<td>' + item.officer + '</td>' +
+                    '<td>' + item.remark + '</td>' +
+                    '</tr>';
+            }).join('');
+        }
+
+        function openFactoryDetail(dofNumber) {
+            var detail = detailsMap[dofNumber];
+            var row = document.querySelector('#dofTableBody tr[data-dof-number="' + dofNumber + '"]');
+            if (!detail || !row) {
+                return;
+            }
+
+            document.getElementById('factoryModalTitle').textContent = row.dataset.factoryName;
+            document.getElementById('detailDofNumber').textContent = dofNumber;
+            document.getElementById('detailFactoryCode').textContent = row.dataset.factoryCode;
+            document.getElementById('detailEstablishmentNo').textContent = row.dataset.establishmentNo;
+            document.getElementById('detailProvince').textContent = row.dataset.province;
+            document.getElementById('detailStatus').innerHTML = '<span class="badge rounded-pill ' + row.dataset.statusClass + '">' + row.dataset.status + '</span>';
+            document.getElementById('detailApprovalScope').textContent = row.dataset.scope;
+            document.getElementById('detailAuditResult').textContent = row.dataset.audit;
+            document.getElementById('detailCertDate').textContent = detail.certDate;
+            document.getElementById('detailNextAuditDate').textContent = detail.nextAuditDate;
+            document.getElementById('detailPhone').textContent = detail.phone;
+            document.getElementById('detailEmail').textContent = detail.email;
+            document.getElementById('detailAddress').textContent = detail.address;
+            document.getElementById('detailNote').textContent = detail.note;
+            document.getElementById('productTableBody').innerHTML = renderRows(detail.products, 5, 'ไม่พบรายการสินค้า');
+            document.getElementById('auditTableBody').innerHTML = renderRows(detail.audits, 5, 'ไม่พบประวัติการตรวจประเมิน');
+
+            new bootstrap.Modal(document.getElementById('dofFactoryDetailModal')).show();
+        }
+
+        document.getElementById('btnSearchDof').addEventListener('click', filterRows);
+        document.getElementById('btnResetDof').addEventListener('click', function () {
+            document.getElementById('filterKeyword').value = '';
+            document.getElementById('filterProvince').value = '';
+            document.getElementById('filterStatus').value = '';
+            document.getElementById('filterAudit').value = '';
+            filterRows();
+        });
+
+        document.querySelectorAll('#filterKeyword, #filterProvince, #filterStatus, #filterAudit').forEach(function (element) {
+            element.addEventListener('keydown', function (event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    filterRows();
+                }
+            });
+            element.addEventListener('change', filterRows);
+        });
+
+        if (window.bootstrap && bootstrap.Tooltip) {
+            document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (element) {
+                new bootstrap.Tooltip(element);
+            });
+        }
+
+        document.querySelectorAll('.btn-view-dof, .btn-edit-dof').forEach(function (button) {
+            button.addEventListener('click', function () {
+                openFactoryDetail(this.dataset.dofNumber);
+            });
+        });
+    });
+</script>
+}
+
+<h4 class="mb-1">ฐานข้อมูลโรงงานที่ผ่านการรับรองสุขอนามัยของกรมประมง (DOF List)</h4>
+<p class="mb-1 text-muted">รายการโรงงานที่ผ่านการรับรอง DOF พร้อมขอบเขตการรับรอง ผลการตรวจประเมิน และสถานะปัจจุบัน</p>
+
+<nav aria-label="breadcrumb" class="mb-6">
+    <ol class="breadcrumb breadcrumb-style1" style="--bs-breadcrumb-divider: '>'; font-size: 0.75rem;">
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("DofList", "Admin")" class="text-primary fw-semibold">ผู้ดูแลระบบ</a>
+        </li>
+        <li class="breadcrumb-item active text-secondary">ทะเบียน DOF</li>
+    </ol>
+</nav>
+
+<div class="row mb-6 g-6">
+    <div class="col-sm-6 col-xl-3">
+        <div class="card"><div class="card-body"><div class="d-flex align-items-center justify-content-between"><div class="content-left"><h5 class="mb-1">@totalCount</h5><small>โรงงานทั้งหมด</small></div><span class="badge bg-label-primary rounded-circle p-2"><i class="icon-base ri ri-building-4-line icon-24px"></i></span></div></div></div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card"><div class="card-body"><div class="d-flex align-items-center justify-content-between"><div class="content-left"><h5 class="mb-1">@certifiedCount</h5><small>รับรองแล้ว</small></div><span class="badge bg-label-success rounded-circle p-2"><i class="icon-base ri ri-verified-badge-line icon-24px"></i></span></div></div></div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card"><div class="card-body"><div class="d-flex align-items-center justify-content-between"><div class="content-left"><h5 class="mb-1">@warningCount</h5><small>ใกล้หมดอายุ</small></div><span class="badge bg-label-warning rounded-circle p-2"><i class="icon-base ri ri-error-warning-line icon-24px"></i></span></div></div></div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card"><div class="card-body"><div class="d-flex align-items-center justify-content-between"><div class="content-left"><h5 class="mb-1">@suspendedCount</h5><small>ระงับชั่วคราว</small></div><span class="badge bg-label-danger rounded-circle p-2"><i class="icon-base ri ri-forbid-2-line icon-24px"></i></span></div></div></div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-3">
+        <div>
+            <h5 class="card-title mb-1">ค้นหาทะเบียน DOF</h5>
+            <p class="text-muted small mb-0">ค้นหาจากเลขทะเบียน DOF ชื่อโรงงาน จังหวัด สถานะ และผลการตรวจประเมิน</p>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row g-3 align-items-end">
+            <div class="col-md-4 col-lg-3">
+                <label for="filterKeyword" class="form-label">คำค้นหา</label>
+                <input type="text" id="filterKeyword" class="form-control" placeholder="เลข DOF, ชื่อโรงงาน, Establishment No." />
+            </div>
+            <div class="col-md-3 col-lg-2">
+                <label for="filterProvince" class="form-label">จังหวัด</label>
+                <select id="filterProvince" class="form-select">
+                    <option value="">ทั้งหมด</option>
+                    <option value="ชลบุรี">ชลบุรี</option>
+                    <option value="ภูเก็ต">ภูเก็ต</option>
+                    <option value="ระนอง">ระนอง</option>
+                    <option value="สงขลา">สงขลา</option>
+                    <option value="สมุทรปราการ">สมุทรปราการ</option>
+                    <option value="สมุทรสาคร">สมุทรสาคร</option>
+                </select>
+            </div>
+            <div class="col-md-3 col-lg-2">
+                <label for="filterStatus" class="form-label">สถานะ</label>
+                <select id="filterStatus" class="form-select">
+                    <option value="">ทั้งหมด</option>
+                    <option value="รับรองแล้ว">รับรองแล้ว</option>
+                    <option value="ใกล้หมดอายุ">ใกล้หมดอายุ</option>
+                    <option value="ระงับชั่วคราว">ระงับชั่วคราว</option>
+                </select>
+            </div>
+            <div class="col-md-3 col-lg-3">
+                <label for="filterAudit" class="form-label">ผลการตรวจ</label>
+                <select id="filterAudit" class="form-select">
+                    <option value="">ทั้งหมด</option>
+                    <option value="ผ่าน">ผ่าน</option>
+                    <option value="ผ่านแบบมีข้อสังเกต">ผ่านแบบมีข้อสังเกต</option>
+                    <option value="รอตรวจซ้ำ">รอตรวจซ้ำ</option>
+                </select>
+            </div>
+            <div class="col-md-3 col-lg-2">
+                <div class="d-flex gap-2 filter-action-buttons">
+                    <button type="button" id="btnSearchDof" class="btn btn-outline-primary btn-square" title="ค้นหา"><i class="ri ri-search-line"></i></button>
+                    <button type="button" id="btnResetDof" class="btn btn-outline-secondary btn-square" title="ล้างค่า"><i class="ri ri-refresh-line"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div>
+            <h5 class="card-title mb-1">รายการโรงงานที่ผ่านการรับรอง</h5>
+            <p class="text-muted small mb-0">แสดงเลขทะเบียน DOF ขอบเขตการรับรอง ตลาดส่งออก และสถานะการรับรองสุขอนามัย</p>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#dofFactoryDetailModal">
+                <i class="ri ri-add-line me-1"></i> เพิ่มข้อมูล
+            </button>
+        </div>
+    </div>
+    <div class="table-responsive p-1">
+        <table class="table table-bordered align-middle mb-0 dof-table-compact">
+            <thead class="text-center">
+                <tr>
+                    <th style="width:56px;">#</th>
+                    <th>เลขทะเบียน DOF</th>
+                    <th>โรงงาน</th>
+                    <th>Establishment No.</th>
+                    <th>จังหวัด</th>
+                    <th>ขอบเขตการรับรอง</th>
+                    <th>ตลาดส่งออก</th>
+                    <th>หมดอายุ</th>
+                    <th>ผลการตรวจ</th>
+                    <th>สถานะ</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="dofTableBody">
+                @foreach (var factory in dofFactories)
+                {
+                    <tr data-dof-number="@factory.DofNumber"
+                        data-factory-code="@factory.FactoryCode"
+                        data-factory-name="@factory.FactoryName"
+                        data-establishment-no="@factory.EstablishmentNo"
+                        data-province="@factory.Province"
+                        data-scope="@factory.ApprovalScope"
+                        data-audit="@factory.AuditResult"
+                        data-status="@factory.StatusText"
+                        data-status-class="@factory.StatusClass"
+                        data-search-text="@($"{factory.DofNumber} {factory.FactoryName} {factory.EstablishmentNo} {factory.Province}")">
+                        <td class="text-center text-muted">@factory.RowNo</td>
+                        <td class="fw-semibold text-primary">@factory.DofNumber</td>
+                        <td>
+                            <div class="fw-semibold">@factory.FactoryName</div>
+                            <div class="text-muted small">@factory.FactoryCode</div>
+                        </td>
+                        <td class="text-center">@factory.EstablishmentNo</td>
+                        <td>@factory.Province</td>
+                        <td>@factory.ApprovalScope</td>
+                        <td class="text-center">@factory.ExportMarkets ตลาด</td>
+                        <td class="text-center">@factory.ExpireDate.ToString("dd/MM/yyyy")</td>
+                        <td class="text-center">@factory.AuditResult</td>
+                        <td class="text-center"><span class="badge rounded-pill @factory.StatusClass">@factory.StatusText</span></td>
+                        <td>
+                            <div class="d-flex flex-wrap gap-1 justify-content-center">
+                                <button type="button" class="btn btn-sm btn-icon btn-outline-info btn-view-dof" data-dof-number="@factory.DofNumber" title="รายละเอียดข้อมูล" data-bs-toggle="tooltip" data-bs-placement="top"><i class="ri ri-eye-line text-info"></i></button>
+                                <button type="button" class="btn btn-sm btn-icon btn-outline-warning btn-edit-dof" data-dof-number="@factory.DofNumber" title="แก้ไขข้อมูล" data-bs-toggle="tooltip" data-bs-placement="top"><i class="ri ri-pencil-line text-warning"></i></button>
+                                <button type="button" class="btn btn-sm btn-icon btn-outline-secondary" title="พิมพ์ทะเบียน" data-bs-toggle="tooltip" data-bs-placement="top"><i class="ri ri-printer-line text-secondary"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                <tr id="dofTableEmpty" class="d-none">
+                    <td colspan="11" class="text-center text-muted py-4">ไม่พบข้อมูลตามเงื่อนไขที่ค้นหา</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="dofFactoryDetailModal" tabindex="-1" aria-labelledby="dofFactoryDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="dofFactoryDetailModalLabel">
+                    <i class="ri ri-shield-star-line me-2"></i><span id="factoryModalTitle">รายละเอียดทะเบียน DOF</span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="nav-align-top nav-tabs-shadow">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#tab-dof-detail" aria-selected="true"><i class="ri ri-file-list-2-line me-1"></i> ข้อมูลรับรอง</button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#tab-dof-product" aria-selected="false"><i class="ri ri-box-3-line me-1"></i> สินค้าที่รับรอง</button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#tab-dof-audit" aria-selected="false"><i class="ri ri-survey-line me-1"></i> ประวัติการตรวจ</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="tab-dof-detail" class="tab-pane fade show active">
+                            <div class="accordion accordion-custom-button" id="dofAccordion">
+                                <div class="accordion-item active">
+                                    <h2 class="accordion-header" id="headingDofGeneral">
+                                        <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#collapseDofGeneral" aria-expanded="true"><i class="icon-base ri ri-information-line me-2"></i> ข้อมูลทั่วไป</button>
+                                    </h2>
+                                    <div id="collapseDofGeneral" class="accordion-collapse collapse show">
+                                        <div class="accordion-body">
+                                            <div class="row g-3">
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">เลขทะเบียน DOF</span><span class="value" id="detailDofNumber">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">รหัสโรงงาน</span><span class="value" id="detailFactoryCode">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">สถานะ</span><span class="value" id="detailStatus">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">Establishment No.</span><span class="value" id="detailEstablishmentNo">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">จังหวัด</span><span class="value" id="detailProvince">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">ผลการตรวจล่าสุด</span><span class="value" id="detailAuditResult">-</span></div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item active">
+                                    <h2 class="accordion-header" id="headingDofRegistration">
+                                        <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#collapseDofRegistration" aria-expanded="true"><i class="icon-base ri ri-file-shield-2-line me-2"></i> ขอบเขตและการติดต่อ</button>
+                                    </h2>
+                                    <div id="collapseDofRegistration" class="accordion-collapse collapse show">
+                                        <div class="accordion-body">
+                                            <div class="row g-3">
+                                                <div class="col-md-6"><div class="detail-kv"><span class="label">ขอบเขตการรับรอง</span><span class="value" id="detailApprovalScope">-</span></div></div>
+                                                <div class="col-md-3"><div class="detail-kv"><span class="label">วันที่รับรอง</span><span class="value" id="detailCertDate">-</span></div></div>
+                                                <div class="col-md-3"><div class="detail-kv"><span class="label">ตรวจครั้งถัดไป</span><span class="value" id="detailNextAuditDate">-</span></div></div>
+                                                <div class="col-md-6"><div class="detail-kv"><span class="label">ที่อยู่</span><span class="value" id="detailAddress">-</span></div></div>
+                                                <div class="col-md-3"><div class="detail-kv"><span class="label">โทรศัพท์</span><span class="value" id="detailPhone">-</span></div></div>
+                                                <div class="col-md-3"><div class="detail-kv"><span class="label">อีเมล</span><span class="value" id="detailEmail">-</span></div></div>
+                                                <div class="col-12"><div class="detail-kv"><span class="label">หมายเหตุ</span><span class="value" id="detailNote">-</span></div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tab-dof-product" class="tab-pane fade">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-sm align-middle mb-0 dof-table-compact">
+                                    <thead class="text-center">
+                                        <tr>
+                                            <th style="width:56px;">#</th>
+                                            <th>รายการสินค้า</th>
+                                            <th>HS Code</th>
+                                            <th>ตลาด</th>
+                                            <th>สถานะ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="productTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div id="tab-dof-audit" class="tab-pane fade">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-sm align-middle mb-0 dof-table-compact">
+                                    <thead class="text-center">
+                                        <tr>
+                                            <th style="width:56px;">#</th>
+                                            <th>วันที่ตรวจ</th>
+                                            <th>ผลการตรวจ</th>
+                                            <th>หน่วยตรวจ</th>
+                                            <th>หมายเหตุ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="auditTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i class="ri ri-close-line me-1"></i> ปิด</button>
+                <button type="button" class="btn btn-primary"><i class="ri ri-save-line me-1"></i> บันทึกข้อมูล</button>
+            </div>
+        </div>
+    </div>
+</div>

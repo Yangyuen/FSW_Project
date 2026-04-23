@@ -1,0 +1,632 @@
+@{
+    ViewData["Title"] = "มาตรการสุขอนามัยของประเทศคู่ค้า";
+
+    var sanitaryMeasures = new[]
+    {
+        new
+        {
+            RowNo = 1,
+            CountryCode = "JP",
+            CountryName = "ญี่ปุ่น",
+            Region = "เอเชีย",
+            MeasureCode = "SPS-JP-101",
+            MeasureName = "ข้อกำหนด Histamine สำหรับปลาทูน่าแช่เย็น",
+            ProductScope = "Tuna / Tuna Loin",
+            EffectiveDate = new DateTime(2026, 1, 15),
+            ReviewDueDate = new DateTime(2026, 10, 15),
+            RiskLevel = "สูง",
+            StatusText = "ใช้งาน",
+            StatusClass = "bg-label-success",
+            OwnerUnit = "กลุ่มมาตรการสุขอนามัย"
+        },
+        new
+        {
+            RowNo = 2,
+            CountryCode = "EU",
+            CountryName = "สหภาพยุโรป",
+            Region = "ยุโรป",
+            MeasureCode = "SPS-EU-205",
+            MeasureName = "หลักเกณฑ์ Residue Monitoring สำหรับสัตว์น้ำแช่แข็ง",
+            ProductScope = "Frozen Fishery Products",
+            EffectiveDate = new DateTime(2025, 12, 1),
+            ReviewDueDate = new DateTime(2026, 9, 1),
+            RiskLevel = "กลาง",
+            StatusText = "ใช้งาน",
+            StatusClass = "bg-label-success",
+            OwnerUnit = "กองควบคุมการค้าสัตว์น้ำ"
+        },
+        new
+        {
+            RowNo = 3,
+            CountryCode = "US",
+            CountryName = "สหรัฐอเมริกา",
+            Region = "อเมริกา",
+            MeasureCode = "SPS-US-088",
+            MeasureName = "ข้อกำหนด HACCP Verification สำหรับโรงงานส่งออก",
+            ProductScope = "Processed Seafood",
+            EffectiveDate = new DateTime(2026, 2, 20),
+            ReviewDueDate = new DateTime(2026, 8, 20),
+            RiskLevel = "กลาง",
+            StatusText = "รอทบทวน",
+            StatusClass = "bg-label-warning",
+            OwnerUnit = "กลุ่มตรวจประเมินระบบ"
+        },
+        new
+        {
+            RowNo = 4,
+            CountryCode = "AU",
+            CountryName = "ออสเตรเลีย",
+            Region = "โอเชียเนีย",
+            MeasureCode = "SPS-AU-041",
+            MeasureName = "ข้อกำหนดสารก่อภูมิแพ้ในผลิตภัณฑ์พร้อมบริโภค",
+            ProductScope = "Ready-to-eat Seafood",
+            EffectiveDate = new DateTime(2025, 11, 10),
+            ReviewDueDate = new DateTime(2026, 7, 10),
+            RiskLevel = "ต่ำ",
+            StatusText = "ใช้งาน",
+            StatusClass = "bg-label-success",
+            OwnerUnit = "กลุ่มมาตรฐานผลิตภัณฑ์"
+        },
+        new
+        {
+            RowNo = 5,
+            CountryCode = "KR",
+            CountryName = "เกาหลีใต้",
+            Region = "เอเชีย",
+            MeasureCode = "SPS-KR-133",
+            MeasureName = "ข้อกำหนดการติดฉลากแหล่งที่มาวัตถุดิบประมง",
+            ProductScope = "Frozen / Canned Tuna",
+            EffectiveDate = new DateTime(2026, 3, 5),
+            ReviewDueDate = new DateTime(2026, 9, 5),
+            RiskLevel = "สูง",
+            StatusText = "รอทบทวน",
+            StatusClass = "bg-label-warning",
+            OwnerUnit = "ฝ่ายข้อมูลย้อนกลับ"
+        },
+        new
+        {
+            RowNo = 6,
+            CountryCode = "CN",
+            CountryName = "จีน",
+            Region = "เอเชีย",
+            MeasureCode = "SPS-CN-052",
+            MeasureName = "ข้อกำหนดเอกสารสุขอนามัยสำหรับสินค้าประมงนำเข้า",
+            ProductScope = "All Fishery Products",
+            EffectiveDate = new DateTime(2026, 1, 1),
+            ReviewDueDate = new DateTime(2026, 6, 30),
+            RiskLevel = "สูง",
+            StatusText = "พักใช้ชั่วคราว",
+            StatusClass = "bg-label-danger",
+            OwnerUnit = "กลุ่มเอกสารส่งออก"
+        }
+    };
+
+    var totalCount = sanitaryMeasures.Length;
+    var activeCount = sanitaryMeasures.Count(x => x.StatusText == "ใช้งาน");
+    var reviewCount = sanitaryMeasures.Count(x => x.StatusText == "รอทบทวน");
+    var highRiskCount = sanitaryMeasures.Count(x => x.RiskLevel == "สูง");
+}
+
+@section PageStyles {
+<style>
+    .measure-table-compact {
+        font-size: 0.78rem;
+    }
+
+    .measure-table-compact th,
+    .measure-table-compact td {
+        padding: 0.45rem 0.5rem;
+        vertical-align: middle;
+        line-height: 1.3;
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    .measure-table-compact thead th {
+        white-space: normal;
+        word-break: keep-all;
+        overflow-wrap: normal;
+    }
+
+    .measure-table-compact .badge {
+        font-size: 0.68rem;
+    }
+
+    .measure-table-compact .btn.btn-sm {
+        --bs-btn-padding-y: 0.14rem;
+        --bs-btn-padding-x: 0.3rem;
+    }
+
+    .measure-table-compact .btn-icon {
+        width: 1.65rem;
+        height: 1.65rem;
+    }
+
+    .filter-action-buttons .btn-square {
+        width: 48px;
+        height: 48px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .detail-kv {
+        border: 1px solid var(--bs-border-color);
+        border-radius: 0.75rem;
+        background: var(--bs-paper-bg);
+        padding: 0.85rem 1rem;
+        height: 100%;
+    }
+
+    .detail-kv .label {
+        display: block;
+        font-size: 0.75rem;
+        color: var(--bs-secondary-color);
+        margin-bottom: 0.25rem;
+    }
+
+    .detail-kv .value {
+        font-weight: 600;
+        color: var(--bs-heading-color);
+    }
+</style>
+}
+
+@section PageScripts {
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var detailsMap = {
+            'SPS-JP-101': {
+                objective: 'ควบคุมความปลอดภัยอาหารและลดความเสี่ยงจาก Histamine ในปลาทูน่าแช่เย็น',
+                authority: 'Ministry of Health, Labour and Welfare (MHLW)',
+                contact: 'sps-jp@dof.mock.go.th',
+                updateDate: '10/04/2569',
+                note: 'เน้นตรวจสอบ lot ที่ใช้วัตถุดิบจากแหล่งจับที่เสี่ยงสูงเป็นพิเศษ',
+                requirements: [
+                    { item: 'ค่า Histamine', criteria: '<= 100 mg/kg', frequency: 'ทุก lot ส่งออก', severity: 'สูง' },
+                    { item: 'บันทึกอุณหภูมิระหว่างเก็บ', criteria: '-18C หรือต่ำกว่า', frequency: 'รายวัน', severity: 'กลาง' },
+                    { item: 'ผลตรวจห้องปฏิบัติการ', criteria: 'แนบ COA ล่าสุด', frequency: 'ทุก shipment', severity: 'สูง' }
+                ],
+                documents: [
+                    { name: 'SPS Guideline Japan 2026', version: 'v2.1', publishDate: '15/01/2569', status: 'ใช้งาน' },
+                    { name: 'Checklist Histamine Control', version: 'v1.4', publishDate: '20/02/2569', status: 'ใช้งาน' }
+                ]
+            },
+            'SPS-EU-205': {
+                objective: 'กำกับการเฝ้าระวังสารตกค้างให้เป็นไปตามหลักเกณฑ์ EU',
+                authority: 'European Commission - DG SANTE',
+                contact: 'sps-eu@dof.mock.go.th',
+                updateDate: '02/03/2569',
+                note: 'ทบทวนรายการสารตกค้างต้องห้ามทุกไตรมาส',
+                requirements: [
+                    { item: 'Residue Monitoring Plan', criteria: 'มีแผนอนุมัติประจำปี', frequency: 'รายปี', severity: 'สูง' },
+                    { item: 'ผลทดสอบสารตกค้าง', criteria: 'ไม่เกิน MRL', frequency: 'ตามแผนสุ่ม', severity: 'สูง' }
+                ],
+                documents: [
+                    { name: 'EU Residue Monitoring Circular', version: 'v3.0', publishDate: '01/12/2568', status: 'ใช้งาน' }
+                ]
+            },
+            'SPS-US-088': {
+                objective: 'ยืนยันความสอดคล้องระบบ HACCP ของโรงงานส่งออกไปสหรัฐอเมริกา',
+                authority: 'US FDA',
+                contact: 'sps-us@dof.mock.go.th',
+                updateDate: '18/03/2569',
+                note: 'รอผลการปรับปรุงแผนควบคุมจุดวิกฤติจากผู้ประกอบการ',
+                requirements: [
+                    { item: 'HACCP Plan ล่าสุด', criteria: 'ลงนามโดยผู้มีอำนาจ', frequency: 'เมื่อมีการแก้ไข', severity: 'กลาง' },
+                    { item: 'Verification Record', criteria: 'บันทึกครบถ้วน', frequency: 'รายเดือน', severity: 'กลาง' }
+                ],
+                documents: [
+                    { name: 'HACCP Verification Note', version: 'v1.2', publishDate: '20/02/2569', status: 'รอทบทวน' }
+                ]
+            },
+            'SPS-AU-041': {
+                objective: 'ควบคุมการระบุสารก่อภูมิแพ้ในผลิตภัณฑ์พร้อมบริโภค',
+                authority: 'Food Standards Australia New Zealand (FSANZ)',
+                contact: 'sps-au@dof.mock.go.th',
+                updateDate: '25/02/2569',
+                note: 'การตรวจฉลากต้องสอดคล้องสูตรการผลิตล่าสุด',
+                requirements: [
+                    { item: 'ฉลากสารก่อภูมิแพ้', criteria: 'ระบุครบตามกฎหมาย', frequency: 'ทุก revision', severity: 'กลาง' }
+                ],
+                documents: [
+                    { name: 'Allergen Labelling Advisory', version: 'v1.1', publishDate: '10/11/2568', status: 'ใช้งาน' }
+                ]
+            },
+            'SPS-KR-133': {
+                objective: 'ยกระดับความโปร่งใสของข้อมูลแหล่งที่มาวัตถุดิบในฉลากสินค้า',
+                authority: 'Ministry of Food and Drug Safety (MFDS)',
+                contact: 'sps-kr@dof.mock.go.th',
+                updateDate: '09/04/2569',
+                note: 'มีการปรับฟอร์มเอกสารอ้างอิงแหล่งที่มาใหม่',
+                requirements: [
+                    { item: 'เอกสารแหล่งที่มา', criteria: 'เชื่อมโยงกับ lot ได้', frequency: 'ทุก shipment', severity: 'สูง' },
+                    { item: 'ข้อมูลฉลาก', criteria: 'ระบุประเทศแหล่งจับ', frequency: 'ทุกฉลาก', severity: 'สูง' }
+                ],
+                documents: [
+                    { name: 'Korea Trace Label Rule', version: 'v2.0', publishDate: '05/03/2569', status: 'รอทบทวน' }
+                ]
+            },
+            'SPS-CN-052': {
+                objective: 'ทบทวนรูปแบบเอกสารสุขอนามัยให้ตรงตามประกาศล่าสุดของประเทศปลายทาง',
+                authority: 'GACC',
+                contact: 'sps-cn@dof.mock.go.th',
+                updateDate: '01/04/2569',
+                note: 'อยู่ระหว่างรอหนังสือเวียนฉบับใหม่เพื่อเปิดใช้งานอีกครั้ง',
+                requirements: [
+                    { item: 'แบบฟอร์ม Health Certificate', criteria: 'ตรงตาม template ล่าสุด', frequency: 'ทุก shipment', severity: 'สูง' }
+                ],
+                documents: [
+                    { name: 'CN Health Doc Circular', version: 'v0.9', publishDate: '01/01/2569', status: 'พักใช้ชั่วคราว' }
+                ]
+            }
+        };
+
+        function filterRows() {
+            var keyword = (document.getElementById('filterKeyword').value || '').trim().toLowerCase();
+            var region = (document.getElementById('filterRegion').value || '').trim();
+            var status = (document.getElementById('filterStatus').value || '').trim();
+            var risk = (document.getElementById('filterRisk').value || '').trim();
+            var rows = document.querySelectorAll('#measureTableBody tr[data-measure-code]');
+            var visibleCount = 0;
+
+            rows.forEach(function (row) {
+                var rowText = (row.dataset.searchText || '').toLowerCase();
+                var rowRegion = row.dataset.region || '';
+                var rowStatus = row.dataset.status || '';
+                var rowRisk = row.dataset.risk || '';
+                var keywordMatch = !keyword || rowText.includes(keyword);
+                var regionMatch = !region || rowRegion === region;
+                var statusMatch = !status || rowStatus === status;
+                var riskMatch = !risk || rowRisk === risk;
+                var isVisible = keywordMatch && regionMatch && statusMatch && riskMatch;
+
+                row.classList.toggle('d-none', !isVisible);
+                if (isVisible) {
+                    visibleCount += 1;
+                }
+            });
+
+            document.getElementById('measureTableEmpty').classList.toggle('d-none', visibleCount !== 0);
+        }
+
+        function renderRequirementRows(items, emptyMessage) {
+            if (!items || items.length === 0) {
+                return '<tr><td colspan="5" class="text-center text-muted py-3">' + emptyMessage + '</td></tr>';
+            }
+
+            return items.map(function (item, index) {
+                var severityClass = item.severity === 'สูง' ? 'bg-label-danger' : item.severity === 'กลาง' ? 'bg-label-warning' : 'bg-label-success';
+                return '<tr>' +
+                    '<td class="text-center text-muted small">' + (index + 1) + '</td>' +
+                    '<td>' + item.item + '</td>' +
+                    '<td>' + item.criteria + '</td>' +
+                    '<td class="text-center">' + item.frequency + '</td>' +
+                    '<td class="text-center"><span class="badge rounded-pill ' + severityClass + '">' + item.severity + '</span></td>' +
+                    '</tr>';
+            }).join('');
+        }
+
+        function renderDocumentRows(items, emptyMessage) {
+            if (!items || items.length === 0) {
+                return '<tr><td colspan="5" class="text-center text-muted py-3">' + emptyMessage + '</td></tr>';
+            }
+
+            return items.map(function (item, index) {
+                var statusClass = item.status === 'ใช้งาน' ? 'bg-label-success' : item.status === 'รอทบทวน' ? 'bg-label-warning' : 'bg-label-danger';
+                return '<tr>' +
+                    '<td class="text-center text-muted small">' + (index + 1) + '</td>' +
+                    '<td>' + item.name + '</td>' +
+                    '<td class="text-center">' + item.version + '</td>' +
+                    '<td class="text-center">' + item.publishDate + '</td>' +
+                    '<td class="text-center"><span class="badge rounded-pill ' + statusClass + '">' + item.status + '</span></td>' +
+                    '</tr>';
+            }).join('');
+        }
+
+        function openMeasureDetail(measureCode) {
+            var detail = detailsMap[measureCode];
+            var row = document.querySelector('#measureTableBody tr[data-measure-code="' + measureCode + '"]');
+            if (!detail || !row) {
+                return;
+            }
+
+            document.getElementById('measureModalTitle').textContent = row.dataset.measureName;
+            document.getElementById('detailMeasureCode').textContent = measureCode;
+            document.getElementById('detailCountry').textContent = row.dataset.country;
+            document.getElementById('detailRegion').textContent = row.dataset.region;
+            document.getElementById('detailProductScope').textContent = row.dataset.productScope;
+            document.getElementById('detailOwnerUnit').textContent = row.dataset.ownerUnit;
+            document.getElementById('detailRisk').textContent = row.dataset.risk;
+            document.getElementById('detailStatus').innerHTML = '<span class="badge rounded-pill ' + row.dataset.statusClass + '">' + row.dataset.status + '</span>';
+            document.getElementById('detailEffectiveDate').textContent = row.dataset.effectiveDate;
+            document.getElementById('detailReviewDueDate').textContent = row.dataset.reviewDueDate;
+            document.getElementById('detailObjective').textContent = detail.objective;
+            document.getElementById('detailAuthority').textContent = detail.authority;
+            document.getElementById('detailContact').textContent = detail.contact;
+            document.getElementById('detailUpdateDate').textContent = detail.updateDate;
+            document.getElementById('detailNote').textContent = detail.note;
+            document.getElementById('requirementTableBody').innerHTML = renderRequirementRows(detail.requirements, 'ไม่พบข้อกำหนดหลัก');
+            document.getElementById('documentTableBody').innerHTML = renderDocumentRows(detail.documents, 'ไม่พบเอกสารอ้างอิง');
+
+            new bootstrap.Modal(document.getElementById('measureDetailModal')).show();
+        }
+
+        document.getElementById('btnSearchMeasures').addEventListener('click', filterRows);
+        document.getElementById('btnResetMeasures').addEventListener('click', function () {
+            document.getElementById('filterKeyword').value = '';
+            document.getElementById('filterRegion').value = '';
+            document.getElementById('filterStatus').value = '';
+            document.getElementById('filterRisk').value = '';
+            filterRows();
+        });
+
+        document.querySelectorAll('#filterKeyword, #filterRegion, #filterStatus, #filterRisk').forEach(function (element) {
+            element.addEventListener('keydown', function (event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    filterRows();
+                }
+            });
+            element.addEventListener('change', filterRows);
+        });
+
+        if (window.bootstrap && bootstrap.Tooltip) {
+            document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (element) {
+                new bootstrap.Tooltip(element);
+            });
+        }
+
+        document.querySelectorAll('.btn-view-measure, .btn-edit-measure').forEach(function (button) {
+            button.addEventListener('click', function () {
+                openMeasureDetail(this.dataset.measureCode);
+            });
+        });
+    });
+</script>
+}
+
+<h4 class="mb-1">มาตรการสุขอนามัยของประเทศคู่ค้า</h4>
+<p class="mb-1 text-muted">ฐานข้อมูลมาตรการสุขอนามัยของประเทศปลายทาง เพื่อกำกับข้อกำหนดการส่งออกให้สอดคล้องตามมาตรฐาน</p>
+
+<nav aria-label="breadcrumb" class="mb-6">
+    <ol class="breadcrumb breadcrumb-style1" style="--bs-breadcrumb-divider: '>'; font-size: 0.75rem;">
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("NotificationReason", "Admin")" class="text-primary fw-semibold">ผู้ดูแลระบบ</a>
+        </li>
+        <li class="breadcrumb-item active text-secondary">มาตรการสุขอนามัย</li>
+    </ol>
+</nav>
+
+<div class="row mb-6 g-6">
+    <div class="col-sm-6 col-xl-3"><div class="card"><div class="card-body"><div class="d-flex align-items-center justify-content-between"><div class="content-left"><h5 class="mb-1">@totalCount</h5><small>มาตรการทั้งหมด</small></div><span class="badge bg-label-primary rounded-circle p-2"><i class="icon-base ri ri-shield-check-line icon-24px"></i></span></div></div></div></div>
+    <div class="col-sm-6 col-xl-3"><div class="card"><div class="card-body"><div class="d-flex align-items-center justify-content-between"><div class="content-left"><h5 class="mb-1">@activeCount</h5><small>สถานะใช้งาน</small></div><span class="badge bg-label-success rounded-circle p-2"><i class="icon-base ri ri-checkbox-circle-line icon-24px"></i></span></div></div></div></div>
+    <div class="col-sm-6 col-xl-3"><div class="card"><div class="card-body"><div class="d-flex align-items-center justify-content-between"><div class="content-left"><h5 class="mb-1">@reviewCount</h5><small>รอทบทวน</small></div><span class="badge bg-label-warning rounded-circle p-2"><i class="icon-base ri ri-time-line icon-24px"></i></span></div></div></div></div>
+    <div class="col-sm-6 col-xl-3"><div class="card"><div class="card-body"><div class="d-flex align-items-center justify-content-between"><div class="content-left"><h5 class="mb-1">@highRiskCount</h5><small>ความเสี่ยงสูง</small></div><span class="badge bg-label-danger rounded-circle p-2"><i class="icon-base ri ri-alarm-warning-line icon-24px"></i></span></div></div></div></div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-3">
+        <div>
+            <h5 class="card-title mb-1">ค้นหามาตรการสุขอนามัย</h5>
+            <p class="text-muted small mb-0">ค้นหาจากประเทศ รหัสมาตรการ ขอบเขตสินค้า ภูมิภาค และระดับความเสี่ยง</p>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row g-3 align-items-end">
+            <div class="col-md-4 col-lg-3">
+                <label for="filterKeyword" class="form-label">คำค้นหา</label>
+                <input type="text" id="filterKeyword" class="form-control" placeholder="ประเทศ, รหัสมาตรการ, ขอบเขตสินค้า" />
+            </div>
+            <div class="col-md-3 col-lg-2">
+                <label for="filterRegion" class="form-label">ภูมิภาค</label>
+                <select id="filterRegion" class="form-select">
+                    <option value="">ทั้งหมด</option>
+                    <option value="เอเชีย">เอเชีย</option>
+                    <option value="ยุโรป">ยุโรป</option>
+                    <option value="อเมริกา">อเมริกา</option>
+                    <option value="โอเชียเนีย">โอเชียเนีย</option>
+                </select>
+            </div>
+            <div class="col-md-3 col-lg-3">
+                <label for="filterStatus" class="form-label">สถานะมาตรการ</label>
+                <select id="filterStatus" class="form-select">
+                    <option value="">ทั้งหมด</option>
+                    <option value="ใช้งาน">ใช้งาน</option>
+                    <option value="รอทบทวน">รอทบทวน</option>
+                    <option value="พักใช้ชั่วคราว">พักใช้ชั่วคราว</option>
+                </select>
+            </div>
+            <div class="col-md-3 col-lg-2">
+                <label for="filterRisk" class="form-label">ระดับความเสี่ยง</label>
+                <select id="filterRisk" class="form-select">
+                    <option value="">ทั้งหมด</option>
+                    <option value="ต่ำ">ต่ำ</option>
+                    <option value="กลาง">กลาง</option>
+                    <option value="สูง">สูง</option>
+                </select>
+            </div>
+            <div class="col-md-3 col-lg-2">
+                <div class="d-flex gap-2 filter-action-buttons">
+                    <button type="button" id="btnSearchMeasures" class="btn btn-outline-primary btn-square" title="ค้นหา"><i class="ri ri-search-line"></i></button>
+                    <button type="button" id="btnResetMeasures" class="btn btn-outline-secondary btn-square" title="ล้างค่า"><i class="ri ri-refresh-line"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div>
+            <h5 class="card-title mb-1">รายการมาตรการของประเทศคู่ค้า</h5>
+            <p class="text-muted small mb-0">แสดงข้อกำหนดสุขอนามัยที่ใช้ควบคุมการส่งออกตามประเทศปลายทาง</p>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#measureDetailModal">
+                <i class="ri ri-add-line me-1"></i> เพิ่มมาตรการ
+            </button>
+        </div>
+    </div>
+    <div class="table-responsive p-1">
+        <table class="table table-bordered align-middle mb-0 measure-table-compact">
+            <thead class="text-center">
+                <tr>
+                    <th style="width:56px;">#</th>
+                    <th>ประเทศ</th>
+                    <th>รหัสมาตรการ</th>
+                    <th>ชื่อมาตรการ</th>
+                    <th>ขอบเขตสินค้า</th>
+                    <th>มีผลใช้</th>
+                    <th>ทบทวนถัดไป</th>
+                    <th>เสี่ยง</th>
+                    <th>สถานะ</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="measureTableBody">
+                @foreach (var measure in sanitaryMeasures)
+                {
+                    <tr data-measure-code="@measure.MeasureCode"
+                        data-country="@measure.CountryName"
+                        data-region="@measure.Region"
+                        data-measure-name="@measure.MeasureName"
+                        data-product-scope="@measure.ProductScope"
+                        data-owner-unit="@measure.OwnerUnit"
+                        data-risk="@measure.RiskLevel"
+                        data-status="@measure.StatusText"
+                        data-status-class="@measure.StatusClass"
+                        data-effective-date="@measure.EffectiveDate.ToString("dd/MM/yyyy")"
+                        data-review-due-date="@measure.ReviewDueDate.ToString("dd/MM/yyyy")"
+                        data-search-text="@($"{measure.CountryCode} {measure.CountryName} {measure.MeasureCode} {measure.MeasureName} {measure.ProductScope} {measure.Region}")">
+                        <td class="text-center text-muted">@measure.RowNo</td>
+                        <td>
+                            <div class="fw-semibold">@measure.CountryName</div>
+                            <div class="text-muted small">@measure.CountryCode</div>
+                        </td>
+                        <td class="fw-semibold text-primary">@measure.MeasureCode</td>
+                        <td>@measure.MeasureName</td>
+                        <td>@measure.ProductScope</td>
+                        <td class="text-center">@measure.EffectiveDate.ToString("dd/MM/yyyy")</td>
+                        <td class="text-center">@measure.ReviewDueDate.ToString("dd/MM/yyyy")</td>
+                        <td class="text-center">
+                            <span class="badge rounded-pill @(measure.RiskLevel == "สูง" ? "bg-label-danger" : measure.RiskLevel == "กลาง" ? "bg-label-warning" : "bg-label-success")">@measure.RiskLevel</span>
+                        </td>
+                        <td class="text-center"><span class="badge rounded-pill @measure.StatusClass">@measure.StatusText</span></td>
+                        <td>
+                            <div class="d-flex flex-wrap gap-1 justify-content-center">
+                                <button type="button" class="btn btn-sm btn-icon btn-outline-info btn-view-measure" data-measure-code="@measure.MeasureCode" title="รายละเอียดข้อมูล" data-bs-toggle="tooltip" data-bs-placement="top"><i class="ri ri-eye-line text-info"></i></button>
+                                <button type="button" class="btn btn-sm btn-icon btn-outline-warning btn-edit-measure" data-measure-code="@measure.MeasureCode" title="แก้ไขข้อมูล" data-bs-toggle="tooltip" data-bs-placement="top"><i class="ri ri-pencil-line text-warning"></i></button>
+                                <button type="button" class="btn btn-sm btn-icon btn-outline-secondary" title="ประวัติการเปลี่ยนแปลง" data-bs-toggle="tooltip" data-bs-placement="top"><i class="ri ri-history-line text-secondary"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                <tr id="measureTableEmpty" class="d-none">
+                    <td colspan="10" class="text-center text-muted py-4">ไม่พบข้อมูลตามเงื่อนไขที่ค้นหา</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="measureDetailModal" tabindex="-1" aria-labelledby="measureDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="measureDetailModalLabel">
+                    <i class="ri ri-shield-check-line me-2"></i><span id="measureModalTitle">รายละเอียดมาตรการสุขอนามัย</span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="nav-align-top nav-tabs-shadow">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item"><button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#tab-measure-detail" aria-selected="true"><i class="ri ri-file-list-2-line me-1"></i> ข้อมูลหลัก</button></li>
+                        <li class="nav-item"><button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#tab-measure-requirement" aria-selected="false"><i class="ri ri-list-check-3 me-1"></i> ข้อกำหนดหลัก</button></li>
+                        <li class="nav-item"><button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#tab-measure-document" aria-selected="false"><i class="ri ri-file-text-line me-1"></i> เอกสารอ้างอิง</button></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="tab-measure-detail" class="tab-pane fade show active">
+                            <div class="accordion accordion-custom-button" id="measureAccordion">
+                                <div class="accordion-item active">
+                                    <h2 class="accordion-header" id="headingMeasureGeneral">
+                                        <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#collapseMeasureGeneral" aria-expanded="true"><i class="icon-base ri ri-information-line me-2"></i> ข้อมูลทั่วไป</button>
+                                    </h2>
+                                    <div id="collapseMeasureGeneral" class="accordion-collapse collapse show">
+                                        <div class="accordion-body">
+                                            <div class="row g-3">
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">รหัสมาตรการ</span><span class="value" id="detailMeasureCode">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">ประเทศ</span><span class="value" id="detailCountry">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">ภูมิภาค</span><span class="value" id="detailRegion">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">ขอบเขตสินค้า</span><span class="value" id="detailProductScope">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">หน่วยงานรับผิดชอบ</span><span class="value" id="detailOwnerUnit">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">สถานะ</span><span class="value" id="detailStatus">-</span></div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item active">
+                                    <h2 class="accordion-header" id="headingMeasureCondition">
+                                        <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#collapseMeasureCondition" aria-expanded="true"><i class="icon-base ri ri-shield-star-line me-2"></i> เงื่อนไขและการกำกับ</button>
+                                    </h2>
+                                    <div id="collapseMeasureCondition" class="accordion-collapse collapse show">
+                                        <div class="accordion-body">
+                                            <div class="row g-3">
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">มีผลบังคับใช้</span><span class="value" id="detailEffectiveDate">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">ทบทวนครั้งถัดไป</span><span class="value" id="detailReviewDueDate">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">ระดับความเสี่ยง</span><span class="value" id="detailRisk">-</span></div></div>
+                                                <div class="col-md-6"><div class="detail-kv"><span class="label">วัตถุประสงค์</span><span class="value" id="detailObjective">-</span></div></div>
+                                                <div class="col-md-6"><div class="detail-kv"><span class="label">หน่วยงานต้นทาง</span><span class="value" id="detailAuthority">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">ช่องทางติดต่อ</span><span class="value" id="detailContact">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">อัปเดตล่าสุด</span><span class="value" id="detailUpdateDate">-</span></div></div>
+                                                <div class="col-md-4"><div class="detail-kv"><span class="label">หมายเหตุ</span><span class="value" id="detailNote">-</span></div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tab-measure-requirement" class="tab-pane fade">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-sm align-middle mb-0 measure-table-compact">
+                                    <thead class="text-center">
+                                        <tr>
+                                            <th style="width:56px;">#</th>
+                                            <th>หัวข้อควบคุม</th>
+                                            <th>เกณฑ์</th>
+                                            <th>ความถี่</th>
+                                            <th>นัยสำคัญ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="requirementTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div id="tab-measure-document" class="tab-pane fade">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-sm align-middle mb-0 measure-table-compact">
+                                    <thead class="text-center">
+                                        <tr>
+                                            <th style="width:56px;">#</th>
+                                            <th>เอกสาร</th>
+                                            <th>เวอร์ชัน</th>
+                                            <th>วันที่ประกาศ</th>
+                                            <th>สถานะ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="documentTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i class="ri ri-close-line me-1"></i> ปิด</button>
+                <button type="button" class="btn btn-primary"><i class="ri ri-save-line me-1"></i> บันทึกข้อมูล</button>
+            </div>
+        </div>
+    </div>
+</div>
