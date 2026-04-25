@@ -1,0 +1,494 @@
+@{
+    ViewData["Title"] = "การซื้อขายเศษเหลือจากการแปรรูปสัตว์น้ำนำเข้า";
+
+    var records = new[]
+    {
+        new {
+            RowNo = 1, DocNo = "SCR-2569-0001", DocDate = new DateTime(2026, 4, 10),
+            SellerName = "บริษัท ซีฟู้ด โปรเซสซิ่ง จำกัด",
+            BuyerName = "บริษัท ปลาป่นไทย จำกัด", BuyerType = "inside",
+            Species = "เศษทูน่า (Skipjack)", WeightKg = 5200.000m,
+            StatusText = "ยืนยันรับซื้อแล้ว", StatusClass = "bg-label-success",
+            AllowEdit = false, AllowCancel = false, AllowConfirm = false, AllowResell = true
+        },
+        new {
+            RowNo = 2, DocNo = "SCR-2569-0002", DocDate = new DateTime(2026, 4, 15),
+            SellerName = "บริษัท ซีฟู้ด โปรเซสซิ่ง จำกัด",
+            BuyerName = "ห้างหุ้นส่วนจำกัด มีทรัพย์การค้า", BuyerType = "outside",
+            Species = "เศษทูน่า (Skipjack)", WeightKg = 1800.500m,
+            StatusText = "รอยืนยัน", StatusClass = "bg-label-warning",
+            AllowEdit = true, AllowCancel = true, AllowConfirm = false, AllowResell = false
+        },
+        new {
+            RowNo = 3, DocNo = "SCR-2569-0003", DocDate = new DateTime(2026, 4, 18),
+            SellerName = "บริษัท ทูน่า เอ็กซ์พอร์ต จำกัด",
+            BuyerName = "บริษัท ปลาป่นไทย จำกัด", BuyerType = "inside",
+            Species = "เศษ Yellowfin tuna", WeightKg = 3400.000m,
+            StatusText = "รอยืนยัน", StatusClass = "bg-label-warning",
+            AllowEdit = false, AllowCancel = false, AllowConfirm = true, AllowResell = false
+        },
+        new {
+            RowNo = 4, DocNo = "SCR-2569-0004", DocDate = new DateTime(2026, 4, 20),
+            SellerName = "บริษัท ทูน่า เอ็กซ์พอร์ต จำกัด",
+            BuyerName = "นายสมชาย กิจการประมง", BuyerType = "outside",
+            Species = "เศษ Skipjack", WeightKg = 920.000m,
+            StatusText = "ยกเลิก", StatusClass = "bg-label-danger",
+            AllowEdit = false, AllowCancel = false, AllowConfirm = false, AllowResell = false
+        },
+        new {
+            RowNo = 5, DocNo = "SCR-2569-0005", DocDate = new DateTime(2026, 4, 22),
+            SellerName = "บริษัท ซีฟู้ด โปรเซสซิ่ง จำกัด",
+            BuyerName = "บริษัท ปลาป่นสยาม จำกัด", BuyerType = "inside",
+            Species = "เศษทูน่า (Skipjack + Yellowfin)", WeightKg = 8700.250m,
+            StatusText = "สร้างหนังสือปลาป่นแล้ว", StatusClass = "bg-label-info",
+            AllowEdit = false, AllowCancel = false, AllowConfirm = false, AllowResell = false
+        },
+    };
+
+    var totalCount    = records.Length;
+    var pendingCount  = records.Count(r => r.StatusText == "รอยืนยัน");
+    var confirmedCount = records.Count(r => r.StatusText == "ยืนยันรับซื้อแล้ว");
+    var fishmealCount = records.Count(r => r.StatusText == "สร้างหนังสือปลาป่นแล้ว");
+}
+
+@section VendorStyles {
+<link rel="stylesheet" href="~/vendor/libs/flatpickr/flatpickr.css" />
+}
+
+@section PageStyles {
+<style>
+    .scrap-table-compact { font-size: 0.78rem; }
+    .scrap-table-compact th,
+    .scrap-table-compact td {
+        padding: 0.45rem 0.5rem;
+        vertical-align: middle;
+        line-height: 1.3;
+    }
+    .scrap-table-compact .badge { font-size: 0.68rem; }
+    .scrap-table-compact .btn-icon { width: 1.65rem; height: 1.65rem; }
+    .filter-action-buttons .btn-square {
+        width: 48px; height: 48px; padding: 0;
+        display: inline-flex; align-items: center; justify-content: center;
+    }
+</style>
+}
+
+@section VendorScripts {
+<script src="~/vendor/libs/flatpickr/flatpickr.js"></script>
+}
+
+@section PageScripts {
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    flatpickr('#filterDateFrom', { dateFormat: 'd/m/Y', allowInput: true });
+    flatpickr('#filterDateTo',   { dateFormat: 'd/m/Y', allowInput: true });
+
+    function filterRows() {
+        var status = (document.getElementById('filterStatus').value || '').trim();
+        var buyer  = (document.getElementById('filterBuyerType').value || '').trim();
+        var rows   = document.querySelectorAll('#scrapTableBody tr[data-status]');
+        var vis = 0;
+        rows.forEach(function(row) {
+            var ok = (!status || row.dataset.status === status)
+                  && (!buyer  || row.dataset.buyerType === buyer);
+            row.classList.toggle('d-none', !ok);
+            if (ok) vis++;
+        });
+        document.getElementById('scrapTableEmpty').classList.toggle('d-none', vis !== 0);
+    }
+
+    document.getElementById('btnSearch').addEventListener('click', filterRows);
+    document.getElementById('btnReset').addEventListener('click', function() {
+        document.getElementById('filterStatus').value = '';
+        document.getElementById('filterBuyerType').value = '';
+        document.getElementById('filterDateFrom').value = '';
+        document.getElementById('filterDateTo').value = '';
+        filterRows();
+    });
+    ['filterStatus','filterBuyerType'].forEach(function(id) {
+        document.getElementById(id).addEventListener('change', filterRows);
+    });
+
+    if (window.bootstrap && bootstrap.Tooltip) {
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function(el) {
+            new bootstrap.Tooltip(el);
+        });
+    }
+});
+
+    $(document).ready(function () {
+        // PDF Preview
+        $(document).on('click', '.btn-preview-pdf', function () {
+            var docNo = $(this).data('doc-no');
+            $('#pdfPreviewDocNo').text(docNo);
+            $('#pdfDocNo').text(docNo);
+            new bootstrap.Modal(document.getElementById('modalPdfPreview')).show();
+        });
+
+        // Print
+        $(document).on('click', '.btn-print, #btnPrintFromPreview', function () {
+            window.print();
+        });
+
+        // Cancel
+        $(document).on('click', '.btn-cancel-record', function () {
+            var docNo = $(this).data('doc-no');
+            $('#cancelDocNo').text(docNo);
+            new bootstrap.Modal(document.getElementById('modalConfirmCancel')).show();
+        });
+
+        $('#btnDoCancel').on('click', function () {
+            bootstrap.Modal.getInstance(document.getElementById('modalConfirmCancel')).hide();
+            // TODO: call server-side cancel endpoint
+        });
+    });
+</script>
+}
+
+@* ============================================================ Content ============================================================ *@
+<h4 class="mb-1">การซื้อขายเศษเหลือจากการแปรรูปสัตว์น้ำนำเข้า</h4>
+<p class="mb-1">บันทึก ติดตาม และจัดการหนังสือกำกับการซื้อขายเศษเหลือจากการแปรรูปสัตว์น้ำนำเข้า</p>
+
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="mb-6">
+    <ol class="breadcrumb breadcrumb-style1" style="--bs-breadcrumb-divider: '>'; font-size: 0.75rem;">
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("Index", "ScrapTrading")" class="text-primary fw-semibold">การซื้อขายเศษเหลือ</a>
+        </li>
+    </ol>
+</nav>
+
+<!-- ── Summary Cards ── -->
+<div class="row mb-6 g-6">
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="content-left">
+                        <h5 class="mb-1">@totalCount</h5>
+                        <small>รายการทั้งหมด</small>
+                    </div>
+                    <span class="badge bg-label-primary rounded-circle p-2">
+                        <i class="icon-base ri ri-exchange-line icon-24px"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="content-left">
+                        <h5 class="mb-1">@pendingCount</h5>
+                        <small>รอยืนยันรับซื้อ</small>
+                    </div>
+                    <span class="badge bg-label-warning rounded-circle p-2">
+                        <i class="icon-base ri ri-time-line icon-24px"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="content-left">
+                        <h5 class="mb-1">@confirmedCount</h5>
+                        <small>ยืนยันรับซื้อแล้ว</small>
+                    </div>
+                    <span class="badge bg-label-success rounded-circle p-2">
+                        <i class="icon-base ri ri-check-double-line icon-24px"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="content-left">
+                        <h5 class="mb-1">@fishmealCount</h5>
+                        <small>สร้างหนังสือปลาป่นแล้ว</small>
+                    </div>
+                    <span class="badge bg-label-info rounded-circle p-2">
+                        <i class="icon-base ri ri-file-shield-2-line icon-24px"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ── Filter Card ── -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h5 class="card-title mb-1">ค้นหารายการ</h5>
+        <p class="text-muted small mb-0">ค้นหาตามสถานะ ประเภทผู้ซื้อ และช่วงวันที่</p>
+    </div>
+    <div class="card-body">
+        <div class="row g-3 align-items-end">
+            <div class="col-md-3">
+                <label class="form-label">สถานะ</label>
+                <select id="filterStatus" class="form-select">
+                    <option value="">ทั้งหมด</option>
+                    <option value="pending">รอยืนยัน</option>
+                    <option value="confirmed">ยืนยันรับซื้อแล้ว</option>
+                    <option value="fishmeal">สร้างหนังสือปลาป่นแล้ว</option>
+                    <option value="cancelled">ยกเลิก</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">ประเภทผู้ซื้อ</label>
+                <select id="filterBuyerType" class="form-select">
+                    <option value="">ทั้งหมด</option>
+                    <option value="inside">ผู้ซื้อในระบบ [FSW]</option>
+                    <option value="outside">ผู้ซื้อนอกระบบ</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">วันที่ (จาก)</label>
+                <input type="text" id="filterDateFrom" class="form-control" placeholder="วว/ดด/ปปปป" />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">วันที่ (ถึง)</label>
+                <input type="text" id="filterDateTo" class="form-control" placeholder="วว/ดด/ปปปป" />
+            </div>
+            <div class="col-md-2">
+                <div class="d-flex gap-2 filter-action-buttons">
+                    <button type="button" id="btnSearch" class="btn btn-outline-primary btn-square" title="ค้นหา">
+                        <i class="ri ri-search-line"></i>
+                    </button>
+                    <button type="button" id="btnReset" class="btn btn-outline-secondary btn-square" title="ล้างค่า">
+                        <i class="ri ri-refresh-line"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ── Data Table Card ── -->
+<div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div>
+            <h5 class="card-title mb-1">รายการซื้อขายเศษเหลือ</h5>
+            <p class="text-muted small mb-0">หนังสือกำกับการซื้อขายเศษเหลือจากการแปรรูปสัตว์น้ำนำเข้า</p>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <a href="@Url.Action("CreateSeller", "ScrapTrading")" class="btn btn-primary btn-sm">
+                <i class="ri ri-add-line me-1"></i> บันทึกการขายเศษเหลือ
+            </a>
+        </div>
+    </div>
+    <div class="table-responsive p-1">
+        <table class="table table-bordered align-middle mb-0 scrap-table-compact">
+            <thead class="text-center">
+                <tr>
+                    <th style="width:3rem;">#</th>
+                    <th>เลขที่การซื้อขาย</th>
+                    <th>วันที่</th>
+                    <th>ผู้ขาย</th>
+                    <th>ผู้ซื้อ</th>
+                    <th>ประเภทสัตว์น้ำ</th>
+                    <th class="text-end">น้ำหนัก (กก.)</th>
+                    <th>สถานะ</th>
+                    <th style="width:9rem;"></th>
+                </tr>
+            </thead>
+            <tbody id="scrapTableBody">
+                @foreach (var rec in records)
+                {
+                    var statusKey = rec.StatusText == "รอยืนยัน" ? "pending"
+                                 : rec.StatusText == "ยืนยันรับซื้อแล้ว" ? "confirmed"
+                                 : rec.StatusText == "สร้างหนังสือปลาป่นแล้ว" ? "fishmeal"
+                                 : "cancelled";
+                    <tr data-status="@statusKey" data-buyer-type="@rec.BuyerType">
+                        <td class="text-center text-muted">@rec.RowNo</td>
+                        <td>
+                            @if (rec.BuyerType == "inside" && (rec.AllowConfirm || rec.AllowResell))
+                            {
+                                <a href="@Url.Action("CreateBuyer", "ScrapTrading")" class="fw-semibold text-primary">@rec.DocNo</a>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("CreateSeller", "ScrapTrading")" class="fw-semibold text-primary">@rec.DocNo</a>
+                            }
+                            <div class="small text-muted mt-1">
+                                @if (rec.BuyerType == "inside")
+                                {
+                                    <span class="badge bg-label-primary rounded-pill" style="font-size:0.65rem;">
+                                        <i class="ri ri-computer-line me-1"></i>ผู้ซื้อในระบบ
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-label-secondary rounded-pill" style="font-size:0.65rem;">
+                                        <i class="ri ri-user-line me-1"></i>ผู้ซื้อนอกระบบ
+                                    </span>
+                                }
+                            </div>
+                        </td>
+                        <td>@rec.DocDate.ToString("dd/MM/yyyy")</td>
+                        <td class="small">@rec.SellerName</td>
+                        <td class="small">@rec.BuyerName</td>
+                        <td class="small">@rec.Species</td>
+                        <td class="text-end">@rec.WeightKg.ToString("N3")</td>
+                        <td class="text-center">
+                            <span class="badge rounded-pill @rec.StatusClass">@rec.StatusText</span>
+                        </td>
+                        <td class="text-center">
+                            <div class="d-flex gap-1 justify-content-center flex-wrap">
+                                <!-- ดูรายละเอียด -->
+                                <a href="@Url.Action("CreateSeller", "ScrapTrading")"
+                                   class="btn btn-sm btn-icon btn-outline-primary"
+                                   data-bs-toggle="tooltip" title="ดูรายละเอียด">
+                                    <i class="ri ri-eye-line"></i>
+                                </a>
+                                <!-- PDF Preview -->
+                                <button type="button" class="btn btn-sm btn-icon btn-outline-info btn-preview-pdf"
+                                    data-doc-no="@rec.DocNo"
+                                    data-bs-toggle="tooltip" title="พรีวิว PDF">
+                                    <i class="ri ri-file-pdf-line"></i>
+                                </button>
+                                <!-- พิมพ์ -->
+                                <button type="button" class="btn btn-sm btn-icon btn-outline-secondary btn-print"
+                                    data-doc-no="@rec.DocNo"
+                                    data-bs-toggle="tooltip" title="พิมพ์แบบฟอร์ม">
+                                    <i class="ri ri-printer-line"></i>
+                                </button>
+                                @if (rec.AllowEdit)
+                                {
+                                    <a href="@Url.Action("CreateSeller", "ScrapTrading")"
+                                       class="btn btn-sm btn-icon btn-outline-warning"
+                                       data-bs-toggle="tooltip" title="แก้ไข">
+                                        <i class="ri ri-pencil-line"></i>
+                                    </a>
+                                }
+                                @if (rec.AllowCancel)
+                                {
+                                    <button type="button" class="btn btn-sm btn-icon btn-outline-danger btn-cancel-record"
+                                        data-doc-no="@rec.DocNo"
+                                        data-bs-toggle="tooltip" title="ยกเลิก">
+                                        <i class="ri ri-close-circle-line"></i>
+                                    </button>
+                                }
+                                @if (rec.AllowConfirm)
+                                {
+                                    <a href="@Url.Action("CreateBuyer", "ScrapTrading")"
+                                       class="btn btn-sm btn-icon btn-outline-success"
+                                       data-bs-toggle="tooltip" title="ยืนยันรับซื้อ">
+                                        <i class="ri ri-checkbox-circle-line"></i>
+                                    </a>
+                                }
+                                @if (rec.AllowResell)
+                                {
+                                    <a href="@Url.Action("CreateBuyer", "ScrapTrading")"
+                                       class="btn btn-sm btn-icon btn-outline-primary"
+                                       data-bs-toggle="tooltip" title="บันทึกขายต่อ">
+                                        <i class="ri ri-arrow-right-up-line"></i>
+                                    </a>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tbody id="scrapTableEmpty" class="d-none">
+                <tr>
+                    <td colspan="9" class="text-center text-muted py-4 fst-italic small">ไม่พบรายการที่ตรงกับเงื่อนไขการค้นหา</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- ── Modal: PDF Preview ── -->
+<div class="modal fade" id="modalPdfPreview" tabindex="-1" aria-labelledby="modalPdfPreviewLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalPdfPreviewLabel">
+                    <i class="ri ri-file-pdf-line me-2 text-danger"></i>
+                    พรีวิวหนังสือกำกับการซื้อขายเศษเหลือ
+                    <small class="text-muted fw-normal ms-2 small" id="pdfPreviewDocNo"></small>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center bg-light py-5">
+                <div class="border bg-white shadow-sm mx-auto p-5" style="max-width:794px; min-height:400px;">
+                    <div class="mb-4">
+                        <img src="~/img/branding/logo.png" alt="Logo" style="height:60px;" onerror="this.style.display='none'" />
+                    </div>
+                    <h5 class="fw-bold mb-1">หนังสือกำกับการซื้อขายเศษเหลือ</h5>
+                    <h6 class="text-muted mb-4">จากการแปรรูปสัตว์น้ำนำเข้า</h6>
+                    <p class="text-muted fst-italic small">(ตัวอย่างเอกสาร — ระบบจะสร้างเนื้อหาจริงจากข้อมูลที่บันทึก)</p>
+                    <div class="text-start mt-4 small">
+                        <div class="row mb-2">
+                            <div class="col-4 fw-semibold">เลขที่หนังสือ :</div>
+                            <div class="col-8" id="pdfDocNo">—</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4 fw-semibold">วันที่ออกเอกสาร :</div>
+                            <div class="col-8">—</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4 fw-semibold">ผู้ขาย :</div>
+                            <div class="col-8">—</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4 fw-semibold">ผู้ซื้อ :</div>
+                            <div class="col-8">—</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4 fw-semibold">ประเภทสัตว์น้ำ :</div>
+                            <div class="col-8">—</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4 fw-semibold">น้ำหนักรวม (กก.) :</div>
+                            <div class="col-8">—</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="ri ri-close-line me-1"></i> ปิด
+                </button>
+                <button type="button" class="btn btn-primary" id="btnPrintFromPreview">
+                    <i class="ri ri-printer-line me-1"></i> พิมพ์
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ── Modal: ยืนยันยกเลิก ── -->
+<div class="modal fade" id="modalConfirmCancel" tabindex="-1" aria-labelledby="modalConfirmCancelLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalConfirmCancelLabel">
+                    <i class="ri ri-alert-line me-2 text-danger"></i>ยืนยันการยกเลิก
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-1">คุณต้องการยกเลิกรายการ <strong id="cancelDocNo"></strong> ใช่หรือไม่?</p>
+                <p class="text-muted small mb-0">การยกเลิกไม่สามารถเปลี่ยนแปลงได้ภายหลัง</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="ri ri-close-line me-1"></i> ไม่ยกเลิก
+                </button>
+                <button type="button" class="btn btn-danger" id="btnDoCancel">
+                    <i class="ri ri-close-circle-line me-1"></i> ยืนยันยกเลิก
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,651 @@
+@{
+    ViewData["Title"] = "พิจารณา RMBS1:PS";
+    string rmbs1No   = "10611280211800000561";
+    string statusText = "รออนุมัติ";
+    string statusClass = "bg-label-warning";
+    string submittedBy = "Alpha Office Automation Co., Ltd. (สาขา 00001)";
+    string submittedDate = "17 สิงหาคม 2561  เวลา 11:14 น.";
+}
+
+@section VendorStyles {
+<link rel="stylesheet" href="~/vendor/libs/select2/select2.css" />
+}
+
+@section VendorScripts {
+<script src="~/vendor/libs/select2/select2.js"></script>
+}
+
+@section PageStyles {
+<style>
+    /* ─── display-only field ─── */
+    .field-display {
+        font-size: 0.875rem;
+        background: var(--bs-body-bg);
+        border: 1px solid var(--bs-border-color);
+        border-radius: 0.375rem;
+        padding: 0.4375rem 0.875rem;
+        min-height: 2.375rem;
+        display: flex;
+        align-items: center;
+        word-break: break-word;
+    }
+    .field-display.text-end  { justify-content: flex-end; }
+    .field-display.text-center { justify-content: center; }
+    .form-label.small { font-size: 0.8rem; font-weight: 500; margin-bottom: 0.25rem; }
+
+    /* ─── review banner ─── */
+    .review-banner {
+        border-left: 4px solid;
+        padding: 1rem 1.25rem;
+        border-radius: 0.5rem;
+    }
+    .review-banner.pending  { border-color: #fd7e14; background: rgba(253,126,20,.06); }
+    .review-banner.approved { border-color: #28a745; background: rgba(40,167,69,.06); }
+    .review-banner.returned { border-color: #ffc107; background: rgba(255,193,7,.06); }
+
+    /* ─── production table ─── */
+    .prod-table { font-size: 0.78rem; }
+    .prod-table th, .prod-table td { padding: 0.4rem 0.5rem; vertical-align: middle; }
+
+    /* ─── decision panel ─── */
+    .decision-card { border: 2px solid var(--bs-primary); }
+    .decision-card .card-header { background: rgba(var(--bs-primary-rgb), .08); }
+</style>
+}
+
+@* ===== Content ===== *@
+<h4 class="mb-1">พิจารณา RMBS1:PS</h4>
+<p class="mb-1 text-muted">ตรวจสอบและพิจารณาอนุมัติเอกสารการควบคุมปริมาณวัตถุดิบสัตว์นํ้านำเข้าเพื่อแปรรูปส่งออก เอกสารที่ 1 (RMBS1) สถานะ PS</p>
+
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb breadcrumb-style1" style="--bs-breadcrumb-divider: '>'; font-size: 0.75rem;">
+        <li class="breadcrumb-item"><a href="@Url.Action("IndexRMBS1PS", "Officer")" class="text-primary fw-semibold">พิจารณา RMBS1 สถานะ PS / NoPS</a></li>
+        <li class="breadcrumb-item active text-secondary">พิจารณา @rmbs1No</li>
+    </ol>
+</nav>
+
+<!-- ─── Status Banner ─── -->
+<div class="alert alert-warning d-flex align-items-center gap-2 mb-4" role="alert">
+        <i class="ri ri-time-line fs-5"></i>
+        <span><strong>รออนุมัติ</strong> — คำขอนี้รอการพิจารณาจากเจ้าหน้าที่</span>
+    </div>
+
+<div class="row g-4">
+    <div class="col-12">
+
+        <!-- ===== Tabs ===== -->
+        <div class="nav-align-top nav-tabs-shadow mb-4">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#tab-detail" aria-controls="tab-detail" aria-selected="true">
+                        <i class="ri ri-file-list-2-line me-1"></i> รายละเอียดคำขอ
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#tab-production" aria-controls="tab-production" aria-selected="false">
+                        <i class="ri ri-archive-line me-1"></i> ข้อมูลการผลิต
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#tab-evidence" aria-controls="tab-evidence" aria-selected="false">
+                        <i class="ri ri-folder-open-line me-1"></i> หลักฐานประกอบ
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#tab-history" aria-controls="tab-history" aria-selected="false">
+                        <i class="ri ri-time-line me-1"></i> ประวัติการดำเนินการ
+                    </button>
+                </li>
+
+            </ul>
+
+            <div class="tab-content">
+
+                <!-- ==================== TAB 1: รายละเอียดคำขอ ==================== -->
+                <div id="tab-detail" class="tab-pane fade show active">
+
+                    <div class="accordion accordion-custom-button mb-4" id="accordionIMD">
+                        <div class="accordion-item active">
+                            <h2 class="accordion-header" id="headingIMD">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseIMDContent" aria-expanded="true"
+                                    aria-controls="collapseIMDContent">
+                                    <i class="icon-base ri ri-links-line me-2"></i>
+                                    ข้อมูลการควบคุมปริมาณวัตถุดิบสัตว์นํ้านำเข้า (RMBS1:PS)
+                                </button>
+                            </h2>
+                            <div id="collapseIMDContent" class="accordion-collapse collapse show"
+                                aria-labelledby="headingIMD">
+                                <div class="accordion-body p-0">
+
+                                    <!-- ── รายละเอียด ── -->
+                                    <div class="p-4 border-bottom">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-information-line fs-5"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">รายละเอียด</h6>
+                                        </div>
+                                        <div class="row g-3">
+                                            <div class="col-12">
+                                                <label class="form-label small">ผู้ประกอบการ</label>
+                                                <div class="field-display">Alpha Office Automation Co., Ltd. (สาขา 00001)</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">เลขที่ RMBS1</label>
+                                                <div class="field-display fw-semibold text-primary">10611280211800000561</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">วันที่ออกเอกสาร RMBS1</label>
+                                                <div class="field-display">17 สิงหาคม 2561</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">หน่วยงานพิจารณาข้อมูลสั่งดำเนินการผลิต</label>
+                                                <div class="field-display">ด่านตรวจสัตว์น้ำอำจังหวัดตราด</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">หน่วยงานพิจารณาออกเลขที่ RMBS1</label>
+                                                <div class="field-display">กองตรวจสอบคุณภาพสินค้าประมง</div>
+                                            </div>
+                                            <div class="col-12">
+                                                <label class="form-label small">เอกสารที่นำมาดำเนินการจับคู่</label>
+                                                <div class="field-display">Catch Certificate</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ── ข้อมูลตรวจสอบการจับคู่ IMD ── -->
+                                    <div class="p-4 border-bottom">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-ship-line fs-5"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">ข้อมูลตรวจสอบการจับคู่ IMD</h6>
+                                        </div>
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label small">ชื่อเรือจับ (Fishing Vessel)</label>
+                                                <div class="field-display">MARTINEZ472</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">ธงสัญชาติของเรือ</label>
+                                                <div class="field-display">ปาปัวนิวกินี (PAPUA NEW GUINEA)</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">ชื่อเครื่องมือที่ใช้จับ</label>
+                                                <div class="field-display">อวนล้อมจับ (Purse seine)</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">ชื่อประเทศที่นำมาบรรจุ</label>
+                                                <div class="field-display">เวียดนาม (VIET NAM)</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">ช่วงเวลาทำการประมง (วันที่เริ่ม)</label>
+                                                <div class="field-display">1 พฤษภาคม 2561</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">ช่วงเวลาทำการประมง (วันที่สิ้นสุด)</label>
+                                                <div class="field-display">31 พฤษภาคม 2561</div>
+                                            </div>
+                                            <div class="col-12">
+                                                <label class="form-label small">ข้อมูลสัตว์น้ำ</label>
+                                                <div class="field-display">0303.89.19 000/KGM [F020545S03030001/KGM]=ปลาทูน่าโบนิโต (Sarda) ทั้งตัว แช่แข็ง</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ── ข้อมูลตรวจสอบการจับคู่ CC/SCC/Other Document ── -->
+                                    <div class="p-4 border-bottom">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-file-text-line fs-5"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">ข้อมูลตรวจสอบการจับคู่ CC/SCC/Other Document</h6>
+                                        </div>
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label small">Ref. System Document No.</label>
+                                                <div class="field-display">S20180730SEA FANTASY XVI00033</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">Reference Date</label>
+                                                <div class="field-display">30/07/2561</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">Simplified Catch Certificate Number</label>
+                                                <div class="field-display">SCC801WE1609</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">Validation date</label>
+                                                <div class="field-display">30/07/2561</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">ประเทศของหน่วยงานที่รับรอง</label>
+                                                <div class="field-display">ฝรั่งเศส (FRANCE)</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">ชื่อหน่วยงานที่รับรอง</label>
+                                                <div class="field-display">Direction de la mer Guadeloupe (Directorate of the sea Guadeloupe)</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">ชื่อเรือจับ (Fishing Vessel)</label>
+                                                <div class="field-display">AS PER CC No.MARTINEZ472</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">ธงสัญชาติของเรือ</label>
+                                                <div class="field-display">ปาปัวนิวกินี (PAPUA NEW GUINEA)</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">หมายเรียกขาน (Call Sign)</label>
+                                                <div class="field-display">MIMIX551</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">หมายเลขไอเอ็มโอ (IMO)</label>
+                                                <div class="field-display">551-13</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">ชื่อเครื่องมือที่ใช้จับ</label>
+                                                <div class="field-display">อวนล้อมจับ (Purse seine)</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">สถานที่จับ/แหล่งทำประมง</label>
+                                                <div class="field-display">ปาปัวนิวกินี (PAPUA NEW GUINEA) — EEZ PG, FAO 71</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">ช่วงเวลาทำการประมง (วันที่เริ่ม)</label>
+                                                <div class="field-display">01/05/2561</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">ช่วงเวลาทำการประมง (วันที่สิ้นสุด)</label>
+                                                <div class="field-display">31/05/2561</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">ชื่อกัปตัน/ผู้บังคับการเรือ</label>
+                                                <div class="field-display">Mr.BaoMae</div>
+                                            </div>
+                                            <div class="col-12">
+                                                <label class="form-label small">Catch description (สำหรับแสดงในหนังสือรับรอง)</label>
+                                                <div class="field-display">SCC801WE1609 CC100000Quota70000</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ── ข้อมูลน้ำหนักสินค้า ── -->
+                                    <div class="p-4">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-scales-line fs-5"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">ข้อมูลน้ำหนักสินค้า</h6>
+                                        </div>
+                                        <div class="row g-3">
+                                            <div class="col-md-4">
+                                                <label class="form-label small">รูปแบบการจัดสรร CC/SCC</label>
+                                                <div class="field-display">Average (เฉลี่ย)</div>
+                                            </div>
+                                            <div class="w-100"></div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">ปริมาณสัตว์น้ำรวมทั้งเรือ (กก.)</label>
+                                                <div class="input-group">
+                                                    <div class="field-display flex-grow-1 rounded-end-0">70,000.000</div>
+                                                    <span class="input-group-text">KGM = กิโลกรัม</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">ปริมาณสัตว์น้ำที่โรงงานรับซื้อ (กก.)</label>
+                                                <div class="input-group">
+                                                    <div class="field-display flex-grow-1 rounded-end-0">5,000.000</div>
+                                                    <span class="input-group-text">KGM = กิโลกรัม</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">ปริมาณสัตว์น้ำที่ระบุใน Catch Certificate</label>
+                                                <div class="input-group">
+                                                    <div class="field-display flex-grow-1 rounded-end-0">100,000.000</div>
+                                                    <span class="input-group-text">KGM = กิโลกรัม</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">โควตาสัตว์น้ำที่โรงงานรับซื้อ (กก.)</label>
+                                                <div class="input-group">
+                                                    <div class="field-display flex-grow-1 rounded-end-0">5,000.000</div>
+                                                    <span class="input-group-text">KGM = กิโลกรัม</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <label class="form-label small">รายละเอียด</label>
+                                                <div class="field-display" style="min-height:5rem; align-items: flex-start; padding-top: 0.6rem;">
+                                                    <span class="text-muted fst-italic">— ไม่มีรายละเอียดเพิ่มเติม —</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /TAB 1 -->
+
+                <!-- ==================== TAB 2: ข้อมูลการผลิต ==================== -->
+                <div id="tab-production" class="tab-pane fade" role="tabpanel">
+
+                    <!-- Summary bar -->
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3 p-1">
+                        <div class="small text-muted">รายการวัตถุดิบที่ใช้ผลิต</div>
+                        <div class="fw-semibold small">ปริมาณรวม (กก.) :
+                            <span class="text-primary" id="totalWeightSum">1,800.000</span>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover align-middle prod-table mb-2">
+                            <thead class="text-center table-light">
+                                <tr>
+                                    <th style="min-width:100px;">วันที่ดำเนินการ</th>
+                                    <th style="min-width:260px;">ชื่อผลิตภัณฑ์ (รหัสผลิตภัณฑ์ - รหัสการผลิต)</th>
+                                    <th style="min-width:110px;">ปริมาณที่ดำเนินการ</th>
+                                    <th style="min-width:110px;">ปริมาณคงเหลือ</th>
+                                    <th style="min-width:110px;">จำนวนบรรจุภัณฑ์ (คงเหลือ)</th>
+                                    <th style="min-width:110px;">จำนวนบรรจุภัณฑ์ (จอง)</th>
+                                    <th style="min-width:120px;">% Yield (โดยระบบ)</th>
+                                    <th style="min-width:110px;">การตัดน้ำหนัก (ครั้ง)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center">17/08/2561</td>
+                                    <td>
+                                        <div class="fw-semibold">CANNED O LIGHTMEAT SHREDDED IN TABASCO</div>
+                                        <div class="text-muted small">3AASNNBELNNPP &ndash; 8GDAW</div>
+                                        <div class="d-flex align-items-center gap-1 mt-1">
+                                            <span class="badge bg-label-primary rounded-circle d-inline-flex align-items-center justify-content-center flex-shrink-0" style="width:1.4rem;height:1.4rem;">
+                                                <i class="ri ri-recycle-line" style="font-size:0.65rem;"></i>
+                                            </span>
+                                            <span class="small text-muted"><span class="fw-semibold">การดำเนินการ :</span> แปรรูปวัตถุดิบ</span>
+                                        </div>
+                                    </td>
+                                    <td class="text-end">1,000.000</td>
+                                    <td class="text-end">59,000.000</td>
+                                    <td class="text-end">4,000.000</td>
+                                    <td class="text-end">4,000</td>
+                                    <td class="text-end">0.000</td>
+                                    <td class="text-end">37.820 <span class="text-danger fw-semibold">(100.000)</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">17/08/2561</td>
+                                    <td>
+                                        <div class="fw-semibold">CANNED O SLICE IN XO SOUCE</div>
+                                        <div class="text-muted small">3AASNNBELNNKK &ndash; 8GDAX</div>
+                                        <div class="d-flex align-items-center gap-1 mt-1">
+                                            <span class="badge bg-label-primary rounded-circle d-inline-flex align-items-center justify-content-center flex-shrink-0" style="width:1.4rem;height:1.4rem;">
+                                                <i class="ri ri-recycle-line" style="font-size:0.65rem;"></i>
+                                            </span>
+                                            <span class="small text-muted"><span class="fw-semibold">การดำเนินการ :</span> แปรรูปวัตถุดิบ</span>
+                                        </div>
+                                    </td>
+                                    <td class="text-end">800.000</td>
+                                    <td class="text-end">58,200.000</td>
+                                    <td class="text-end">1,600.000</td>
+                                    <td class="text-end">1,600</td>
+                                    <td class="text-end">0.000</td>
+                                    <td class="text-end">38.620 <span class="text-danger fw-semibold">(100.000)</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <!-- /TAB 2 -->
+
+                <!-- ==================== TAB 3: หลักฐานประกอบ ==================== -->
+                <div id="tab-evidence" class="tab-pane fade" role="tabpanel">
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle small mb-3">
+                            <thead class="text-center table-light">
+                                <tr>
+                                    <th style="width:2rem;">#</th>
+                                    <th>หลักฐานประกอบ</th>
+                                    <th>เลขที่เอกสาร</th>
+                                    <th>วันที่ออกเอกสาร</th>
+                                    <th>วันที่หมดอายุ / เทียบเท่า</th>
+                                    <th>ผู้ออกเอกสาร</th>
+                                    <th style="width:4rem;">ไฟล์</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center text-muted small">1</td>
+                                    <td>
+                                        <div class="fw-semibold text-primary">Catch Certificate (CC) ที่ออกโดย ต่างประเทศ</div>
+                                        <div class="mt-1">
+                                            <div class="small text-muted d-flex align-items-center gap-1 mb-1">
+                                                <span class="badge bg-label-success rounded-circle d-inline-flex align-items-center justify-content-center flex-shrink-0" style="width:1.4rem;height:1.4rem;">
+                                                    <i class="ri ri-file-check-line" style="font-size:0.65rem;"></i>
+                                                </span>
+                                                <span class="fw-semibold">แหล่งที่มา :</span> ภายนอกระบบ [FSW]
+                                            </div>
+                                            <div class="small text-muted d-flex align-items-center gap-1 mb-1">
+                                                <span class="badge bg-label-info rounded-circle d-inline-flex align-items-center justify-content-center flex-shrink-0" style="width:1.4rem;height:1.4rem;">
+                                                    <i class="ri ri-building-line" style="font-size:0.65rem;"></i>
+                                                </span>
+                                                <span class="fw-semibold">ประเภทเอกสาร :</span> Backend DOF
+                                            </div>
+                                            <div class="small text-muted d-flex align-items-center gap-1 mb-1">
+                                                <span class="badge bg-label-secondary rounded-circle d-inline-flex align-items-center justify-content-center flex-shrink-0" style="width:1.4rem;height:1.4rem;">
+                                                    <i class="ri ri-file-copy-line" style="font-size:0.65rem;"></i>
+                                                </span>
+                                                <span class="fw-semibold">ตัวเอกสาร :</span> เอกสารฉบับสำเนา
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>KP-001022017-091</td>
+                                    <td>16/02/2026</td>
+                                    <td>16/02/2027</td>
+                                    <td>IPNLF</td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-sm btn-icon btn-outline-primary" title="ดูไฟล์">
+                                            <i class="ri ri-file-download-line"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <!-- /TAB 3 -->
+
+                <!-- ==================== TAB 4: ประวัติการดำเนินการ ==================== -->
+                <div id="tab-history" class="tab-pane fade" role="tabpanel">
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle small mb-0">
+                            <thead class="text-center table-light">
+                                <tr>
+                                    <th style="min-width:120px;">วันเวลาที่แจ้ง</th>
+                                    <th style="min-width:200px;">ผู้แจ้ง</th>
+                                    <th>รายละเอียด</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center text-nowrap">17/08/2561<br><span class="text-muted">(11:14)</span></td>
+                                    <td>นางอัลฟา ออฟฟิช</td>
+                                    <td>สร้างข้อมูลส่วนหลัง (ใบอนุญาต/ใบรับรอง) &quot;แบบฟอร์มการควบคุมปริมาณวัตถุดิบสัตว์น้ำนำเข้าเพื่อแปรรูปส่งออกสหภาพยุโรป เอกสารที่ 1&quot;</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center text-nowrap">17/08/2561<br><span class="text-muted">(11:31)</span></td>
+                                    <td>Alpha Office Automation Co., Ltd.<br><span class="text-muted small">(สาขา 00001)</span></td>
+                                    <td>แก้ไขข้อมูลการผลิต &quot;แบบฟอร์มการควบคุมปริมาณวัตถุดิบสัตว์น้ำนำเข้าเพื่อแปรรูปส่งออก เอกสารที่ 1&quot;</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center text-nowrap">17/08/2561<br><span class="text-muted">(13:52)</span></td>
+                                    <td>Alpha Office Automation Co., Ltd.<br><span class="text-muted small">(สาขา 00001)</span></td>
+                                    <td>แก้ไขข้อมูลการผลิต &quot;แบบฟอร์มการควบคุมปริมาณวัตถุดิบสัตว์น้ำนำเข้าเพื่อแปรรูปส่งออก เอกสารที่ 1&quot;</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center text-nowrap">17/08/2561<br><span class="text-muted">(15:17)</span></td>
+                                    <td>นางอัลฟา ออฟฟิช</td>
+                                    <td>ปรับปรุงข้อมูลโดย ขออนุมัติข้อมูล CC ต่างประเทศ กรณี CC มาทีหลัง</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center text-nowrap">17/08/2561<br><span class="text-muted">(15:48)</span></td>
+                                    <td>นางอัลฟา ออฟฟิช</td>
+                                    <td>ปรับเปลี่ยนสถานะ RMBS1 ให้ดำเนินการขอจัดทำใบ PS</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <!-- /TAB 4 -->
+
+
+
+            </div><!-- /tab-content -->
+        </div><!-- /nav-align-top -->
+
+        <!-- Action Buttons -->
+        <div class="d-flex justify-content-end gap-2 mt-3">
+            <a href="@Url.Action("IndexReturnWeight", "Officer")" class="btn btn-outline-secondary">
+                <i class="ri ri-arrow-left-line me-1"></i> ยกเลิก
+            </a>
+            <button type="button" class="btn btn-outline-danger" id="btnRejectRequest">
+                <i class="ri ri-close-circle-line me-1"></i> ไม่อนุมัติ
+            </button>
+            <button type="button" class="btn btn-success" id="btnApproveRequest">
+                <i class="ri ri-checkbox-circle-line me-1"></i> อนุมัติ
+            </button>
+        </div>
+
+    </div><!-- /col -->
+</div><!-- /row -->
+
+<!-- ==================== Modal: ยืนยันการอนุมัติ ==================== -->
+<div class="modal fade" id="modalConfirmApprove" tabindex="-1" aria-labelledby="modalConfirmApproveLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title" id="modalConfirmApproveLabel">
+                    <i class="ri ri-checkbox-circle-line text-success me-1"></i> ยืนยันการอนุมัติ
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body pt-2">
+                <p class="mb-1">คุณต้องการ <strong class="text-success">อนุมัติ</strong> เอกสาร RMBS1 หมายเลข</p>
+                <p class="fw-semibold text-primary mb-3">10611280211800000561</p>
+                <div class="alert alert-success d-flex gap-2 py-2 mb-0">
+                    <i class="ri ri-information-line mt-1 flex-shrink-0"></i>
+                    <span class="small">การอนุมัติจะเปลี่ยนสถานะเอกสารเป็น "อนุมัติแล้ว" และแจ้งผลให้ผู้ประกอบการทราบทันที</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                <button type="button" id="btnConfirmApprove" class="btn btn-success">
+                    <i class="ri ri-checkbox-circle-line me-1"></i> ยืนยันอนุมัติ
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== Modal: ยืนยันการไม่อนุมัติ ==================== -->
+<div class="modal fade" id="modalConfirmReject" tabindex="-1" aria-labelledby="modalConfirmRejectLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title" id="modalConfirmRejectLabel">
+                    <i class="ri ri-close-circle-line text-danger me-1"></i> ยืนยันการไม่อนุมัติ
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body pt-2">
+                <p class="mb-1">คุณต้องการ <strong class="text-danger">ไม่อนุมัติ</strong> เอกสาร RMBS1 หมายเลข</p>
+                <p class="fw-semibold text-primary mb-2">10611280211800000561</p>
+                <label class="form-label small fw-semibold">เหตุผลการไม่อนุมัติ <span class="text-danger">*</span></label>
+                <textarea id="rejectRemark" class="form-control" rows="3" placeholder="ระบุเหตุผลการไม่อนุมัติ..." readonly></textarea>
+                <div class="invalid-feedback" id="rejectRemarkError">กรุณาระบุเหตุผลการไม่อนุมัติ</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                <button type="button" id="btnConfirmReject" class="btn btn-danger">
+                    <i class="ri ri-close-circle-line me-1"></i> ยืนยันไม่อนุมัติ
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section PageScripts {
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        var btnApprove = document.getElementById('btnApprove');
+        var btnReject  = document.getElementById('btnReject');
+
+        // ── อนุมัติ ──
+        btnApprove.addEventListener('click', function () {
+            new bootstrap.Modal(document.getElementById('modalConfirmApprove')).show();
+        });
+
+        document.getElementById('btnConfirmApprove').addEventListener('click', function () {
+            // TODO: submit form or call API
+            bootstrap.Modal.getInstance(document.getElementById('modalConfirmApprove')).hide();
+            showToast('อนุมัติเอกสารเรียบร้อยแล้ว', 'success');
+        });
+
+        // ── ไม่อนุมัติ ──
+        btnReject.addEventListener('click', function () {
+            var rejectEl = document.getElementById('rejectRemark');
+            rejectEl.classList.remove('is-invalid');
+            rejectEl.value = '';
+            new bootstrap.Modal(document.getElementById('modalConfirmReject')).show();
+        });
+
+        document.getElementById('btnConfirmReject').addEventListener('click', function () {
+            var rejectEl = document.getElementById('rejectRemark');
+            if (!rejectEl.value.trim()) {
+                rejectEl.classList.add('is-invalid');
+                rejectEl.focus();
+                return;
+            }
+            // TODO: submit form or call API
+            bootstrap.Modal.getInstance(document.getElementById('modalConfirmReject')).hide();
+            showToast('ไม่อนุมัติเอกสารเรียบร้อยแล้ว', 'danger');
+        });
+
+        document.getElementById('rejectRemark').addEventListener('input', function () {
+            if (this.value.trim()) this.classList.remove('is-invalid');
+        });
+
+        // ── Toast helper ──
+        function showToast(msg, type) {
+            var bg = type === 'success' ? 'bg-success' : type === 'danger' ? 'bg-danger' : type === 'warning' ? 'bg-warning' : 'bg-info';
+            var icon = type === 'success' ? 'ri-checkbox-circle-line' : type === 'danger' ? 'ri-close-circle-line' : type === 'warning' ? 'ri-reply-line' : 'ri-information-line';
+            var toastEl = document.createElement('div');
+            toastEl.className = 'position-fixed bottom-0 end-0 p-3' ;
+            toastEl.style.zIndex = 9999;
+            toastEl.innerHTML =
+                '<div class="toast show align-items-center text-white ' + bg + ' border-0" role="alert">' +
+                '  <div class="d-flex">' +
+                '    <div class="toast-body d-flex align-items-center gap-2">' +
+                '      <i class="ri ' + icon + ' fs-5"></i> ' + msg +
+                '    </div>' +
+                '    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>' +
+                '  </div>' +
+                '</div>';
+            document.body.appendChild(toastEl);
+            setTimeout(function () { toastEl.remove(); }, 3500);
+        }
+
+    });
+</script>
+}

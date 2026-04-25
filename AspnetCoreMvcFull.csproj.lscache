@@ -80,6 +80,7 @@ Controllers/
  OfficerController.cs
  PagesController.cs
  PSDeclarationController.cs
+ ScrapTradingController.cs
  TablesController.cs
  TransactionsController.cs
  UiController.cs
@@ -667,9 +668,13 @@ Views/
   IndexSearchSelfDecl.cshtml
   IndexStatistics.cshtml
   IndexUserData.cshtml
+  RegisterUser.cshtml
+  ReviewDeclaration.cshtml
   ReviewReplacementDeclaration.cshtml
   ReviewReplacementProcessing.cshtml
   ReviewReturnWeight.cshtml
+  ReviewRMBS1PS.cshtml
+  ReviewUpdateCertificate.cshtml
  Pages/
   AccountSettings.cshtml
   AccountSettingsBilling.cshtml
@@ -703,8 +708,14 @@ Views/
   IndexReplacementCertificate.cshtml
   IndexTrackRequestStatus.cshtml
   IndexUpdateCertificate.cshtml
+  ReviewDeclaration.cshtml
+  ReviewProcessing.cshtml
   SelectType.cshtml
   SelectTypeReplacement.cshtml
+ ScrapTrading/
+  CreateBuyer.cshtml
+  CreateSeller.cshtml
+  Index.cshtml
  Shared/
   Error.cshtml
   Sections/Footer/
@@ -964,9 +975,13 @@ Views/
   IndexSearchSelfDecl.cshtml
   IndexStatistics.cshtml
   IndexUserData.cshtml
+  RegisterUser.cshtml
+  ReviewDeclaration.cshtml
   ReviewReplacementDeclaration.cshtml
   ReviewReplacementProcessing.cshtml
   ReviewReturnWeight.cshtml
+  ReviewRMBS1PS.cshtml
+  ReviewUpdateCertificate.cshtml
  Pages/
   AccountSettings.cshtml
   AccountSettingsBilling.cshtml
@@ -1000,8 +1015,14 @@ Views/
   IndexReplacementCertificate.cshtml
   IndexTrackRequestStatus.cshtml
   IndexUpdateCertificate.cshtml
+  ReviewDeclaration.cshtml
+  ReviewProcessing.cshtml
   SelectType.cshtml
   SelectTypeReplacement.cshtml
+ ScrapTrading/
+  CreateBuyer.cshtml
+  CreateSeller.cshtml
+  Index.cshtml
  Shared/
   Error.cshtml
   Sections/Footer/

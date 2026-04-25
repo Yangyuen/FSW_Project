@@ -1,0 +1,264 @@
+@{
+  Layout = "_ContentNavbarLayout";
+  ViewData["Title"] = "ลงทะเบียนผู้ใช้ใหม่ (Walk-In)";
+}
+
+@section VendorStyles {
+<link rel="stylesheet" href="~/vendor/libs/select2/select2.css" />
+<link rel="stylesheet" href="~/vendor/libs/flatpickr/flatpickr.css" />
+<link rel="stylesheet" href="~/vendor/libs/dropzone/dropzone.css" />
+<link rel="stylesheet" href="~/vendor/libs/&#64;form-validation/form-validation.css" />
+}
+
+@section VendorScripts {
+<script src="~/vendor/libs/select2/select2.js"></script>
+<script src="~/vendor/libs/flatpickr/flatpickr.js"></script>
+<script src="~/vendor/libs/dropzone/dropzone.js"></script>
+<script src="~/vendor/libs/&#64;form-validation/popular.js"></script>
+<script src="~/vendor/libs/&#64;form-validation/bootstrap5.js"></script>
+<script src="~/vendor/libs/&#64;form-validation/auto-focus.js"></script>
+}
+
+@section PageStyles {
+<style>
+  .dropzone-officer {
+    border: 2px dashed var(--bs-border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    background: var(--bs-body-bg);
+    transition: border-color .2s;
+  }
+  .dropzone-officer:hover { border-color: var(--bs-primary); }
+  .section-divider {
+    border-top: 2px solid var(--bs-border-color);
+    padding-top: 1.5rem;
+    margin-top: 1.5rem;
+  }
+</style>
+}
+
+@section PageScripts {
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  // Date picker for ActivationDate
+  if (typeof flatpickr !== 'undefined') {
+    flatpickr('#activationDate', {
+      dateFormat: 'd/m/Y',
+      minDate: 'today',
+      locale: { firstDayOfWeek: 1 }
+    });
+  }
+
+  // Show/hide prefix field based on member type
+  document.getElementById('memberType')?.addEventListener('change', function () {
+    var t = this.value;
+    var prefixRow = document.getElementById('prefix-row');
+    if (prefixRow) {
+      prefixRow.style.display = t === 'individual' ? '' : 'none';
+    }
+    // Conditional doc hints
+    document.querySelectorAll('.doc-group').forEach(function(el){ el.classList.add('d-none'); });
+    if (t) { var g = document.getElementById('docs-' + t); if(g) g.classList.remove('d-none'); }
+  });
+});
+</script>
+}
+
+@* ============ Page Header ============ *@
+<div class="d-flex align-items-center justify-content-between mb-5">
+  <div>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-1">
+        <li class="breadcrumb-item"><a href="/Officer/IndexRegisterUser">ทะเบียนผู้ใช้งาน</a></li>
+        <li class="breadcrumb-item active">ลงทะเบียนใหม่ (Walk-In)</li>
+      </ol>
+    </nav>
+    <h4 class="fw-semibold mb-0">ลงทะเบียนผู้ใช้ใหม่ผ่านเจ้าหน้าที่</h4>
+    <span class="text-muted small">กรมอุตสาหกรรมพื้นฐานและการเหมืองแร่ (กพร.) — บันทึกข้อมูล Walk-In</span>
+  </div>
+  <div>
+    <a href="/Officer/IndexRegisterUser" class="btn btn-outline-secondary">
+      <i class="ri ri-arrow-left-line me-1"></i> กลับรายการ
+    </a>
+  </div>
+</div>
+
+@* ============ Form ============ *@
+<form id="officerRegisterForm" novalidate>
+
+  <!-- ===== Section 1: ข้อมูลพื้นฐาน ===== -->
+  <div class="card mb-5">
+    <div class="card-header">
+      <h6 class="mb-0">
+        <i class="ri ri-user-line me-2 text-primary"></i> ข้อมูลพื้นฐานผู้ใช้งาน
+      </h6>
+    </div>
+    <div class="card-body">
+      <div class="row gx-5">
+
+        <!-- ประเภทสมาชิก -->
+        <div class="col-md-12 mb-4">
+          <div class="form-floating form-floating-outline">
+            <select id="memberType" name="memberType" class="select2 form-select" required>
+              <option value="">-- กรุณาเลือก --</option>
+              <option value="individual">บุคคลธรรมดา</option>
+              <option value="juristic">นิติบุคคล</option>
+              <option value="community">วิสาหกิจชุมชน</option>
+            </select>
+            <label for="memberType">ประเภทสมาชิก <span class="text-danger">*</span></label>
+          </div>
+        </div>
+
+        <!-- คำนำหน้า (บุคคลธรรมดา) -->
+        <div class="col-sm-3 mb-4" id="prefix-row">
+          <div class="form-floating form-floating-outline">
+            <select id="prefix" name="prefix" class="form-select">
+              <option value="">-- เลือก --</option>
+              <option value="mr">นาย</option>
+              <option value="mrs">นาง</option>
+              <option value="ms">นางสาว</option>
+            </select>
+            <label for="prefix">คำนำหน้า</label>
+          </div>
+        </div>
+
+        <!-- ชื่อ -->
+        <div class="col-sm-4 mb-4">
+          <div class="form-floating form-floating-outline">
+            <input type="text" id="firstName" name="firstName" class="form-control" placeholder="ชื่อ" required />
+            <label for="firstName">ชื่อ <span class="text-danger">*</span></label>
+          </div>
+        </div>
+
+        <!-- นามสกุล -->
+        <div class="col-sm-5 mb-4">
+          <div class="form-floating form-floating-outline">
+            <input type="text" id="lastName" name="lastName" class="form-control" placeholder="นามสกุล" required />
+            <label for="lastName">นามสกุล <span class="text-danger">*</span></label>
+          </div>
+        </div>
+
+        <!-- เลขบัตร/ทะเบียน -->
+        <div class="col-md-6 mb-4">
+          <div class="form-floating form-floating-outline">
+            <input type="text" id="idNumber" name="idNumber" class="form-control"
+                   placeholder="1234567890123" maxlength="13" required />
+            <label for="idNumber">เลขบัตรประชาชน / เลขทะเบียนนิติบุคคล <span class="text-danger">*</span></label>
+          </div>
+        </div>
+
+        <!-- อีเมล -->
+        <div class="col-md-6 mb-4">
+          <div class="form-floating form-floating-outline">
+            <input type="email" id="email" name="email" class="form-control"
+                   placeholder="email&#64;example.com" required />
+            <label for="email">อีเมล <span class="text-danger">*</span></label>
+          </div>
+        </div>
+
+        <!-- เบอร์โทร -->
+        <div class="col-md-6 mb-4">
+          <div class="form-floating form-floating-outline">
+            <input type="tel" id="phone" name="phone" class="form-control"
+                   placeholder="0812345678" maxlength="10" required />
+            <label for="phone">เบอร์โทรศัพท์ <span class="text-danger">*</span></label>
+          </div>
+        </div>
+
+        <!-- ประเภทสิทธิ์ -->
+        <div class="col-md-6 mb-4">
+          <div class="form-floating form-floating-outline">
+            <select id="userRole" name="userRole" class="form-select">
+              <option value="member" selected>สมาชิก (Member)</option>
+              <option value="operator">ผู้ประกอบการ (Operator)</option>
+              <option value="auditor">ผู้ตรวจสอบ (Auditor)</option>
+            </select>
+            <label for="userRole">สิทธิ์การใช้งาน <span class="text-danger">*</span></label>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Section 2: แนบเอกสาร ===== -->
+  <div class="card mb-5">
+    <div class="card-header">
+      <h6 class="mb-0">
+        <i class="ri ri-file-list-3-line me-2 text-primary"></i> แนบเอกสารประกอบ
+      </h6>
+    </div>
+    <div class="card-body">
+
+      <div id="docs-individual" class="doc-group alert alert-info mb-4 d-none">
+        <strong>บุคคลธรรมดา:</strong> สำเนาบัตรประชาชน, สำเนาทะเบียนบ้าน
+      </div>
+      <div id="docs-juristic" class="doc-group alert alert-info mb-4 d-none">
+        <strong>นิติบุคคล:</strong> หนังสือรับรองบริษัท, สำเนาบัตรประชาชนผู้มีอำนาจ, หนังสือมอบอำนาจ (ถ้ามี)
+      </div>
+      <div id="docs-community" class="doc-group alert alert-info mb-4 d-none">
+        <strong>วิสาหกิจชุมชน:</strong> หนังสือรับรองวิสาหกิจ, สำเนาบัตรประชาชนประธาน
+      </div>
+
+      <div class="dropzone-officer mb-4" id="uploadZone">
+        <i class="ri ri-upload-cloud-2-line fs-2 text-primary mb-2 d-block"></i>
+        <p class="mb-1 fw-semibold">ลากไฟล์มาวางที่นี่ หรือ</p>
+        <label class="btn btn-outline-primary btn-sm mb-2" for="fileUpload">เลือกไฟล์</label>
+        <input type="file" id="fileUpload" name="files" class="d-none"
+               multiple accept=".pdf,.jpg,.jpeg,.png" />
+        <p class="text-muted small mb-0">PDF, JPG, PNG ไม่เกิน 5 MB ต่อไฟล์</p>
+      </div>
+      <div id="fileList" class="list-group"></div>
+    </div>
+  </div>
+
+  <!-- ===== Section 3: บันทึกเพิ่มเติม ===== -->
+  <div class="card mb-5">
+    <div class="card-header">
+      <h6 class="mb-0">
+        <i class="ri ri-sticky-note-line me-2 text-primary"></i> บันทึกเพิ่มเติม (เจ้าหน้าที่)
+      </h6>
+    </div>
+    <div class="card-body">
+      <div class="row gx-5">
+        <!-- หมายเหตุ -->
+        <div class="col-12 mb-4">
+          <div class="form-floating form-floating-outline">
+            <textarea id="officerNote" name="officerNote" class="form-control"
+                      placeholder="หมายเหตุ..." style="height: 100px"></textarea>
+            <label for="officerNote">หมายเหตุ / บันทึกเพิ่มเติม</label>
+          </div>
+        </div>
+        <!-- วันที่เปิดใช้งาน -->
+        <div class="col-md-4 mb-4">
+          <div class="form-floating form-floating-outline">
+            <input type="text" id="activationDate" name="activationDate" class="form-control"
+                   placeholder="dd/mm/yyyy" />
+            <label for="activationDate">วันที่เปิดใช้งาน</label>
+          </div>
+          <small class="text-muted">เว้นว่างไว้หากต้องการให้เปิดทันทีหลังอนุมัติ</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Action Buttons ===== -->
+  <div class="card">
+    <div class="card-body d-flex justify-content-between align-items-center gap-3">
+      <a href="/Officer/IndexRegisterUser" class="btn btn-outline-secondary">
+        <i class="ri ri-close-line me-1"></i> ยกเลิก
+      </a>
+      <div class="d-flex gap-2">
+        <button type="button" class="btn btn-outline-primary" id="btnSaveDraft">
+          <i class="ri ri-save-3-line me-1"></i> บันทึก Draft
+        </button>
+        <button type="submit" class="btn btn-success" id="btnSaveAndInvite">
+          <i class="ri ri-mail-send-line me-1"></i> บันทึกและส่งอีเมลเชิญ
+        </button>
+      </div>
+    </div>
+  </div>
+
+</form>

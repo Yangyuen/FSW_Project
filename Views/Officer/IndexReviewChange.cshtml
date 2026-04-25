@@ -570,19 +570,13 @@
                             <div class="d-flex gap-1 justify-content-center">
                                 @if (request.StatusText == "รออนุมัติ")
                                 {
-                                    <a href="@(request.CertificateKey == "processing" ? Url.Action("CreateManageCertificatePS", "PSDeclaration") : Url.Action("CreateManageCertificateNoPS", "PSDeclaration"))" class="btn btn-sm btn-icon btn-outline-secondary" data-bs-toggle="tooltip" title="ดูรายละเอียด">
-                                        <i class="ri ri-eye-line"></i>
+                                    <a href="@Url.Action("ReviewUpdateCertificate", "Officer")" class="btn btn-sm btn-icon btn-outline-primary" data-bs-toggle="tooltip" title="พิจารณา">
+                                        <i class="ri ri-shield-check-line"></i>
                                     </a>
-                                    <button type="button" class="btn btn-sm btn-icon btn-outline-success" data-bs-toggle="tooltip" title="อนุมัติ">
-                                        <i class="ri ri-checkbox-circle-line text-success"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-sm btn-icon btn-outline-danger" data-bs-toggle="tooltip" title="ไม่อนุมัติ">
-                                        <i class="ri ri-close-circle-line text-danger"></i>
-                                    </button>
                                 }
                                 @if (request.StatusText == "อนุมัติ" || request.StatusText == "ไม่อนุมัติ")
                                 {
-                                    <a href="@(request.CertificateKey == "processing" ? Url.Action("CreateManageCertificatePS", "PSDeclaration") : Url.Action("CreateManageCertificateNoPS", "PSDeclaration"))" class="btn btn-sm btn-icon btn-outline-secondary" data-bs-toggle="tooltip" title="ดูรายละเอียด">
+                                    <a href="@Url.Action("ReviewUpdateCertificate", "Officer")" class="btn btn-sm btn-icon btn-outline-secondary" data-bs-toggle="tooltip" title="ดูรายละเอียด">
                                         <i class="ri ri-eye-line"></i>
                                     </a>
                                 }

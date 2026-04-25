@@ -1,0 +1,918 @@
+@{
+    ViewData["Title"] = "บันทึกการขายเศษเหลือ";
+}
+
+@section VendorStyles {
+<link rel="stylesheet" href="~/vendor/libs/select2/select2.css" />
+<link rel="stylesheet" href="~/vendor/libs/flatpickr/flatpickr.css" />
+}
+
+@section VendorScripts {
+<script src="~/vendor/libs/select2/select2.js"></script>
+<script src="~/vendor/libs/flatpickr/flatpickr.js"></script>
+}
+
+@* ============================================================ Content ============================================================ *@
+<h4 class="mb-1">บันทึกการขายเศษเหลือ</h4>
+<p class="mb-1">บันทึกการขายเศษเหลือจากการแปรรูปสัตว์น้ำนำเข้า และออกหนังสือกำกับการซื้อขาย</p>
+
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="mb-6">
+    <ol class="breadcrumb breadcrumb-style1" style="--bs-breadcrumb-divider: '>'; font-size: 0.75rem;">
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("Index", "ScrapTrading")" class="text-primary fw-semibold">การซื้อขายเศษเหลือ</a>
+        </li>
+        <li class="breadcrumb-item active text-secondary">บันทึกการขายเศษเหลือ</li>
+    </ol>
+</nav>
+
+<div class="row">
+    <div class="col-12">
+
+        <form method="post" action="#">
+        <div class="nav-align-top nav-tabs-shadow mb-4">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#tab-detail" aria-controls="tab-detail" aria-selected="true">
+                        <i class="ri ri-file-list-2-line me-1"></i> รายละเอียดการขาย
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#tab-scrap" aria-controls="tab-scrap" aria-selected="false">
+                        <i class="ri ri-archive-line me-1"></i> รายการเศษเหลือ
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#tab-evidence" aria-controls="tab-evidence" aria-selected="false">
+                        <i class="ri ri-folder-open-line me-1"></i> หลักฐานประกอบ
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#tab-history" aria-controls="tab-history" aria-selected="false">
+                        <i class="ri ri-time-line me-1"></i> ประวัติการดำเนินการ
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+
+                <!-- ==================== TAB 1: รายละเอียดการขาย ==================== -->
+                <div id="tab-detail" class="tab-pane fade show active">
+
+                    <!-- Accordion: ข้อมูลเลขที่หนังสือ -->
+                    <div class="accordion accordion-custom-button mb-4" id="accordionDocInfo">
+                        <div class="accordion-item active">
+                            <h2 class="accordion-header" id="headingDocInfo">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseDocInfo" aria-expanded="true" aria-controls="collapseDocInfo">
+                                    <i class="icon-base ri ri-file-list-line me-2"></i>
+                                    ข้อมูลเลขที่หนังสือกำกับ
+                                </button>
+                            </h2>
+                            <div id="collapseDocInfo" class="accordion-collapse collapse show" aria-labelledby="headingDocInfo">
+                                <div class="accordion-body p-0">
+                                    <div class="p-4">
+                                        <div class="row g-3">
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" id="docNo"
+                                                        value="(ระบบจะออกเลขที่ให้อัตโนมัติ)" readonly />
+                                                    <label for="docNo">เลขที่หนังสือกำกับการซื้อขายเศษเหลือ</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" id="docDate" class="form-control flatpickr-date"
+                                                        placeholder="วว/ดด/ปปปป" value="@DateTime.Now.ToString("dd/MM/yyyy")" />
+                                                    <label for="docDate">วันที่ซื้อขาย <span class="text-danger">●</span></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" id="docStatus"
+                                                        value="ร่าง" readonly />
+                                                    <label for="docStatus">สถานะ</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Accordion: ข้อมูลผู้ขาย -->
+                    <div class="accordion accordion-custom-button mb-4" id="accordionSeller">
+                        <div class="accordion-item active">
+                            <h2 class="accordion-header" id="headingSeller">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseSeller" aria-expanded="true" aria-controls="collapseSeller">
+                                    <i class="icon-base ri ri-store-2-line me-2"></i>
+                                    ข้อมูลผู้ขาย (ผู้แปรรูปสัตว์น้ำ)
+                                </button>
+                            </h2>
+                            <div id="collapseSeller" class="accordion-collapse collapse show" aria-labelledby="headingSeller">
+                                <div class="accordion-body p-0">
+                                    <div class="p-4">
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" id="sellerName"
+                                                        value="บริษัท ซีฟู้ด โปรเซสซิ่ง จำกัด" readonly />
+                                                    <label for="sellerName">ชื่อผู้ขาย / ชื่อกิจการ</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" id="sellerTaxId"
+                                                        value="0105556089321" readonly />
+                                                    <label for="sellerTaxId">เลขทะเบียนนิติบุคคล / เลขประจำตัวผู้เสียภาษี</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" id="sellerLicenseNo"
+                                                        value="TH-SMK-2025-0312" readonly />
+                                                    <label for="sellerLicenseNo">เลขที่ใบอนุญาตโรงงาน</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" id="sellerAddress"
+                                                        value="99/1 หมู่ 5 ถนนพระราม 2 ตำบลท่าทราย อำเภอเมืองสมุทรสาคร จังหวัดสมุทรสาคร 74000" readonly />
+                                                    <label for="sellerAddress">ที่อยู่</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <select id="selectSeller" class="select2 form-select" required>
+                                                        <option value="">-- เลือกผู้ขาย/ผู้ติดต่อ --</option>
+                                                        <option value="1" selected>นาย สมชาย รักษาผล (ผู้จัดการ)</option>
+                                                    </select>
+                                                    <label for="selectSeller">ผู้ติดต่อ / ผู้ลงนาม <span class="text-danger">●</span></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" id="sellerPhone" class="form-control"
+                                                        placeholder="เบอร์โทรศัพท์" value="034-456-789" />
+                                                    <label for="sellerPhone">เบอร์โทรศัพท์</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Accordion: ข้อมูลผู้ซื้อ -->
+                    <div class="accordion accordion-custom-button mb-4" id="accordionBuyer">
+                        <div class="accordion-item active">
+                            <h2 class="accordion-header" id="headingBuyer">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseBuyer" aria-expanded="true" aria-controls="collapseBuyer">
+                                    <i class="icon-base ri ri-user-received-line me-2"></i>
+                                    ข้อมูลผู้ซื้อ
+                                </button>
+                            </h2>
+                            <div id="collapseBuyer" class="accordion-collapse collapse show" aria-labelledby="headingBuyer">
+                                <div class="accordion-body p-0">
+                                    <div class="p-4">
+
+                                        <!-- ประเภทผู้ซื้อ -->
+                                        <div class="row g-3 mb-4">
+                                            <div class="col-12">
+                                                <label class="form-label fw-semibold">ประเภทผู้ซื้อ <span class="text-danger">●</span></label>
+                                                <div class="d-flex gap-4">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="buyerType"
+                                                            id="buyerTypeInside" value="inside" checked />
+                                                        <label class="form-check-label" for="buyerTypeInside">
+                                                            <i class="ri ri-computer-line me-1 text-primary"></i>
+                                                            ผู้ซื้ออยู่ <strong>ภายในระบบ</strong> [FSW]
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="buyerType"
+                                                            id="buyerTypeOutside" value="outside" />
+                                                        <label class="form-check-label" for="buyerTypeOutside">
+                                                            <i class="ri ri-user-line me-1 text-secondary"></i>
+                                                            ผู้ซื้ออยู่ <strong>ภายนอกระบบ</strong>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- In-system buyer search -->
+                                        <div id="buyerInsideSection" class="row g-3">
+                                            <div class="col-12">
+                                                <label class="form-label small">ค้นหาผู้ซื้อในระบบ <span class="text-danger">●</span></label>
+                                                <div class="input-group">
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        id="btnSearchBuyer" title="ค้นหาผู้ซื้อในระบบ">
+                                                        <i class="ri ri-search-line"></i>
+                                                    </button>
+                                                    <input type="text" id="buyerName" class="form-control"
+                                                        placeholder="ชื่อผู้ซื้อ / เลขทะเบียน"
+                                                        value="บริษัท ปลาป่นไทย จำกัด" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" id="buyerTaxId"
+                                                        value="0105563089444" readonly />
+                                                    <label for="buyerTaxId">เลขทะเบียนนิติบุคคล</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" id="buyerLicense"
+                                                        value="FM-TH-2025-0087" readonly />
+                                                    <label for="buyerLicense">ทะเบียนโรงงาน (ถ้ามี)</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" id="buyerPhone"
+                                                        value="02-345-6789" readonly />
+                                                    <label for="buyerPhone">เบอร์โทรศัพท์</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" id="buyerAddress"
+                                                        value="123 ถนนสุขุมวิท แขวงคลองเตย เขตคลองเตย กรุงเทพมหานคร 10110" readonly />
+                                                    <label for="buyerAddress">ที่อยู่ผู้ซื้อ</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Out-of-system buyer form (hidden by default) -->
+                                        <div id="buyerOutsideSection" class="row g-3 d-none">
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" id="extBuyerName" class="form-control"
+                                                        placeholder="ชื่อผู้ซื้อ / กิจการ" />
+                                                    <label for="extBuyerName">ชื่อผู้ซื้อ / กิจการ <span class="text-danger">●</span></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" id="extBuyerTaxId" class="form-control"
+                                                        placeholder="เลขทะเบียน / เลขบัตรประชาชน" />
+                                                    <label for="extBuyerTaxId">เลขทะเบียน / เลขประจำตัว</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" id="extBuyerPhone" class="form-control"
+                                                        placeholder="เบอร์โทรศัพท์" />
+                                                    <label for="extBuyerPhone">เบอร์โทรศัพท์</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" id="extBuyerType" class="form-control"
+                                                        placeholder="ประเภทกิจการ เช่น โรงงานปลาป่น" />
+                                                    <label for="extBuyerType">ประเภทกิจการ</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" id="extBuyerAddress" class="form-control"
+                                                        placeholder="ที่อยู่ผู้ซื้อ" />
+                                                    <label for="extBuyerAddress">ที่อยู่ <span class="text-danger">●</span></label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Accordion: เงื่อนไขการซื้อขาย -->
+                    <div class="accordion accordion-custom-button mb-4" id="accordionTrade">
+                        <div class="accordion-item active">
+                            <h2 class="accordion-header" id="headingTrade">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseTrade" aria-expanded="true" aria-controls="collapseTrade">
+                                    <i class="icon-base ri ri-hand-coin-line me-2"></i>
+                                    เงื่อนไขการซื้อขาย
+                                </button>
+                            </h2>
+                            <div id="collapseTrade" class="accordion-collapse collapse show" aria-labelledby="headingTrade">
+                                <div class="accordion-body p-0">
+                                    <div class="p-4">
+                                        <div class="row g-3">
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" id="deliveryDate" class="form-control flatpickr-date"
+                                                        placeholder="วว/ดด/ปปปป" />
+                                                    <label for="deliveryDate">วันที่ส่งมอบ <span class="text-danger">●</span></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <select id="selectDeliveryLocation" class="select2 form-select">
+                                                        <option value="">-- เลือกสถานที่ส่งมอบ --</option>
+                                                        <option value="seller">สถานที่ผู้ขาย</option>
+                                                        <option value="buyer">สถานที่ผู้ซื้อ</option>
+                                                        <option value="other">สถานที่อื่น</option>
+                                                    </select>
+                                                    <label for="selectDeliveryLocation">สถานที่ส่งมอบ</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" id="vehicleNo" class="form-control"
+                                                        placeholder="ทะเบียนรถ" />
+                                                    <label for="vehicleNo">ทะเบียนรถขนส่ง (ถ้ามี)</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-floating form-floating-outline">
+                                                    <textarea id="remarkTrade" class="form-control" style="height:80px;"
+                                                        placeholder="หมายเหตุ"></textarea>
+                                                    <label for="remarkTrade">หมายเหตุ / เงื่อนไขเพิ่มเติม</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /TAB 1 -->
+
+                <!-- ==================== TAB 2: รายการเศษเหลือ ==================== -->
+                <div id="tab-scrap" class="tab-pane fade" role="tabpanel">
+
+                    <!-- Toolbar -->
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div>
+                            <span class="fw-semibold small">รายการเศษเหลือจากการผลิต</span>
+                            <span class="text-muted small ms-2">— เลือกจากรายการ RMBS2 ที่มีเศษเหลือคงเหลือ</span>
+                        </div>
+                        <button type="button" class="btn btn-outline-primary btn-sm" id="btnAddScrap"
+                            data-bs-toggle="modal" data-bs-target="#modalSelectScrap">
+                            <i class="ri ri-add-line me-1"></i> เพิ่มรายการเศษเหลือ
+                        </button>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle small mb-3" id="scrapItemTable">
+                            <thead class="text-center">
+                                <tr>
+                                    <th style="width:3rem;">#</th>
+                                    <th>เลขที่ RMBS1</th>
+                                    <th>เลขที่ RMBS2</th>
+                                    <th>ชื่อผลิตภัณฑ์</th>
+                                    <th>ประเภทเศษเหลือ</th>
+                                    <th class="text-end">น้ำหนักเศษเหลือคงเหลือ (กก.)</th>
+                                    <th class="text-end">น้ำหนักที่ขาย (กก.) <span class="text-danger">●</span></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="scrapItemTbody">
+                                <!-- dummy row -->
+                                <tr data-item-id="si1" data-rmbs1="10604204211700000093" data-rmbs2="RMBS2-001"
+                                    data-product="Skipjack Tuna Canned" data-scrap-type="เศษทูน่า (หัว หาง ก้าง)"
+                                    data-available="5200.000">
+                                    <td class="text-center text-muted small">1</td>
+                                    <td class="text-primary">10604204211700000093</td>
+                                    <td class="text-primary">RMBS2-001</td>
+                                    <td>Skipjack Tuna Canned</td>
+                                    <td>เศษทูน่า (หัว หาง ก้าง)</td>
+                                    <td class="text-end">5,200.000</td>
+                                    <td class="text-end">
+                                        <input type="number" class="form-control form-control-sm text-end input-sell-weight"
+                                            style="min-width:120px;" value="5200" step="0.001" min="0" max="5200" />
+                                    </td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-sm btn-icon btn-outline-danger btn-remove-scrap-item" title="ลบ">
+                                            <i class="ri ri-delete-bin-line text-danger"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot class="table-light">
+                                <tr>
+                                    <td colspan="6" class="text-end fw-semibold small">น้ำหนักรวมที่ขายทั้งหมด (กก.)</td>
+                                    <td class="text-end fw-bold" id="totalSellWeight">5,200.000</td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                </div>
+                <!-- /TAB 2 -->
+
+                <!-- ==================== TAB 3: หลักฐานประกอบ ==================== -->
+                <div id="tab-evidence" class="tab-pane fade" role="tabpanel">
+
+                    <div class="d-flex align-items-center justify-content-end mb-3">
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                            data-bs-toggle="modal" data-bs-target="#modalAddEvidence">
+                            <i class="ri ri-add-line me-1"></i> เพิ่มหลักฐานประกอบ
+                        </button>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle small mb-3" id="evidenceTable">
+                            <thead class="text-center">
+                                <tr>
+                                    <th style="width:3rem;">#</th>
+                                    <th>ชื่อหลักฐาน / ชื่อของ</th>
+                                    <th>เลขที่เอกสาร</th>
+                                    <th>วันที่ออก</th>
+                                    <th>วันหมดอายุ</th>
+                                    <th>ผู้ออกเอกสาร</th>
+                                    <th style="width:4rem;"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="evidenceTbody">
+                                <tr class="text-center text-muted">
+                                    <td colspan="7" class="py-3 fst-italic small">ยังไม่มีหลักฐานประกอบ</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- /TAB 3 -->
+
+                <!-- ==================== TAB 4: ประวัติการดำเนินการ ==================== -->
+                <div id="tab-history" class="tab-pane fade" role="tabpanel">
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle small mb-0">
+                            <thead class="text-center">
+                                <tr>
+                                    <th style="width:3rem;">#</th>
+                                    <th>วันที่ / เวลา</th>
+                                    <th>ผู้ดำเนินการ</th>
+                                    <th>การดำเนินการ</th>
+                                    <th>หมายเหตุ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center text-muted">1</td>
+                                    <td>@DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                                    <td>นาย สมชาย รักษาผล</td>
+                                    <td><span class="badge bg-label-secondary">สร้างร่าง</span></td>
+                                    <td class="text-muted">—</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- /TAB 4 -->
+
+            </div><!-- /tab-content -->
+        </div><!-- /nav-align-top -->
+
+        <!-- Action Buttons -->
+        <div class="d-flex justify-content-end gap-2 mt-3">
+            <a href="@Url.Action("Index", "ScrapTrading")" class="btn btn-outline-secondary">
+                <i class="ri ri-arrow-left-line me-1"></i> ยกเลิก
+            </a>
+            <button type="button" class="btn btn-outline-primary" id="btnSaveDraft">
+                <i class="ri ri-save-line me-1"></i> บันทึกร่าง
+            </button>
+        </div>
+
+        </form>
+    </div><!-- /col -->
+</div><!-- /row -->
+
+<!-- ==================== Modal: ค้นหาและเลือกเศษเหลือ ==================== -->
+<div class="modal fade" id="modalSelectScrap" tabindex="-1" aria-labelledby="modalSelectScrapLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalSelectScrapLabel">
+                    <i class="ri ri-archive-line me-2"></i>เลือกรายการเศษเหลือจากการผลิต
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Search -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4">
+                        <label class="form-label small">เลขที่ RMBS1</label>
+                        <input type="text" id="srchRmbs1" class="form-control form-control-sm" placeholder="RMBS1 No." />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small">เลขที่ RMBS2</label>
+                        <input type="text" id="srchRmbs2" class="form-control form-control-sm" placeholder="RMBS2 No." />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small">ชื่อผลิตภัณฑ์</label>
+                        <div class="input-group">
+                            <input type="text" id="srchProduct" class="form-control form-control-sm" placeholder="ชื่อผลิตภัณฑ์" />
+                            <button class="btn btn-outline-secondary btn-sm" type="button">
+                                <i class="ri ri-search-line"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Results -->
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover align-middle small">
+                        <thead class="text-center">
+                            <tr>
+                                <th style="width:3rem;"></th>
+                                <th>เลขที่ RMBS1</th>
+                                <th>เลขที่ RMBS2</th>
+                                <th>ชื่อผลิตภัณฑ์</th>
+                                <th>ประเภทเศษเหลือ</th>
+                                <th>วันที่ผลิต</th>
+                                <th class="text-end">น้ำหนักเศษเหลือคงเหลือ (กก.)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="scrap-select-row" style="cursor:pointer;"
+                                data-rmbs1="10604204211700000093" data-rmbs2="RMBS2-001"
+                                data-product="Skipjack Tuna Canned" data-scrap-type="เศษทูน่า (หัว หาง ก้าง)"
+                                data-prod-date="10/04/2026" data-available="5200.000">
+                                <td class="text-center"><input type="checkbox" class="form-check-input" /></td>
+                                <td class="text-primary fw-semibold">10604204211700000093</td>
+                                <td class="text-primary">RMBS2-001</td>
+                                <td>Skipjack Tuna Canned</td>
+                                <td>เศษทูน่า (หัว หาง ก้าง)</td>
+                                <td>10/04/2026</td>
+                                <td class="text-end">5,200.000</td>
+                            </tr>
+                            <tr class="scrap-select-row" style="cursor:pointer;"
+                                data-rmbs1="10604204211700000109" data-rmbs2="RMBS2-002"
+                                data-product="Yellowfin Tuna Canned" data-scrap-type="เศษ Yellowfin tuna"
+                                data-prod-date="12/04/2026" data-available="3400.000">
+                                <td class="text-center"><input type="checkbox" class="form-check-input" /></td>
+                                <td class="text-primary fw-semibold">10604204211700000109</td>
+                                <td class="text-primary">RMBS2-002</td>
+                                <td>Yellowfin Tuna Canned</td>
+                                <td>เศษ Yellowfin tuna</td>
+                                <td>12/04/2026</td>
+                                <td class="text-end">3,400.000</td>
+                            </tr>
+                            <tr class="scrap-select-row" style="cursor:pointer;"
+                                data-rmbs1="10604204211700000184" data-rmbs2="RMBS2-003"
+                                data-product="Skipjack Tuna Pouch" data-scrap-type="เศษทูน่า (หัว หาง)"
+                                data-prod-date="15/04/2026" data-available="1800.500">
+                                <td class="text-center"><input type="checkbox" class="form-check-input" /></td>
+                                <td class="text-primary fw-semibold">10604204211700000184</td>
+                                <td class="text-primary">RMBS2-003</td>
+                                <td>Skipjack Tuna Pouch</td>
+                                <td>เศษทูน่า (หัว หาง)</td>
+                                <td>15/04/2026</td>
+                                <td class="text-end">1,800.500</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="ri ri-close-line me-1"></i> ยกเลิก
+                </button>
+                <button type="button" class="btn btn-primary" id="btnConfirmSelectScrap">
+                    <i class="ri ri-check-line me-1"></i> เพิ่มรายการที่เลือก
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Modal Select Scrap -->
+
+<!-- ==================== Modal: ค้นหาผู้ซื้อในระบบ ==================== -->
+<div class="modal fade" id="modalSearchBuyer" tabindex="-1" aria-labelledby="modalSearchBuyerLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalSearchBuyerLabel">
+                    <i class="ri ri-search-line me-2"></i>ค้นหาผู้ซื้อในระบบ [FSW]
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label small">ชื่อกิจการ / ชื่อผู้ซื้อ</label>
+                        <input type="text" id="srchBuyerName" class="form-control form-control-sm" placeholder="ชื่อกิจการ" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small">เลขทะเบียนนิติบุคคล</label>
+                        <div class="input-group">
+                            <input type="text" id="srchBuyerTax" class="form-control form-control-sm" placeholder="เลขทะเบียน" />
+                            <button class="btn btn-outline-secondary btn-sm" type="button">
+                                <i class="ri ri-search-line"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover align-middle small">
+                        <thead class="text-center">
+                            <tr>
+                                <th style="width:3rem;"></th>
+                                <th>ชื่อกิจการ</th>
+                                <th>เลขทะเบียน</th>
+                                <th>ประเภทกิจการ</th>
+                                <th>ที่อยู่</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="buyer-select-row" style="cursor:pointer;"
+                                data-name="บริษัท ปลาป่นไทย จำกัด" data-tax="0105563089444"
+                                data-license="FM-TH-2025-0087" data-phone="02-345-6789"
+                                data-address="123 ถนนสุขุมวิท แขวงคลองเตย เขตคลองเตย กรุงเทพมหานคร 10110">
+                                <td class="text-center"><input type="radio" name="buyerSelect" class="form-check-input" /></td>
+                                <td class="text-primary fw-semibold">บริษัท ปลาป่นไทย จำกัด</td>
+                                <td>0105563089444</td>
+                                <td>โรงงานผลิตปลาป่น</td>
+                                <td class="small">123 ถนนสุขุมวิท กรุงเทพฯ</td>
+                            </tr>
+                            <tr class="buyer-select-row" style="cursor:pointer;"
+                                data-name="บริษัท ปลาป่นสยาม จำกัด" data-tax="0105558077333"
+                                data-license="FM-TH-2025-0099" data-phone="034-222-3333"
+                                data-address="456/1 ถนนพระราม 2 สมุทรสาคร 74000">
+                                <td class="text-center"><input type="radio" name="buyerSelect" class="form-check-input" /></td>
+                                <td class="text-primary fw-semibold">บริษัท ปลาป่นสยาม จำกัด</td>
+                                <td>0105558077333</td>
+                                <td>โรงงานผลิตปลาป่น</td>
+                                <td class="small">456/1 ถนนพระราม 2 สมุทรสาคร</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="ri ri-close-line me-1"></i> ยกเลิก
+                </button>
+                <button type="button" class="btn btn-primary" id="btnConfirmSelectBuyer">
+                    <i class="ri ri-check-line me-1"></i> เลือกผู้ซื้อ
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Modal Search Buyer -->
+
+<!-- ==================== Modal: เพิ่มหลักฐานประกอบ ==================== -->
+<div class="modal fade" id="modalAddEvidence" tabindex="-1" aria-labelledby="modalAddEvidenceLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAddEvidenceLabel">
+                    <i class="ri ri-file-add-line me-2"></i>เพิ่มหลักฐานประกอบ
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label small">ประเภทเอกสาร</label>
+                        <select id="ev_doctype" class="form-select form-select-sm">
+                            <option value="">-- เลือกประเภทเอกสาร --</option>
+                            <option value="invoice">ใบแจ้งหนี้ / Invoice</option>
+                            <option value="receipt">ใบเสร็จรับเงิน</option>
+                            <option value="delivery">ใบส่งมอบสินค้า</option>
+                            <option value="other">อื่นๆ</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small">ตัวเอกสาร</label>
+                        <select id="ev_document_kind" class="form-select form-select-sm">
+                            <option value="">-- เลือกตัวเอกสาร --</option>
+                            <option value="original">เอกสารตัวจริง</option>
+                            <option value="copy">เอกสารฉบับสำเนา</option>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label small">ชื่อหลักฐาน / ชื่อของ <span class="text-danger">●</span></label>
+                        <input type="text" id="ev_name" class="form-control form-control-sm" placeholder="ชื่อหลักฐาน" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small">เลขที่เอกสาร</label>
+                        <input type="text" id="ev_docno" class="form-control form-control-sm" placeholder="เลขที่เอกสาร" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small">ผู้ออกเอกสาร</label>
+                        <input type="text" id="ev_issuer" class="form-control form-control-sm" placeholder="ผู้ออกเอกสาร" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small">วันที่ออกเอกสาร</label>
+                        <div class="input-group">
+                            <input type="text" id="ev_issue_date" class="form-control form-control-sm flatpickr-date" placeholder="วว/ดด/ปปปป" />
+                            <span class="input-group-text px-2"><i class="ri ri-calendar-line"></i></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small">วันที่หมดอายุ</label>
+                        <div class="input-group">
+                            <input type="text" id="ev_expire_date" class="form-control form-control-sm flatpickr-date" placeholder="วว/ดด/ปปปป" />
+                            <span class="input-group-text px-2"><i class="ri ri-calendar-line"></i></span>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label small">แนบไฟล์เอกสาร</label>
+                        <input type="file" id="ev_file" class="form-control form-control-sm"
+                            accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" />
+                        <div class="form-text text-muted">รองรับ PDF, JPG, PNG, DOC (ขนาดไม่เกิน 10 MB)</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="ri ri-close-line me-1"></i> ยกเลิก
+                </button>
+                <button type="button" class="btn btn-primary" id="btnConfirmAddEvidence">
+                    <i class="ri ri-save-line me-1"></i> บันทึก
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Modal Evidence -->
+
+@section PageScripts {
+<script>
+$(document).ready(function () {
+
+    // ── Flatpickr ──
+    function initFp(el) {
+        if (el && !el._flatpickr) {
+            flatpickr(el, { dateFormat: 'd/m/Y', allowInput: true,
+                appendTo: document.body,
+                onReady: function(s, d, fp) { fp.calendarContainer.style.zIndex = '9999'; }
+            });
+        }
+    }
+    document.querySelectorAll('.flatpickr-date').forEach(function(el) { initFp(el); });
+    $('#modalAddEvidence').on('shown.bs.modal', function() {
+        initFp(document.getElementById('ev_issue_date'));
+        initFp(document.getElementById('ev_expire_date'));
+        $('#ev_name,#ev_docno,#ev_issuer,#ev_issue_date,#ev_expire_date').val('');
+        $('#ev_doctype,#ev_document_kind').val('');
+        $('#ev_file').val('');
+    });
+
+    // ── Select2 ──
+    $('.select2').select2({ width: '100%' });
+
+    // ── ประเภทผู้ซื้อ toggle ──
+    $('input[name="buyerType"]').on('change', function () {
+        if ($(this).val() === 'inside') {
+            $('#buyerInsideSection').removeClass('d-none');
+            $('#buyerOutsideSection').addClass('d-none');
+        } else {
+            $('#buyerInsideSection').addClass('d-none');
+            $('#buyerOutsideSection').removeClass('d-none');
+        }
+    });
+
+    // ── เปิด modal ค้นหาผู้ซื้อ ──
+    $('#btnSearchBuyer').on('click', function () {
+        new bootstrap.Modal(document.getElementById('modalSearchBuyer')).show();
+    });
+
+    // ── คลิก buyer row ──
+    $(document).on('click', '.buyer-select-row', function () {
+        $('.buyer-select-row').removeClass('table-active');
+        $(this).addClass('table-active').find('input[type=radio]').prop('checked', true);
+    });
+
+    $('#btnConfirmSelectBuyer').on('click', function () {
+        var $sel = $('input[name=buyerSelect]:checked').closest('tr');
+        if ($sel.length === 0) { alert('กรุณาเลือกผู้ซื้อก่อน'); return; }
+        $('#buyerName').val($sel.data('name'));
+        $('#buyerTaxId').val($sel.data('tax'));
+        $('#buyerLicense').val($sel.data('license'));
+        $('#buyerPhone').val($sel.data('phone'));
+        $('#buyerAddress').val($sel.data('address'));
+        bootstrap.Modal.getInstance(document.getElementById('modalSearchBuyer')).hide();
+    });
+
+    // ── เลือก Scrap row ──
+    $(document).on('click', '.scrap-select-row', function () {
+        $(this).toggleClass('table-active');
+        var $cb = $(this).find('input[type=checkbox]');
+        $cb.prop('checked', !$cb.prop('checked'));
+    });
+
+    // ── เพิ่มรายการเศษเหลือ ──
+    var _scrapCounter = 1;
+    $('#btnConfirmSelectScrap').on('click', function () {
+        var added = 0;
+        $('.scrap-select-row.table-active').each(function () {
+            var $row = $(this);
+            var itemId = 'si' + (++_scrapCounter);
+            var rmbs1 = $row.data('rmbs1');
+            var rmbs2 = $row.data('rmbs2');
+            var product = $row.data('product');
+            var scrapType = $row.data('scrap-type');
+            var available = parseFloat($row.data('available')) || 0;
+            // check not already added
+            var exists = $('#scrapItemTbody tr[data-rmbs2="' + rmbs2 + '"]').length > 0;
+            if (exists) return;
+            var rowNum = $('#scrapItemTbody tr').length + 1;
+            var $tr = $('<tr data-item-id="' + itemId + '" data-rmbs1="' + rmbs1 + '" data-rmbs2="' + rmbs2 + '" data-available="' + available + '">' +
+                '<td class="text-center text-muted small">' + rowNum + '</td>' +
+                '<td class="text-primary">' + rmbs1 + '</td>' +
+                '<td class="text-primary">' + rmbs2 + '</td>' +
+                '<td>' + product + '</td>' +
+                '<td>' + scrapType + '</td>' +
+                '<td class="text-end">' + available.toLocaleString('th-TH', {minimumFractionDigits: 3}) + '</td>' +
+                '<td class="text-end"><input type="number" class="form-control form-control-sm text-end input-sell-weight" style="min-width:120px;" value="' + available + '" step="0.001" min="0" max="' + available + '" /></td>' +
+                '<td class="text-center"><button type="button" class="btn btn-sm btn-icon btn-outline-danger btn-remove-scrap-item" title="ลบ"><i class="ri ri-delete-bin-line text-danger"></i></button></td>' +
+                '</tr>');
+            $('#scrapItemTbody').append($tr);
+            added++;
+        });
+        if (added === 0 && $('.scrap-select-row.table-active').length === 0) {
+            alert('กรุณาเลือกรายการเศษเหลืออย่างน้อย 1 รายการ');
+            return;
+        }
+        recalcTotal();
+        bootstrap.Modal.getInstance(document.getElementById('modalSelectScrap')).hide();
+        $('.scrap-select-row').removeClass('table-active').find('input[type=checkbox]').prop('checked', false);
+    });
+
+    // ── ลบ scrap row ──
+    $(document).on('click', '.btn-remove-scrap-item', function () {
+        $(this).closest('tr').remove();
+        reindexScrap();
+        recalcTotal();
+    });
+
+    function reindexScrap() {
+        $('#scrapItemTbody tr').each(function (i) {
+            $(this).find('td:first').text(i + 1);
+        });
+    }
+
+    function recalcTotal() {
+        var total = 0;
+        $('#scrapItemTbody .input-sell-weight').each(function () {
+            total += parseFloat($(this).val()) || 0;
+        });
+        $('#totalSellWeight').text(total.toLocaleString('th-TH', {minimumFractionDigits: 3}));
+    }
+
+    $(document).on('input', '.input-sell-weight', function () { recalcTotal(); });
+
+    // ── หลักฐานประกอบ ──
+    $('#btnConfirmAddEvidence').on('click', function () {
+        var name = $.trim($('#ev_name').val());
+        if (!name) { alert('กรุณากรอกชื่อหลักฐานประกอบ'); return; }
+        var docno   = $('#ev_docno').val() || '—';
+        var issuer  = $('#ev_issuer').val() || '—';
+        var issuedt = $('#ev_issue_date').val() || '—';
+        var expdt   = $('#ev_expire_date').val() || '—';
+        var fileName = '';
+        var fileEl = document.getElementById('ev_file');
+        if (fileEl && fileEl.files && fileEl.files.length > 0) { fileName = fileEl.files[0].name; }
+        var rowNum = $('#evidenceTbody tr:not(.text-muted)').length + 1;
+        $('#evidenceTbody tr.text-muted').remove();
+        var $row = $('<tr>' +
+            '<td class="text-center text-muted small">' + rowNum + '</td>' +
+            '<td><div class="fw-semibold text-primary">' + name + '</div>' +
+            (fileName ? '<div class="text-muted small mt-1"><i class="ri ri-attachment-2 me-1"></i>' + fileName + '</div>' : '') +
+            '</td>' +
+            '<td>' + docno + '</td>' +
+            '<td>' + issuedt + '</td>' +
+            '<td>' + expdt + '</td>' +
+            '<td>' + issuer + '</td>' +
+            '<td class="text-center"><button type="button" class="btn btn-sm btn-icon btn-outline-danger btn-remove-evidence" title="ลบ"><i class="ri ri-delete-bin-line"></i></button></td>' +
+            '</tr>');
+        $('#evidenceTbody').append($row);
+        bootstrap.Modal.getInstance(document.getElementById('modalAddEvidence')).hide();
+    });
+
+    $(document).on('click', '.btn-remove-evidence', function () {
+        $(this).closest('tr').remove();
+        if ($('#evidenceTbody tr').length === 0) {
+            $('#evidenceTbody').append('<tr class="text-center text-muted"><td colspan="7" class="py-3 fst-italic small">ยังไม่มีหลักฐานประกอบ</td></tr>');
+        }
+    });
+
+    // ── บันทึกร่าง ──
+    $('#btnSaveDraft').on('click', function () {
+        alert('บันทึกร่างเรียบร้อยแล้ว (mockup)');
+    });
+
+    recalcTotal();
+});
+</script>
+}

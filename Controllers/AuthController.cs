@@ -11,8 +11,12 @@ public class AuthController : Controller
   public IActionResult LoginBasic() => View();
   public IActionResult LoginCover() => View();
   public IActionResult RegisterBasic() => View();
+  public IActionResult RegisterChannel() => View();
   public IActionResult RegisterCover() => View();
   public IActionResult RegisterMultiSteps() => View();
+  public IActionResult RegisterThaiID() => View();
+  public IActionResult RegisterThaiIDCallback() => View();
+  public IActionResult RegisterComplete() => View();
   public IActionResult ResetPasswordBasic() => View();
   public IActionResult ResetPasswordCover() => View();
   public IActionResult TwoStepsBasic() => View();
