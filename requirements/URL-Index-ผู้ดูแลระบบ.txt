@@ -1,0 +1,196 @@
+========================================================
+  URL Index — ผู้ดูแลระบบ (Admin)
+  Dev Server: http://localhost:5055
+  ปรับปรุงล่าสุด: 27/04/2569
+========================================================
+
+3.1) การจัดการองค์กร
+─────────────────────────────────────────────────────
+  (1)  กำหนดบทบาท/หน้าที่/พื้นที่รับผิดชอบ กตส./ศตส.
+       http://localhost:5055/Admin/Organization
+
+  (2)  กำหนดบทบาท/หน้าที่ของเจ้าหน้าที่
+       http://localhost:5055/Officer/IndexUserData
+
+  (3)  เลือกพื้นที่ตั้ง RMBS1 ให้อยู่ในความรับผิดชอบ
+       http://localhost:5055/Admin/Organization
+       http://localhost:5055/Officer/IndexRMBS1PS
+
+  (4)  กำหนดผู้มีอำนาจอนุมัติ/ลงนามใบรับรอง
+       http://localhost:5055/Admin/Organization
+
+  (5)  ประชาสัมพันธ์และแจ้งข่าว
+       http://localhost:5055/Admin/Announcement
+
+  (6)  ตรวจสอบและเห็นข้อมูลทุกหน่วยงานในพื้นที่รับผิดชอบ
+       http://localhost:5055/Admin/Organization
+
+  (7)  เปิดสิทธิ์เจ้าหน้าที่ตรวจสอบข้อมูลพื้นที่รับผิดชอบ
+       http://localhost:5055/Officer/IndexUserData
+
+  (8)  เปิดสิทธิ์ให้ ศตส. ตรวจสอบใบรับรองที่ออกโดย กตส.
+       http://localhost:5055/Officer/IndexUserData
+
+  (9)  ลงทะเบียนเจ้าหน้าที่: เปิด/ปิดสิทธิ์ + บทบาท + ผู้ลงนาม
+       http://localhost:5055/Officer/IndexUserData
+       http://localhost:5055/Officer/IndexRegisterUser
+       http://localhost:5055/Admin/DofList
+       http://localhost:5055/Admin/TraceabilityList
+       http://localhost:5055/Admin/Organization
+
+3.2) ฐานข้อมูลโรงงาน DOF List
+─────────────────────────────────────────────────────
+  (1)  ชื่อสถานประกอบการ ไทย–อังกฤษ
+       http://localhost:5055/Admin/DofList
+
+  (2)  ที่อยู่–ที่ตั้งสถานประกอบการ
+       http://localhost:5055/Admin/DofList
+
+  (3)  เลขประจำตัวผู้เสียภาษีและลำดับสาขา
+       http://localhost:5055/Admin/DofList
+
+  (4)  หมายเลขรับรองโรงงาน (Approval Number)
+       http://localhost:5055/Admin/DofList
+
+  (5)  สร้าง/แก้ไข/ระงับ/ยกเลิก + ประวัติ + Export Excel
+       http://localhost:5055/Admin/DofList
+
+  (6)  นำเข้าข้อมูลหลายโรงงานจาก Template file
+       http://localhost:5055/Admin/DofList
+
+  (7)  รายชื่อประเทศที่โรงงานมีรายชื่อเป็นโรงงานส่งออก
+       http://localhost:5055/Admin/DofList
+
+  (8)  นำข้อมูลออกในรูปแบบ Excel file
+       http://localhost:5055/Admin/DofList
+
+3.3) ฐานข้อมูลโรงงาน Traceability List
+─────────────────────────────────────────────────────
+  (1)  ชื่อสถานประกอบการ ไทย–อังกฤษ
+       http://localhost:5055/Admin/TraceabilityList
+
+  (2)  ที่อยู่–ที่ตั้งสถานประกอบการ
+       http://localhost:5055/Admin/TraceabilityList
+
+  (3)  เลขประจำตัวผู้เสียภาษีและลำดับสาขา
+       http://localhost:5055/Admin/TraceabilityList
+
+  (4)  หมายเลขรับรองโรงงาน (Approval Number)
+       http://localhost:5055/Admin/TraceabilityList
+
+  (5)  สร้าง/แก้ไข/ระงับ/ยกเลิก + ประวัติ + Export Excel
+       http://localhost:5055/Admin/TraceabilityList
+
+  (6)  นำเข้าข้อมูลหลายโรงงานจาก Template file
+       http://localhost:5055/Admin/TraceabilityList
+
+  (7)  สำเนาข้อมูลจาก DOF List มาเป็นข้อมูลตั้งต้น
+       http://localhost:5055/Admin/TraceabilityList
+
+  (8)  นำข้อมูลออกในรูปแบบ Excel file
+       http://localhost:5055/Admin/TraceabilityList
+
+3.4) มาตรการสุขอนามัยของประเทศคู่ค้า
+─────────────────────────────────────────────────────
+  (1)  จัดทำฐานข้อมูลประเทศคู่ค้า (สร้าง/แก้ไข/ระงับ/ยกเลิก)
+       http://localhost:5055/Admin/NotificationReason
+
+  (2)  ตั้งค่าการตรวจสอบสุขอนามัยของวัตถุดิบนำเข้า
+       http://localhost:5055/Admin/NotificationReason
+
+  (3)  ตรวจสอบรายละเอียดมาตรการ
+       http://localhost:5055/Admin/NotificationReason
+
+  (4)  นำข้อมูลออกในรูปแบบ Excel file
+       http://localhost:5055/Admin/NotificationReason
+
+3.5) การออกใบรับรอง PS/NMD — การกำหนดค่าเริ่มต้น
+─────────────────────────────────────────────────────
+  (1)  ปรับแบบฟอร์มอิเล็กทรอนิกส์ตามประเทศปลายทาง
+       http://localhost:5055/Admin/CertificateTemplate
+
+  (2)  ตั้งค่าการแจ้งเตือนล่วงหน้าก่อนวันส่งออก
+       http://localhost:5055/Admin/IssueReason
+       http://localhost:5055/PSDeclaration/IndexTrackRequestStatus
+
+  (3)  ระงับการออกใบรับรองตามรูปแบบ/ประเทศ/โรงงาน
+       http://localhost:5055/Admin/CertificateTemplate
+
+3.6) รายงาน Static และรายงาน Dynamic
+─────────────────────────────────────────────────────
+  (1)  ดึงรายงาน + Export Excel ตามรูปแบบกรมประมง
+       http://localhost:5055/Admin/Reports
+       http://localhost:5055/Officer/IndexReports
+
+  (2)  รายงานควบคุมปริมาณวัตถุดิบนำเข้า เอกสาร 1 & 2 (ST-005/006)
+       http://localhost:5055/Admin/Reports
+
+  (3)  รายงานการพิจารณาอนุมัติ %Yield (ST-007)
+       http://localhost:5055/Admin/Reports
+
+  (4)  รายงานควบคุมปริมาณสินค้า เอกสาร 1 & 2 (ST-008/009)
+       http://localhost:5055/Admin/Reports
+
+  (5)  รายงานการออกใบรับรอง PS/NMD multi-dimension (ST-010)
+       http://localhost:5055/Admin/Reports
+
+  (6)  สรุปภาพรวมใบรับรอง — แก้ไข/ออกใบแทน/ยกเลิก (ST-011)
+       http://localhost:5055/Admin/Reports
+
+  (7)  รายงานการออกใบรับรองรายประเทศ พร้อม sort (ST-012)
+       http://localhost:5055/Admin/Reports
+
+  (8)  รายงานการค้นหาหนังสือรับรองตนเอง (ST-013)
+       http://localhost:5055/Admin/Reports
+
+  (9)  รายงานการตรวจสอบย้อนกลับ (ST-014)
+       http://localhost:5055/Admin/Reports
+
+  (10) รายงานสรุปรายปี/เดือน/สัปดาห์ + RMBS1/RMBS2/P1/P2 (ST-015)
+       http://localhost:5055/Admin/Reports
+
+  (11) รายการสรุปผลรวมน้ำหนักวัตถุดิบรายประเทศ (ST-016)
+       http://localhost:5055/Admin/Reports
+
+  (12) รายงานเศษเหลือจากกระบวนการผลิต (ST-017)
+       http://localhost:5055/Admin/Reports
+
+3.7) กำหนดรูปแบบการจัดทำใบรับรอง
+─────────────────────────────────────────────────────
+  (1)  กำหนด/แก้ไข/ยกเลิก รูปแบบการจัดทำใบรับรอง
+       http://localhost:5055/Admin/CertificateTemplate
+
+  (2)  กำหนดช่วงวันที่ รูปแบบการจัดทำใบรับรองแต่ละใบ
+       http://localhost:5055/Admin/CertificateTemplate
+
+  (3)  กำหนดลายมือชื่ออิเล็กทรอนิกส์ + แสดงบนใบรับรองอัตโนมัติ
+       http://localhost:5055/Admin/CertificateTemplate
+
+  (4)  จัดการลายมือชื่ออิเล็กทรอนิกส์ (เพิ่ม/แก้ไข/ระงับ/ยกเลิก)
+       http://localhost:5055/Admin/ESignature
+
+  (5)  เพิ่ม/แก้ไขไฟล์ลายมือชื่อ สำหรับแต่ละหน่วยงาน
+       http://localhost:5055/Admin/Organization
+
+  (6)  กำหนดต้นแบบการลงทะเบียนรับเรื่อง + Proxy/Delegate
+       http://localhost:5055/Admin/ReceptionTemplate
+
+========================================================
+  รายการ URL ที่ไม่ซ้ำกัน (Unique URLs)
+========================================================
+
+  http://localhost:5055/Admin/Announcement
+  http://localhost:5055/Admin/CertificateTemplate
+  http://localhost:5055/Admin/DofList
+  http://localhost:5055/Admin/ESignature
+  http://localhost:5055/Admin/IssueReason
+  http://localhost:5055/Admin/NotificationReason
+  http://localhost:5055/Admin/Organization
+  http://localhost:5055/Admin/ReceptionTemplate
+  http://localhost:5055/Admin/Reports
+  http://localhost:5055/Admin/TraceabilityList
+  http://localhost:5055/Officer/IndexRegisterUser
+  http://localhost:5055/Officer/IndexReports
+  http://localhost:5055/Officer/IndexRMBS1PS
+  http://localhost:5055/Officer/IndexUserData
+  http://localhost:5055/PSDeclaration/IndexTrackRequestStatus
