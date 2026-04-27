@@ -17,6 +17,11 @@ public class AdminController : Controller
     return View();
   }
 
+  public IActionResult GovernmentAgency()
+  {
+    return View();
+  }
+
   public IActionResult DofList()
   {
     return View();

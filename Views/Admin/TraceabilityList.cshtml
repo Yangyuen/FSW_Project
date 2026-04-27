@@ -798,7 +798,7 @@
 <h4 class="mb-1">ฐานข้อมูลโรงงานที่ผ่านการตรวจสอบย้อนกลับของกรมประมง</h4>
 <p class="mb-1 text-muted">รายการโรงงานที่ผ่านการตรวจสอบย้อนกลับ พร้อมระดับความครอบคลุม เอกสารเชื่อมโยง และผลการตรวจล่าสุด</p>
 
-<nav aria-label="breadcrumb" class="mb-6">
+<nav aria-label="breadcrumb" class="mb-4">
     <ol class="breadcrumb breadcrumb-style1" style="--bs-breadcrumb-divider: '>'; font-size: 0.75rem;">
         <li class="breadcrumb-item">
             <a href="@Url.Action("TraceabilityList", "Admin")" class="text-primary fw-semibold">ผู้ดูแลระบบ</a>
@@ -807,6 +807,21 @@
     </ol>
 </nav>
 
+<!-- Page-level tabs -->
+<ul class="nav nav-pills nav-pills-primary mb-4" role="tablist">
+    <li class="nav-item">
+        <button class="nav-link active" type="button" role="tab" data-bs-toggle="pill" data-bs-target="#trace-tab-main">
+            <i class="ri ri-list-check me-1"></i>รายการโรงงาน
+        </button>
+    </li>
+    <li class="nav-item">
+        <button class="nav-link" type="button" role="tab" data-bs-toggle="pill" data-bs-target="#trace-tab-managers">
+            <i class="ri ri-shield-user-line me-1"></i>ผู้จัดการฐานข้อมูล
+        </button>
+    </li>
+</ul>
+<div class="tab-content">
+<div class="tab-pane fade show active" id="trace-tab-main" role="tabpanel">
 <div class="row mb-6 g-6">
     <div class="col-sm-6 col-xl-3"><div class="card"><div class="card-body"><div class="d-flex align-items-center justify-content-between"><div class="content-left"><h5 class="mb-1">@totalCount</h5><small>โรงงานทั้งหมด</small></div><span class="badge bg-label-primary rounded-circle p-2"><i class="icon-base ri ri-links-line icon-24px"></i></span></div></div></div></div>
     <div class="col-sm-6 col-xl-3"><div class="card"><div class="card-body"><div class="d-flex align-items-center justify-content-between"><div class="content-left"><h5 class="mb-1">@passedCount</h5><small>ผ่านการตรวจสอบ</small></div><span class="badge bg-label-success rounded-circle p-2"><i class="icon-base ri ri-checkbox-circle-line icon-24px"></i></span></div></div></div></div>
@@ -875,7 +890,7 @@
         </div>
         <div class="d-flex align-items-center gap-2">
             <div class="dropdown">
-                <button type="button" class="btn btn-outline-success btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <button type="button" class="btn btn-outline-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="ri ri-file-excel-2-line me-1"></i>Export Excel
                 </button>
                 <ul class="dropdown-menu">
@@ -886,10 +901,10 @@
                     <li><a class="dropdown-item btn-export-trace" href="#" data-export-type="summary"><i class="ri ri-bar-chart-2-line me-1"></i>Export สรุปตามระดับ Traceability</a></li>
                 </ul>
             </div>
-            <button type="button" class="btn btn-sm" style="background:rgba(102,16,242,0.1);color:#6610f2;border:1px solid rgba(102,16,242,0.35);" id="btnImportTrace" data-bs-toggle="modal" data-bs-target="#traceImportModal">
+            <button type="button" class="btn btn-outline-primary btn-sm"§ id="btnImportTrace" data-bs-toggle="modal" data-bs-target="#traceImportModal">
                 <i class="ri ri-upload-cloud-2-line me-1"></i>นำเข้าข้อมูล
             </button>
-            <button type="button" class="btn btn-outline-info btn-sm" id="btnCopyFromDof" data-bs-toggle="modal" data-bs-target="#traceCopyFromDofModal">
+            <button type="button" class="btn btn-outline-primary btn-sm" id="btnCopyFromDof" data-bs-toggle="modal" data-bs-target="#traceCopyFromDofModal">
                 <i class="ri ri-file-copy-2-line me-1"></i>สำเนาจาก DOF List
             </button>
             <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#traceDetailModal">
@@ -969,23 +984,23 @@
             </tbody>
         </table>
     </div>
-</div>
+</div><!-- /main table card -->
+</div><!-- /tab-pane: รายการโรงงาน -->
 
-<!-- ผู้จัดการฐานข้อมูล Traceability List (TOR 3.1(10)) -->
-<div class="card mt-4">
-    <div class="card-header d-flex align-items-center justify-content-between py-3" style="background:rgba(255,90,90,0.06);">
+<!-- Tab: ผู้จัดการฐานข้อมูล Traceability List -->
+<div class="tab-pane fade" id="trace-tab-managers" role="tabpanel">
+<div>
+    <div class="card-header d-flex align-items-center justify-content-between py-3">
         <div>
-            <h6 class="card-title mb-1 fw-semibold text-danger">
-                <i class="ri ri-shield-user-line me-2"></i>ผู้จัดการฐานข้อมูล Traceability List
-            </h6>
+            <h5 class="card-title mb-1">ผู้จัดการฐานข้อมูล Traceability List</h5>
             <p class="text-muted small mb-0">เจ้าหน้าที่ที่ได้รับสิทธิ์เพิ่มเติม/แก้ไข/ระงับ/ยกเลิก ข้อมูลใน Traceability List ตามพื้นที่รับผิดชอบ</p>
         </div>
-        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#traceAssignManagerModal">
+        <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#traceAssignManagerModal">
             <i class="ri ri-user-add-line me-1"></i>กำหนดสิทธิ์ผู้จัดการ
         </button>
     </div>
     <div class="table-responsive p-1">
-        <table class="table table-bordered align-middle mb-0 trace-table-compact">
+    <table class="table table-bordered align-middle mb-0 trace-table-compact">
             <thead>
                 <tr>
                     <th style="width:50px;">#</th>
@@ -1064,13 +1079,15 @@
             </tbody>
         </table>
     </div>
-</div>
+</div><!-- /managers card -->
+</div><!-- /tab-pane: ผู้จัดการฐานข้อมูม -->
+</div><!-- /tab-content -->
 
 <!-- Modal: กำหนดสิทธิ์ผู้จัดการ Trace -->
 <div class="modal fade" id="traceAssignManagerModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header bg-label-danger">
+            <div class="modal-header">
                 <h5 class="modal-title"><i class="ri ri-user-add-line me-2"></i>กำหนดสิทธิ์ผู้จัดการ Traceability List</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
@@ -1103,7 +1120,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">ยกเลิก</button>
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="ri ri-save-line me-1"></i>บันทึก</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal"><i class="ri ri-save-line me-1"></i>บันทึก</button>
             </div>
         </div>
     </div>
@@ -1114,7 +1131,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="traceDetailModalLabel">
-                    <i class="ri ri-links-box-line me-2"></i><span id="traceModalTitle">รายละเอียด Traceability</span>
+                    <span id="traceModalTitle">รายละเอียด Traceability</span>
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
@@ -1240,8 +1257,8 @@
 <div class="modal fade" id="traceSuspendModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header" style="background:rgba(255,159,67,0.12);">
-                <h5 class="modal-title text-warning"><i class="ri ri-forbid-2-line me-2"></i>ระงับ Traceability ชั่วคราว</h5>
+            <div class="modal-header">
+                <h5 class="modal-title text-warning">ระงับ Traceability ชั่วคราว</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
@@ -1269,8 +1286,8 @@
 <div class="modal fade" id="traceCancelModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header" style="background:rgba(234,84,85,0.12);">
-                <h5 class="modal-title text-danger"><i class="ri ri-close-circle-line me-2"></i>ยกเลิก Traceability</h5>
+            <div class="modal-header">
+                <h5 class="modal-title text-danger">ยกเลิก Traceability</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
@@ -1308,21 +1325,11 @@
 <div class="modal fade" id="traceImportModal" tabindex="-1" aria-labelledby="traceImportModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
-            <div class="modal-header" style="background:rgba(102,16,242,0.07);">
-                <h5 class="modal-title" id="traceImportModalLabel"><i class="ri ri-upload-cloud-2-line me-2" style="color:#6610f2;"></i>นำเข้าข้อมูล Traceability List</h5>
+            <div class="modal-header">
+                <h5 class="modal-title" id="traceImportModalLabel">นำเข้าข้อมูล Traceability List</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <!-- Step indicator -->
-                <div class="d-flex align-items-center justify-content-center gap-0 mb-4" id="traceImportStepIndicator">
-                    <div class="import-step active" data-step="1"><span class="step-num">1</span><span class="step-label">ดาวน์โหลด Template</span></div>
-                    <div class="import-step-divider"></div>
-                    <div class="import-step" data-step="2"><span class="step-num">2</span><span class="step-label">อัปโหลดไฟล์</span></div>
-                    <div class="import-step-divider"></div>
-                    <div class="import-step" data-step="3"><span class="step-num">3</span><span class="step-label">ตรวจสอบข้อมูล</span></div>
-                    <div class="import-step-divider"></div>
-                    <div class="import-step" data-step="4"><span class="step-num">4</span><span class="step-label">ยืนยันนำเข้า</span></div>
-                </div>
 
                 <!-- Step 1: Download template -->
                 <div id="traceImportStep1" class="import-step-content">
@@ -1443,7 +1450,7 @@
                 <button type="button" class="btn btn-outline-secondary" id="btnTraceImportPrev"><i class="ri ri-arrow-left-line me-1"></i>ย้อนกลับ</button>
                 <div class="d-flex gap-2">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">ยกเลิก</button>
-                    <button type="button" class="btn" id="btnTraceImportNext" style="background:#6610f2;color:#fff;border-color:#6610f2;"><i class="ri ri-arrow-right-line me-1"></i>ถัดไป</button>
+                    <button type="button" class="btn btn-outline-primary" id="btnTraceImportNext"><i class="ri ri-arrow-right-line me-1"></i>ถัดไป</button>
                 </div>
             </div>
         </div>
@@ -1454,27 +1461,17 @@
 <div class="modal fade" id="traceCopyFromDofModal" tabindex="-1" aria-labelledby="traceCopyFromDofModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
-            <div class="modal-header" style="background:rgba(0,168,215,0.09);">
+            <div class="modal-header">
                 <h5 class="modal-title" id="traceCopyFromDofModalLabel">
-                    <i class="ri ri-file-copy-2-line me-2 text-info"></i>สำเนาข้อมูลโรงงานจาก DOF List
+                    สำเนาข้อมูลโรงงานจาก DOF List
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <!-- Step indicator -->
-                <div class="d-flex align-items-center justify-content-center gap-0 mb-4" id="dofCopyStepIndicator">
-                    <div class="import-step active" data-step="1"><span class="step-num">1</span><span class="step-label">เลือกโรงงาน DOF</span></div>
-                    <div class="import-step-divider"></div>
-                    <div class="import-step" data-step="2"><span class="step-num">2</span><span class="step-label">กำหนดข้อมูล Traceability</span></div>
-                    <div class="import-step-divider"></div>
-                    <div class="import-step" data-step="3"><span class="step-num">3</span><span class="step-label">ตรวจสอบ Field Mapping</span></div>
-                    <div class="import-step-divider"></div>
-                    <div class="import-step" data-step="4"><span class="step-num">4</span><span class="step-label">ยืนยันสำเนา</span></div>
-                </div>
 
                 <!-- Step 1: เลือกโรงงานจาก DOF List -->
                 <div id="dofCopyStep1" class="import-step-content">
-                    <h6 class="fw-semibold mb-2"><i class="ri ri-list-check me-1 text-info"></i>Step 1 — เลือกโรงงานจาก DOF List</h6>
+                    <h6 class="fw-semibold mb-2"><i class="ri ri-list-check me-1 text-primary"></i>Step 1 — เลือกโรงงานจาก DOF List</h6>
                     <p class="text-muted small mb-3">เลือกโรงงานที่ต้องการสำเนาข้อมูลมาเป็นข้อมูลตั้งต้น Traceability List (โรงงานที่มีอยู่ใน Traceability แล้วจะถูก disabled)</p>
                     <div class="table-responsive" id="dofCopySelectTable">
                         <table class="table table-bordered table-sm align-middle mb-0 trace-table-compact">
@@ -1552,7 +1549,7 @@
 
                 <!-- Step 2: กำหนดข้อมูล Traceability เพิ่มเติม -->
                 <div id="dofCopyStep2" class="import-step-content d-none">
-                    <h6 class="fw-semibold mb-3"><i class="ri ri-settings-3-line me-1 text-info"></i>Step 2 — กำหนดข้อมูล Traceability เพิ่มเติม</h6>
+                    <h6 class="fw-semibold mb-3"><i class="ri ri-settings-3-line me-1 text-primary"></i>Step 2 — กำหนดข้อมูล Traceability เพิ่มเติม</h6>
                     <p class="text-muted small mb-3">กำหนดค่าเริ่มต้นสำหรับโรงงานที่เลือกทั้ง <strong>2 รายการ</strong></p>
                     <div class="row g-4">
                         <div class="col-md-6">
@@ -1571,7 +1568,7 @@
                             <div class="form-text text-muted">กลุ่มสินค้าหลักที่โรงงานผลิต</div>
                         </div>
                         <div class="col-12">
-                            <div class="alert alert-info py-2 small">
+                            <div class="alert alert-primary py-2 small">
                                 <i class="ri ri-information-line me-1"></i>ข้อมูลต่อไปนี้จะถูกคัดลอกอัตโนมัติจาก DOF List: ชื่อโรงงาน (TH/EN), ที่อยู่ (TH/EN), TaxId, BranchCode, EstablishmentNo, โทรศัพท์, แฟกซ์, อีเมล
                             </div>
                         </div>
@@ -1585,9 +1582,9 @@
                         <!-- Factory 1 -->
                         <div class="col-12">
                             <div class="card border-success">
-                                <div class="card-header py-2 bg-label-success d-flex align-items-center justify-content-between">
+                                <div class="card-header py-2 bg-label-secondary d-flex align-items-center justify-content-between">
                                     <span class="fw-semibold"><i class="ri ri-building-4-line me-1"></i>DOF-FAC-00128 → <span class="badge bg-label-primary ms-1">TRC-0007 (ใหม่)</span></span>
-                                    <span class="badge bg-success"><i class="ri ri-check-line me-1"></i>พร้อมสำเนา</span>
+                                    <span class="badge bg-label-primary"><i class="ri ri-check-line me-1"></i>พร้อมสำเนา</span>
                                 </div>
                                 <div class="card-body py-3">
                                     <div class="row g-2">
@@ -1620,9 +1617,9 @@
                         <!-- Factory 2 -->
                         <div class="col-12">
                             <div class="card border-success">
-                                <div class="card-header py-2 bg-label-success d-flex align-items-center justify-content-between">
+                                <div class="card-header py-2 bg-label-secondary d-flex align-items-center justify-content-between">
                                     <span class="fw-semibold"><i class="ri ri-building-4-line me-1"></i>DOF-FAC-00449 → <span class="badge bg-label-primary ms-1">TRC-0008 (ใหม่)</span></span>
-                                    <span class="badge bg-success"><i class="ri ri-check-line me-1"></i>พร้อมสำเนา</span>
+                                    <span class="badge bg-label-primary"><i class="ri ri-check-line me-1"></i>พร้อมสำเนา</span>
                                 </div>
                                 <div class="card-body py-3">
                                     <div class="row g-2">
@@ -1657,8 +1654,8 @@
 
                 <!-- Step 4: Confirm + Progress -->
                 <div id="dofCopyStep4" class="import-step-content d-none">
-                    <h6 class="fw-semibold mb-3"><i class="ri ri-file-copy-2-line me-1 text-info"></i>Step 4 — ยืนยันสำเนา</h6>
-                    <div class="alert alert-info py-2 small mb-3">
+                    <h6 class="fw-semibold mb-3"><i class="ri ri-file-copy-2-line me-1 text-primary"></i>Step 4 — ยืนยันสำเนา</h6>
+                    <div class="alert alert-primary py-2 small mb-3">
                         <i class="ri ri-information-line me-1"></i>ระบบจะสำเนาข้อมูลจาก DOF List จำนวน <strong>2 โรงงาน</strong> มาสร้างเป็นข้อมูลตั้งต้นใน Traceability List
                     </div>
                     <div class="table-responsive mb-3">
@@ -1687,16 +1684,16 @@
                     <div id="dofCopyProgressArea" class="d-none mb-3">
                         <label class="form-label small fw-semibold">กำลังสำเนาข้อมูล...</label>
                         <div class="progress" style="height:18px;">
-                            <div id="dofCopyProgressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-info" style="width:0%"></div>
+                            <div id="dofCopyProgressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-primary" style="width:0%"></div>
                         </div>
                     </div>
                     <div id="dofCopySuccessMsg" class="d-none">
-                        <div class="alert alert-success py-2 mb-2">
+                        <div class="alert alert-primary py-2 mb-2">
                             <i class="ri ri-checkbox-circle-line me-1"></i><strong>สำเนาสำเร็จ 2 รายการ</strong> — ข้อมูลได้รับการบันทึกลงใน Traceability List แล้ว
                         </div>
                         <div class="d-flex flex-wrap gap-2">
-                            <span class="badge bg-success px-3 py-2"><i class="ri ri-file-copy-2-line me-1"></i>TRC-0007 — สำเนาจาก DOF List ✅</span>
-                            <span class="badge bg-success px-3 py-2"><i class="ri ri-file-copy-2-line me-1"></i>TRC-0008 — สำเนาจาก DOF List ✅</span>
+                            <span class="badge bg-primary px-3 py-2"><i class="ri ri-file-copy-2-line me-1"></i>TRC-0007 — สำเนาจาก DOF List ✅</span>
+                            <span class="badge bg-primary px-3 py-2"><i class="ri ri-file-copy-2-line me-1"></i>TRC-0008 — สำเนาจาก DOF List ✅</span>
                         </div>
                     </div>
                 </div>
@@ -1705,7 +1702,7 @@
                 <button type="button" class="btn btn-outline-secondary d-none" id="btnDofCopyPrev"><i class="ri ri-arrow-left-line me-1"></i>ย้อนกลับ</button>
                 <div class="d-flex gap-2 ms-auto">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">ยกเลิก</button>
-                    <button type="button" class="btn btn-info text-white" id="btnDofCopyNext"><i class="ri ri-arrow-right-line me-1"></i>ถัดไป</button>
+                    <button type="button" class="btn btn-primary text-white" id="btnDofCopyNext"><i class="ri ri-arrow-right-line me-1"></i>ถัดไป</button>
                 </div>
             </div>
         </div>

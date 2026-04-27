@@ -1,0 +1,1501 @@
+================================================================================
+TOR Tracking — ฝั่งผู้ดูแลระบบ (Admin)
+ระบบบริหารจัดการการออกใบรับรองสัตว์น้ำเพื่อการส่งออก (FSW)
+กรมประมง
+================================================================================
+วันที่ตรวจสอบ: 27 เมษายน 2569
+
+หมายเหตุ:
+- สถานะ ✅  = มีแล้วในระบบ (mockup ครบ)
+- สถานะ ⚠️  = มีบางส่วน (ต้องเพิ่ม mockup)
+- สถานะ ❌  = ยังไม่มี (ต้องสร้าง mockup ใหม่)
+- URL ที่ระบุคือ http://localhost:5055 (dev server)
+================================================================================
+
+---
+
+3.1) การจัดการองค์กร
+
+    หมายเหตุ: มี Admin/Officer module ที่เกี่ยวข้อง:
+    - Admin/Organization.cshtml: จัดการองค์กรผู้ประกอบการ
+      fields: OrganizationCode / OrganizationName / OrganizationType /
+              TaxId / Province / BranchCount / ContactCount / StatusText ✅
+      OrganizationType ที่มี: โรงงานแปรรูป / ผู้ส่งออก / แพปลา-ท่าเทียบเรือ /
+                              คลังห้องเย็น / ผู้ให้บริการโลจิสติกส์
+      Detail modal: สาขา (branch table) + ผู้ติดต่อ (contact table) ✅
+      ปุ่ม "จัดการสิทธิ์" ต่อแถว: stub เท่านั้น ❌
+      ขาด: OrganizationType กตส./ศตส. / พื้นที่รับผิดชอบ /
+             ผู้มีอำนาจลงนาม / ผู้อนุมัติ ❌
+    - Officer/IndexUserData.cshtml: รายการผู้ใช้งาน
+      fields: UserId / FullName / Email / Organization / Role / LastLogin / Status ✅
+      Role ที่มี: สมาชิก / เจ้าหน้าที่ / ผู้ดูแลระบบ
+      filter: keyword / role / status ✅
+      ขาด: สังกัด กตส./ศตส. / พื้นที่รับผิดชอบ / ผู้ลงนาม / ผู้อนุมัติ ❌
+    - Officer/IndexRegisterUser.cshtml: พิจารณาอนุมัติคำขอลงทะเบียน
+      5 pending records, filter keyword/status ✅
+      ขาด: กำหนด Role กตส./ศตส. / กำหนดพื้นที่รับผิดชอบ ณ ตอนอนุมัติ ❌
+    - Admin/DofList.cshtml: ทะเบียน DOF สถานประกอบการ (6 records) ✅
+    - Admin/TraceabilityList.cshtml: ทะเบียน Traceability ✅
+    ข้อจำกัดที่พบ (ภาพรวม):
+    - ไม่มีหน้าจัดการหน่วยงานภาครัฐ กตส./ศตส. แยกจากองค์กรผู้ประกอบการ ❌
+    - ไม่มีระบบกำหนดพื้นที่รับผิดชอบ (จังหวัด/เขต) ต่อหน่วยงาน ❌
+    - ไม่มีระบบกำหนดผู้มีอำนาจลงนาม/ผู้อนุมัติ ต่อหน่วยงาน ❌
+    - ไม่มีระบบประชาสัมพันธ์/แจ้งข่าว (พร้อมแนบลิงก์/ไฟล์) ❌
+    - ไม่มีระบบ cross-visibility สิทธิ์ข้ามหน่วยงาน ❌
+    - ไม่มีระบบกำหนดสิทธิ์จัดการ DOF List / Traceability List ต่อเจ้าหน้าที่ ❌
+
+    (1) กำหนดบทบาท หน้าที่ และพื้นที่รับผิดชอบของหน่วยงาน กตส. และ ศตส.
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/Organization
+        ผลการตรวจสอบ (ก่อน):
+        - Admin/Organization มี OrganizationType เฉพาะผู้ประกอบการ
+          ไม่มีประเภท "หน่วยงานภาครัฐ" / "กตส." / "ศตส." ❌
+        - ไม่มีฟิลด์ "พื้นที่รับผิดชอบ" (จังหวัด/เขต) ต่อหน่วยงาน ❌
+        - ไม่มีฟิลด์ "บทบาทหน้าที่" (ออกใบรับรอง / ตรวจสอบ / อนุมัติ) ต่อหน่วยงาน ❌
+        mockup ที่เพิ่มแล้ว (27/04/2569):
+        - เพิ่ม Tab "หน่วยงานภาครัฐ (กตส./ศตส.)" ใน Admin/Organization (nav-pills page-level) ✅
+        - summary cards: หน่วยงานทั้งหมด (7) / กตส. (1) / ศตส. (6) / เจ้าหน้าที่รวม (83) ✅
+        - filter: คำค้นหา / ประเภทหน่วยงาน / สถานะ ✅
+        - ตาราง:
+          รหัสหน่วยงาน / ชื่อหน่วยงาน / ประเภท badge (กตส./ศตส.) /
+          เขต-ที่ตั้ง / พื้นที่รับผิดชอบ (chips จังหวัด) /
+          บทบาทหน้าที่ (chips) / จำนวนเจ้าหน้าที่ / สถานะ ✅
+        - ปุ่ม "เพิ่มหน่วยงาน" (ri-building-line, สีน้ำเงิน) ✅
+        - modal "เพิ่ม/แก้ไขหน่วยงาน" (govAgencyAddModal):
+          ประเภท: radio card (กตส. / ศตส.) ✅
+          รหัสหน่วยงาน / ชื่อหน่วยงาน / สังกัด / เขต ✅
+          พื้นที่รับผิดชอบ: multi-checkbox จังหวัด (25 จังหวัด) ✅
+          บทบาทหน้าที่: multi-checkbox 6 บทบาท
+          (ออกใบรับรอง PS/NMD / อนุมัติ RMBS1 / ตรวจสอบ Traceability /
+           บริหาร DOF List / รับเรื่องคำขอ / พิจารณาประวัติใบรับรอง) ✅
+          ผู้รับผิดชอบหลัก / ตำแหน่ง / โทรศัพท์ / อีเมล / ที่อยู่ ✅
+          alert info: แนะนำกำหนดเจ้าหน้าที่ใน IndexUserData หลังบันทึก ✅
+        - modal รายละเอียดหน่วยงาน (govAgencyDetailModal) tabs 3 แท็บ:
+          Tab "ข้อมูลหน่วยงาน": รหัส / ประเภท / เขต / จำนวนเจ้าหน้าที่ /
+                                 สถานะ / ผู้รับผิดชอบ / โทรศัพท์ / อีเมล / ที่อยู่ / หมายเหตุ ✅
+          Tab "บทบาทหน้าที่": chips บทบาท + ตาราง "ผู้มีอำนาจลงนาม/อนุมัติ" ✅
+          Tab "พื้นที่รับผิดชอบ": chips จังหวัด + ตาราง RMBS1 ในพื้นที่ ✅
+        - ปุ่ม "ดูรายละเอียด" / "แก้ไข" / "จัดการสิทธิ์" ต่อแถว ✅
+        - mockup data: 7 หน่วยงาน (1 กตส. + 6 ศตส.เขต 1–6) พร้อม detail map ✅
+
+    (2) กำหนดบทบาท หน้าที่ของเจ้าหน้าที่สังกัด กตส. และ ศตส.
+        สถานะ: [เสร็จแล้ว ✅]
+        URL: http://localhost:5055/Officer/IndexUserData
+        ผลการตรวจสอบ:
+        - IndexUserData มี Role: สมาชิก / เจ้าหน้าที่ / ผู้ดูแลระบบ ✅
+        - ไม่มีฟิลด์ "สังกัดหน่วยงาน" (กตส./ศตส.) ❌ → เพิ่มแล้ว ✅
+        - ไม่มีฟิลด์ "บทบาทเฉพาะ" (ผู้ตรวจสอบ / ผู้อนุมัติ / ผู้ลงนาม) ❌ → เพิ่มแล้ว ✅
+        - ไม่มีฟิลด์ "พื้นที่รับผิดชอบ" ต่อเจ้าหน้าที่ ❌ → เพิ่มแล้ว ✅
+        mockup ที่เพิ่มแล้ว:
+        ✅ เพิ่ม filter "สังกัดหน่วยงาน" (กตส. / ศตส. ทุกเขต) ในหน้าค้นหา
+        ✅ เพิ่มคอลัมน์ "บทบาทพิเศษ" ในตาราง แสดง badge ผู้ลงนาม / ผู้อนุมัติ
+        ✅ เพิ่ม Detail Modal ประกอบด้วย section "บทบาทและสังกัด":
+           - สังกัดหน่วยงาน: select [กตส. / ศตส.เขต 1–9]
+           - ตำแหน่ง/บทบาทในระบบ (multi-checkbox):
+             ☑ เจ้าหน้าที่รับเรื่อง  ☑ เจ้าหน้าที่พิจารณา  ☑ ผู้อนุมัติ RMBS1
+             ☑ ผู้ลงนามใบรับรอง  ☑ ผู้ตรวจสอบ Traceability  ☑ ผู้จัดการ DOF List
+           - พื้นที่รับผิดชอบ: แสดงเป็น badge จังหวัด
+           - badge "ผู้ลงนาม ✅" / "ผู้อนุมัติ ✅" ในส่วน header ของ modal
+        ✅ เพิ่ม mockup data: เจ้าหน้าที่ 4 คน (กตส. 2 คน / ศตส.เขต 3 / ศตส.เขต 5)
+        วันที่แก้ไข: 27 เมษายน 2569
+
+    (3) เลือกพื้นที่ตั้ง RMBS1 ให้อยู่ในความรับผิดชอบของหน่วยงาน กตส./ศตส.
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/Organization
+             http://localhost:5055/Officer/IndexRMBS1PS
+        วันที่แก้ไข: 27 เมษายน 2569
+        สิ่งที่ implement แล้ว:
+        [Admin/Organization] เพิ่ม accordion item "การอนุมัติ RMBS1 — หน่วยงานรับผิดชอบ"
+        ใน organizationDetailModal (ภายใน #organizationAccordion) ประกอบด้วย:
+          - badge แสดงหน่วยงานรับผิดชอบปัจจุบัน (bg-label-primary)
+          - select "หน่วยงานที่รับผิดชอบออก RMBS1" (กตส. + ศตส.เขต 1–6)
+          - ปุ่ม "เปลี่ยนหน่วยงาน" → เปิด modal #changeRmbs1AgencyModal เพื่อยืนยัน
+          - ตาราง "ประวัติการมอบหมายหน่วยงาน RMBS1" (mockup)
+          - modal #changeRmbs1AgencyModal: select หน่วยงานใหม่ + เหตุผล + ปุ่ม "บันทึก"
+        [Officer/IndexRMBS1PS] เพิ่ม:
+          - ข้อมูล ResponsibleAgencyCode / ResponsibleAgencyName ใน 4 mockup records:
+            record 1 → GOV-STS-01 / ศตส.เขต 1
+            record 2 → GOV-STS-03 / ศตส.เขต 3
+            record 3 → GOV-STS-05 / ศตส.เขต 5
+            record 4 → GOV-KTS-00 / กตส. (ส่วนกลาง)
+          - filter dropdown "หน่วยงานรับผิดชอบ" (#filterAgency) กรอง data-agency-code
+          - column header "หน่วยงานรับผิดชอบ" (colspan 12→13)
+          - badge + ปุ่มเปลี่ยนหน่วยงาน ต่อแต่ละ row
+          - modal #assignAgencyModal: แสดง RMBS1 ปัจจุบัน, select หน่วยงานใหม่, เหตุผล
+
+    (4) กำหนดผู้มีอำนาจอนุมัติ / ลงนามใบรับรอง
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/Organization
+        วันที่แก้ไข: 27 เมษายน 2569
+        สิ่งที่ implement แล้ว:
+        [Admin/Organization] ปรับปรุง govAgencyDetailModal Tab "บทบาทหน้าที่":
+          - เพิ่ม badge "ผู้ลงนามหลัก: นายสมชาย ✅" และ "ผู้อนุมัติ RMBS1: นางสาวพิมพ์ใจ ✅"
+            ใน modal header ของ govAgencyDetailModal ✅
+          - ขยายตาราง "ผู้มีอำนาจลงนาม/อนุมัติ" เพิ่มคอลัมน์:
+            หน้าที่ | ชื่อ-สกุล | ตำแหน่ง | ผู้ทำหน้าที่แทน | วันที่มีผล | วันหมดอายุ | สถานะ | การดำเนินการ ✅
+          - mockup 4 รายการ:
+            1. ผู้ลงนามใบรับรอง PS — นายสมชาย รักษ์ทะเล — แทน: นายวิรัช คำสัตย์ — ใช้งาน ✅
+            2. ผู้อนุมัติ RMBS1 — นางสาวพิมพ์ใจ สุวรรณชาติ — ใช้งาน ✅
+            3. ผู้รับรองเอกสาร — นายศิริพงษ์ สมุทรกิจ — แทน: นายสมชาย รักษ์ทะเล — ใช้งาน ✅
+            4. ผู้ลงนามใบรับรอง NMD — นางสาวอรัญญา ทองสุข — ใกล้หมดอายุ ⚠️ ✅
+          - ปุ่ม "กำหนดผู้มีอำนาจ" (ri-user-star-line, สีทอง) → เปิด #assignSignatoryModal ✅
+          - ปุ่ม "แก้ไข" / "ระงับ" / "ต่ออายุ" ต่อแต่ละแถว ✅
+          - modal #assignSignatoryModal: ✅
+            * หน้าที่: select (ผู้ลงนาม PS / NMD / ผู้อนุมัติ RMBS1 / ผู้รับรองเอกสาร)
+            * เจ้าหน้าที่: select (5 รายชื่อ สังกัดหน่วยงาน)
+            * วันที่มีผล + วันหมดอายุ (date picker)
+            * ผู้ทำหน้าที่แทน: select
+            * หมายเหตุ (คำสั่งแต่งตั้ง)
+
+    (5) ประชาสัมพันธ์และแจ้งข่าว พร้อมแนบลิงก์/ไฟล์ประกอบ
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/Announcement
+        วันที่แก้ไข: 27 เมษายน 2569
+        สิ่งที่ implement แล้ว:
+        [Admin/Announcement.cshtml] — สร้างหน้าใหม่ พร้อม action ใน AdminController ✅
+          - summary cards 4 ใบ: ข่าวทั้งหมด (6) / เผยแพร่อยู่ (4) / หมดอายุ (1) / ฉบับร่าง (1) ✅
+          - filter card: คำค้นหา / ประเภท / กลุ่มเป้าหมาย / สถานะ + ปุ่มค้นหา/ล้างค่า ✅
+          - ตารางรายการข่าว (announce-table-compact):
+            ลำดับ | หัวข้อข่าว + badge "ปักหมุด" | ประเภท (badge+icon) | กลุ่มเป้าหมาย |
+            วันเผยแพร่ | วันหมดอายุ (แดง+icon ถ้าหมดอายุ) | ไฟล์/ลิงก์ (badge) |
+            สถานะ | ปุ่มดู/แก้ไข/ลบ ✅
+          - mockup data 6 รายการ: อัปเดตระบบ / ข่าวสาร(2) / คำเตือน / ประกาศ(หมดอายุ) / ฉบับร่าง ✅
+          - ปุ่ม "เพิ่มข่าว" (ri-megaphone-line, สีน้ำเงิน) ✅
+          - modal #addAnnouncementModal "เพิ่ม/แก้ไขข่าวประชาสัมพันธ์" ✅:
+            * หัวข้อข่าว (text input)
+            * ประเภท: select (ข่าวสาร / ประกาศ / คำเตือน / อัปเดตระบบ)
+            * กลุ่มเป้าหมาย: multi-checkbox (ผู้ประกอบการ / เจ้าหน้าที่ / ทุกคน)
+            * เนื้อหา: textarea 6 แถว
+            * แนบลิงก์: ปุ่ม "+ เพิ่มลิงก์" → input URL + ชื่อลิงก์ (dynamic add/remove)
+            * แนบไฟล์: ปุ่ม "+ แนบไฟล์" → file picker (PDF/DOC/XLSX/ZIP, max 10 MB, validated client-side)
+            * วันเผยแพร่ + วันหมดอายุ (date picker)
+            * สถานะ: radio (ฉบับร่าง / เผยแพร่ทันที / กำหนดเวลา) พร้อม input วันเวลาเมื่อเลือก "กำหนดเวลา"
+            * toggle "ปักหมุดข้างบน"
+            * หมายเหตุภายใน (Admin เท่านั้น)
+          - modal #annDetailModal "รายละเอียดข่าว": แสดง metadata + เนื้อหา + ลิงก์ + ไฟล์แนบ + ปุ่มแก้ไข/ลบ ✅
+          - modal #previewModal "ตัวอย่างการแสดงผล": render preview card จากข้อมูลในฟอร์ม ✅
+          - filterRows() JS: กรองตาม keyword / ประเภท / กลุ่มเป้าหมาย / สถานะ ✅
+
+    (6) ตรวจสอบและเห็นข้อมูลทุกหน่วยงานในพื้นที่รับผิดชอบ กตส./ศตส.
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/Organization
+        วันที่แก้ไข: 27 เมษายน 2569
+        สิ่งที่ implement แล้ว:
+        [Admin/Organization.cshtml — Tab "องค์กรผู้ประกอบการ"]
+          - เพิ่ม field ResponsibleAgency / ResponsibleAgencyCode ใน mockup data
+            ORG-1001 (สมุทรสาคร) → กตส. | ORG-1002 (สงขลา) → ศตส.เขต 3
+            ORG-1003 (ภูเก็ต) → ศตส.เขต 6 | ORG-1004 (ระนอง) → ศตส.เขต 5
+            ORG-1005 (ชลบุรี) → ศตส.เขต 1 | ORG-1006 (กรุงเทพมหานคร) → กตส. ✅
+          - เพิ่ม data-responsible-agency / data-responsible-agency-code บน <tr> ✅
+          - คอลัมน์ "จังหวัด" แสดงชื่อหน่วยงานรับผิดชอบ (text-muted, ri-government-line) ✅
+          - เพิ่ม filter dropdown "หน่วยงาน กตส./ศตส." (7 ตัวเลือก):
+            ทั้งหมด / กตส. / ศตส.เขต 1–6 พร้อมบอกจังหวัดในวงเล็บ ✅
+          - อัปเดต filterRows() JS ให้กรองตาม agencyMatch ✅
+          - เพิ่มบันทึก filterAgency ในปุ่ม reset ✅
+          - เพิ่ม banner card "พื้นที่ความรับผิดชอบ" (border-primary) เหนือ summary cards:
+            * badge: หน่วยงาน กตส. (mockup บัญชีส่วนกลาง)
+            * badge: พื้นที่ — กรุงเทพมหานคร, นนทบุรี, ปทุมธานี (และพื้นที่ใกล้เคียง)
+            * badge: องค์กรในพื้นที่ 2 แห่ง
+            * badge "ดูได้ทุกพื้นที่ ✅ (Super Admin)" ✅
+          - ปุ่ม "ดูข้ามพื้นที่" (ri-search-eye-line, สีน้ำเงิน) → ล้าง filterAgency แสดงทุกองค์กร ✅
+          - ปุ่ม "เฉพาะพื้นที่ของฉัน" (ri-map-pin-line) → ตั้ง filterAgency=กตส. แล้ว filterRows() ✅
+
+    (7) เปิดสิทธิ์เจ้าหน้าที่ตรวจสอบและเห็นข้อมูลพื้นที่รับผิดชอบ กตส./ศตส.
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Officer/IndexUserData
+        Views/Officer/IndexUserData.cshtml
+        สิ่งที่ implement แล้ว:
+        - เพิ่มฟิลด์ HasDataScope / DataScopeLabel ใน mockup data (เจ้าหน้าที่ 4 คน) ✅
+        - เพิ่มคอลัมน์ "สิทธิ์ข้อมูล" ในตาราง: badge bg-label-success / bg-label-warning / "-" ✅
+        - เพิ่มปุ่ม "กำหนดสิทธิ์ข้อมูล" (ri-shield-keyhole-line, btn-outline-primary) ต่อแถว (เจ้าหน้าที่เท่านั้น) ✅
+        - เพิ่ม #dataAccessModal (modal-lg) 3 ส่วน: ✅
+          ส่วนที่ 1: ส่วนข้อมูลที่มองเห็นได้ (multi-checkbox 5 รายการ: ใบรับรอง/RMBS/ผู้ประกอบการ/DOF/Trace)
+          ส่วนที่ 2: ขอบเขตพื้นที่ (radio: ตามหน่วยงาน / กำหนดเอง + province multi-select)
+          ส่วนที่ 3: Cross-Area Access (toggle + agency checkboxes + เหตุผล) — TOR 3.1(8) pre-build
+        - เพิ่ม JS: btn-assign-scope click handler → populate modal + show ✅
+        - เพิ่ม JS: scopeMode radio → toggle province multi-select ✅
+        - เพิ่ม JS: crossAgencyToggle → show/hide crossAgencySection ✅
+
+    (8) เปิดสิทธิ์ให้ ศตส. ตรวจสอบใบรับรองที่ออกโดย กตส.
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Officer/IndexUserData
+        Views/Officer/IndexUserData.cshtml
+        วันที่แก้ไข: 27 เมษายน 2569
+        สิ่งที่ implement แล้ว:
+        - เพิ่มฟิลด์ HasCrossAgencyCertAccess / CrossAgencyCertLabel ใน mockup data ✅
+          USR-0007 (ศตส.เขต 3): HasCrossAgencyCertAccess=true, CertTypes=[PS,NMD,RMBS1]
+          USR-0008 (ศตส.เขต 5): HasCrossAgencyCertAccess=true, CertTypes=[PS,NMD,RMBS2]
+        - เพิ่ม badge "ตรวจ กตส. ✅" (bg-label-primary) ในคอลัมน์ "สิทธิ์ข้อมูล" สำหรับ ศตส. ที่มีสิทธิ์ ✅
+        - เพิ่ม section "สิทธิ์ตรวจสอบใบรับรองที่ออกโดย กตส." ใน #dataAccessModal (ภายใน crossAgencySection) ✅
+          - toggle id="certCrossAgencyToggle": อนุญาต/ไม่อนุญาต
+          - checkbox ประเภทใบรับรอง: PS / NMD / RMBS1 / RMBS2
+          - alert info: "สิทธิ์นี้เป็นสิทธิ์อ่านอย่างเดียว ผู้อนุมัติคือ Admin ระดับ กตส. เท่านั้น"
+        - เพิ่ม JS: certCrossAgencyToggle handler → show/hide certCrossAgencySection ✅
+        - เพิ่ม JS: crossAgencyCertAccess + certTypes ใน userData object (USR-0007/0008) ✅
+        - เพิ่ม JS: btn-assign-scope handler populate certCrossAgencyToggle + certType checkboxes ✅
+        - เพิ่ม JS: crossAgencyToggle sync กับ certCrossAgencyToggle ✅
+
+    (9) ลงทะเบียนเจ้าหน้าที่: เปิด/ปิดสิทธิ์ + บทบาท + ผู้ลงนาม + ผู้อนุมัติ
+        (ภายใต้หน่วยงานสังกัด กตส./ศตส.)
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Officer/IndexUserData
+             http://localhost:5055/Officer/IndexRegisterUser
+        สิ่งที่ implement แล้ว:
+        IndexUserData.cshtml:
+        - card "การจัดการสิทธิ์" ใน #userDetailModal (เฉพาะ user ที่มีหน่วยงาน กตส./ศตส.) ✅
+        - radio เปิด/ปิด/ยกเลิก สิทธิ์ (status: ใช้งาน/ระงับ/ยกเลิก) ✅
+        - select "บทบาทหลัก" (สมาชิก/เจ้าหน้าที่/ผู้ดูแลระบบ) ✅
+        - select "หน่วยงานสังกัด" (กตส./ศตส.เขต 1–6) ✅
+        - form-switch "ผู้ลงนามใบรับรอง" (modalIsSignerToggle) ✅
+        - form-switch "ผู้อนุมัติ" (modalIsApproverToggle) ✅
+        - permission history log table (mockup) ✅
+        - ปุ่ม "ปิดสิทธิ์ชั่วคราว" / "เปิดสิทธิ์" (btnTogglePermission) toggle ตาม status ✅
+        - JS handler btn-view-user populate permissionManageCard จาก userData ✅
+        IndexRegisterUser.cshtml:
+        - mockup เพิ่ม record REG-2026-00104: เจ้าหน้าที่ ศตส.เขต 4 (รอตรวจสอบ) ✅
+        - summary card "เจ้าหน้าที่รอ" (officerCount) ✅
+        - filter "บทบาทที่ขอ" (สมาชิก/เจ้าหน้าที่) ✅
+        - คอลัมน์ "สังกัดที่ขอ" แสดง badge ศตส.เขต ✅
+        - ปุ่มอนุมัติ/ปฏิเสธ เฉพาะ row ที่ "รอตรวจสอบ" ✅
+        - #approveRegModal: กำหนด บทบาทหลัก + สังกัด + บทบาทพิเศษ (checkboxes) + พื้นที่รับผิดชอบ + ผู้ลงนาม/ผู้อนุมัติ (form-switch) + หมายเหตุ ✅
+        - officer section ใน approveRegModal แสดง/ซ่อนตาม role select ✅
+        - #rejectRegModal: เหตุผลการปฏิเสธ ✅
+        - JS handlers: btn-approve-reg / btn-reject-reg populate modals ✅
+
+   (10) เปิดสิทธิ์เจ้าหน้าที่จัดการ DOF List + Traceability List
+        (เพิ่มเติม/แก้ไข/ปรับปรุง/ระงับ/ยกเลิก ในพื้นที่รับผิดชอบ)
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Officer/IndexUserData
+             http://localhost:5055/Admin/DofList
+             http://localhost:5055/Admin/TraceabilityList
+        สิ่งที่ implement แล้ว:
+        A) Views/Officer/IndexUserData.cshtml:
+           - เพิ่ม field CanManageDofList, DofScopeLabel, CanManageTraceList, TraceScopeLabel ใน C# mockup
+           - เพิ่ม canManageDofList, dofManageScope, canManageTraceList, traceManageScope ใน JS userData
+           - ตาราง "สิทธิ์ข้อมูล": เพิ่ม badge DOF (bg-label-warning, ri-list-check)
+             และ Trace (bg-label-danger, ri-route-line) ต่อ user ที่มีสิทธิ์จัดการ
+           - #dataAccessModal: เพิ่ม Section 4 "สิทธิ์จัดการฐานข้อมูล"
+             - DOF List card: toggle (dofManageToggle) + scope radio (พื้นที่สังกัด/ทุกพื้นที่)
+               + checkboxes เพิ่ม/แก้ไข/ระงับ/ยกเลิก
+             - Traceability List card: toggle (traceManageToggle) + scope radio
+               + checkboxes เพิ่ม/แก้ไข/ระงับ/ยกเลิก
+           - JS handlers: btn-assign-scope populate dof/trace toggle & section; change events
+        B) Views/Admin/DofList.cshtml:
+           - เพิ่ม card "ผู้จัดการฐานข้อมูล DOF List" ด้านล่างตารางหลัก
+           - ตาราง: USR-0003 (กตส., เพิ่ม+แก้ไข), USR-0004 (ทุกพื้นที่, เพิ่ม+แก้ไข+ระงับ+ยกเลิก),
+             USR-0008 (ศตส.เขต 5, เพิ่ม+แก้ไข+ระงับ)
+           - ปุ่ม "กำหนดสิทธิ์ผู้จัดการ" เปิด #dofAssignManagerModal
+           - ปุ่ม "แก้ไขสิทธิ์" / "ถอนสิทธิ์" ต่อแต่ละ row
+           - เพิ่ม #dofAssignManagerModal: เลือก officer, scope, checkboxes สิทธิ์
+           - เพิ่มปุ่ม Export Excel และ Import ใน card header
+        C) Views/Admin/TraceabilityList.cshtml:
+           - เพิ่ม card "ผู้จัดการฐานข้อมูล Traceability List" ด้านล่างตารางหลัก
+           - ตาราง: USR-0007 (ศตส.เขต 3, เพิ่ม+แก้ไข+ระงับ), USR-0004 (ทุกพื้นที่, ครบ 4 สิทธิ์),
+             USR-0008 (ศตส.เขต 5, ครบ 4 สิทธิ์)
+           - ปุ่ม "กำหนดสิทธิ์ผู้จัดการ" เปิด #traceAssignManagerModal
+           - ปุ่ม "แก้ไขสิทธิ์" / "ถอนสิทธิ์" ต่อแต่ละ row
+           - เพิ่ม #traceAssignManagerModal: เลือก officer, scope, checkboxes สิทธิ์
+           - เพิ่มปุ่ม Export Excel และ สำเนาจาก DOF List ใน card header
+        Build: 10 warnings, 0 errors ✅
+
+   (11) เปิดสิทธิ์หน่วยงานอื่น (นอกสังกัด กตส.) ตรวจสอบข้อมูล/ใบรับรอง กตส.
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/Organization
+        สิ่งที่ implement แล้ว:
+        A) Views/Admin/Organization.cshtml:
+           - ตาราง "รายการหน่วยงานภาครัฐ": เพิ่ม badge "ภายนอก: 2 หน่วยงาน ✅"
+             (bg-label-orange, ri-link-m) แสดงเฉพาะ row ที่ AgencyType == "กตส." (Razor @if)
+           - #govAgencyDetailModal tabs: เพิ่ม Tab ที่ 4 "สิทธิ์หน่วยงานภายนอก"
+             (govTabExternalNav — แสดงเฉพาะเมื่อ agencyType === 'กตส.' ผ่าน JS)
+             Tab badge แสดงจำนวน "2"
+           - Tab content #govTab-external:
+             - alert สีส้ม: "การให้สิทธิ์นี้จะถูก log และแจ้งเตือน Admin ระดับสูงทันที"
+             - ปุ่ม "เพิ่มหน่วยงานภายนอก" (ri-link-m, btn-outline-orange) → #grantExternalAccessModal
+             - ตาราง 9 คอลัมน์: # / ชื่อหน่วยงาน / ประเภท / สิทธิ์ที่ได้รับ (badges) /
+               วันที่เริ่ม / วันหมดอายุ / ผู้อนุมัติ / สถานะ / ปุ่มแก้ไข+ถอนสิทธิ์
+             - mockup 2 หน่วยงาน:
+               1. กรมการค้าต่างประเทศ — ดูใบรับรอง PS/NMD + Export รายงาน (ใช้งาน)
+               2. กรมศุลกากร — ดูใบรับรอง PS + ดูประวัติ RMBS1 + ดู Traceability (ใกล้หมดอายุ)
+           - #grantExternalAccessModal (modal-dialog-centered):
+             - ส่วนหัว: สีส้ม + alert ⚠️ "การให้สิทธิ์นี้จะถูก log และแจ้งเตือน Admin ระดับสูง"
+             - select หน่วยงาน (6 ตัวเลือก: DFT/ศุลกากร/อย./DSI/กรมป่าไม้/อื่นๆ)
+               + text input ค้นหาชื่อ + text input "อื่นๆ" (แสดงเมื่อเลือก "อื่นๆ")
+             - multi-checkbox 5 สิทธิ์: ดูใบรับรอง PS ✅ / NMD ✅ / ดูประวัติ RMBS1 /
+               Export รายงาน / ดู Traceability
+             - date range: วันที่เริ่มต้น + วันหมดอายุ
+             - textarea เหตุผล/บันทึก
+             - ปุ่ม "บันทึกและแจ้ง Admin" (สีส้ม)
+           - JS: govTabExternalNav แสดง/ซ่อนตาม agencyType ใน btn-view-gov/btn-edit-gov handler
+           - JS: extAgencySelect change → toggle extAgencyOther input
+        Build: 0 warnings, 0 errors ✅
+
+---
+
+3.2) ฐานข้อมูลโรงงานที่ผ่านการรับรองสุขอนามัยของกรมประมง (DOF List)
+
+    หมายเหตุ: module หลักที่เกี่ยวข้อง:
+    - Admin/DofList.cshtml: ทะเบียน DOF
+      fields ที่มี: DofNumber / FactoryCode / FactoryName(ไทย) / EstablishmentNo /
+                   Province / ApprovalScope / ExportMarkets (จำนวน) /
+                   ExpireDate / StatusText / AuditResult ✅
+      detail modal tabs: ข้อมูลรับรอง / สินค้าที่รับรอง (HS Code + market) /
+                         ประวัติการตรวจ (audit log) ✅
+      address / phone / email ในระดับ detail modal ✅
+      filter: keyword / จังหวัด / สถานะ / ผลการตรวจ ✅
+      summary cards: ทั้งหมด / รับรองแล้ว / ใกล้หมดอายุ / ระงับชั่วคราว ✅
+      ปุ่ม "เพิ่มข้อมูล" / "แก้ไขข้อมูล" (btn-edit-dof) ✅ (stub)
+      ปุ่ม "ระงับ" / "ยกเลิก": ไม่มี (status=ระงับชั่วคราวมีในข้อมูล แต่ไม่มีปุ่ม action) ❌
+    ฟิลด์ที่ขาด:
+    - ชื่อโรงงานภาษาอังกฤษ ❌
+    - ที่อยู่ภาษาอังกฤษ ❌
+    - เลขประจำตัวผู้เสียภาษี (TaxId) ❌
+    - ลำดับสาขา (BranchCode) ❌
+    - Approval Number (ต่างจาก EstablishmentNo) ❌
+    - ปุ่ม "ระงับ" + "ยกเลิก" + log การเปลี่ยนสถานะ ❌
+    - Export Excel ❌
+    - Import จาก Template file ❌
+    - รายชื่อประเทศที่โรงงานส่งออก (มีเฉพาะ "จำนวนตลาด" ไม่มีรายชื่อประเทศ) ❌
+
+    (1) ชื่อสถานประกอบการ ภาษาไทย–ภาษาอังกฤษ
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/DofList
+        สิ่งที่ implement แล้ว:
+        - เพิ่มฟิลด์ FactoryNameEN ใน C# mockup ทั้ง 6 รายการ:
+          FAC-0001: Siam Marine Foods Co., Ltd.
+          FAC-0002: Gulf Catch Processing Co., Ltd.
+          FAC-0003: Ocean Prime Export Co., Ltd.
+          FAC-0004: Andaman Cold Storage Co., Ltd.
+          FAC-0005: Southern Pelagic Co., Ltd.
+          FAC-0006: Thai Marine Pack Co., Ltd.
+        - ตารางหลัก: เพิ่ม data-factory-name-en attribute ต่อ row;
+          แสดงชื่อ EN ใต้ชื่อไทย (text-muted small fst-italic) และใต้ FactoryCode
+        - อัปเดต data-search-text ให้รวม FactoryNameEN (ค้นหาภาษาอังกฤษได้)
+        - accordion "ข้อมูลทั่วไป" ใน detail modal: เพิ่ม 2 detail-kv แถวใหม่:
+          "ชื่อสถานประกอบการ (ไทย)" → detailFactoryNameTH
+          "ชื่อสถานประกอบการ (EN)" → detailFactoryNameEN (fst-italic)
+        - JS openFactoryDetail: populate detailFactoryNameTH + detailFactoryNameEN
+          จาก row.dataset.factoryName + row.dataset.factoryNameEn
+        Build: 0 warnings, 0 errors ✅
+
+    (2) ที่อยู่–ที่ตั้งสถานประกอบการ
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/DofList
+        สิ่งที่ implement แล้ว:
+        - เพิ่มฟิลด์ addressEN + fax + เปลี่ยน phone เป็นรูปแบบ +66 ใน JS detailsMap ทั้ง 6 โรงงาน:
+          DOF-FAC-00128: addressEN=88/8 Moo 4, Nadi, Mueang Samut Sakhon..., phone=+66 34-555-100, fax=+66 34-555-199
+          DOF-FAC-00449: addressEN=88/21 Laem Chabang Industrial Estate..., phone=+66 38-771-220, fax=+66 38-771-221
+          DOF-FAC-00613: addressEN=199/24 Kanchanawanich Rd., Hat Yai..., phone=+66 74-220-919, fax=+66 74-220-920
+          DOF-FAC-00772: addressEN=42/12 Bang Rin, Mueang Ranong..., phone=+66 77-440-778, fax=+66 77-440-779
+          DOF-FAC-00818: addressEN=15/9 Fishing Port, Ratsada, Mueang Phuket..., phone=+66 76-410-550, fax=+66 76-410-551
+          DOF-FAC-00901: addressEN=99 Moo 7, Bang Pla, Bang Phli..., phone=+66 2-700-4567, fax=+66 2-700-4568
+        - accordion "ขอบเขตและการติดต่อ" ใน detail modal — แทนที่ "ที่อยู่" เป็น 2 ช่อง:
+          "ที่อยู่ (ไทย)" → detailAddress + "ที่อยู่ (EN)" → detailAddressEN (fst-italic)
+        - แยก "โทรศัพท์" (detailPhone รูปแบบ +66) + "โทรสาร (Fax)" (detailFax) คนละ col-md-3
+        - JS openFactoryDetail: populate detailAddressEN + detailFax จาก detail.addressEN + detail.fax
+        Build: 10 warnings, 0 errors ✅
+
+    (3) เลขประจำตัวผู้เสียภาษี และลำดับสาขา
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/DofList
+        สิ่งที่ implement แล้ว:
+        - เพิ่ม TaxId (13 หลัก) + BranchCode ใน C# mockup ทั้ง 6 โรงงาน:
+          FAC-0001: TaxId=0105558012345, BranchCode=00000 (สำนักงานใหญ่)
+          FAC-0002: TaxId=0205558023456, BranchCode=00000 (สำนักงานใหญ่)
+          FAC-0003: TaxId=0905558034567, BranchCode=00001 (สาขาที่ 1)
+          FAC-0004: TaxId=0605558045678, BranchCode=00000 (สำนักงานใหญ่)
+          FAC-0005: TaxId=0835558056789, BranchCode=00000 (สำนักงานใหญ่)
+          FAC-0006: TaxId=0115558067890, BranchCode=00001 (สาขาที่ 1)
+        - เพิ่ม data-tax-id + data-branch-code ใน <tr> data attributes; รวม TaxId ใน data-search-text
+        - เพิ่ม detail-kv 2 ช่องใน accordion "ข้อมูลทั่วไป":
+          "เลขประจำตัวผู้เสียภาษีอากร" → detailTaxId (font-monospace)
+          "ลำดับสาขา (Branch Code)" → detailBranchCode (font-monospace)
+        - JS openFactoryDetail: populate ทั้งสองฟิลด์จาก row.dataset พร้อมแสดง label:
+          00000 → "00000 (สำนักงานใหญ่)" / 00001 → "00001 (สาขาที่ 1)" เป็นต้น
+        Build: 0 warnings, 0 errors ✅
+
+    (4) หมายเลขรับรองโรงงาน (Approval Number)
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/DofList
+        สิ่งที่ implement แล้ว:
+        - เพิ่ม ApprovalNumber ใน C# mockup ทั้ง 6 โรงงาน (แยกจาก EstablishmentNo):
+          FAC-0001: EST-TH-1145 / AP-TH-2024-0128
+          FAC-0002: EST-TH-1288 / AP-TH-2024-0449
+          FAC-0003: EST-TH-1390 / AP-TH-2023-0613
+          FAC-0004: EST-TH-1450 / AP-TH-2024-0772
+          FAC-0005: EST-TH-1502 / AP-TH-2023-0818
+          FAC-0006: EST-TH-1604 / AP-TH-2024-0901
+        - เพิ่ม data-approval-number ใน <tr> data attributes
+        - accordion "ข้อมูลทั่วไป" — เปลี่ยน label "Establishment No." → "Establishment No. (EU)"
+          และเพิ่มช่องใหม่ "Approval Number" (id: detailApprovalNumber) แสดงแยกกันชัดเจน
+        - JS openFactoryDetail: populate detailApprovalNumber จาก row.dataset.approvalNumber
+        Build: 10 warnings, 0 errors ✅
+
+    (5) สร้าง/แก้ไข/ระงับ/ยกเลิก + ประวัติการดำเนินการ + Export Excel
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/DofList
+        สิ่งที่ implement แล้ว:
+        - ปุ่มใน action column ของตาราง: ดู (info) | แก้ไข (warning) | ระงับ (ri-forbid-2-line, #ff9f43) | ยกเลิก (ri-close-circle-line, danger) | พิมพ์ (secondary)
+        - #dofSuspendModal: "ระงับโรงงาน [ชื่อ]?" + วันที่ระงับ + textarea เหตุผล (required) + btn ยืนยันระงับ
+        - #dofCancelModal: "ยกเลิกการรับรอง [ชื่อ]?" + วันที่ยกเลิก + textarea เหตุผล (required) + btn ยืนยันยกเลิก
+        - JS event: populate modal ด้วยชื่อโรงงานจาก data-* → แสดง toast เมื่อยืนยัน
+        - Tab "ประวัติสถานะ" (#tab-dof-statuslog) ใน detail modal:
+          ตาราง: # | วันที่ | สถานะเดิม | สถานะใหม่ | เหตุผล | ผู้ดำเนินการ
+          mockup: 00613 (รับรองแล้ว→ใกล้หมดอายุ) และ 00818 (รับรองแล้ว→ระงับชั่วคราว) มี 2 entries
+        - renderStatusLogRows: badge color ตามสถานะ (success/danger/warning/secondary/info)
+        - Export Excel → dropdown: "Export ทั้งหมด" / "Export เฉพาะที่กรอง"
+          → toast "Export Excel สำเร็จ N รายการ" (นับเฉพาะแถวที่ไม่ถูก filter ซ่อน)
+        - Toast container (#dofActionToast) แสดงผล success/warning/danger
+        Build: 0 warnings, 0 errors ✅
+        - เพิ่ม Tab "ประวัติการเปลี่ยนสถานะ" ใน detail modal:
+          ตาราง: วันที่ | สถานะเดิม | สถานะใหม่ | เหตุผล | ผู้ดำเนินการ
+        - เพิ่มปุ่ม "Export Excel" (ri-file-excel-2-line, สีเขียว) ในส่วน header card:
+          Export ทั้งหมด / Export เฉพาะที่กรอง
+
+    (6) นำเข้าข้อมูลหลายโรงงานจาก Template file
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/DofList
+        สิ่งที่ implement แล้ว:
+        - ปุ่ม "นำเข้าข้อมูล" (ri-upload-cloud-2-line, สีม่วง) ใน header card → data-bs-target="#dofImportModal"
+        - modal #dofImportModal — 4-step wizard พร้อม step indicator (active / done badges):
+          Step 1 "ดาวน์โหลด Template":
+            ปุ่ม "ดาวน์โหลด Template (.xlsx)" → toast แจ้งสำเร็จ
+            badge list คอลัมน์ทั้ง 16: DofNumber / FactoryName(TH) / FactoryName(EN) /
+            TaxId / BranchCode / EstablishmentNo / ApprovalNo / Province /
+            Address(TH) / Address(EN) / Phone / Fax / ApprovalScope /
+            ExportCountries / ExpireDate / Status
+            หมายเหตุ format: ExportCountries คั่นด้วย | / ExpireDate: DD/MM/YYYY
+          Step 2 "อัปโหลดไฟล์":
+            file input (accept=.xlsx,.csv, max 5 MB)
+            validation: ต้องเลือกไฟล์ / ขนาดไม่เกิน 5 MB / นามสกุลต้อง xlsx หรือ csv
+            แสดง alert-info ชื่อไฟล์ + ขนาด เมื่อเลือกแล้ว
+          Step 3 "ตรวจสอบข้อมูล":
+            badge สรุป: "ผ่าน 3 รายการ" (success) + "มีข้อผิดพลาด 1 รายการ" (danger)
+            ตาราง preview 4 แถว mockup:
+              แถว 1,2,4: table-success + badge "ผ่าน"
+              แถว 3: table-danger + TaxId ไม่ครบ 13 หลัก + badge "TaxId ไม่ครบ 13 หลัก"
+          Step 4 "ยืนยันนำเข้า":
+            alert-warning แจ้ง "จะนำเข้า 3 รายการ ข้าม 1 รายการ"
+            คลิก "ยืนยันนำเข้า" → progress bar striped animated 0→100% (1.25s)
+            → alert-success "นำเข้าสำเร็จ 3 รายการ"
+            → ปุ่มเปลี่ยนเป็น "ปิด" → ปิด modal
+        - ปุ่ม "ย้อนกลับ" / "ถัดไป" / "ยกเลิก" ใน modal footer
+        Build: 0 warnings, 0 errors ✅
+
+    (7) รายชื่อประเทศที่โรงงานมีรายชื่อเป็นโรงงานส่งออก
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/DofList
+        สิ่งที่ implement แล้ว:
+        - เพิ่มฟิลด์ ExportCountries (string, เช่น "EU,JP,US,CN") ใน C# mockup ของทุกโรงงาน
+          00128: EU,JP,US,CN | 00449: EU,JP,US,CN,KR,AU | 00613: EU,JP,ASEAN
+          00772: EU,JP | 00818: EU,CN (ระงับ) | 00901: EU,JP,US,CA,ASEAN
+        - คอลัมน์ "ตลาดส่งออก" ในตาราง: เปลี่ยนจาก "N ตลาด" → badge chips (bg-label-primary) แต่ละประเทศ
+        - data-export-countries="EU,JP,..." บน <tr> ทุกแถว (สำหรับ JS filter)
+        - filter dropdown "ประเทศ / กลุ่มตลาด" (#filterMarket):
+          ตัวเลือก: ทั้งหมด | EU | JP | US | CN | KR | AU | ASEAN | CA
+          JS: split(',').some(m => m.trim() === market) → filter แถว client-side
+          ปุ่ม Reset รีเซ็ต filterMarket ด้วย
+        - Tab "ประเทศที่รับรองส่งออก" (#tab-dof-country) ใน detail modal:
+          ตาราง 8 คอลัมน์: # | ประเทศ (TH) | ประเทศ (EN) | รหัส ISO | กลุ่มตลาด | วันที่เริ่มต้น | วันที่สิ้นสุด | สถานะ
+          badge กลุ่มตลาด: EU=primary / เอเชียตะวันออก=warning / อเมริกา=success / อาเซียน=info / อื่นๆ=secondary
+          badge สถานะ: ใช้งาน=success / ระงับ=danger
+          ปุ่ม "เพิ่มประเทศ" (ri-earth-line) ใน header ของ tab
+        - renderExportCountriesRows(items) function ใน JS
+        - openFactoryDetail เรียก renderExportCountriesRows(detail.exportCountries) → exportCountriesTableBody
+        Build: 0 warnings, 0 errors ✅
+
+    (8) นำข้อมูลออกในรูปแบบ Excel file
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/DofList
+        สิ่งที่ implement แล้ว:
+        - Checkbox column เพิ่มที่ตารางหลัก:
+          - header checkbox (#dofSelectAll) → toggle เลือกทั้งหมด / ยกเลิกเลือกทั้งหมด (เฉพาะแถวที่ไม่ถูก filter ซ่อน)
+          - .dof-row-check ต่อแถว พร้อม data-dof-number
+        - Export Excel dropdown ขยาย 4 ตัวเลือก:
+          ○ Export ทั้งหมด (data-export-type="all") → นับ allRows
+          ○ Export เฉพาะที่กรอง (data-export-type="filtered") → นับ filteredRows
+          ○ Export เฉพาะที่เลือก (data-export-type="selected") → นับ selectedRows (แจ้งเตือนถ้าไม่ได้เลือก)
+          ── divider ──
+          ○ Export สรุปรายปี (data-export-type="summary")
+        - Toast flow:
+          1. แสดง toast info "กำลัง Export Excel (label)..." ทันที
+          2. หลัง 800ms → toast success "Export Excel สำเร็จ N รายการ (label)"
+             หรือ "Export Excel สรุปรายปี สำเร็จ"
+          3. กรณี selected=0 → toast warning "กรุณาเลือกรายการก่อน"
+        Build: 0 errors ✅
+
+---
+
+3.3) ฐานข้อมูลโรงงานที่ผ่านการตรวจสอบย้อนกลับของกรมประมง (Traceability List)
+
+    หมายเหตุ: module หลักที่เกี่ยวข้อง:
+    - Admin/TraceabilityList.cshtml: ทะเบียน Traceability
+      fields ที่มี: TraceCode / FactoryCode / FactoryName(ไทย) /
+                   TraceLevel / Province / ProductGroup /
+                   LastAuditDate / SupplierCount / RiskLevel / StatusText ✅
+      detail modal tabs: ข้อมูลหลัก / ขั้นตอนเชื่อมโยง / ประวัติการตรวจ ✅
+      address / phone ในระดับ detail modal ✅
+      filter: keyword / จังหวัด / สถานะ / ระดับความเสี่ยง ✅
+      summary cards: ทั้งหมด / ผ่านการตรวจสอบ / ผ่านแบบมีข้อสังเกต / ความเสี่ยงสูง ✅
+      ปุ่ม "เพิ่มข้อมูล" / "แก้ไขข้อมูล" ✅ (stub)
+    ฟิลด์ที่ขาด (เหมือน DOF List):
+    - ชื่อโรงงานภาษาอังกฤษ ❌
+    - ที่อยู่ภาษาอังกฤษ ❌
+    - เลขประจำตัวผู้เสียภาษี (TaxId) ❌
+    - ลำดับสาขา (BranchCode) ❌
+    - Approval Number / EstablishmentNo ❌
+    - ปุ่ม "ระงับ" + "ยกเลิก" + log การเปลี่ยนสถานะ ❌
+    - Export Excel ❌
+    - Import จาก Template file ❌
+    - ฟีเจอร์ "สำเนาจาก DOF List" ❌
+
+    (1) ชื่อสถานประกอบการ ภาษาไทย–ภาษาอังกฤษ
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/TraceabilityList
+        สิ่งที่ implement แล้ว:
+        - เพิ่มฟิลด์ FactoryNameEN ใน C# mockup ทั้ง 6 รายการ:
+          FAC-TR-101: Siam Marine Foods Co., Ltd.
+          FAC-TR-102: Ocean Prime Export Co., Ltd.
+          FAC-TR-103: Gulf Catch Processing Co., Ltd.
+          FAC-TR-104: Southern Pelagic Co., Ltd.
+          FAC-TR-105: Andaman Cold Storage Co., Ltd.
+          FAC-TR-106: Thai Marine Pack Co., Ltd.
+        - เพิ่ม data-factory-name-en attribute ต่อ <tr>
+        - ตารางหลัก คอลัมน์ "โรงงาน": แสดงชื่อ EN ใต้ชื่อไทย (text-muted small fst-italic)
+        - อัปเดต data-search-text ให้รวม FactoryNameEN (ค้นหาภาษาอังกฤษได้)
+        - accordion "ข้อมูลทั่วไป" ใน detail modal: เพิ่ม 2 detail-kv:
+          "ชื่อสถานประกอบการ (ไทย)" → detailFactoryNameTH
+          "ชื่อสถานประกอบการ (EN)" → detailFactoryNameEN (fst-italic)
+        - JS openTraceDetail: populate detailFactoryNameTH + detailFactoryNameEN
+          จาก row.dataset.factoryName + row.dataset.factoryNameEn
+        Build: 10 warnings, 0 errors ✅
+
+    (2) ที่อยู่–ที่ตั้งสถานประกอบการ
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/TraceabilityList
+        สิ่งที่ implement แล้ว:
+        - เพิ่มฟิลด์ addressEN + fax + เปลี่ยน phone เป็นรูปแบบ +66 ใน JS detailsMap ทั้ง 6 โรงงาน:
+          TRC-0001: addressEN=88/8 Moo 4, Nadi, Mueang Samut Sakhon..., phone=+66 34-555-100, fax=+66 34-555-199
+          TRC-0002: addressEN=199/24 Kanchanawanich Rd., Hat Yai..., phone=+66 74-220-919, fax=+66 74-220-920
+          TRC-0003: addressEN=88/21 Laem Chabang Industrial Estate..., phone=+66 38-771-220, fax=+66 38-771-221
+          TRC-0004: addressEN=15/9 Fishing Port, Ratsada, Mueang Phuket..., phone=+66 76-410-550, fax=+66 76-410-551
+          TRC-0005: addressEN=42/12 Bang Rin, Mueang Ranong..., phone=+66 77-440-778, fax=+66 77-440-779
+          TRC-0006: addressEN=99 Moo 7, Bang Pla, Bang Phli..., phone=+66 2-700-4567, fax=+66 2-700-4568
+        - accordion "ระดับการเชื่อมโยงและการติดต่อ" ใน detail modal:
+          แยก "ที่อยู่" เป็น 2 ช่อง col-12: "ที่อยู่ (ไทย)" → detailAddress + "ที่อยู่ (EN)" → detailAddressEN (fst-italic)
+          เพิ่ม "โทรสาร (Fax)" → detailFax แยก col-md-4 ถัดจาก โทรศัพท์
+        - JS openTraceDetail: populate detailFax + detailAddressEN จาก detail.fax + detail.addressEN
+        Build: 0 warnings, 0 errors ✅
+
+    (3) เลขประจำตัวผู้เสียภาษี และลำดับสาขา
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/TraceabilityList
+        สิ่งที่ implement แล้ว:
+        - เพิ่มฟิลด์ TaxId (string, 13 หลัก) และ BranchCode (string) ใน C# mockup ทั้ง 6 รายการ:
+          TRC-0001: TaxId=0745558101001, BranchCode=00000 (สำนักงานใหญ่)
+          TRC-0002: TaxId=0905558202002, BranchCode=00000 (สำนักงานใหญ่)
+          TRC-0003: TaxId=0205558303003, BranchCode=00001 (สาขา 1)
+          TRC-0004: TaxId=0835558404004, BranchCode=00000 (สำนักงานใหญ่)
+          TRC-0005: TaxId=0855558505005, BranchCode=00000 (สำนักงานใหญ่)
+          TRC-0006: TaxId=0115558606006, BranchCode=00000 (สำนักงานใหญ่)
+        - เพิ่ม data-tax-id + data-branch-code ใน <tr> ของตาราง
+        - อัปเดต data-search-text ให้รวม TaxId (ค้นหาด้วยเลขภาษีได้)
+        - accordion "ข้อมูลทั่วไป" ใน detail modal: เพิ่ม 2 detail-kv ใต้ FactoryNameEN:
+          "เลขประจำตัวผู้เสียภาษีอากร" → detailTaxId (col-md-6)
+          "ลำดับสาขา" → detailBranchCode แสดง "00000 (สำนักงานใหญ่)" หรือ "00001 (สาขา 1)" (col-md-6)
+        - JS openTraceDetail: populate detailTaxId จาก row.dataset.taxId,
+          compute branchLabel (00000→สำนักงานใหญ่, อื่นๆ→สาขา N)
+        Build: 10 warnings, 0 errors ✅
+
+    (4) หมายเลขรับรองโรงงาน (Approval Number)
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/TraceabilityList
+        สิ่งที่ implement แล้ว:
+        - เพิ่มฟิลด์ EstablishmentNo, ApprovalNumber, DofRefNumber ใน C# mockup ทั้ง 6 รายการ:
+          TRC-0001: EstablishmentNo=EST-TH-1101, ApprovalNumber=TRC-AP-2024-0001, DofRefNumber=DOF-FAC-00128
+          TRC-0002: EstablishmentNo=EST-TH-1102, ApprovalNumber=TRC-AP-2024-0002, DofRefNumber=DOF-FAC-00449
+          TRC-0003: EstablishmentNo=EST-TH-1103, ApprovalNumber=TRC-AP-2023-0048, DofRefNumber=DOF-FAC-00613
+          TRC-0004: EstablishmentNo=EST-TH-1104, ApprovalNumber=TRC-AP-2023-0019, DofRefNumber=DOF-FAC-00772
+          TRC-0005: EstablishmentNo=EST-TH-1105, ApprovalNumber=TRC-AP-2024-0031, DofRefNumber=DOF-FAC-00818
+          TRC-0006: EstablishmentNo=EST-TH-1106, ApprovalNumber=TRC-AP-2024-0055, DofRefNumber=DOF-FAC-00901
+        - เพิ่ม data-establishment-no + data-approval-number + data-dof-ref-number ใน <tr>
+        - accordion "ข้อมูลทั่วไป" ใน detail modal: เพิ่ม 3 detail-kv ใต้ ลำดับสาขา:
+          "Establishment Number" → detailEstablishmentNo (col-md-4)
+          "Approval Number (Traceability)" → detailApprovalNumber (col-md-4)
+          "อ้างอิง DOF Number" → detailDofRefNumber แสดงเป็น <a> link ไปยัง /Admin/DofList (col-md-4)
+        - JS openTraceDetail: populate ทั้ง 3 ฟิลด์จาก row.dataset;
+          DofRefNumber render เป็น link หากมีค่า
+        Build: 0 warnings, 0 errors ✅
+
+    (5) สร้าง/แก้ไข/ระงับ/ยกเลิก + ประวัติการดำเนินการ + Export Excel
+        สถานะ: [เสร็จสมบูรณ์ ✅]
+        URL: http://localhost:5055/Admin/TraceabilityList
+        ผลการตรวจสอบ:
+        - ปุ่ม "เพิ่มข้อมูล" ✅ (stub)
+        - ปุ่ม "แก้ไขข้อมูล" (btn-edit-trace) ✅ (stub)
+        - Tab "ประวัติการตรวจ" ✅
+        - ปุ่ม "ระงับ" (btn-suspend-trace, ri-forbid-2-line, สีส้ม) + modal #traceSuspendModal ✅
+        - ปุ่ม "ยกเลิก" (btn-cancel-trace, ri-close-circle-line, สีแดง) + modal #traceCancelModal ✅
+        - Tab "ประวัติการเปลี่ยนสถานะ" (#tab-trace-statuslog) + renderStatusLogRows() ✅
+        - Export Excel JS handler (btnExportTrace) → toast "Export Excel สำเร็จ N รายการ" ✅
+        - #traceActionToast + statusLogs ใน detailsMap ทั้ง 6 records ✅
+        Build: 0 warnings, 0 errors ✅
+
+    (6) นำเข้าข้อมูลหลายโรงงานจาก Template file
+        สถานะ: [เสร็จสมบูรณ์ ✅]
+        URL: http://localhost:5055/Admin/TraceabilityList
+        ผลการตรวจสอบ:
+        - ปุ่ม "นำเข้าข้อมูล" (ri-upload-cloud-2-line, สีม่วง) ใน card header ✅
+        - modal #traceImportModal — 4-step wizard ✅
+        - Step 1: ดาวน์โหลด Template + แสดง 15 คอลัมน์ (TraceCode/FactoryName(TH)/FactoryName(EN)/TaxId/BranchCode/EstablishmentNo/ApprovalNo/Province/Address(TH)/Address(EN)/Phone/Fax/TraceLevel/ProductGroup/SupplierCount) ✅
+        - Step 2: อัปโหลดไฟล์ .xlsx/.csv ≤ 5 MB + validation ✅
+        - Step 3: preview ตาราง 4 แถว สีเขียว/แดง + error message ✅
+        - Step 4: ยืนยันนำเข้า → progress bar → "นำเข้าสำเร็จ 3 รายการ" ✅
+        - JS wizard (DOMContentLoaded, setTraceImportStep, prev/next, file validate, progress animation) ✅
+        - ปุ่มดาวน์โหลด Template → toast success ✅
+        Build: 0 errors ✅
+
+    (7) สำเนาข้อมูลจาก DOF List มาเป็นข้อมูลตั้งต้น Traceability List
+        สถานะ: [เสร็จสมบูรณ์ ✅]
+        URL: http://localhost:5055/Admin/TraceabilityList
+        ผลการตรวจสอบ:
+        - ปุ่ม "สำเนาจาก DOF List" (ri-file-copy-2-line, สีฟ้า) ใน card header ✅
+        - modal #traceCopyFromDofModal — 4-step wizard ✅
+        - Step 1: ตารางเลือกโรงงาน DOF (checkbox per row) — DOF-FAC-00128/00449 checked,
+          DOF-FAC-00613/00772 disabled (มีอยู่ใน Traceability แล้ว), รายการใหม่ 2 ✅
+        - Step 2: กำหนดระดับ Traceability (select) + กลุ่มสินค้า (text input) ✅
+        - Step 3: preview Field Mapping DOF → Traceability (2 cards):
+          ชื่อโรงงาน(TH/EN)/ที่อยู่/TaxId/BranchCode/EstablishmentNo → คัดลอก ✅
+          TraceCode (TRC-0007, TRC-0008) → สร้างใหม่ ✨, TraceLevel/กลุ่มสินค้า → กำหนดเอง ✅
+        - Step 4: ตารางยืนยัน + progress bar → badge "สำเนาจาก DOF List ✅" 2 รายการ ✅
+        - JS wizard (setDofCopyStep, prev/next, checkbox validate, progress animation) ✅
+        Build: 0 errors ✅
+
+    (8) นำข้อมูลออกในรูปแบบ Excel file
+        สถานะ: [เสร็จสมบูรณ์ ✅]
+        URL: http://localhost:5055/Admin/TraceabilityList
+        ผลการตรวจสอบ:
+        - ปุ่ม "Export Excel" (ri-file-excel-2-line, สีเขียว) เปลี่ยนเป็น dropdown ✅
+        - dropdown 4 ตัวเลือก:
+          ○ Export ทั้งหมด (ทุกฟิลด์) — นับ allRows ✅
+          ○ Export เฉพาะรายการที่กรอง — นับ visibleRows ✅
+          ○ Export เฉพาะรายการที่เลือก (checkbox per row) — warn ถ้าไม่มีเลือก ✅
+          ○ Export สรุปตามระดับ Traceability (divider ก่อน) ✅
+        - checkbox column เพิ่มในตาราง (th select-all + td .trace-row-check per row) ✅
+        - toast: "กำลัง Export Excel... (label)" → "Export Excel สำเร็จ N รายการ (label)" ✅
+        - JS: doTraceExport(), .btn-export-trace click handlers, traceSelectAll toggle ✅
+        Build: 0 errors ✅
+
+---
+
+3.4) มาตรการสุขอนามัยของประเทศคู่ค้า
+
+    หมายเหตุ: module หลักที่เกี่ยวข้อง:
+    - Admin/NotificationReason.cshtml: ฐานข้อมูลมาตรการสุขอนามัย
+      6 records: JP / EU / US / AU / KR / CN
+      fields ที่มี: CountryCode / CountryName / Region / MeasureCode /
+                   MeasureName / ProductScope / EffectiveDate / ReviewDueDate /
+                   RiskLevel / StatusText / OwnerUnit ✅
+      summary cards: มาตรการทั้งหมด / สถานะใช้งาน / รอทบทวน / ความเสี่ยงสูง ✅
+      filter: keyword / ภูมิภาค / สถานะมาตรการ / ระดับความเสี่ยง ✅
+      ปุ่ม "เพิ่มมาตรการ" ✅ (stub modal)
+      ปุ่ม "แก้ไขข้อมูล" (btn-edit-measure) ✅ (stub)
+      ปุ่ม "ประวัติการเปลี่ยนแปลง" (ri-history-line) ✅ (stub)
+      detail modal tabs:
+        - "ข้อมูลหลัก": MeasureCode / Country / Region / ProductScope /
+          OwnerUnit / Status / EffectiveDate / ReviewDueDate / RiskLevel /
+          Objective / Authority / Contact / UpdateDate / Note ✅
+        - "ข้อกำหนดหลัก": item / criteria / frequency / severity ✅
+        - "เอกสารอ้างอิง": name / version / publishDate / status ✅
+    ฟิลด์/ฟีเจอร์ที่ขาด:
+    - Export Excel ❌
+    - ปุ่ม "ระงับ/ยกเลิก" มาตรการ + modal ยืนยัน ❌
+    - Tab "ประวัติการเปลี่ยนสถานะ" ❌
+    - panel "ตั้งค่าการตรวจสอบ" (Configuration panel สำหรับกำหนดกฎการตรวจ
+      เช่น ความถี่การสุ่มตรวจ / threshold / เงื่อนไขการแจ้งเตือน) ❌
+    - Import มาตรการจาก Template file ❌
+
+    (1) จัดทำฐานข้อมูลประเทศคู่ค้า (สร้าง/แก้ไข/ระงับ/ยกเลิกมาตรการ)
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/NotificationReason
+        วันที่แก้ไข: 27 เมษายน 2569
+        สิ่งที่ implement แล้ว:
+        - ฐานข้อมูลมาตรการ 6 ประเทศ (JP/EU/US/AU/KR/CN) ✅
+        - ปุ่ม "เพิ่มมาตรการ" → เปิด #addMeasureModal (form เต็มรูปแบบ) ✅
+          fields: ประเทศ / ภูมิภาค / รหัสมาตรการ / ชื่อมาตรการ / ขอบเขตสินค้า /
+                  มีผลบังคับใช้ / ทบทวนครั้งถัดไป / ระดับความเสี่ยง /
+                  หน่วยงานรับผิดชอบ / วัตถุประสงค์ / authority / ช่องทางติดต่อ / หมายเหตุ ✅
+        - ปุ่ม "แก้ไขข้อมูล" (btn-edit-measure) → เปิด detail modal ✅
+        - ปุ่ม "ประวัติการเปลี่ยนแปลง" ✅
+        - ปุ่ม "ระงับมาตรการ" (ri-forbid-2-line, สีส้ม #ff9f43) → #measureSuspendModal ✅
+          แสดงเฉพาะแถวที่ไม่ใช่ "พักใช้ชั่วคราว" หรือ "ยกเลิก" (Razor @if)
+          modal: รหัสมาตรการ / ชื่อมาตรการ (ประเทศ) / วันที่มีผล / เหตุผล (required)
+          validation: required textarea + invalid-feedback
+          confirm → hide modal → toast warning ✅
+        - ปุ่ม "ยกเลิกมาตรการ" (ri-close-circle-line, danger) → #measureCancelModal ✅
+          modal: alert ⚠️ ถาวร / รหัส / ชื่อ / วันที่ยกเลิก / เหตุผล (required)
+          validation: required textarea + invalid-feedback
+          confirm → hide modal → toast danger ✅
+        - Tab "ประวัติการเปลี่ยนสถานะ" (#tab-measure-statuslog) ใน measureDetailModal ✅
+          ตาราง: # | วันที่ | สถานะเดิม | สถานะใหม่ | เหตุผล | ผู้ดำเนินการ
+          renderStatusLogRows() function พร้อม badge color ตามสถานะ ✅
+        - statusLogs mockup data ทั้ง 6 มาตรการ:
+          JP: 1 entry (สร้างมาตรการใหม่ → ใช้งาน) ✅
+          EU: 1 entry (สร้างมาตรการใหม่ → ใช้งาน) ✅
+          US: 2 entries (สร้าง → ใช้งาน → รอทบทวน) ✅
+          AU: 1 entry (สร้างมาตรการใหม่ → ใช้งาน) ✅
+          KR: 2 entries (สร้าง → ใช้งาน → รอทบทวน) ✅
+          CN: 3 entries (สร้าง → ใช้งาน → รอทบทวน → พักใช้ชั่วคราว) ✅
+        - Toast container #measureActionToast (bottom-end, delay 3500ms) ✅
+        - showMeasureToast(type, message) function ✅
+        Build: 0 errors, 10 warnings (pre-existing) ✅
+
+    (2) ตั้งค่าการตรวจสอบสุขอนามัยของวัตถุดิบสัตว์น้ำนำเข้า
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/NotificationReason
+        วันที่แก้ไข: 27 เมษายน 2569
+        สิ่งที่ implement แล้ว:
+        - Tab "ตั้งค่าการตรวจสอบ" (#tab-measure-config) ใน measureDetailModal (tab ที่ 5) ✅
+          ประกอบด้วย 3 accordions:
+
+          Accordion 1 "กำหนดความถี่การตรวจ" (open by default):
+          - select "ความถี่การสุ่มตรวจ": ทุก lot / ทุก 5 lot / ทุก 10 lot / รายเดือน / ตามเหตุการณ์ ✅
+          - number input "% lot ที่ต้องตรวจสอบ" (1–100%) ✅
+          - checkbox "ประเภทวัตถุดิบที่ครอบคลุม":
+            ปลาสด / แช่แข็ง / กระป๋อง / แปรรูป / พร้อมรับประทาน ✅
+          - checkbox "ขั้นตอนสุ่มตรวจเพิ่มเติม":
+            แนบ COA ห้องแล็บ / แนบ HACCP Plan / ยืนยันบันทึก Traceability ✅
+          - alert info: "ที่กำหนดนี้ใช้ประกอบการพิจารณาออก PS/NMD อัตโนมัติ" ✅
+
+          Accordion 2 "เงื่อนไขการแจ้งเตือน":
+          - number input + select (วัน/สัปดาห์/เดือน) แจ้งเตือนล่วงหน้า ReviewDueDate ✅
+          - checkbox 3 รายการ:
+            ☑ มาตรการเปลี่ยนสถานะ ☑ ใกล้วันทบทวน ☑ โรงงานที่เกี่ยวข้องมีปัญหา ✅
+          - alert ตัวอย่าง Toast: "⚠️ มาตรการ [code] ใกล้วันทบทวน — เหลือ [N] วัน (วันที่ทบทวน: XX)" ✅
+
+          Accordion 3 "โรงงานที่ได้รับผลกระทบ":
+          - badge "มาตรการนี้ส่งผลกระทบ [N] โรงงาน" (สีตามระดับความเสี่ยง):
+            ความเสี่ยงสูง → bg-danger + badge "ความเสี่ยงสูง — ต้องตรวจสอบทุก lot" ✅
+          - ตาราง 6 คอลัมน์: # / รหัสโรงงาน / ชื่อโรงงาน (TH+EN) / จังหวัด /
+            ตลาดส่งออก (chips) / สถานะ ✅
+          - renderAffectedFactoriesRows() function ✅
+
+        - inspectionConfig mockup data ทั้ง 6 มาตรการ:
+          JP (สูง): ทุก lot, 100%, 30 วัน, 5 โรงงาน (JP exporter list) ✅
+          EU (กลาง): ทุก 5 lot, 20%, 45 วัน, 6 โรงงาน (EU exporter list) ✅
+          US (กลาง): ทุก 5 lot, 20%, 60 วัน, 3 โรงงาน (US exporter list) ✅
+          AU (ต่ำ): รายเดือน, 10%, 2 เดือน, 1 โรงงาน ✅
+          KR (สูง): ทุก lot, 100%, 30 วัน, 1 โรงงาน ✅
+          CN (สูง): ทุก lot, 100%, 14 วัน, 3 โรงงาน ✅
+
+        - populateInspectionConfig(measureCode, detail, row) function:
+          populate all form controls เมื่อ openMeasureDetail() ถูกเรียก ✅
+        - ปุ่ม "บันทึกตั้งค่า" (btnSaveInspConfig) → toast success ✅
+        - ปุ่ม "รีเซ็ตค่าเดิม" → reset form ✅
+        Build: 0 errors, 10 warnings (pre-existing) ✅
+
+    (3) ตรวจสอบรายละเอียดมาตรการ
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/NotificationReason
+        วันที่ตรวจสอบ: 27 เมษายน 2569
+        ผลการตรวจสอบ:
+        - detail modal (measureDetailModal, modal-xl, scrollable) ครบถ้วน 5 tabs ✅
+
+          Tab 1 "ข้อมูลหลัก" (#tab-measure-detail):
+          accordion "ข้อมูลทั่วไป":
+            รหัสมาตรการ (detailMeasureCode) / ประเทศ (detailCountry) / ภูมิภาค (detailRegion) /
+            ขอบเขตสินค้า (detailProductScope) / หน่วยงานรับผิดชอบ (detailOwnerUnit) / สถานะ (badge) ✅
+          accordion "เงื่อนไขและการกำกับ":
+            มีผลบังคับใช้ (detailEffectiveDate) / ทบทวนครั้งถัดไป (detailReviewDueDate) /
+            ระดับความเสี่ยง (detailRisk) / วัตถุประสงค์ (detailObjective) /
+            หน่วยงานต้นทาง (detailAuthority) / ช่องทางติดต่อ (detailContact) /
+            อัปเดตล่าสุด (detailUpdateDate) / หมายเหตุ (detailNote) ✅
+
+          Tab 2 "ข้อกำหนดหลัก" (#tab-measure-requirement):
+            ตาราง: # / หัวข้อควบคุม / เกณฑ์ / ความถี่ / นัยสำคัญ (badge สี)
+            renderRequirementRows() พร้อม badge: สูง=danger / กลาง=warning / ต่ำ=success ✅
+            mockup data ครบ 6 มาตรการ (JP: 3 items, EU: 2, US: 2, AU: 1, KR: 2, CN: 1) ✅
+
+          Tab 3 "เอกสารอ้างอิง" (#tab-measure-document):
+            ตาราง: # / เอกสาร / เวอร์ชัน / วันที่ประกาศ / สถานะ (badge สี)
+            renderDocumentRows() ✅
+            mockup data ครบ 6 มาตรการ ✅
+
+          Tab 4 "ประวัติการเปลี่ยนสถานะ" (#tab-measure-statuslog):
+            ตาราง: # / วันที่ / สถานะเดิม (badge) / สถานะใหม่ (badge) / เหตุผล / ผู้ดำเนินการ
+            renderStatusLogRows() ✅
+            mockup: JP(1), EU(1), US(2), AU(1), KR(2), CN(3) entries ✅
+            → เพิ่มจาก task 3.4(1) ✅
+
+          Tab 5 "ตั้งค่าการตรวจสอบ" (#tab-measure-config):
+            accordion ความถี่ / accordion แจ้งเตือน / accordion โรงงานที่ได้รับผลกระทบ ✅
+            → เพิ่มจาก task 3.4(2) ✅
+
+        - openMeasureDetail(measureCode) function:
+          populate ทุก field ใน Tab 1–5 จาก detailsMap + row.dataset ✅
+        - ปุ่ม "ดูรายละเอียด" (btn-view-measure) + "แก้ไข" (btn-edit-measure) → เปิด modal ✅
+        - Build: 0 errors ✅
+
+    (4) นำข้อมูลออกในรูปแบบ Excel file
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/NotificationReason
+        วันที่แก้ไข: 27 เมษายน 2569
+        สิ่งที่ implement แล้ว:
+        - ปุ่ม "Export Excel" (ri-file-excel-2-line, btn-success) + dropdown ใน card header ✅
+          dropdown 4 ตัวเลือก:
+          ○ Export ทั้งหมด (ทุกฟิลด์) — นับ allRows ✅
+          ○ Export เฉพาะรายการที่กรอง — นับ filteredRows (ที่ไม่ถูก d-none) ✅
+          ── divider ──
+          ○ Export สรุปตามภูมิภาค ✅
+          ○ Export เฉพาะมาตรการความเสี่ยงสูง — นับ highRiskRows ✅
+        - Toast 2 ขั้น:
+          1. toast info "กำลัง Export Excel [label]... ([N] รายการ)" ทันที ✅
+          2. หลัง 900ms → toast success "Export Excel สำเร็จ [N] รายการ ([label])" ✅
+          กรณี "สรุปตามภูมิภาค" → ไม่แสดงจำนวน (label เท่านั้น) ✅
+        - JS handler: document.querySelectorAll('.btn-export-measure') ✅
+        Build: 0 errors, 10 warnings (pre-existing) ✅
+
+---
+
+3.5) การออกใบรับรอง PS/NMD — การกำหนดคำเริ่มต้น
+
+    หมายเหตุ: module หลักที่เกี่ยวข้อง:
+    - Admin/CertificateTemplate.cshtml: "กำหนดรูปแบบใบรับรอง"
+      9 templates: Declaration (EU/JP/US/KR/AU) + Processing (EU/US/AR/JP)
+      fields: TemplateName / CertificateType / TargetGroup / Countries[] /
+              HsCodePattern / Version / UpdatedAt / IsActive / UpdatedBy ✅
+      filter: type / country / status ✅
+      ปุ่ม "เพิ่มรูปแบบ" ✅ (modal ครบ: ชื่อ / ประเภท / กลุ่มประเทศ / HS Code)
+      ปุ่ม "ดูตัวอย่าง" / "แก้ไขรูปแบบ" / "กำหนดช่องข้อมูล" ✅ (stub)
+      ปุ่ม toggle เปิด/ปิดใช้งาน (global ต่อ template) ✅ (stub)
+      ปุ่ม "ลบ" ✅ (stub)
+    ฟีเจอร์ที่ขาด (CertificateTemplate):
+    - Version history / audit trail เมื่อแก้ไข template ❌
+    - เหตุผลการปรับ template (เช่น "ประเทศปลายทางแก้ไขกฎหมาย") ❌
+    - Approval workflow ก่อน activate version ใหม่ ❌
+    - ระงับการออกใบรับรองระดับโรงงาน × template × ประเทศปลายทาง ❌
+    - Admin/IssueReason.cshtml: "การกำหนดคำเริ่มต้น PS/NMD"
+      6 preset phrases: PS-TH-001 / PS-EN-002 / NMD-TH-003 / NMD-EN-004 /
+                        PS-TH-005 / NMD-TH-006
+      fields: PresetCode / PresetName / CertificateType / Language / Scope /
+              Version / UpdatedAt / StatusText / OwnerUnit ✅
+      detail modal tabs: ข้อมูลหลัก / ตัวแปร / ประวัติการแก้ไข ✅
+      openingTextTh / openingTextEn ✅
+      filter: keyword / CertificateType / Language / Status ✅
+      ปุ่ม "เพิ่มชุดค่า" / "แก้ไข" ✅ (stub)
+    ฟีเจอร์ที่ขาด (IssueReason):
+    - ระบบตั้งค่าการแจ้งเตือนล่วงหน้าก่อนวันส่งออก ❌
+    - PSDeclaration/IndexTrackRequestStatus.cshtml: ติดตามสถานะคำขอ
+      filter: ประเภทใบรับรอง / สถานะ / วันที่ร่าง (date range) ✅
+      ไม่มีฟิลด์ "วันที่ส่งออก" (ExportDate) ต่อ record ❌
+      ไม่มี filter "ค้นหาตามวันที่ส่งออก" ❌
+
+    (1) ปรับแบบฟอร์มอิเล็กทรอนิกส์ เมื่อประเทศปลายทางแก้ไขกฎหมาย/รูปแบบใบรับรอง
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/CertificateTemplate
+        วันที่แก้ไข: 27 เมษายน 2569
+        สิ่งที่ implement แล้ว:
+        - modal "แก้ไขรูปแบบ" เปลี่ยนเป็น modal-xl + 2 tabs ✅
+
+          Tab 1 "แก้ไขข้อมูล" (#tab-edit-form):
+            ฟิลด์เดิม: ชื่อรูปแบบ / ประเภท / กลุ่มประเทศ / HS Code / เวอร์ชัน / คำอธิบาย ✅
+            ฟิลด์ใหม่ (ข้อมูลการแก้ไข — required):
+            ○ เหตุผลการปรับ (edit_reason, required, select):
+              ประเทศปลายทางแก้ไขกฎหมาย / ปรับปรุง format / แก้ไขข้อความ-ถ้อยคำ /
+              อัปเดต HS Code / อื่นๆ (ระบุในหมายเหตุ) ✅
+            ○ มีผลบังคับใช้ตั้งแต่ (edit_effectiveDate, date, required) ✅
+            ○ อ้างอิงเอกสาร / กฎหมาย (edit_docRef, text — URL หรือชื่อไฟล์) ✅
+            ○ หมายเหตุการแก้ไข (edit_changeNote, textarea) ✅
+            checkbox "เพิ่มเลขเวอร์ชัน (Bump Version) — ต้องการอนุมัติก่อน Activate" ✅
+
+          Tab 2 "ประวัติการแก้ไข" (#tab-edit-history):
+            ตาราง: # / เวอร์ชัน / วันที่แก้ไข / เหตุผล-หมายเหตุ / ผู้แก้ไข / ผู้อนุมัติ / สถานะ ✅
+            populate จาก editHistoryMap (mockup ครบ 9 templates) ✅
+            สถานะ: Activated (bg-label-success) / รอดำเนินการ (bg-label-warning) ✅
+
+        - Approval alert (editApprovalAlert):
+          แสดงเมื่อ tick "Bump Version": ⚠️ "การเพิ่มเวอร์ชันต้องการการอนุมัติก่อน Activate" ✅
+          ปุ่ม "ส่งอนุมัติ" → toast warning + ปิด modal ✅
+
+        - badge เวอร์ชันปัจจุบัน (editTemplateVersionBadge) แสดงใน info alert ✅
+        - Validation: เหตุผล + วันที่มีผลบังคับใช้ required — แสดง is-invalid ถ้าว่าง ✅
+        - Toast success/warning หลังบันทึกหรือส่งอนุมัติ ✅
+        - editHistoryMap mockup: ครบทุก 9 templates (EU Dec v2.4, JP Dec v1.8, US Dec v3.1,
+          KR Dec v1.2, AU Dec v1.5, EU Proc v2.0, US Proc v2.3, AR Proc v1.0, JP Proc v1.6) ✅
+        Build: 0 errors, 10 warnings (pre-existing) ✅
+
+    (2) ตั้งค่าการแจ้งเตือนล่วงหน้าก่อนวันส่งออก + ค้นหาวันที่ส่งออกในติดตามสถานะ
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/IssueReason
+             http://localhost:5055/PSDeclaration/IndexTrackRequestStatus
+        วันที่แก้ไข: 27 เมษายน 2569
+        สิ่งที่ implement แล้ว:
+
+        ── Admin/IssueReason ──
+        card "ตั้งค่าการแจ้งเตือนใบรับรอง" (id: alertSettingsCard) ✅
+        accordion "แจ้งเตือนล่วงหน้าก่อนวันส่งออก" (id: collapseAlertExport):
+          แจ้งเตือนก่อน N วัน/ชั่วโมง: number input + select ✅
+          ช่องทางแจ้งเตือน (multi-checkbox):
+            ☑ แจ้งเตือนในระบบ (bell) ☑ อีเมล ☐ SMS ✅
+          กลุ่มที่รับแจ้งเตือน (multi-checkbox):
+            ☑ ผู้ประกอบการ ☑ เจ้าหน้าที่รับผิดชอบ ☑ ผู้อนุมัติ ✅
+          ตัวอย่าง toast warning: "⚠️ คำขอ PS-2026-0049 ใกล้วันส่งออก (28/04/2569)" ✅
+          ปุ่ม "ดูตัวอย่างการแจ้งเตือน" → toast ✅
+          ปุ่ม "รีเซ็ตค่าเดิม" → reset all fields ✅
+          ปุ่ม "บันทึกการตั้งค่า" → toast success ✅
+        toast: issueAlertToast (position-fixed bottom-0 end-0) ✅
+
+        ── PSDeclaration/IndexTrackRequestStatus ──
+        เพิ่ม exportDates Dictionary (mockup 10 records, keyed by RequestNumber) ✅
+        4 records ที่ ExportDate ≤ 3 วัน (ใกล้วันส่งออก ⚠️):
+          ...049 → 28/04/2569 (1 วัน), ...004 → 29/04/2569 (2 วัน)
+          ...007 → 30/04/2569 (3 วัน), ...011 → 30/04/2569 (3 วัน)
+        คอลัมน์ "วันส่งออก" (ตารางมี 10 columns แล้ว):
+          แสดง วว/ดด/ปปปป + badge "เหลือ N วัน ⚠️" (bg-label-danger) ถ้า ≤ 3 วัน ✅
+          badge "N วัน" (bg-label-secondary) ถ้า > 3 วัน ✅
+        data attribute: data-export-date / data-near-export บนแต่ละ row ✅
+        filter "วันที่ส่งออก" (date range from–to):
+          filterExportDateFrom / filterExportDateTo (flatpickr) ✅
+          checkbox "เฉพาะใกล้วันส่งออก (≤ 3 วัน)" (filterExportNearOnly) ✅
+        JS filterRows() อัปเดตรองรับทั้ง draft date + export date filter ✅
+        Build: 0 errors, 10 warnings (pre-existing) ✅
+
+    (3) ระงับการออกใบรับรองตามรูปแบบ หรือตามประเทศปลายทาง ระดับโรงงาน
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/CertificateTemplate
+        วันที่แก้ไข: 27 เมษายน 2569
+        สิ่งที่ implement แล้ว:
+
+        ── Views/Admin/CertificateTemplate.cshtml ──
+        badge "มีข้อจำกัด: N โรงงาน ⚠️" (สีส้ม #ff9f43) ในคอลัมน์ชื่อ template:
+          Template 1 (EU Dec): "มีข้อจำกัด: 2 โรงงาน ⚠️" ✅
+          Template 6 (EU Proc): "มีข้อจำกัด: 1 โรงงาน ⚠️" ✅
+
+        ปุ่ม "จัดการข้อจำกัด" (ri-shield-star-line, btn-outline-danger) ต่อ template ทุกแถว ✅
+          data-id + data-name → เปิด #modalRestriction ผ่าน JS
+
+        modal #modalRestriction (modal-xl, scrollable) "ข้อจำกัดการออกใบรับรอง — [TemplateName]":
+          alert-warning: "การระงับจะมีผลทันที — คำขอระหว่างดำเนินการต้องตรวจสอบใหม่" ✅
+
+          Tab 1 "ระงับตามโรงงาน" (#tab-restriction-factory):
+            ปุ่ม "เพิ่มข้อจำกัดโรงงาน" (ri-forbid-2-line, สีส้ม) ✅
+            ตาราง 9 คอลัมน์:
+              # / โรงงาน / FactoryCode / ประเทศที่ระงับ / เหตุผล / วันที่ระงับ / มีผลถึง / ผู้ดำเนินการ / ปุ่มยกเลิก ✅
+            renderFactoryRestrictions() function ✅
+            mockup 2 records สำหรับ template 1 (EU Dec):
+              FAC-0001 — UK เหตุผล: เรือขนส่งไม่อยู่ใน UK Approved List ✅
+              FAC-0002 — ทุกประเทศ เหตุผล: DOF ใกล้หมดอายุ ✅
+            mockup 1 record สำหรับ template 6 (EU Proc):
+              FAC-0001 — สเปน/อิตาลี ✅
+            badge ประเทศที่ระงับ:
+              "ทุกประเทศ" → bg-danger | ระบุประเทศ → bg-label-warning ✅
+
+          Tab 2 "ประเทศที่ถูกปิดกั้น (global)" (#tab-restriction-country):
+            ปุ่ม "ปิดกั้นประเทศ" (ri-earth-line, btn-outline-danger) ✅
+            ตาราง 7 คอลัมน์:
+              # / ประเทศ / เหตุผล / วันที่ปิดกั้น / วันสิ้นสุด / ผู้ดำเนินการ / ปุ่มยกเลิก ✅
+            renderBlockedCountries() function ✅
+            mockup 1 record สำหรับ template 1 (EU Dec):
+              UK ถูกปิดกั้น: "UK Approved List ไม่รวมโรงงานไทยในรอบนี้" ✅
+
+        sub-modal #modalAddFactoryRestriction (modal-lg) "ระงับการออกใบรับรองระดับโรงงาน":
+          alert-info: แสดงชื่อ template (#addRestrictionTemplateName) ✅
+          select "โรงงาน" (#restrict_factory, multiple, 6 รายการจาก DOF List) ✅
+          radio "ขอบเขตการระงับ":
+            ○ ระงับทุกประเทศ (global) [default]
+            ○ ระงับเฉพาะประเทศที่เลือก ✅
+          multi-select "ประเทศ" (#restrict_countries) แสดงเมื่อเลือก "เฉพาะประเทศ"
+            populated จาก Countries[] ของ template (JS) ✅
+          textarea "เหตุผล" (#restrict_reason, required) ✅
+          date "มีผลถึงวันที่" (#restrict_untilDate, optional) ✅
+          ปุ่ม "ยืนยันระงับ" → validation + toast danger + ปิด sub-modal + เปิด main modal ✅
+
+        sub-modal #modalBlockCountry (modal-md, centered) "ปิดกั้นประเทศปลายทาง (global)":
+          alert-danger: "ทุกโรงงาน จะหยุดออกใบรับรองไปยังประเทศนี้" ✅
+          select "ประเทศ" (#block_country) populated จาก Countries[] ✅
+          textarea "เหตุผล" (#block_reason, required) ✅
+          date "วันที่เริ่มต้น" (#block_startDate) + "วันสิ้นสุด" (#block_endDate) ✅
+          ปุ่ม "ยืนยันปิดกั้น" → validation + toast danger + ปิด sub-modal + เปิด main modal ✅
+
+        JS navigation:
+          เปิด sub-modal → ซ่อน main modal ก่อน (hidden.bs.modal event, { once: true }) ✅
+          ปิด sub-modal → เปิด main modal คืน (hidden.bs.modal) ✅
+          badge count ใน tabs แสดงจำนวน factory restrictions / blocked countries ✅
+
+        CSS: .restriction-table (font-size:0.79rem, padding:0.45rem) ✅
+        Build: 0 errors, 10 warnings (pre-existing) ✅
+
+---
+
+3.6) รายงาน Static และรายงาน Dynamic
+
+    หมายเหตุ: module หลักที่เกี่ยวข้อง:
+    - Admin/Reports.cshtml (เหมือนกับ Officer/IndexReports.cshtml):
+      Title: "รายงาน Static และรายงาน Dynamic"
+      summary cards: รายงานทั้งหมด (8) / Static (4) / Dynamic (4) / Dynamic ออนไลน์ (3) ✅
+      filter: keyword / หมวดหมู่ / สถานะ ✅
+      Tab: Static Reports / Dynamic Reports ✅
+      ปุ่ม "เพิ่มรายงาน" ✅ (stub)
+      detail modal 3 tabs: ข้อมูลหลัก / พารามิเตอร์ / ประวัติการทำงาน ✅
+
+    Static Reports ที่มี (4 รายการ):
+      ST-001: รายงานสรุปคำขอใบรับรองรายเดือน | PDF | รายเดือน ✅
+      ST-002: รายงานโรงงาน DOF ที่หมดอายุภายใน 90 วัน | Excel | รายสัปดาห์ ✅
+      ST-003: รายงานสถานะ Traceability แยกจังหวัด | PDF | รายเดือน ✅
+      ST-004: รายงานความครบถ้วนเอกสารสุขอนามัยประเทศคู่ค้า | PDF | รายไตรมาส ✅
+    Dynamic Reports ที่มี (4 รายการ):
+      DY-101: Dynamic Dashboard: คำขอใบรับรอง | Refresh ทุก 15 นาที ✅
+      DY-102: Dynamic Monitoring: DOF/Traceability | Refresh ทุก 30 นาที ✅
+      DY-103: Dynamic Alert: เอกสารใกล้หมดอายุ | Refresh ทุก 60 นาที ✅
+      DY-104: Dynamic Scorecard: KPI งานรับรอง | Refresh ทุก 24 ชั่วโมง ✅
+    ปุ่มต่อแถว Static: ดูรายละเอียด / แก้ไข / ดูรายงาน / Export Excel (dropdown 3 รูปแบบ) ✅
+    ปุ่มต่อแถว Dynamic: ดูรายละเอียด / แก้ไข / รีเฟรช ✅ (stub)
+
+    ฟีเจอร์/รายงานที่ขาด (ภาพรวม):
+    - ไม่มี filter ค้นหาตามเงื่อนไข TOR: ชนิดสัตว์น้ำ / ปริมาณ / แหล่งที่มา / ผู้ประกอบการ /
+      หน่วยงานที่อนุมัติ / ประเทศปลายทาง / ช่วงวันที่ออกเอกสาร ❌
+    - ไม่มีหน้าดูรายงานภายในระบบ (in-system report viewer) ❌
+    - ไม่มี Export Excel (data sheet) ที่มีรูปแบบตามกรมประมงกำหนด ❌
+      (มีแค่ปุ่ม ดาวน์โหลด เป็น stub ไม่มี dropdown รูปแบบ)
+    - ไม่มีรายงาน Doc1/Doc2 ควบคุมปริมาณวัตถุดิบนำเข้า ❌ (TOR ข้อ 2)
+    - ไม่มีรายงาน %Yield ❌ (TOR ข้อ 3)
+    - ไม่มีรายงาน Doc1/Doc2 ควบคุมปริมาณสินค้า ❌ (TOR ข้อ 4)
+    - ไม่มีรายงาน PS/NMD แบบ full-search ครบทุก dimension ❌ (TOR ข้อ 5)
+    - ไม่มีรายงานสรุปภาพรวมใบรับรอง (แก้ไข/ออกใบแทน/ยกเลิก) ❌ (TOR ข้อ 6)
+    - ไม่มีรายงานรายประเทศ (น้ำหนักวัตถุดิบ/น้ำหนักสุทธิ) พร้อม sort ❌ (TOR ข้อ 7)
+    - ไม่มีรายงานหนังสือรับรองตนเอง ❌ (TOR ข้อ 8)
+    - ไม่มีรายงานย้อนกลับแบบ searchable ❌ (TOR ข้อ 9)
+    - ไม่มีรายงานสรุปรายปี/เดือน/สัปดาห์ พร้อม RMBS1/RMBS2/P1/P2/น้ำหนัก ❌ (TOR ข้อ 10)
+    - ไม่มีรายการผลรวมน้ำหนักวัตถุดิบ/ส่งออก แต่ละประเทศตามประเภทใบรับรอง ❌ (TOR ข้อ 11)
+    - ไม่มีรายงานเศษเหลือจากกระบวนการผลิต ❌ (TOR ข้อ 12)
+    - ไม่มี sort by มากที่สุด/น้อยที่สุด ❌
+
+    (1) ดึงรายงานผ่านหน้าโปรแกรม + Export Excel (data sheet) ตามรูปแบบกรมประมง
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/Reports
+             http://localhost:5055/Officer/IndexReports
+        ผลการตรวจสอบ:
+        - หน้า Reports แสดงรายการรายงาน Static/Dynamic ✅
+        - ปุ่ม "ดูรายงาน" (btn-outline-primary, ri-table-view) ต่อแถว Static → เปิด #rptViewerModal ✅
+        - Export Excel dropdown (3 ตัวเลือก) ต่อแถว Static:
+          ○ Data sheet (ทุกฟิลด์)  ○ สรุป  ○ ตาม Template กรมประมง ✅
+        - #rptViewerModal (modal-xl): preview table + active filter chips + summary text ✅
+          viewerDataMap mockup: ST-001 (สรุปเดือน) / ST-002 (DOF ใกล้หมดอายุ) / ST-003 (Traceability) / ST-004 (สุขอนามัย) ✅
+          footer: Export Excel dropdown (3 รูปแบบ) + Export PDF + ปิด ✅
+        - section "เงื่อนไขการค้นหา (TOR)" ใน detail modal tab "พารามิเตอร์" (accordion) ✅
+          fields: ชนิดสัตว์น้ำ / ปริมาณ min-max (kg) / แหล่งที่มา / ผู้ประกอบการ (DOF List) /
+          หน่วยงานที่อนุมัติ (กตส./ศตส.เขต 1-6) / ช่วงวันที่ออกเอกสาร (flatpickr date range) ✅
+          ปุ่ม "ดูรายงาน" → เปิด viewer modal พร้อม filter chips ✅
+          ปุ่ม "ล้างเงื่อนไข" → reset ทุก field ✅
+        - ปุ่ม "ดูรายงาน" ใน footer ของ detail modal (แสดงเฉพาะ Static, ซ่อนสำหรับ Dynamic) ✅
+        - Toast #rptActionToast + showRptToast(): info → success (900ms delay) ครอบคลุมทุก Export action ✅
+        - flatpickr VendorStyles/VendorScripts สำหรับ date inputs ✅
+        - Build: 0 errors, 10 warnings (pre-existing) ✅
+
+    (2) รายงานการควบคุมปริมาณวัตถุดิบสัตว์น้ำนำเข้า เอกสารที่ 1 และเอกสารที่ 2
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/Reports
+        ผลการตรวจสอบ:
+        - เพิ่ม ST-005: รายงานควบคุมปริมาณวัตถุดิบนำเข้า — เอกสารที่ 1 | Excel | ตามต้องการ | ฝ่ายควบคุมวัตถุดิบ ✅
+        - เพิ่ม ST-006: รายงานควบคุมปริมาณวัตถุดิบนำเข้า — เอกสารที่ 2 | Excel | ตามต้องการ | ฝ่ายควบคุมวัตถุดิบ ✅
+        - หมวดหมู่ "วัตถุดิบนำเข้า" เพิ่มใน fCat filter dropdown ✅
+        - ปุ่มต่อแถว: ดูรายละเอียด / แก้ไข / ดูรายงาน / Export Excel (dropdown 3 รูปแบบ) ✅
+        - detailsMap ST-005/ST-006: params ครบ 8 fields:
+          species (ชนิดสัตว์น้ำ) / qtyMin / qtyMax (ปริมาณ kg) / source (แหล่งที่มา/ประเทศต้นทาง) /
+          operator (ผู้ประกอบการ) / agency (หน่วยงานอนุมัติ) / dateFrom / dateTo (ช่วงวันที่) ✅
+        - viewerDataMap ST-005 (เอกสาร 1): คอลัมน์ เลขที่เอกสาร / วันที่ออก / ผู้ประกอบการ /
+          ชนิดสัตว์น้ำ / ประเทศต้นทาง / ปริมาณนำเข้า (kg) / หน่วยงาน / สถานะ — 5 แถว ✅
+          summary: รวม 137,250 kg (137.25 ตัน) ✅
+        - viewerDataMap ST-006 (เอกสาร 2): คอลัมน์ เลขที่เอกสาร / วันที่ออก / ผู้ประกอบการ /
+          ชนิดสัตว์น้ำ / รับเข้า (kg) / นำออกใช้ (kg) / คงเหลือ (kg) / หน่วยงาน — 5 แถว ✅
+          summary: รับเข้า 137,250 kg | นำออกใช้ 112,000 kg | คงเหลือ 25,250 kg (18.4%) ✅
+        - section "เงื่อนไขการค้นหา (TOR)" ใน detail modal ใช้ร่วมกับ ST-001–004 (already in place) ✅
+        - Export Excel + Toast + Viewer ครบตาม 3.6(1) ที่ทำไว้แล้ว ✅
+        - summary cards: totalCount=10 (6 static + 4 dynamic) auto-calculated ✅
+        - Build: 0 errors, 10 warnings (pre-existing) ✅
+
+    (3) รายงานการพิจารณาอนุมัติ %Yield ของสถานประกอบการ
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/Reports
+        ผลการตรวจสอบ:
+        - เพิ่ม ST-007: รายงานการพิจารณาอนุมัติ %Yield รายสถานประกอบการ | Excel | ตามต้องการ | ฝ่ายควบคุมวัตถุดิบ | ใช้งาน ✅
+        - หมวดหมู่ "%Yield" เพิ่มใน fCat filter dropdown ✅
+        - ปุ่มต่อแถว: ดูรายละเอียด / แก้ไข / ดูรายงาน / Export Excel (dropdown 3 รูปแบบ) ✅
+        - detailsMap ST-007: params 4 fields: ผู้ประกอบการ/โรงงาน / ชนิดสัตว์น้ำ / วันที่อนุมัติ ตั้งแต่ / ถึง ✅
+        - viewerDataMap ST-007: 5 แถว
+          คอลัมน์: โรงงาน | ชนิดสัตว์น้ำ | %Yield ที่ขอ | %Yield ที่อนุมัติ | วันที่อนุมัติ | ผู้อนุมัติ | ผลต่าง %Yield ✅
+          ข้อมูล: Siam Marine (72%→68%) / Gulf Catch (75%→75%) / Ocean Prime (68%→65%) / Andaman (70%→70%) / S. Pelagic (65%→62%) ✅
+          summary: %Yield เฉลี่ยที่ขอ 70% / อนุมัติ 68% ✅
+        - viewerDataMap ST-007: chartData (5 entries) สำหรับ bar chart ✅
+        - #viewerChartSection (mock bar chart): Bootstrap progress bars เปรียบเทียบ %Yield ที่ขอ vs อนุมัติ
+          แสดงเฉพาะรายงานที่มี chartData (ซ่อนสำหรับรายงานอื่น) ✅
+          legend: สีม่วง (#696cff) = ที่ขอ | สีเขียว (#71dd37) = อนุมัติ ✅
+          openViewer() อัปเดตแสดง/ซ่อน chart section ตาม d.chartData ✅
+        - Export Excel + Toast + Viewer ครบตาม 3.6(1) ✅
+        - summary cards: totalCount=11 (7 static + 4 dynamic) auto-calculated ✅
+        - Build: 0 errors, 10 warnings (pre-existing) ✅
+
+    (4) รายงานการ-เอกสารการควบคุมปริมาณสินค้า เอกสารที่ 1 และเอกสารที่ 2
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/Reports
+        ผลการตรวจสอบ:
+        - เพิ่ม ST-008: รายงานควบคุมปริมาณสินค้า — เอกสารที่ 1 | Excel | ตามต้องการ | ฝ่ายควบคุมสินค้า | ใช้งาน ✅
+        - เพิ่ม ST-009: รายงานควบคุมปริมาณสินค้า — เอกสารที่ 2 | Excel | ตามต้องการ | ฝ่ายควบคุมสินค้า | ใช้งาน ✅
+        - หมวดหมู่ "ควบคุมสินค้า" เพิ่มใน fCat filter dropdown ✅
+        - ปุ่มต่อแถว: ดูรายละเอียด / แก้ไข / ดูรายงาน / Export Excel (dropdown 3 รูปแบบ) ✅
+        - detailsMap ST-008: params 8 fields:
+          ชนิดสัตว์น้ำ/สินค้า / ปริมาณสินค้า min-max (kg) / แหล่งวัตถุดิบ (Country of Origin) /
+          ผู้ประกอบการ / จำนวนเอกสาร (จาก–ถึง) / วันที่ออก ตั้งแต่–ถึง ✅
+        - detailsMap ST-009: params เหมือน ST-008 (8 fields) ✅
+        - viewerDataMap ST-008 (เอกสาร 1): คอลัมน์ เลขที่เอกสาร / วันที่ออก / ผู้ประกอบการ /
+          ชนิดสินค้า / ปริมาณสินค้า (kg) / แหล่งวัตถุดิบ / ประเทศปลายทาง / สถานะ — 5 แถว ✅
+          summary: รวม 82,200 kg (82.2 ตัน) แยกตามประเทศปลายทาง ✅
+        - viewerDataMap ST-009 (เอกสาร 2): คอลัมน์ เลขที่เอกสาร / วันที่ออก / ผู้ประกอบการ /
+          ชนิดสินค้า / ยอดยกมา (kg) / ส่งออกแล้ว (kg) / ยอดคงเหลือใหม่ (kg) / หน่วยงาน — 5 แถว ✅
+          summary: ยกมา 82,200 kg | ส่งออกแล้ว 65,800 kg (80.0%) | คงเหลือในคลัง 16,400 kg ✅
+        - Export Excel + Toast + Viewer ครบตาม 3.6(1) ✅
+        - summary cards: totalCount=13 (9 static + 4 dynamic) auto-calculated ✅
+        - Build: 0 errors, 10 warnings (pre-existing) ✅
+
+    (5) รายงานการออกใบรับรอง PS/NMD — ค้นหาแบบ multi-dimension
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/Reports
+        ผลการตรวจสอบ:
+        - เพิ่ม ST-010: รายงานการออกใบรับรอง PS/NMD (ค้นหาแบบ multi-dimension) | Excel | ตามต้องการ | กลุ่มวิเคราะห์ข้อมูล | ใช้งาน ✅
+        - หมวดหมู่ "ใบรับรอง PS/NMD" เพิ่มใน fCat filter dropdown ✅
+        - detailsMap ST-010: params ครบ 11 fields (9 dimension + 2 date):
+          ประเภทใบรับรอง (PS/NMD) / ชนิดสัตว์น้ำ / น้ำหนักวัตถุดิบ min-max (kg) /
+          แหล่งที่มาวัตถุดิบ / ผู้ประกอบการ / ชื่อสินค้า / HS Code /
+          ประเทศปลายทาง / หน่วยงานที่อนุมัติ / วันที่ออกเอกสาร (ตั้งแต่–ถึง) ✅
+        - viewerDataMap ST-010: 10 คอลัมน์ + 5 แถวตัวอย่าง (CERT-2569-0452x):
+          เลขใบรับรอง / ประเภท / วันที่ออก / ผู้ประกอบการ / ชนิดสัตว์น้ำ /
+          น้ำหนักวัตถุดิบ (kg) / สินค้า / HS Code / ประเทศปลายทาง / หน่วยงาน / สถานะ ✅
+          summary: รวม 5 ใบ (PS 3 ใบ / NMD 2 ใบ) น้ำหนักวัตถุดิบรวม 137,250 kg ✅
+        - Export Excel + Toast + Viewer ครบตาม 3.6(1) ✅
+        - summary cards: totalCount=14 (10 static + 4 dynamic) auto-calculated ✅
+        - Build: 0 errors, 10 warnings (pre-existing) ✅
+          ผลลัพธ์: ตาราง
+          เลขใบรับรอง | ประเภท | วันที่ออก | ผู้ประกอบการ | ชนิดสัตว์น้ำ |
+          น้ำหนักวัตถุดิบ (kg) | สินค้า | ประเทศปลายทาง | หน่วยงาน | สถานะ
+          สรุปด้านล่าง: รวม [N] ใบ / น้ำหนักวัตถุดิบรวม [X] ตัน
+          Export Excel (data sheet ตาม template กรมประมง)
+
+    (6) สรุปภาพรวมใบรับรองที่ออก — การแก้ไข/ออกใบแทน/ยกเลิก
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/Reports
+        ผลการตรวจสอบ:
+        - เพิ่ม ST-011: สรุปภาพรวมใบรับรองที่ออก — การแก้ไข/ออกใบแทน/ยกเลิก | Excel | ตามต้องการ | กลุ่มวิเคราะห์ข้อมูล | ใช้งาน ✅
+        - หมวดหมู่ "สรุปใบรับรอง" เพิ่มใน fCat filter dropdown ✅
+        - detailsMap ST-011: params 4 fields:
+          ประเภทการดำเนินการ (ออกปกติ/แก้ไข/ออกใบแทน/ยกเลิก) / ประเภทใบรับรอง (PS/NMD) /
+          ช่วงวันที่ (ตั้งแต่–ถึง) ✅
+        - viewerDataMap ST-011: 9 คอลัมน์ + 5 แถวตัวอย่าง:
+          เลขใบรับรอง / ประเภทดำเนินการ / ประเภทใบรับรอง / วันที่ / ผู้ประกอบการ /
+          ชนิดสัตว์น้ำ / เหตุผล / ผู้ดำเนินการ / สถานะ ✅
+          (แถวครอบคลุมทุกประเภท: ออกปกติ 2 / แก้ไข 1 / ออกใบแทน 1 / ยกเลิก 1) ✅
+        - summary: รวม 168 รายการ | ออกปกติ: 145 | แก้ไข: 12 | ออกใบแทน: 8 | ยกเลิก: 3 ✅
+        - Export Excel + Toast + Viewer ครบตาม 3.6(1) ✅
+        - summary cards: totalCount=15 (11 static + 4 dynamic) auto-calculated ✅
+        - Build: 0 errors, 10 warnings (pre-existing) ✅
+
+    (7) รายงานการออกใบรับรองรายประเทศ — ตามชนิด/ปริมาณ/น้ำหนัก พร้อม sort
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/Reports
+        ผลการตรวจสอบ:
+        - เพิ่ม ST-012: รายงานการออกใบรับรองรายประเทศ — ตามชนิด/ปริมาณ/น้ำหนัก | Excel | ตามต้องการ | กลุ่มวิเคราะห์ข้อมูล | ใช้งาน ✅
+        - หมวดหมู่ "รายงานรายประเทศ" เพิ่มใน fCat filter dropdown ✅
+        - detailsMap ST-012: params 7 fields:
+          ประเทศปลายทาง (multi-select) / ชนิดสัตว์น้ำ (multi-select) /
+          ประเภทใบรับรอง (PS/NMD) / ช่วงวันที่ออก (ตั้งแต่–ถึง) /
+          เรียงลำดับตาม / ทิศทาง sort (มากที่สุด/น้อยที่สุด) ✅
+        - viewerDataMap ST-012: 6 คอลัมน์ + 5 แถวตัวอย่าง:
+          ประเทศปลายทาง / กลุ่มตลาด (JP/EU/US/OTHER) / ชนิดสัตว์น้ำ /
+          น้ำหนักวัตถุดิบนำเข้า (kg) / น้ำหนักสุทธิสินค้าส่งออก (kg) / จำนวนใบรับรอง ✅
+        - bar chart "ประเทศที่ส่งออกมากที่สุด 5 อันดับ" (chartType: 'country'):
+          แสดง 2 bars ต่อประเทศ: น้ำหนักวัตถุดิบนำเข้า (ม่วง) vs น้ำหนักสุทธิส่งออก (เขียว)
+          ชื่อ/legend ปรับ dynamic ตาม chartType ✅
+        - summary: รวม 5 ประเทศ | น้ำหนักวัตถุดิบรวม 1,282,000 kg | น้ำหนักสุทธิส่งออก 904,000 kg | 114 ใบ ✅
+        - Export Excel + Toast + Viewer ครบตาม 3.6(1) ✅
+        - summary cards: totalCount=16 (12 static + 4 dynamic) auto-calculated ✅
+        - Build: 0 errors, 10 warnings (pre-existing) ✅
+
+    (8) รายงานการค้นหาหนังสือรับรองตนเอง
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/Reports
+        ผลการตรวจสอบ:
+        - เพิ่ม ST-013: รายงานการค้นหาหนังสือรับรองตนเอง | Excel | ตามต้องการ | กลุ่มออกใบรับรอง | ใช้งาน ✅
+        - หมวดหมู่ "หนังสือรับรองตนเอง" เพิ่มใน fCat filter dropdown ✅
+        - detailsMap ST-013: params 5 fields:
+          ผู้ประกอบการ (select จาก DOF List) / เลขหนังสือรับรองตนเอง (text) /
+          ช่วงวันที่ออกหนังสือ (dateFrom / dateTo) / สถานะ (ใช้งาน/หมดอายุ/ยกเลิก) ✅
+        - viewerDataMap ST-013: 7 คอลัมน์ + 5 แถวตัวอย่าง (SC-2569-0020x):
+          เลขหนังสือรับรองตนเอง / วันที่ออก / วันหมดอายุ / ผู้ประกอบการ /
+          โรงงาน-สถานที่ผลิต / สถานะ / ผู้รับรอง ✅
+          (ครบทุกสถานะ: ใช้งาน 3 / หมดอายุ 1 / ยกเลิก 1) ✅
+        - summary: รวม 5 หนังสือ | ใช้งาน: 3 | หมดอายุ: 1 | ยกเลิก: 1 ✅
+        - Export Excel + Toast + Viewer ครบตาม 3.6(1) ✅
+        - totalCount=21 (17 static + 4 dynamic) auto-calculated ✅
+        - Build: 0 errors, 10 warnings (pre-existing) ✅
+
+    (9) รายงานการค้นหาการตรวจสอบย้อนกลับ
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/Reports
+        ผลการตรวจสอบ:
+        - เพิ่ม ST-014: รายงานการตรวจสอบย้อนกลับ (Traceability Search) | Excel | ตามต้องการ | ฝ่ายข้อมูลย้อนกลับ | ใช้งาน ✅
+        - หมวดหมู่ "Traceability" เพิ่มใน fCat filter dropdown (distinct จาก DOF + Traceability เดิม) ✅
+        - detailsMap ST-014: params 6 fields:
+          ผู้ประกอบการ/โรงงาน / ชนิดสัตว์น้ำ / เลข Trace Code (text) /
+          แหล่งที่มาวัตถุดิบ / ช่วงวันที่ตรวจสอบ (ตั้งแต่–ถึง) ✅
+        - viewerDataMap ST-014: 8 คอลัมน์ + 5 แถวตัวอย่าง (TRC-2569-004xx):
+          Trace Code / โรงงาน / ชนิดสัตว์น้ำ / แหล่งที่มา / จำนวน Supplier /
+          วันตรวจล่าสุด / ระดับ Trace (Level 1–3) / สถานะ ✅
+          (ครอบคลุมทุกสถานะ: ผ่าน 3 / รอตรวจ 1 / ไม่ผ่าน 1) ✅
+          (ระดับ: Level 3 Full×3 / Level 2 Partial×1 / Level 1 Basic×1) ✅
+        - summary: รวม 5 รายการ | ผ่าน: 3 | รอตรวจ: 1 | ไม่ผ่าน: 1 | Supplier 14 ราย ✅
+        - Export Excel + Toast + Viewer ครบตาม 3.6(1) ✅
+        - summary cards: totalCount=17 (13 static + 4 dynamic) auto-calculated ✅
+        - Build: 0 errors, 10 warnings (pre-existing) ✅
+
+   (10) รายงานสรุปการออกใบรับรองรายปี/รายเดือน/รายสัปดาห์ พร้อม RMBS1/RMBS2/P1/P2
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/Reports
+        ผลการตรวจสอบ:
+        - เพิ่ม ST-015: รายงานสรุปการออกใบรับรองแบบครบถ้วน (RMBS1/RMBS2/P1/P2) | Excel | ตามต้องการ | กลุ่มวิเคราะห์ข้อมูล | ใช้งาน ✅
+        - หมวดหมู่ "สรุปใบรับรอง" ใช้ fCat option ที่มีอยู่เดิม ✅
+        - detailsMap ST-015: params 4 fields:
+          ช่วงเวลา (radio: รายสัปดาห์/รายเดือน/รายปี) / วันที่เริ่มต้น / วันที่สิ้นสุด /
+          จำแนกตาม (multi-select 6 มิติ: ประเภทใบรับรอง / ประเทศปลายทาง /
+          ผู้ประกอบการ / วัตถุดิบสัตว์น้ำ / HS Code / วันที่ออก) ✅
+        - viewerDataMap ST-015: 11 คอลัมน์ pivot-style + 5 แถวรายเดือน (ม.ค.–พ.ค. 2569):
+          ช่วงเวลา / RMBS1 / RMBS2 / P1 / P2 / ชนิดสัตว์น้ำ / ชื่อสินค้า (HS Code) /
+          น้ำหนักวัตถุดิบรับเข้า (kg) / น้ำหนักวัตถุดิบส่งออก (kg) / จำนวนใบรับรอง / ผลรวม ✅
+        - แถว "ผลรวมทั้งหมด" ที่ด้านล่างตาราง (grand total row) ✅
+          RMBS1: 177 | RMBS2: 162 | P1: 106 | P2: 76 | ใบรับรองรวม 521 ✅
+          น้ำหนักรับเข้ารวม 995,000 kg | ส่งออกรวม 775,000 kg | สัดส่วน 77.9% ✅
+        - summary: ช่วง ม.ค.–พ.ค. 2569 — 521 ใบ | 995,000 kg / 775,000 kg ✅
+        - Export Excel + Toast + Viewer ครบตาม 3.6(1) ✅
+        - totalCount=18 (14 static + 4 dynamic) auto-calculated ✅
+        - Build: 0 errors, 10 warnings (pre-existing) ✅
+
+   (11) รายการสรุปผลรวมน้ำหนักวัตถุดิบนำเข้า/ส่งออก แต่ละประเทศตามประเภทใบรับรอง
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/Reports
+        ผลการตรวจสอบ:
+        - เพิ่ม ST-016: รายการสรุปผลรวมน้ำหนักวัตถุดิบ — รายประเทศ ตามประเภทใบรับรอง | Excel | ตามต้องการ | กลุ่มวิเคราะห์ข้อมูล | ใช้งาน ✅
+        - หมวดหมู่ "รายงานรายประเทศ" ใช้ fCat option ที่มีอยู่เดิม ✅
+        - detailsMap ST-016: params 4 fields:
+          ช่วงวันที่ (dateFrom / dateTo) / ประเภทใบรับรอง checkbox (PS, NMD) /
+          ประเทศปลายทาง (multi-select หรือ "ทั้งหมด") ✅
+        - viewerDataMap ST-016: 5 คอลัมน์ summary table + 5 แถว (ญี่ปุ่น/EU/US/ออสเตรเลีย/แคนาดา):
+          ประเทศปลายทาง / ประเภทใบรับรอง / ผลรวมน้ำหนักวัตถุดิบนำเข้า (kg) /
+          ผลรวมน้ำหนักวัตถุดิบส่งออก (kg) / จำนวนใบรับรองที่ออก ✅
+          ตัวอย่างข้อมูลตาม TOR: ญี่ปุ่น PS 1,250,000/980,000/62 | EU NMD 890,000/710,000/41 ✅
+        - แถว "รวมทั้งหมด" ที่ด้านล่างตาราง (grand total: 3,610,000 kg / 2,855,000 kg / 184 ใบ) ✅
+        - summary: รวม 5 ประเทศ | PS: 3 ประเทศ 119 ใบ | NMD: 2 ประเทศ 65 ใบ | สัดส่วน 79.1% ✅
+        - Export Excel + Toast + Viewer ครบตาม 3.6(1) ✅
+        - totalCount=19 (15 static + 4 dynamic) auto-calculated ✅
+        - Build: 0 errors, 10 warnings (pre-existing) ✅
+
+   (12) รายงานเศษเหลือจากกระบวนการผลิต
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/Reports
+        ผลการตรวจสอบ:
+        - เพิ่ม ST-017: รายงานเศษเหลือจากกระบวนการผลิต | Excel | ตามต้องการ | ฝ่ายควบคุมวัตถุดิบ | ใช้งาน ✅
+        - หมวดหมู่ "%Yield" ใช้ fCat option ที่มีอยู่เดิม (เชื่อมโยงกับ %Yield ตาม TOR) ✅
+        - detailsMap ST-017: params 4 fields:
+          ผู้ประกอบการ/โรงงาน (select จาก DOF List) / ชนิดสัตว์น้ำ /
+          ช่วงวันที่ผลิต (dateFrom / dateTo) ✅
+        - viewerDataMap ST-017: 7 คอลัมน์ + 5 แถวตัวอย่าง:
+          โรงงาน / ชนิดสัตว์น้ำ / วันที่ผลิต / น้ำหนักวัตถุดิบรับเข้า (kg) /
+          น้ำหนักสินค้าสำเร็จรูป (kg) / เศษเหลือ (kg) / %เศษเหลือ ✅
+        - bar chart "กราฟสัดส่วน %เศษเหลือ แยกตามชนิดสัตว์น้ำ" (chartType:'waste') ✅
+          4 species: ปลาทูน่า 28.7% / กุ้ง 25.0% / ปลาหมึก 29.0% / ปลาแมคเคอเรล 24.0% ✅
+          legend: %เศษเหลือ (วัตถุดิบรับเข้า − สินค้าสำเร็จรูป) ✅
+        - summary: วัตถุดิบรับเข้า 140,000 kg | สำเร็จรูป 101,350 kg |
+          เศษเหลือรวม 38,650 kg (27.6 ตัน) | %เศษเหลือเฉลี่ย 27.6% ✅
+          ปลาหมึก %เศษเหลือสูงสุด 29% | ปลาแมคเคอเรล ต่ำสุด 24% ✅
+        - Export Excel + Toast + Viewer ครบตาม 3.6(1) ✅
+        - totalCount=20 (16 static + 4 dynamic) auto-calculated ✅
+        - Build: 0 errors, 10 warnings (pre-existing) ✅
+
+---
+
+3.7) กำหนดรูปแบบการจัดทำใบรับรอง
+
+    หมายเหตุ: module หลักที่เกี่ยวข้อง:
+    - Officer/IndexCertTemplate.cshtml = Admin/CertificateTemplate.cshtml:
+      Title: "กำหนดรูปแบบใบรับรอง"
+      9 templates: Declaration (EU/JP/US/KR/AU) + Processing (EU/US/AR/JP)
+      fields: TemplateName / CertificateType / TargetGroup / Countries[] /
+              HsCodePattern / Version / UpdatedAt / IsActive / UpdatedBy ✅
+      filter: type / country / status ✅
+      ปุ่ม "เพิ่มรูปแบบ" ✅ (modal: ชื่อ/ประเภท/กลุ่มประเทศ/HS Code/version/คำอธิบาย)
+      ปุ่ม "ดูตัวอย่าง" / "แก้ไขรูปแบบ" / "กำหนดช่องข้อมูล" (field builder) ✅ (stub)
+      ปุ่ม toggle เปิด/ปิดใช้งาน / ปุ่ม "ลบ" ✅ (stub)
+      field builder: drag-and-drop ช่องข้อมูล 10 รายการ (header/exporter/transport/product/footer) ✅
+      ช่อง "ลายมือชื่อผู้รับรอง" (Type=signature) อยู่ใน field list แล้ว ✅
+
+    - PSDeclaration/IndexManageCertificate.cshtml:
+      Title: "ใบรับรองฯ"
+      fields ที่แสดงต่อแถว: WrittenByText / AutoProcessText / SignatureStatusText ✅
+      WrittenByText ที่มี: "เจ้าหน้าที่" / "ผู้เข้าใช้ระบบ" ✅
+      AutoProcessText ที่มี:
+        "ไม่มีคุณสมบัติอัตโนมัติ" ✅
+        "อัตโนมัติหลังลงทะเบียนรับเรื่อง" ✅
+        "อัตโนมัติทั้งกระบวนการ" ✅
+      NOTE: "อัตโนมัติหลังการตรวจปล่อย" ❌ ไม่พบใน mockup
+      SignatureStatusText: "ลงลายมือชื่อแล้ว" / "ยังไม่ลง" ✅ (badge เท่านั้น ไม่มีปุ่ม action)
+
+    ฟีเจอร์/ฟิลด์ที่ขาด (ภาพรวม):
+    - ไม่มีหน้า/modal สำหรับกำหนด "รูปแบบการจัดทำ" ต่อ template (เจ้าหน้าที่/อัตโนมัติ) ❌
+    - ไม่มีโหมด "อัตโนมัติหลังการตรวจปล่อย" ❌
+    - ไม่มีการกำหนดช่วงวันที่มีผลสำหรับรูปแบบการจัดทำแต่ละแบบ ❌
+    - ไม่มีระบบจัดการลายมือชื่ออิเล็กทรอนิกส์ (e-signature management):
+      - ไม่มีหน้าอัปโหลด/แก้ไขไฟล์ลายมือชื่ออิเล็กทรอนิกส์ต่อหน่วยงาน ❌
+      - ไม่มีการกำหนดช่วงวันที่ใช้งานลายมือชื่อ (valid from–to) ❌
+      - ไม่มีปุ่ม ระงับ/เพิกถอนลายมือชื่ออิเล็กทรอนิกส์ ❌
+      - ไม่มีระบบ audit log การใช้ลายมือชื่ออิเล็กทรอนิกส์ ❌
+    - ไม่มีการกำหนดต้นแบบการลงทะเบียนรับเรื่อง ❌
+    - ไม่มีการกำหนดผู้ทำหน้าที่แทน (delegate/proxy) ❌
+
+    (1) กำหนด/แก้ไข/ยกเลิก รูปแบบการจัดทำใบรับรอง
+        (เจ้าหน้าที่จัดทำ / อัตโนมัติทั้งกระบวนการ / อัตโนมัติหลังรับคำขอ / อัตโนมัติหลังการตรวจปล่อย)
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/CertificateTemplate
+        ผลการตรวจสอบ:
+        - ตาราง CertificateTemplate แสดง badge "รูปแบบการจัดทำ" ต่อแถว (4 สี): ✅
+          ⚙ เจ้าหน้าที่จัดทำ → bg-label-warning (สีส้ม)
+          ⚙ อัตโนมัติหลังรับคำขอ → bg-label-info (สีฟ้า)
+          ⚙ อัตโนมัติทั้งกระบวนการ → bg-label-success (สีเขียว)
+          ⚙ อัตโนมัติหลังการตรวจปล่อย → badge inline style สีม่วง (#7367f0) ✅
+        - เพิ่มปุ่ม "กำหนดรูปแบบการจัดทำ" (ri-settings-4-line, สีม่วง) ต่อ template ✅
+        - modal #modalSetProductionMode: radio group 4 โหมด รวม "อัตโนมัติหลังการตรวจปล่อย" ✅
+          (โหมดนี้มี badge "ใหม่" สีม่วง และ card border สีม่วง)
+        - โหมด "เจ้าหน้าที่จัดทำ" → แสดง sub-field "เจ้าหน้าที่รับผิดชอบ" (select) ✅
+        - วันที่มีผล (required) + วันที่สิ้นสุด (optional, เว้นว่าง = ไม่มีกำหนด) ✅
+        - หมายเหตุ textarea ✅
+        - ปุ่ม "ยกเลิกรูปแบบนี้" (btn-warning) → modal ยืนยัน #modalConfirmCancelMode ✅
+        - modal ยืนยันมี "ยืนยันยกเลิก" → toast warning แจ้งยกเลิกสำเร็จ ✅
+        - ปุ่ม "บันทึก" → validation (radio required + วันที่มีผล required) → toast success ✅
+        - Mockup data: productionModeData 9 entries ✅
+          (template 5, 9 ใช้โหมด อัตโนมัติหลังการตรวจปล่อย/อัตโนมัติทั้งกระบวนการ)
+        - Build: 0 errors ✅
+
+    (2) กำหนดช่วงวันที่ รูปแบบการจัดทำใบรับรองแต่ละใบ
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/CertificateTemplate
+        ผลการตรวจสอบ:
+        - modal #modalSetProductionMode เปลี่ยนเป็น 2-tab: "กำหนดรูปแบบ" และ "ประวัติรูปแบบการจัดทำ" ✅
+        - Tab "กำหนดรูปแบบ": section "ช่วงวันที่มีผล" พร้อม label "วันที่เริ่มต้น (required)" + "วันที่สิ้นสุด (optional)" ✅
+        - dynamic preview text: "รูปแบบนี้ใช้งานได้ตั้งแต่ [วันที่] ถึง [วันที่/ไม่มีกำหนดสิ้นสุด]"
+          แสดงทันทีเมื่อกรอก/เปลี่ยนวันที่ (alert-success พร้อม icon ✅) ✅
+        - Tab "ประวัติรูปแบบการจัดทำ": ตาราง ช่วงวันที่ | รูปแบบ (badge ตามสี) | ผู้กำหนด | หมายเหตุ | สถานะ (มีผล/หมดอายุ) ✅
+          แถว "มีผล" highlight table-success ✅
+          badge "ใช้งานอยู่ตั้งแต่ [วันที่]" สีเขียว แสดงมุมขวาบนของ history tab ✅
+        - Mockup data: prodModeHistoryMap 9 templates (2-3 history entries ต่อ template) ✅
+        - badge "ใช้งานอยู่ตั้งแต่ [วันที่]" สีเขียวในตารางหลัก ต่อแถว template ✅
+        - Build: 0 errors ✅
+
+    (3) กำหนดลายมือชื่ออิเล็กทรอนิกส์ + แสดงบนใบรับรองอัตโนมัติ
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/CertificateTemplate
+        ผลการตรวจสอบ:
+        - field builder modal: field "ลายมือชื่อผู้รับรอง" (Type=signature) มีปุ่ม "ตั้งค่า" (ri-pen-nib-line) ✅
+        - sub-panel "ตั้งค่าลายมือชื่ออิเล็กทรอนิกส์" toggle ได้ด้วยปุ่ม "ตั้งค่า" ✅ ประกอบด้วย:
+          - ผู้ลงนาม: select 3 ตัวเลือก (role "ผู้ลงนามใบรับรอง") ✅
+          - card แสดง ชื่อ-สกุล / ตำแหน่ง / หน่วยงาน (อัปเดตตาม select) ✅
+          - placeholder รูปลายมือชื่อ (กล่อง dashed border + ri-image-line) ✅
+          - toggle "ประทับอัตโนมัติเมื่อออกใบรับรอง" (สำหรับโหมดอัตโนมัติ) ✅
+        - preview modal (#modalPreview): footer section เพิ่ม:
+          - กล่อง placeholder ลายมือชื่อ (dashed box + icon) + ชื่อ/ตำแหน่ง/หน่วยงาน ✅
+          - กล่อง placeholder ตราประทับ (วงกลม dashed + ri-seal-line) ✅
+          - badge "ประทับอัตโนมัติเมื่อออกใบรับรอง (auto-stamp)" สีเขียว ✅
+          - แสดง "ผู้ลงนาม: นายอภิชาติ วงศ์พันธ์" ✅
+        - JS: signerDetailMap 3 entries + toggle sigConfigPanel + populate signer detail on change ✅
+        - Build: 0 errors ✅
+
+    (4) จัดการลายมือชื่ออิเล็กทรอนิกส์สำหรับอัตโนมัติทั้งกระบวนการ
+        (กำหนด/เพิ่ม/แก้ไข/ลบ/ระงับ + ช่วงวันที่ + มาตรฐานความปลอดภัย)
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/ESignature
+        ผลการตรวจสอบ:
+        - สร้าง Admin/ESignature.cshtml เป็นหน้าเฉพาะสำหรับจัดการลายมือชื่ออิเล็กทรอนิกส์ ✅
+        - summary cards: ลายมือชื่อทั้งหมด(6) / ใช้งานได้(4) / ใกล้หมดอายุ(1) / ระงับ+ยกเลิก(2) ✅
+        - security alert สีส้ม: "⚠️ การเพิ่ม/แก้ไขลายมือชื่อจะถูก log และแจ้ง Admin ระดับสูง" ✅
+        - ตารางรายการ 6 รายการ: รหัส | ผู้ลงนาม/ตำแหน่ง/หน่วยงาน | ประเภทการใช้งาน | วันที่เริ่ม/หมดอายุ | มาตรฐาน | สถานะ ✅
+        - ปุ่ม "เพิ่มลายมือชื่อ" → modal "เพิ่ม/แก้ไขลายมือชื่ออิเล็กทรอนิกส์" (#modalAddESignature) ✅
+        - modal มี:
+          - ผู้ลงนาม: select 5 ตัวเลือก + card แสดง ชื่อ/ตำแหน่ง/หน่วยงาน (auto-fill) ✅
+          - ประเภทการใช้งาน: radio 4 ตัวเลือก (อัตโนมัติทั้งกระบวนการ / หลังรับคำขอ / หลังตรวจปล่อย / เจ้าหน้าที่ลงนามด้วยตนเอง) ✅
+          - upload drop zone (PNG/SVG, 500KB, transparent bg required) + file preview ✅
+          - template preview: แสดงตำแหน่งลายมือชื่อ/ตราประทับบนใบรับรอง ✅
+          - ช่วงวันที่ (validFrom/validTo) + duration preview (ปี/เดือน) ✅
+          - มาตรฐาน select (ETSI EN 319 401 / TIS 4401-2567 / กรมประมงกำหนด) + คำอธิบาย ✅
+        - ปุ่มต่อแถว: แก้ไข / ระงับ / ยกเลิก / ประวัติการใช้งาน ✅
+        - modal ระงับ (#modalSuspendESign): เหตุผล + วันที่มีผล ✅
+        - modal ยกเลิก (#modalCancelESign): เหตุผล (permanent action warning) ✅
+        - modal ประวัติการใช้งาน (#modalESignHistory): audit log ตาราง 8 รายการ: วันที่/เวลา | เลขใบรับรอง | รหัสผู้ลงนาม | ผู้ดำเนินการ | ผล (สำเร็จ/ล้มเหลว) ✅
+        - ปุ่ม "ส่งออก CSV" ใน modal ประวัติ ✅
+        - JS: signerDetails map, file upload handler, date range preview, standard description, audit log filter by signerId ✅
+        - Build: 0 errors ✅
+
+    (5) เพิ่ม/แก้ไขไฟล์ลายมือชื่ออิเล็กทรอนิกส์ สำหรับแต่ละหน่วยงาน
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/Organization (Tab "หน่วยงานภาครัฐ" → ปุ่มดูรายละเอียด → Tab "ลายมือชื่ออิเล็กทรอนิกส์")
+        ผลการตรวจสอบ:
+        - เพิ่ม Tab "ลายมือชื่ออิเล็กทรอนิกส์" ใน modal #govAgencyDetailModal ✅ (tab nav + pane #govTab-esign)
+        - ตารางรายการลายมือชื่อต่อหน่วยงาน: ผู้ลงนาม | ตำแหน่ง | วันที่เริ่ม | วันหมดอายุ | สถานะ | ไฟล์ | จัดการ ✅
+        - ข้อมูล mockup ครบทุกหน่วยงาน (GOV-KTS-00 × 3, STS-01–06 × 1-2 รายการ) ✅
+        - badge "ลายมือชื่อ: ใช้งาน N รายการ ✅" / "ใกล้หมดอายุ ⚠️" ใน header modal ✅
+        - badge count (#govESignCount) แสดงจำนวนที่ใช้งาน/ใกล้หมดอายุ ✅
+        - badge "ยังไม่มีไฟล์" / "มีไฟล์" ต่อแถว ✅
+        - ไอคอนเตือน ⚠️ ต่อแถวที่ใกล้หมดอายุ ✅
+        - ปุ่ม "เพิ่มลายมือชื่อ" (ri-pen-nib-line) → modal #modalAddOrgESign ✅ ประกอบด้วย:
+          - select ผู้ลงนาม (role "ผู้ลงนามใบรับรอง") ✅
+          - upload drop zone (PNG/SVG, 500KB, transparent bg) ✅
+          - file preview ✅
+          - ช่วงวันที่ (validFrom/validTo) ✅
+          - หมายเหตุ ✅
+        - ปุ่ม "แก้ไขไฟล์" ต่อแถว → modal #modalEditESignFile ✅ ประกอบด้วย:
+          - security notice (log + แจ้ง Admin) ✅
+          - เปรียบเทียบ: ลายมือชื่อเดิม ↔ ลายมือชื่อใหม่ (upload drop zone) ✅
+          - เหตุผลการเปลี่ยน: textarea (required) ✅
+          - วันที่มีผล: date picker ✅
+          - ปุ่ม "ยืนยันเปลี่ยน" ✅
+        - ปุ่ม "ระงับ" ต่อแถว ✅
+        - Build: 0 errors ✅
+
+    (6) กำหนดต้นแบบการลงทะเบียนรับเรื่อง + กำหนดผู้ทำหน้าที่แทน (proxy/delegate)
+        สถานะ: [ครบถ้วนแล้ว ✅]
+        URL: http://localhost:5055/Admin/ReceptionTemplate
+        ผลการตรวจสอบ:
+        - สร้างหน้า Admin/ReceptionTemplate.cshtml ✅
+        - Summary cards: ต้นแบบทั้งหมด / ใช้งาน / รอทบทวน / มีผู้แทนแอคทีฟ ✅
+        - ตาราง 5 ต้นแบบ (RTP-001–RTP-005): รหัส/ชื่อ/ประเภทใบรับรอง/ขั้นตอน/ผู้รับผิดชอบ/ผู้แทน/วันที่/สถานะ ✅
+        - modal #modalAddTemplate: ชื่อต้นแบบ / checkbox PS+NMD+Declaration / step list drag-drop stub / ผู้รับผิดชอบหลัก / section Proxy ลำดับ 1-3 + เงื่อนไข 3 ตัวเลือก + ช่วงวันที่ + preview badge ✅
+        - modal #modalProxy: กำหนดผู้ทำหน้าที่แทน standalone + badge preview + email alert ✅
+        - modal #modalCancelTemplate: ยกเลิกต้นแบบ + เหตุผล ✅
+        mockup ที่ต้องเพิ่ม (เพื่อ capture หน้าจอ):
+        - เพิ่ม Admin/ReceptionTemplate.cshtml หรือ Tab "ต้นแบบการรับเรื่อง" ใน Admin:
+          summary cards: ต้นแบบทั้งหมด / ใช้งาน / รอทบทวน
+          ตาราง:
+          รหัสต้นแบบ | ชื่อต้นแบบ | ประเภทใบรับรอง | กระบวนการรับเรื่อง |
+          ผู้รับผิดชอบ | วันที่เริ่ม | สถานะ
+          ปุ่ม "เพิ่มต้นแบบ" (ri-file-list-3-line, สีน้ำเงิน):
+          modal "ต้นแบบการลงทะเบียนรับเรื่อง":
+          ชื่อต้นแบบ: text input
+          ประเภทใบรับรอง: checkbox ☑ PS ☑ NMD ☑ Declaration
+          กระบวนการรับเรื่อง: ขั้นตอน (drag-drop reorder)
+          ○ ขั้นตอน 1: ตรวจสอบเอกสารเบื้องต้น
+          ○ ขั้นตอน 2: ลงทะเบียนเข้าระบบ
+          ○ ขั้นตอน 3: มอบหมายเจ้าหน้าที่พิจารณา
+          ○ ขั้นตอน 4: ส่งให้ผู้อนุมัติ
+          ผู้รับผิดชอบหลัก: select จาก IndexUserData
+          section "ผู้ทำหน้าที่แทน (Proxy/Delegate)":
+          ผู้ทำหน้าที่แทน: select user (multi-select, ลำดับ 1-3)
+          เงื่อนไขการเปิดสิทธิ์แทน:
+          ○ ผู้รับผิดชอบหลักไม่ได้ login > [N] วัน
+          ○ ผู้รับผิดชอบหลักตั้งค่า "ลาหยุด" ในระบบ
+          ○ Admin กำหนดด้วยตนเอง
+          ช่วงวันที่ใช้สิทธิ์แทน: date range (start – end)
+          badge "ผู้แทน: นายกิตติ วงศ์สวัสดิ์ ✅ (ถึง 30/05/2569)" สีเขียวอ่อน
+          แจ้งเตือน: "⚠️ ผู้ทำหน้าที่แทนจะได้รับ email แจ้งเมื่อได้รับสิทธิ์"

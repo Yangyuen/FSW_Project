@@ -22,88 +22,49 @@
     };
 }
 
-<div class="container-xxl flex-grow-1 container-p-y">
-    <!-- Header -->
-    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+<h4 class="mb-1">จัดการลายมือชื่ออิเล็กทรอนิกส์</h4>
+<p class="mb-1 text-muted">กำหนด / เพิ่ม / แก้ไข / ระงับ ลายมือชื่ออิเล็กทรอนิกส์สำหรับอัตโนมัติทั้งกระบวนการ</p>
+
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb breadcrumb-style1" style="--bs-breadcrumb-divider: '>'; font-size: 0.75rem;">
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("ESignature", "Admin")" class="text-primary fw-semibold">ผู้ดูแลระบบ</a>
+        </li>
+        <li class="breadcrumb-item active text-secondary">ลายมือชื่ออิเล็กทรอนิกส์</li>
+    </ol>
+</nav>
+
+<!-- Security Alert -->
+<div class="alert alert-warning d-flex align-items-start mb-4" role="alert">
+    <i class="ri ri-alarm-warning-line me-2 fs-5 mt-1 flex-shrink-0"></i>
+    <div>
+        <strong>⚠️ การเพิ่ม / แก้ไขลายมือชื่อจะถูก log และแจ้ง Admin ระดับสูง</strong><br>
+        <small>การดำเนินการทุกครั้งจะถูกบันทึกใน audit log และส่งการแจ้งเตือนไปยังผู้ดูแลระบบอาวุโสโดยอัตโนมัติ</small>
+    </div>
+</div>
+
+<div class="row mb-6 g-6">
+    <div class="col-sm-6 col-xl-3"><div class="card"><div class="card-body"><div class="d-flex align-items-center justify-content-between"><div class="content-left"><h5 class="mb-1">@signers.Length</h5><small>ลายมือชื่อทั้งหมด</small></div><span class="badge bg-label-primary rounded-circle p-2"><i class="icon-base ri ri-pen-nib-line icon-24px"></i></span></div></div></div></div>
+    <div class="col-sm-6 col-xl-3"><div class="card"><div class="card-body"><div class="d-flex align-items-center justify-content-between"><div class="content-left"><h5 class="mb-1">@signers.Count(s => s.StatusText == "ใช้งาน" || s.StatusText == "ใกล้หมดอายุ")</h5><small>ใช้งานได้</small></div><span class="badge bg-label-success rounded-circle p-2"><i class="icon-base ri ri-checkbox-circle-line icon-24px"></i></span></div></div></div></div>
+    <div class="col-sm-6 col-xl-3"><div class="card"><div class="card-body"><div class="d-flex align-items-center justify-content-between"><div class="content-left"><h5 class="mb-1">@signers.Count(s => s.StatusText == "ใกล้หมดอายุ")</h5><small>ใกล้หมดอายุ</small></div><span class="badge bg-label-warning rounded-circle p-2"><i class="icon-base ri ri-time-line icon-24px"></i></span></div></div></div></div>
+    <div class="col-sm-6 col-xl-3"><div class="card"><div class="card-body"><div class="d-flex align-items-center justify-content-between"><div class="content-left"><h5 class="mb-1">@signers.Count(s => s.StatusText == "ระงับ" || s.StatusText == "ยกเลิก")</h5><small>ระงับ / ยกเลิก</small></div><span class="badge bg-label-danger rounded-circle p-2"><i class="icon-base ri ri-close-circle-line icon-24px"></i></span></div></div></div></div>
+</div>
+
+<!-- Main Table -->
+<div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-3">
         <div>
-            <h4 class="mb-1">
-                <i class="ri ri-pen-nib-line me-2 text-primary"></i>จัดการลายมือชื่ออิเล็กทรอนิกส์
-            </h4>
-            <p class="text-muted mb-0">กำหนด / เพิ่ม / แก้ไข / ระงับ ลายมือชื่ออิเล็กทรอนิกส์สำหรับอัตโนมัติทั้งกระบวนการ</p>
+            <h5 class="card-title mb-1">รายการลายมือชื่ออิเล็กทรอนิกส์</h5>
+            <p class="text-muted small mb-0">ลายมือชื่ออิเล็กทรอนิกส์ที่ใช้ในกระบวนการออกใบรับรอง</p>
         </div>
-        <button type="button" class="btn btn-primary"
+        <button type="button" class="btn btn-primary btn-sm"
                 data-bs-toggle="modal" data-bs-target="#modalAddESignature"
                 data-mode="add">
             <i class="ri ri-pen-nib-line me-1"></i>เพิ่มลายมือชื่อ
         </button>
     </div>
-
-    <!-- Security Alert -->
-    <div class="alert alert-warning d-flex align-items-start mb-4" role="alert">
-        <i class="ri ri-alarm-warning-line me-2 fs-5 mt-1 flex-shrink-0"></i>
-        <div>
-            <strong>⚠️ การเพิ่ม / แก้ไขลายมือชื่อจะถูก log และแจ้ง Admin ระดับสูง</strong><br>
-            <small>การดำเนินการทุกครั้งจะถูกบันทึกใน audit log และส่งการแจ้งเตือนไปยังผู้ดูแลระบบอาวุโสโดยอัตโนมัติ</small>
-        </div>
-    </div>
-
-    <!-- Summary Cards -->
-    <div class="row g-4 mb-4">
-        <div class="col-6 col-md-3">
-            <div class="card text-center h-100">
-                <div class="card-body py-3">
-                    <div class="avatar avatar-md mx-auto mb-2" style="background:var(--bs-primary-bg-subtle);border-radius:50%;">
-                        <i class="ri ri-pen-nib-line fs-4 text-primary"></i>
-                    </div>
-                    <h3 class="mb-0 fw-bold">@signers.Length</h3>
-                    <small class="text-muted">ลายมือชื่อทั้งหมด</small>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-md-3">
-            <div class="card text-center h-100">
-                <div class="card-body py-3">
-                    <div class="avatar avatar-md mx-auto mb-2" style="background:var(--bs-success-bg-subtle);border-radius:50%;">
-                        <i class="ri ri-checkbox-circle-line fs-4 text-success"></i>
-                    </div>
-                    <h3 class="mb-0 fw-bold text-success">@signers.Count(s => s.StatusText == "ใช้งาน")</h3>
-                    <small class="text-muted">ใช้งานได้</small>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-md-3">
-            <div class="card text-center h-100">
-                <div class="card-body py-3">
-                    <div class="avatar avatar-md mx-auto mb-2" style="background:var(--bs-warning-bg-subtle);border-radius:50%;">
-                        <i class="ri ri-time-line fs-4 text-warning"></i>
-                    </div>
-                    <h3 class="mb-0 fw-bold text-warning">@signers.Count(s => s.StatusText == "ใกล้หมดอายุ")</h3>
-                    <small class="text-muted">ใกล้หมดอายุ</small>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-md-3">
-            <div class="card text-center h-100">
-                <div class="card-body py-3">
-                    <div class="avatar avatar-md mx-auto mb-2" style="background:var(--bs-danger-bg-subtle);border-radius:50%;">
-                        <i class="ri ri-close-circle-line fs-4 text-danger"></i>
-                    </div>
-                    <h3 class="mb-0 fw-bold text-danger">@signers.Count(s => s.StatusText == "ระงับ" || s.StatusText == "ยกเลิก")</h3>
-                    <small class="text-muted">ระงับ / ยกเลิก</small>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Table -->
-    <div class="card">
-        <div class="card-header d-flex align-items-center justify-content-between">
-            <h6 class="mb-0"><i class="ri ri-list-check me-1"></i>รายการลายมือชื่ออิเล็กทรอนิกส์</h6>
-            <span class="text-muted small">ทั้งหมด @signers.Length รายการ</span>
-        </div>
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
+    <div class="table-responsive p-1">
+        <table class="table table-bordered align-middle mb-0">
                     <thead class="table-light">
                         <tr>
                             <th class="ps-3">รหัส</th>
@@ -199,8 +160,6 @@
                         }
                     </tbody>
                 </table>
-            </div>
-        </div>
     </div>
 </div>
 

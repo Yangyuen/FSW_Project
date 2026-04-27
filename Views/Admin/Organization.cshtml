@@ -537,16 +537,12 @@
             if (e.target.closest('.btn-change-rmbs1-agency')) {
                 new bootstrap.Modal(document.getElementById('changeRmbs1AgencyModal')).show();
             }
-            // ---- Assign Signatory button (in gov agency detail modal) ----
-            if (e.target.closest('#btnAssignSignatory')) {
-                var name = document.getElementById('govModalTitle').textContent.trim();
-                document.getElementById('signatoryModalAgencyName').textContent = name;
-                new bootstrap.Modal(document.getElementById('assignSignatoryModal')).show();
-            }
         });
+    });
+</script>
+}
 
-        // ---- gov agency tab filter ----
-        function filterGovRows() {
+<h4 class="mb-1">XXX_PLACEHOLDER_REMOVE_ME</h4>
             var keyword = (document.getElementById('filterGovKeyword').value || '').trim().toLowerCase();
             var type = (document.getElementById('filterGovType').value || '').trim();
             var status = (document.getElementById('filterGovStatus').value || '').trim();
@@ -2101,7 +2097,7 @@
 <div class="modal fade" id="grantExternalAccessModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header" style="background:rgba(253,126,20,0.08);">
+            <div class="modal-header">
                 <h5 class="modal-title text-orange">
                     <i class="ri ri-link-m me-2"></i>เพิ่มสิทธิ์หน่วยงานภายนอก
                 </h5>

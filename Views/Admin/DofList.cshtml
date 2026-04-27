@@ -786,7 +786,7 @@
 <h4 class="mb-1">ฐานข้อมูลโรงงานที่ผ่านการรับรองสุขอนามัยของกรมประมง (DOF List)</h4>
 <p class="mb-1 text-muted">รายการโรงงานที่ผ่านการรับรอง DOF พร้อมขอบเขตการรับรอง ผลการตรวจประเมิน และสถานะปัจจุบัน</p>
 
-<nav aria-label="breadcrumb" class="mb-6">
+<nav aria-label="breadcrumb" class="mb-4">
     <ol class="breadcrumb breadcrumb-style1" style="--bs-breadcrumb-divider: '>'; font-size: 0.75rem;">
         <li class="breadcrumb-item">
             <a href="@Url.Action("DofList", "Admin")" class="text-primary fw-semibold">ผู้ดูแลระบบ</a>
@@ -795,6 +795,21 @@
     </ol>
 </nav>
 
+<!-- Page-level tabs -->
+<ul class="nav nav-pills nav-pills-primary mb-4" role="tablist">
+    <li class="nav-item">
+        <button class="nav-link active" type="button" role="tab" data-bs-toggle="pill" data-bs-target="#dof-tab-main">
+            <i class="ri ri-list-check me-1"></i>รายการโรงงาน
+        </button>
+    </li>
+    <li class="nav-item">
+        <button class="nav-link" type="button" role="tab" data-bs-toggle="pill" data-bs-target="#dof-tab-managers">
+            <i class="ri ri-shield-user-line me-1"></i>ผู้จัดการฐานข้อมูล
+        </button>
+    </li>
+</ul>
+<div class="tab-content">
+<div class="tab-pane fade show active" id="dof-tab-main" role="tabpanel">
 <div class="row mb-6 g-6">
     <div class="col-sm-6 col-xl-3">
         <div class="card"><div class="card-body"><div class="d-flex align-items-center justify-content-between"><div class="content-left"><h5 class="mb-1">@totalCount</h5><small>โรงงานทั้งหมด</small></div><span class="badge bg-label-primary rounded-circle p-2"><i class="icon-base ri ri-building-4-line icon-24px"></i></span></div></div></div>
@@ -979,23 +994,23 @@
             </tbody>
         </table>
     </div>
-</div>
+</div><!-- /main table card -->
+</div><!-- /tab-pane: รายการโรงงาน -->
 
-<!-- ผู้จัดการฐานข้อมูล DOF List (TOR 3.1(10)) -->
-<div class="card mt-4">
-    <div class="card-header d-flex align-items-center justify-content-between py-3" style="background:rgba(102,192,62,0.06);">
+<!-- Tab: ผู้จัดการฐานข้อมูล DOF List -->
+<div class="tab-pane fade" id="dof-tab-managers" role="tabpanel">
+<div>
+    <div class="card-header d-flex align-items-center justify-content-between py-3">
         <div>
-            <h6 class="card-title mb-1 fw-semibold" style="color:#28a745;">
-                <i class="ri ri-shield-user-line me-2"></i>ผู้จัดการฐานข้อมูล DOF List
-            </h6>
+            <h5 class="card-title mb-1">ผู้จัดการฐานข้อมูล DOF List</h5>
             <p class="text-muted small mb-0">เจ้าหน้าที่ที่ได้รับสิทธิ์เพิ่มเติม/แก้ไข/ระงับ/ยกเลิก ข้อมูลใน DOF List ตามพื้นที่รับผิดชอบ</p>
         </div>
-        <button type="button" class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#dofAssignManagerModal">
+        <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#dofAssignManagerModal">
             <i class="ri ri-user-add-line me-1"></i>กำหนดสิทธิ์ผู้จัดการ
         </button>
     </div>
     <div class="table-responsive p-1">
-        <table class="table table-bordered align-middle mb-0 dof-table-compact">
+    <table class="table table-bordered align-middle mb-0 dof-table-compact">
             <thead>
                 <tr>
                     <th style="width:50px;">#</th>
@@ -1072,13 +1087,15 @@
             </tbody>
         </table>
     </div>
-</div>
+</div><!-- /managers card -->
+</div><!-- /tab-pane: ผู้จัดการฐานข้อมูม -->
+</div><!-- /tab-content -->
 
 <!-- Modal: กำหนดสิทธิ์ผู้จัดการ DOF -->
 <div class="modal fade" id="dofAssignManagerModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header bg-label-success">
+            <div class="modal-header">
                 <h5 class="modal-title"><i class="ri ri-user-add-line me-2"></i>กำหนดสิทธิ์ผู้จัดการ DOF List</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
@@ -1111,7 +1128,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">ยกเลิก</button>
-                <button type="button" class="btn btn-success" data-bs-dismiss="modal"><i class="ri ri-save-line me-1"></i>บันทึก</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal"><i class="ri ri-save-line me-1"></i>บันทึก</button>
             </div>
         </div>
     </div>
@@ -1289,7 +1306,7 @@
 <div class="modal fade" id="dofSuspendModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header" style="background:rgba(255,159,67,0.12);">
+            <div class="modal-header">
                 <h5 class="modal-title text-warning"><i class="ri ri-forbid-2-line me-2"></i>ระงับโรงงานชั่วคราว</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
@@ -1318,7 +1335,7 @@
 <div class="modal fade" id="dofCancelModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header" style="background:rgba(234,84,85,0.12);">
+            <div class="modal-header">
                 <h5 class="modal-title text-danger"><i class="ri ri-close-circle-line me-2"></i>ยกเลิกการรับรอง</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
@@ -1347,7 +1364,7 @@
 <div class="modal fade" id="dofImportModal" tabindex="-1" aria-labelledby="dofImportModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
-            <div class="modal-header" style="background:rgba(102,16,242,0.07);">
+            <div class="modal-header">
                 <h5 class="modal-title" id="dofImportModalLabel"><i class="ri ri-upload-cloud-2-line me-2 text-purple"></i>นำเข้าข้อมูล DOF List</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>

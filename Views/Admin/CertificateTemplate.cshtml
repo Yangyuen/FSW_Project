@@ -1965,12 +1965,11 @@
             if (!el) { return; }
             var d  = productionModeData[id];
             if (!d || !d.from) { return; }
-            // Convert Buddhist ISO date to display string
+            // Convert Buddhist ISO date (already Buddhist year) to display string
             function isoToDisplayDate(iso) {
                 var parts = iso.split('-');
                 if (parts.length !== 3) { return iso; }
-                var buddhistYear = parseInt(parts[0]) + 543;
-                return parts[2] + '/' + parts[1] + '/' + buddhistYear;
+                return parts[2] + '/' + parts[1] + '/' + parts[0];
             }
             el.innerHTML = '<span class="badge bg-label-success" style="font-size:0.6rem;">' +
                 '<i class="ri ri-checkbox-circle-line me-1"></i>ใช้งานอยู่ตั้งแต่ ' + isoToDisplayDate(d.from) + '</span>';

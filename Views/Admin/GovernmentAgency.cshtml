@@ -1,0 +1,1415 @@
+@{
+    ViewData["Title"] = "หน่วยงานภาครัฐ (กตส./ศตส.)";
+
+    // ---- mockup data: หน่วยงานภาครัฐ กตส./ศตส. ----
+    var govAgencies = new[]
+    {
+        new {
+            RowNo = 1,
+            AgencyCode = "GOV-KTS-00",
+            AgencyName = "กองตรวจสอบคุณภาพสินค้าประมง (กตส.) ส่วนกลาง",
+            AgencyType = "กตส.",
+            AgencyTypeClass = "bg-label-primary",
+            Region = "ส่วนกลาง",
+            Provinces = "กรุงเทพมหานคร, นนทบุรี, ปทุมธานี",
+            Roles = "ออกใบรับรอง PS/NMD, อนุมัติ RMBS1, บริหาร DOF List",
+            OfficerCount = 22,
+            StatusText = "ใช้งาน",
+            StatusClass = "bg-label-success"
+        },
+        new {
+            RowNo = 2,
+            AgencyCode = "GOV-STS-01",
+            AgencyName = "ศูนย์ตรวจสอบสินค้าประมงประจำเขต 1 (ศตส.เขต 1)",
+            AgencyType = "ศตส.",
+            AgencyTypeClass = "bg-label-info",
+            Region = "เขต 1",
+            Provinces = "ชลบุรี, ระยอง, จันทบุรี, ตราด",
+            Roles = "ออกใบรับรอง PS/NMD, ตรวจสอบ Traceability",
+            OfficerCount = 12,
+            StatusText = "ใช้งาน",
+            StatusClass = "bg-label-success"
+        },
+        new {
+            RowNo = 3,
+            AgencyCode = "GOV-STS-02",
+            AgencyName = "ศูนย์ตรวจสอบสินค้าประมงประจำเขต 2 (ศตส.เขต 2)",
+            AgencyType = "ศตส.",
+            AgencyTypeClass = "bg-label-info",
+            Region = "เขต 2",
+            Provinces = "สุราษฎร์ธานี, ชุมพร, กระบี่",
+            Roles = "ออกใบรับรอง PS/NMD, รับเรื่องคำขอ",
+            OfficerCount = 9,
+            StatusText = "ใช้งาน",
+            StatusClass = "bg-label-success"
+        },
+        new {
+            RowNo = 4,
+            AgencyCode = "GOV-STS-03",
+            AgencyName = "ศูนย์ตรวจสอบสินค้าประมงประจำเขต 3 (ศตส.เขต 3)",
+            AgencyType = "ศตส.",
+            AgencyTypeClass = "bg-label-info",
+            Region = "เขต 3",
+            Provinces = "สงขลา, ปัตตานี, ยะลา, นราธิวาส",
+            Roles = "ออกใบรับรอง PS/NMD, อนุมัติ RMBS1, รับเรื่องคำขอ",
+            OfficerCount = 15,
+            StatusText = "ใช้งาน",
+            StatusClass = "bg-label-success"
+        },
+        new {
+            RowNo = 5,
+            AgencyCode = "GOV-STS-04",
+            AgencyName = "ศูนย์ตรวจสอบสินค้าประมงประจำเขต 4 (ศตส.เขต 4)",
+            AgencyType = "ศตส.",
+            AgencyTypeClass = "bg-label-info",
+            Region = "เขต 4",
+            Provinces = "นครศรีธรรมราช, พัทลุง, ตรัง",
+            Roles = "ออกใบรับรอง PS/NMD, ตรวจสอบ Traceability",
+            OfficerCount = 8,
+            StatusText = "ใช้งาน",
+            StatusClass = "bg-label-success"
+        },
+        new {
+            RowNo = 6,
+            AgencyCode = "GOV-STS-05",
+            AgencyName = "ศูนย์ตรวจสอบสินค้าประมงประจำเขต 5 (ศตส.เขต 5)",
+            AgencyType = "ศตส.",
+            AgencyTypeClass = "bg-label-info",
+            Region = "เขต 5",
+            Provinces = "ระนอง, ชุมพร, พังงา",
+            Roles = "ออกใบรับรอง PS/NMD, รับเรื่องคำขอ",
+            OfficerCount = 7,
+            StatusText = "ใช้งาน",
+            StatusClass = "bg-label-success"
+        },
+        new {
+            RowNo = 7,
+            AgencyCode = "GOV-STS-06",
+            AgencyName = "ศูนย์ตรวจสอบสินค้าประมงประจำเขต 6 (ศตส.เขต 6)",
+            AgencyType = "ศตส.",
+            AgencyTypeClass = "bg-label-info",
+            Region = "เขต 6",
+            Provinces = "ภูเก็ต, พังงา, กระบี่",
+            Roles = "ออกใบรับรอง PS/NMD, ตรวจสอบ Traceability",
+            OfficerCount = 10,
+            StatusText = "รอทบทวน",
+            StatusClass = "bg-label-warning"
+        }
+    };
+}
+
+@section PageStyles {
+<style>
+    .organization-table-compact {
+        font-size: 0.78rem;
+    }
+
+    .organization-table-compact th,
+    .organization-table-compact td {
+        padding: 0.45rem 0.6rem;
+        vertical-align: middle;
+    }
+
+    .organization-table-compact thead th {
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+    }
+
+    .organization-table-compact .badge {
+        font-size: 0.68rem;
+    }
+
+    .organization-table-compact .btn.btn-sm {
+        font-size: 0.73rem;
+        padding: 0.25rem 0.55rem;
+    }
+
+    .organization-table-compact .btn-icon {
+        width: 28px;
+        height: 28px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .btn-square {
+        width: 48px !important;
+        height: 48px !important;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .detail-kv {
+        border: 1px solid var(--bs-border-color);
+        border-radius: 0.75rem;
+        background: var(--bs-paper-bg);
+        padding: 0.85rem 1rem;
+        height: 100%;
+    }
+
+    .detail-kv .label {
+        display: block;
+        font-size: 0.75rem;
+        color: var(--bs-secondary-color);
+        margin-bottom: 0.25rem;
+    }
+
+    .detail-kv .value {
+        font-weight: 600;
+        color: var(--bs-heading-color);
+    }
+
+    .role-chips .badge {
+        font-size: 0.68rem;
+        font-weight: 500;
+    }
+
+    .province-chips span {
+        font-size: 0.68rem;
+    }
+</style>
+}
+
+@section PageScripts {
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        // ---- gov agency filter ----
+        function filterGovRows() {
+            var keyword = (document.getElementById('filterGovKeyword').value || '').trim().toLowerCase();
+            var type = (document.getElementById('filterGovType').value || '').trim();
+            var status = (document.getElementById('filterGovStatus').value || '').trim();
+            var rows = document.querySelectorAll('#govAgencyTableBody tr[data-agency-code]');
+            var count = 0;
+
+            rows.forEach(function (row) {
+                var text = (row.dataset.searchText || '').toLowerCase();
+                var rowType = row.dataset.agencyType || '';
+                var rowStatus = row.dataset.status || '';
+                var ok = (!keyword || text.includes(keyword))
+                    && (!type || rowType === type)
+                    && (!status || rowStatus === status);
+                row.classList.toggle('d-none', !ok);
+                if (ok) count++;
+            });
+            document.getElementById('govAgencyTableEmpty').classList.toggle('d-none', count !== 0);
+        }
+
+        document.getElementById('btnSearchGovAgency').addEventListener('click', filterGovRows);
+        document.getElementById('btnResetGovAgency').addEventListener('click', function () {
+            document.getElementById('filterGovKeyword').value = '';
+            document.getElementById('filterGovType').value = '';
+            document.getElementById('filterGovStatus').value = '';
+            filterGovRows();
+        });
+
+        ['filterGovKeyword', 'filterGovType', 'filterGovStatus'].forEach(function (id) {
+            var el = document.getElementById(id);
+            if (!el) return;
+            el.addEventListener('change', filterGovRows);
+            el.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); filterGovRows(); } });
+        });
+
+        // ---- e-signature mockup data per agency ----
+        var govESignMap = {
+            'GOV-KTS-00': [
+                { signer: 'นายอภิชาติ วงศ์พันธ์',  position: 'ผู้อำนวยการกองตรวจสอบรับรองมาตรฐาน', validFrom: '2568-10-01', validTo: '2570-09-30', status: 'ใช้งาน',      statusClass: 'bg-label-success',  hasFile: true  },
+                { signer: 'นายวีระ ทองดี',           position: 'ผู้เชี่ยวชาญด้านการรับรองสินค้าประมง', validFrom: '2568-10-01', validTo: '2570-09-30', status: 'ใช้งาน',      statusClass: 'bg-label-success',  hasFile: true  },
+                { signer: 'น.ส.ปรียา ศรีสุข',        position: 'หัวหน้ากลุ่มออกใบรับรอง',               validFrom: '2568-10-01', validTo: '2569-09-30', status: 'ใกล้หมดอายุ', statusClass: 'bg-label-warning',  hasFile: true  },
+            ],
+            'GOV-STS-01': [
+                { signer: 'นายสมชาย เกษมสุข', position: 'นักวิชาการประมงชำนาญการพิเศษ', validFrom: '2567-01-15', validTo: '2569-01-14', status: 'ใช้งาน',  statusClass: 'bg-label-success', hasFile: true  },
+            ],
+            'GOV-STS-02': [
+                { signer: 'นายธนพล วัฒนสุข',  position: 'ผู้อำนวยการศูนย์',                validFrom: '2568-06-01', validTo: '2570-05-31', status: 'ใช้งาน',  statusClass: 'bg-label-success', hasFile: false },
+            ],
+            'GOV-STS-03': [
+                { signer: 'นายสุรพงษ์ ประทีปรัตน์', position: 'ผู้อำนวยการศูนย์',         validFrom: '2568-01-01', validTo: '2569-12-31', status: 'ใช้งาน',  statusClass: 'bg-label-success', hasFile: true  },
+                { signer: 'น.ส.วิภาวดี รักษ์ทะเล',  position: 'นักวิชาการประมงชำนาญการ', validFrom: '2567-06-01', validTo: '2568-05-31', status: 'ระงับ',    statusClass: 'bg-label-danger',  hasFile: false },
+            ],
+            'GOV-STS-04': [
+                { signer: 'นางพรทิพย์ สายสมร', position: 'ผู้อำนวยการศูนย์', validFrom: '2568-03-01', validTo: '2570-02-28', status: 'ใช้งาน', statusClass: 'bg-label-success', hasFile: true },
+            ],
+            'GOV-STS-05': [
+                { signer: 'นายกิตติ วงศ์สวัสดิ์', position: 'ผู้อำนวยการศูนย์', validFrom: '2568-09-01', validTo: '2570-08-31', status: 'ใช้งาน', statusClass: 'bg-label-success', hasFile: true },
+            ],
+            'GOV-STS-06': [
+                { signer: 'น.ส.นภาพร เพชรสมุทร', position: 'ผู้อำนวยการศูนย์', validFrom: '2568-04-01', validTo: '2569-03-31', status: 'ใกล้หมดอายุ', statusClass: 'bg-label-warning', hasFile: false },
+            ],
+        };
+
+        var govDetailsMap = {
+            'GOV-KTS-00': {
+                mainOfficer: 'นายสมชาย รักษ์ทะเล',
+                mainOfficerTitle: 'ผู้อำนวยการกอง',
+                phone: '02-562-0600',
+                email: 'ktsdof@fisheries.go.th',
+                address: 'กรมประมง เกษตรกลาง แขวงลาดยาว เขตจตุจักร กรุงเทพมหานคร 10900',
+                statusNote: 'หน่วยงานหลักระดับกรม รับผิดชอบนโยบายและมาตรฐานการตรวจสอบคุณภาพสินค้าประมง',
+                roles: ['ออกใบรับรอง PS/NMD', 'อนุมัติ RMBS1', 'บริหาร DOF List', 'ตรวจสอบ Traceability', 'ประชาสัมพันธ์นโยบาย']
+            },
+            'GOV-STS-01': {
+                mainOfficer: 'นางสาวรุ่งนภา เจริญสุข',
+                mainOfficerTitle: 'ผู้อำนวยการศูนย์',
+                phone: '038-391-022',
+                email: 'sts1.fisheries@go.th',
+                address: '1 ถ.ชลบุรี-พัทยา ต.สุรศักดิ์ อ.ศรีราชา จ.ชลบุรี 20110',
+                statusNote: 'รับผิดชอบพื้นที่ภาคตะวันออก 4 จังหวัด มีปริมาณคำขอใบรับรองสูงสุดในกลุ่ม ศตส.',
+                roles: ['ออกใบรับรอง PS/NMD', 'ตรวจสอบ Traceability', 'รับเรื่องคำขอ']
+            },
+            'GOV-STS-02': {
+                mainOfficer: 'นายธนพล วัฒนสุข',
+                mainOfficerTitle: 'ผู้อำนวยการศูนย์',
+                phone: '077-345-100',
+                email: 'sts2.fisheries@go.th',
+                address: '156 ถ.ดอนนก ต.มะขามเตี้ย อ.เมือง จ.สุราษฎร์ธานี 84000',
+                statusNote: 'รับผิดชอบสินค้าประมงภาคกลาง-ใต้ตอนบน',
+                roles: ['ออกใบรับรอง PS/NMD', 'รับเรื่องคำขอ']
+            },
+            'GOV-STS-03': {
+                mainOfficer: 'นายสุรพงษ์ ประทีปรัตน์',
+                mainOfficerTitle: 'ผู้อำนวยการศูนย์',
+                phone: '074-325-818',
+                email: 'sts3.fisheries@go.th',
+                address: '4 ถ.ราษฎร์ยินดี ต.หาดใหญ่ อ.หาดใหญ่ จ.สงขลา 90110',
+                statusNote: 'รับผิดชอบพื้นที่ชายแดนใต้ มีจุดผ่านแดนสำคัญหลายจุด',
+                roles: ['ออกใบรับรอง PS/NMD', 'อนุมัติ RMBS1', 'รับเรื่องคำขอ']
+            },
+            'GOV-STS-04': {
+                mainOfficer: 'นางพรทิพย์ สายสมร',
+                mainOfficerTitle: 'ผู้อำนวยการศูนย์',
+                phone: '075-356-600',
+                email: 'sts4.fisheries@go.th',
+                address: '88 ถ.ราชดำเนิน ต.คลัง อ.เมือง จ.นครศรีธรรมราช 80000',
+                statusNote: 'รับผิดชอบพื้นที่ภาคใต้ตอนกลาง',
+                roles: ['ออกใบรับรอง PS/NMD', 'ตรวจสอบ Traceability']
+            },
+            'GOV-STS-05': {
+                mainOfficer: 'นายกิตติ วงศ์สวัสดิ์',
+                mainOfficerTitle: 'ผู้อำนวยการศูนย์',
+                phone: '077-835-118',
+                email: 'sts5.fisheries@go.th',
+                address: '191 ถ.เพชรเกษม ต.เพิ่นพะ อ.เมืองระนอง จ.ระนอง 85000',
+                statusNote: 'รับผิดชอบท่าเทียบเรือประมงระนองและการส่งออกทางทะเลฝั่งตะวันตก',
+                roles: ['ออกใบรับรอง PS/NMD', 'รับเรื่องคำขอ']
+            },
+            'GOV-STS-06': {
+                mainOfficer: 'นางสาวนภาพร เพชรสมุทร',
+                mainOfficerTitle: 'ผู้อำนวยการศูนย์',
+                phone: '076-239-888',
+                email: 'sts6.fisheries@go.th',
+                address: '22 ถ.เยาวราช ต.ตลาดใหญ่ อ.เมืองภูเก็ต จ.ภูเก็ต 83000',
+                statusNote: 'อยู่ระหว่างปรับปรุงระบบข้อมูลภายในให้สอดคล้องกับมาตรฐาน EU 2024',
+                roles: ['ออกใบรับรอง PS/NMD', 'ตรวจสอบ Traceability']
+            }
+        };
+
+        // ---- open gov detail modal ----
+        document.querySelectorAll('.btn-view-gov, .btn-edit-gov').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var code = this.dataset.agencyCode;
+                var row = document.querySelector('#govAgencyTableBody tr[data-agency-code="' + code + '"]');
+                var detail = govDetailsMap[code];
+                if (!row || !detail) return;
+
+                document.getElementById('govModalTitle').textContent = row.dataset.agencyName;
+                document.getElementById('govDetailCode').textContent = code;
+                document.getElementById('govDetailType').innerHTML = '<span class="badge rounded-pill ' + row.dataset.agencyTypeClass + '">' + row.dataset.agencyType + '</span>';
+                document.getElementById('govDetailRegion').textContent = row.dataset.region;
+                document.getElementById('govDetailProvinces').textContent = row.dataset.provinces;
+                document.getElementById('govDetailOfficerCount').textContent = row.dataset.officerCount + ' คน';
+                document.getElementById('govDetailStatus').innerHTML = '<span class="badge rounded-pill ' + row.dataset.statusClass + '">' + row.dataset.status + '</span>';
+                document.getElementById('govDetailMainOfficer').textContent = detail.mainOfficer + ' — ' + detail.mainOfficerTitle;
+                document.getElementById('govDetailPhone').textContent = detail.phone;
+                document.getElementById('govDetailEmail').textContent = detail.email;
+                document.getElementById('govDetailAddress').textContent = detail.address;
+                document.getElementById('govDetailStatusNote').textContent = detail.statusNote;
+
+                var roleHtml = (detail.roles || []).map(function (r) {
+                    return '<span class="badge bg-label-secondary me-1 mb-1">' + r + '</span>';
+                }).join('');
+                document.getElementById('govDetailRoles').innerHTML = roleHtml;
+
+                // Show/hide external access tab — only for กตส.
+                var isKts = (row.dataset.agencyType === 'กตส.');
+                document.getElementById('govTabExternalNav').classList.toggle('d-none', !isKts);
+
+                // ── e-signature tab ──
+                var esigns = govESignMap[code] || [];
+                document.getElementById('govESignCount').textContent = esigns.filter(function (e) { return e.status === 'ใช้งาน' || e.status === 'ใกล้หมดอายุ'; }).length;
+                var tbody = document.getElementById('govESignTableBody');
+                if (esigns.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="8" class="text-center text-muted py-3">ยังไม่มีลายมือชื่ออิเล็กทรอนิกส์ของหน่วยงานนี้</td></tr>';
+                } else {
+                    tbody.innerHTML = esigns.map(function (e, i) {
+                        var fileCell = e.hasFile
+                            ? '<span class="badge bg-label-success"><i class="ri ri-image-line me-1"></i>มีไฟล์</span>'
+                            : '<span class="badge bg-label-secondary"><i class="ri ri-image-2-line me-1"></i>ยังไม่มีไฟล์</span>';
+                        var expWarn = (e.status === 'ใกล้หมดอายุ') ? ' <i class="ri ri-alarm-warning-line text-warning" title="ใกล้หมดอายุ"></i>' : '';
+                        return '<tr>' +
+                            '<td class="text-center text-muted">' + (i + 1) + '</td>' +
+                            '<td class="fw-semibold">' + e.signer + '</td>' +
+                            '<td class="small text-muted">' + e.position + '</td>' +
+                            '<td class="text-center small">' + e.validFrom + '</td>' +
+                            '<td class="text-center small">' + e.validTo + expWarn + '</td>' +
+                            '<td class="text-center"><span class="badge ' + e.statusClass + '">' + e.status + '</span></td>' +
+                            '<td class="text-center">' + fileCell + '</td>' +
+                            '<td class="text-center text-nowrap">' +
+                                '<button type="button" class="btn btn-icon btn-sm btn-outline-primary btn-edit-esign-file me-1" title="แก้ไขไฟล์" data-signer="' + e.signer + '"><i class="ri ri-file-upload-line"></i></button>' +
+                                '<button type="button" class="btn btn-icon btn-sm btn-outline-danger" title="ระงับ" data-signer="' + e.signer + '"><i class="ri ri-forbid-line"></i></button>' +
+                            '</td>' +
+                        '</tr>';
+                    }).join('');
+                }
+
+                // ── e-sig badge in header ──
+                var activeEsigns = esigns.filter(function (e) { return e.status === 'ใช้งาน'; });
+                var nearExpiry = esigns.filter(function (e) { return e.status === 'ใกล้หมดอายุ'; });
+                var existingBadge = document.getElementById('govModalESignBadge');
+                if (existingBadge) existingBadge.remove();
+                if (activeEsigns.length > 0) {
+                    var badgeHtml = '<span class="badge bg-label-success fs-tiny" id="govModalESignBadge"><i class="ri ri-pen-nib-line me-1"></i>ลายมือชื่อ: ใช้งาน ' + activeEsigns.length + ' รายการ ✅</span>';
+                    if (nearExpiry.length > 0) {
+                        badgeHtml = '<span class="badge bg-label-warning fs-tiny" id="govModalESignBadge"><i class="ri ri-pen-nib-line me-1"></i>ลายมือชื่อ: ใกล้หมดอายุ ⚠️</span>';
+                    }
+                    document.getElementById('govModalSignatoryBadges').insertAdjacentHTML('beforeend', badgeHtml);
+                } else {
+                    var noSignBadge = '<span class="badge bg-label-secondary fs-tiny" id="govModalESignBadge"><i class="ri ri-pen-nib-line me-1"></i>ยังไม่มีลายมือชื่อ</span>';
+                    document.getElementById('govModalSignatoryBadges').insertAdjacentHTML('beforeend', noSignBadge);
+                }
+
+                new bootstrap.Modal(document.getElementById('govAgencyDetailModal')).show();
+            });
+        });
+
+        // ── delegated click handlers ──
+        document.addEventListener('click', function (e) {
+            // ── e-sign file edit modal ──
+            var editBtn = e.target.closest('.btn-edit-esign-file');
+            if (editBtn) {
+                var signer = editBtn.dataset.signer || '—';
+                document.getElementById('editESignSigner').textContent = signer;
+                document.getElementById('editESign_reason').value = '';
+                document.getElementById('editESign_fileName').textContent = '';
+                var today = new Date();
+                document.getElementById('editESign_effectiveDate').value = today.toISOString().split('T')[0];
+                new bootstrap.Modal(document.getElementById('modalEditESignFile')).show();
+            }
+            var addBtn = e.target.closest('.btn-add-org-esign');
+            if (addBtn) {
+                document.getElementById('addOrgESign_signer').value = '';
+                document.getElementById('addOrgESign_validFrom').value = '';
+                document.getElementById('addOrgESign_validTo').value = '';
+                document.getElementById('addOrgESign_note').value = '';
+                document.getElementById('addOrgESign_filePreview').classList.add('d-none');
+                new bootstrap.Modal(document.getElementById('modalAddOrgESign')).show();
+            }
+            // ── Assign Signatory ──
+            if (e.target.closest('#btnAssignSignatory')) {
+                var name = document.getElementById('govModalTitle').textContent.trim();
+                document.getElementById('signatoryModalAgencyName').textContent = name;
+                new bootstrap.Modal(document.getElementById('assignSignatoryModal')).show();
+            }
+        });
+
+        // ── e-sign dropzone handlers ──
+        var editESignDropZone = document.getElementById('editESign_newPreview');
+        var editESignFileInput = document.getElementById('editESign_fileInput');
+        if (editESignDropZone && editESignFileInput) {
+            editESignDropZone.addEventListener('click', function () { editESignFileInput.click(); });
+            editESignFileInput.addEventListener('change', function () {
+                if (this.files && this.files[0]) {
+                    document.getElementById('editESign_fileName').textContent =
+                        this.files[0].name + ' (' + (this.files[0].size / 1024).toFixed(1) + ' KB)';
+                }
+            });
+        }
+
+        var addOrgESignDropZone = document.getElementById('addOrgESign_dropZone');
+        var addOrgESignFileInput = document.getElementById('addOrgESign_fileInput');
+        if (addOrgESignDropZone && addOrgESignFileInput) {
+            addOrgESignDropZone.addEventListener('click', function () { addOrgESignFileInput.click(); });
+            addOrgESignFileInput.addEventListener('change', function () {
+                if (this.files && this.files[0]) {
+                    var preview = document.getElementById('addOrgESign_filePreview');
+                    document.getElementById('addOrgESign_fileName').textContent =
+                        this.files[0].name + ' (' + (this.files[0].size / 1024).toFixed(1) + ' KB)';
+                    preview.classList.remove('d-none');
+                }
+            });
+        }
+
+        var btnConfirmEdit = document.getElementById('btnConfirmEditESign');
+        if (btnConfirmEdit) {
+            btnConfirmEdit.addEventListener('click', function () {
+                bootstrap.Modal.getInstance(document.getElementById('modalEditESignFile')).hide();
+            });
+        }
+
+        var btnSaveOrgESign = document.getElementById('btnSaveOrgESign');
+        if (btnSaveOrgESign) {
+            btnSaveOrgESign.addEventListener('click', function () {
+                bootstrap.Modal.getInstance(document.getElementById('modalAddOrgESign')).hide();
+            });
+        }
+
+        // ── extAgencySelect ──
+        var extSel = document.getElementById('extAgencySelect');
+        if (extSel) {
+            extSel.addEventListener('change', function () {
+                document.getElementById('extAgencyOther').classList.toggle('d-none', this.value !== 'Other');
+            });
+        }
+
+        if (window.bootstrap && bootstrap.Tooltip) {
+            document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (element) {
+                new bootstrap.Tooltip(element);
+            });
+        }
+    });
+</script>
+}
+
+<h4 class="mb-1">หน่วยงานภาครัฐ (กตส./ศตส.)</h4>
+<p class="mb-1 text-muted">กองตรวจสอบคุณภาพสินค้าประมง (กตส.) และศูนย์ตรวจสอบสินค้าประมงประจำเขต (ศตส.) พร้อมบทบาทและพื้นที่รับผิดชอบ</p>
+
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb breadcrumb-style1" style="--bs-breadcrumb-divider: '>'; font-size: 0.75rem;">
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("Organization", "Admin")" class="text-primary fw-semibold">ผู้ดูแลระบบ</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("Organization", "Admin")" class="text-primary">จัดการองค์กร</a>
+        </li>
+        <li class="breadcrumb-item active text-secondary">หน่วยงานภาครัฐ (กตส./ศตส.)</li>
+    </ol>
+</nav>
+
+<!-- summary cards -->
+<div class="row mb-5 g-4">
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <h5 class="mb-1">@govAgencies.Length</h5>
+                        <small>หน่วยงานทั้งหมด</small>
+                    </div>
+                    <span class="badge bg-label-primary rounded-circle p-2">
+                        <i class="icon-base ri ri-government-line icon-24px"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <h5 class="mb-1">1</h5>
+                        <small>กตส. (ส่วนกลาง)</small>
+                    </div>
+                    <span class="badge bg-label-primary rounded-circle p-2">
+                        <i class="icon-base ri ri-building-line icon-24px"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <h5 class="mb-1">@(govAgencies.Length - 1)</h5>
+                        <small>ศตส. (เขต 1–9)</small>
+                    </div>
+                    <span class="badge bg-label-info rounded-circle p-2">
+                        <i class="icon-base ri ri-map-pin-2-line icon-24px"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <h5 class="mb-1">@govAgencies.Sum(x => x.OfficerCount)</h5>
+                        <small>เจ้าหน้าที่ในระบบ</small>
+                    </div>
+                    <span class="badge bg-label-success rounded-circle p-2">
+                        <i class="icon-base ri ri-team-line icon-24px"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- filter card -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h5 class="card-title mb-1">ค้นหาหน่วยงาน</h5>
+        <p class="text-muted small mb-0">ค้นหาจากรหัส ชื่อหน่วยงาน ประเภท หรือสถานะ</p>
+    </div>
+    <div class="card-body">
+        <div class="row g-3 align-items-end">
+            <div class="col-md-5 col-lg-4">
+                <label class="form-label">คำค้นหา</label>
+                <input type="text" id="filterGovKeyword" class="form-control" placeholder="รหัส / ชื่อหน่วยงาน / พื้นที่รับผิดชอบ" />
+            </div>
+            <div class="col-md-3 col-lg-2">
+                <label class="form-label">ประเภทหน่วยงาน</label>
+                <select id="filterGovType" class="form-select">
+                    <option value="">ทั้งหมด</option>
+                    <option value="กตส.">กตส.</option>
+                    <option value="ศตส.">ศตส.</option>
+                </select>
+            </div>
+            <div class="col-md-3 col-lg-2">
+                <label class="form-label">สถานะ</label>
+                <select id="filterGovStatus" class="form-select">
+                    <option value="">ทั้งหมด</option>
+                    <option value="ใช้งาน">ใช้งาน</option>
+                    <option value="รอทบทวน">รอทบทวน</option>
+                    <option value="ระงับ">ระงับ</option>
+                </select>
+            </div>
+            <div class="col-auto">
+                <div class="d-flex gap-2">
+                    <button type="button" id="btnSearchGovAgency" class="btn btn-outline-primary btn-square" title="ค้นหา">
+                        <i class="ri ri-search-line"></i>
+                    </button>
+                    <button type="button" id="btnResetGovAgency" class="btn btn-outline-secondary btn-square" title="ล้างค่า">
+                        <i class="ri ri-refresh-line"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- main table card -->
+<div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div>
+            <h5 class="card-title mb-1">รายการหน่วยงานภาครัฐ</h5>
+            <p class="text-muted small mb-0">กองตรวจสอบคุณภาพสินค้าประมง (กตส.) และ ศูนย์ตรวจสอบสินค้าประมงประจำเขต (ศตส.)</p>
+        </div>
+        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#govAgencyAddModal">
+            <i class="ri ri-building-line me-1"></i> เพิ่มหน่วยงาน
+        </button>
+    </div>
+    <div class="table-responsive p-1">
+        <table class="table table-bordered align-middle mb-0 organization-table-compact">
+            <thead class="text-center">
+                <tr>
+                    <th style="width: 48px;">#</th>
+                    <th>รหัสหน่วยงาน</th>
+                    <th>ชื่อหน่วยงาน</th>
+                    <th>ประเภท</th>
+                    <th>เขต/ที่ตั้ง</th>
+                    <th>พื้นที่รับผิดชอบ (จังหวัด)</th>
+                    <th>บทบาทหน้าที่</th>
+                    <th>เจ้าหน้าที่</th>
+                    <th>สถานะ</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="govAgencyTableBody">
+                @foreach (var ag in govAgencies)
+                {
+                    <tr data-agency-code="@ag.AgencyCode"
+                        data-agency-name="@ag.AgencyName"
+                        data-agency-type="@ag.AgencyType"
+                        data-agency-type-class="@ag.AgencyTypeClass"
+                        data-region="@ag.Region"
+                        data-provinces="@ag.Provinces"
+                        data-officer-count="@ag.OfficerCount"
+                        data-status="@ag.StatusText"
+                        data-status-class="@ag.StatusClass"
+                        data-search-text="@($"{ag.AgencyCode} {ag.AgencyName} {ag.AgencyType} {ag.Provinces} {ag.Region}")">
+                        <td class="text-center text-muted">@ag.RowNo</td>
+                        <td class="fw-semibold text-primary">@ag.AgencyCode</td>
+                        <td>
+                            <div class="fw-semibold">@ag.AgencyName</div>
+                            @if (ag.AgencyType == "กตส.")
+                            {
+                                <span class="badge bg-label-orange fs-tiny mt-1"><i class="ri ri-link-m me-1"></i>ภายนอก: 2 หน่วยงาน ✅</span>
+                            }
+                        </td>
+                        <td class="text-center">
+                            <span class="badge rounded-pill @ag.AgencyTypeClass">@ag.AgencyType</span>
+                        </td>
+                        <td class="text-center">@ag.Region</td>
+                        <td>
+                            <div class="province-chips">
+                                @foreach (var prov in ag.Provinces.Split(','))
+                                {
+                                    <span class="badge bg-label-secondary me-1 mb-1">@prov.Trim()</span>
+                                }
+                            </div>
+                        </td>
+                        <td>
+                            <div class="role-chips">
+                                @foreach (var role in ag.Roles.Split(','))
+                                {
+                                    <span class="badge bg-label-info me-1 mb-1">@role.Trim()</span>
+                                }
+                            </div>
+                        </td>
+                        <td class="text-center">@ag.OfficerCount คน</td>
+                        <td class="text-center">
+                            <span class="badge rounded-pill @ag.StatusClass">@ag.StatusText</span>
+                        </td>
+                        <td>
+                            <div class="d-flex flex-wrap gap-1 justify-content-center">
+                                <button type="button" class="btn btn-sm btn-icon btn-outline-info btn-view-gov" data-agency-code="@ag.AgencyCode" title="ดูรายละเอียด" data-bs-toggle="tooltip" data-bs-placement="top">
+                                    <i class="ri ri-eye-line text-info"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-icon btn-outline-warning btn-edit-gov" data-agency-code="@ag.AgencyCode" title="แก้ไข" data-bs-toggle="tooltip" data-bs-placement="top">
+                                    <i class="ri ri-pencil-line text-warning"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-icon btn-outline-secondary" title="จัดการสิทธิ์" data-bs-toggle="tooltip" data-bs-placement="top">
+                                    <i class="ri ri-shield-user-line text-secondary"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                <tr id="govAgencyTableEmpty" class="d-none">
+                    <td colspan="10" class="text-center text-muted py-4">ไม่พบข้อมูลหน่วยงานตามเงื่อนไขที่ค้นหา</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal: เพิ่ม/แก้ไขหน่วยงาน -->
+<div class="modal fade" id="govAgencyAddModal" tabindex="-1" aria-labelledby="govAgencyAddModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="govAgencyAddModalLabel">
+                    <i class="ri ri-building-line me-2 text-primary"></i>เพิ่มหน่วยงานภาครัฐ
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+
+                <!-- ประเภทหน่วยงาน -->
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">ประเภทหน่วยงาน <span class="text-danger">*</span></label>
+                    <div class="d-flex flex-wrap gap-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="govAgencyType" id="typeKts" value="กตส." checked>
+                            <label class="form-check-label" for="typeKts">กองตรวจสอบคุณภาพสินค้าประมง (กตส.)</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="govAgencyType" id="typeSts" value="ศตส.">
+                            <label class="form-check-label" for="typeSts">ศูนย์ตรวจสอบสินค้าประมงประจำเขต (ศตส.)</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">รหัสหน่วยงาน <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" placeholder="เช่น GOV-STS-07" maxlength="20">
+                    </div>
+                    <div class="col-md-8">
+                        <label class="form-label fw-semibold">ชื่อหน่วยงาน <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" placeholder="ชื่อเต็มของหน่วยงาน">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">สังกัด</label>
+                        <select class="form-select">
+                            <option value="">-- เลือกสังกัด --</option>
+                            <option>กรมประมง (ส่วนกลาง)</option>
+                            <option>สำนักงานประมงจังหวัด (ภูมิภาค)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">เขต/ที่ตั้ง</label>
+                        <input type="text" class="form-control" placeholder="เช่น เขต 7 / ส่วนกลาง">
+                    </div>
+                </div>
+
+                <!-- พื้นที่รับผิดชอบ -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">พื้นที่รับผิดชอบ (จังหวัด) <span class="text-danger">*</span></label>
+                    <p class="text-muted small mb-2">เลือกจังหวัดที่หน่วยงานนี้รับผิดชอบ (เลือกได้หลายจังหวัด)</p>
+                    <div class="row g-2">
+                        @{
+                            var sampleProvinces = new[] {
+                                "กรุงเทพมหานคร","นนทบุรี","ปทุมธานี","สมุทรปราการ","สมุทรสาคร","สมุทรสงคราม",
+                                "ชลบุรี","ระยอง","จันทบุรี","ตราด","ฉะเชิงเทรา","ปราจีนบุรี",
+                                "สุราษฎร์ธานี","ชุมพร","กระบี่","นครศรีธรรมราช","พัทลุง","ตรัง",
+                                "สงขลา","ปัตตานี","ยะลา","นราธิวาส","ระนอง","พังงา","ภูเก็ต"
+                            };
+                        }
+                        @foreach (var prov in sampleProvinces)
+                        {
+                            <div class="col-6 col-md-4 col-lg-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="prov_@prov" value="@prov">
+                                    <label class="form-check-label small" for="prov_@prov">@prov</label>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- บทบาทหน้าที่ -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">บทบาทหน้าที่ในระบบ <span class="text-danger">*</span></label>
+                    <p class="text-muted small mb-2">เลือกหน้าที่ที่หน่วยงานนี้มีอำนาจดำเนินการ</p>
+                    <div class="row g-2">
+                        @{
+                            var roleOptions = new[] {
+                                ("role_ps_nmd", "ออกใบรับรอง PS/NMD"),
+                                ("role_rmbs1", "อนุมัติ RMBS1"),
+                                ("role_trace", "ตรวจสอบ Traceability"),
+                                ("role_dof", "บริหาร DOF List"),
+                                ("role_receive", "รับเรื่องคำขอ"),
+                                ("role_history", "พิจารณาประวัติใบรับรอง")
+                            };
+                        }
+                        @foreach (var (id, label) in roleOptions)
+                        {
+                            <div class="col-12 col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="@id" value="@label">
+                                    <label class="form-check-label" for="@id">@label</label>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- ผู้รับผิดชอบ -->
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">ผู้อำนวยการ / ผู้รับผิดชอบหลัก</label>
+                        <input type="text" class="form-control" placeholder="ชื่อ-สกุล">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">ตำแหน่ง</label>
+                        <input type="text" class="form-control" placeholder="เช่น ผู้อำนวยการศูนย์">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">โทรศัพท์</label>
+                        <input type="text" class="form-control" placeholder="0X-XXX-XXXX">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">อีเมลทางการ</label>
+                        <input type="email" class="form-control" placeholder="agency@fisheries.go.th">
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-semibold">ที่อยู่</label>
+                        <textarea class="form-control" rows="2" placeholder="ที่อยู่สำนักงาน"></textarea>
+                    </div>
+                </div>
+
+                <div class="alert alert-info d-flex align-items-start gap-2 mb-0">
+                    <i class="ri ri-information-line mt-1 flex-shrink-0"></i>
+                    <div class="small">
+                        หลังบันทึกข้อมูลหน่วยงาน สามารถกำหนด <strong>เจ้าหน้าที่</strong> และ <strong>ผู้มีอำนาจลงนาม</strong>
+                        ได้ในหน้าจัดการผู้ใช้งาน (Officer/IndexUserData)
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="ri ri-close-line me-1"></i> ยกเลิก
+                </button>
+                <button type="button" class="btn btn-primary">
+                    <i class="ri ri-save-line me-1"></i> บันทึกหน่วยงาน
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: รายละเอียดหน่วยงาน -->
+<div class="modal fade" id="govAgencyDetailModal" tabindex="-1" aria-labelledby="govAgencyDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header flex-wrap gap-2">
+                <div>
+                    <h5 class="modal-title" id="govAgencyDetailModalLabel">
+                        <i class="ri ri-government-line me-2"></i><span id="govModalTitle">รายละเอียดหน่วยงาน</span>
+                    </h5>
+                    <div class="d-flex flex-wrap gap-1 mt-1" id="govModalSignatoryBadges">
+                        <span class="badge bg-label-warning fs-tiny">
+                            <i class="ri ri-pen-nib-line me-1"></i>ผู้ลงนามหลัก: นายสมชาย รักษ์ทะเล ✅
+                        </span>
+                        <span class="badge bg-label-primary fs-tiny">
+                            <i class="ri ri-checkbox-circle-line me-1"></i>ผู้อนุมัติ RMBS1: นางสาวพิมพ์ใจ ✅
+                        </span>
+                    </div>
+                </div>
+                <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="nav-align-top nav-tabs-shadow">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <button type="button" class="nav-link active" data-bs-toggle="tab" data-bs-target="#govTab-info" role="tab">
+                                <i class="ri ri-file-list-2-line me-1"></i> ข้อมูลหน่วยงาน
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#govTab-roles" role="tab">
+                                <i class="ri ri-shield-check-line me-1"></i> บทบาทหน้าที่
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#govTab-area" role="tab">
+                                <i class="ri ri-map-pin-2-line me-1"></i> พื้นที่รับผิดชอบ
+                            </button>
+                        </li>
+                        <li class="nav-item d-none" id="govTabExternalNav">
+                            <button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#govTab-external" role="tab">
+                                <i class="ri ri-link-m me-1"></i> สิทธิ์หน่วยงานภายนอก
+                                <span class="badge bg-label-orange ms-1">2</span>
+                            </button>
+                        </li>
+                        <li class="nav-item" id="govTabESignNav">
+                            <button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#govTab-esign" role="tab">
+                                <i class="ri ri-pen-nib-line me-1"></i> ลายมือชื่ออิเล็กทรอนิกส์
+                                <span class="badge bg-label-primary ms-1" id="govESignCount">0</span>
+                            </button>
+                        </li>
+                    </ul>
+                    <div class="tab-content pt-3">
+                        <div id="govTab-info" class="tab-pane fade show active">
+                            <div class="row g-3">
+                                <div class="col-md-4"><div class="detail-kv"><span class="label">รหัสหน่วยงาน</span><span class="value" id="govDetailCode">-</span></div></div>
+                                <div class="col-md-4"><div class="detail-kv"><span class="label">ประเภท</span><span class="value" id="govDetailType">-</span></div></div>
+                                <div class="col-md-4"><div class="detail-kv"><span class="label">เขต/ที่ตั้ง</span><span class="value" id="govDetailRegion">-</span></div></div>
+                                <div class="col-md-4"><div class="detail-kv"><span class="label">จำนวนเจ้าหน้าที่</span><span class="value" id="govDetailOfficerCount">-</span></div></div>
+                                <div class="col-md-4"><div class="detail-kv"><span class="label">สถานะ</span><span class="value" id="govDetailStatus">-</span></div></div>
+                                <div class="col-md-4"><div class="detail-kv"><span class="label">ผู้รับผิดชอบหลัก</span><span class="value" id="govDetailMainOfficer">-</span></div></div>
+                                <div class="col-md-4"><div class="detail-kv"><span class="label">โทรศัพท์</span><span class="value" id="govDetailPhone">-</span></div></div>
+                                <div class="col-md-8"><div class="detail-kv"><span class="label">อีเมลทางการ</span><span class="value" id="govDetailEmail">-</span></div></div>
+                                <div class="col-12"><div class="detail-kv"><span class="label">ที่อยู่</span><span class="value" id="govDetailAddress">-</span></div></div>
+                                <div class="col-12"><div class="detail-kv"><span class="label">หมายเหตุ</span><span class="value" id="govDetailStatusNote">-</span></div></div>
+                            </div>
+                        </div>
+                        <div id="govTab-roles" class="tab-pane fade">
+                            <p class="text-muted small mb-3">บทบาทหน้าที่ที่หน่วยงานนี้มีอำนาจดำเนินการในระบบ</p>
+                            <div id="govDetailRoles" class="d-flex flex-wrap gap-1"></div>
+                            <hr class="my-4">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <p class="fw-semibold mb-0 small">ผู้มีอำนาจลงนาม / อนุมัติ</p>
+                                <button type="button" class="btn btn-sm btn-warning" id="btnAssignSignatory">
+                                    <i class="ri ri-user-star-line me-1"></i> กำหนดผู้มีอำนาจ
+                                </button>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-sm align-middle mb-0 organization-table-compact">
+                                    <thead class="text-center">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>หน้าที่</th>
+                                            <th>ชื่อ-สกุล</th>
+                                            <th>ตำแหน่ง</th>
+                                            <th>ผู้ทำหน้าที่แทน</th>
+                                            <th>วันที่มีผล</th>
+                                            <th>วันหมดอายุ</th>
+                                            <th>สถานะ</th>
+                                            <th>การดำเนินการ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-center text-muted">1</td>
+                                            <td><span class="badge bg-label-warning">ผู้ลงนามใบรับรอง PS</span></td>
+                                            <td>นายสมชาย รักษ์ทะเล</td>
+                                            <td>ผู้อำนวยการกอง</td>
+                                            <td class="text-muted small">นายวิรัช คำสัตย์</td>
+                                            <td class="text-center">01/01/2569</td>
+                                            <td class="text-center">31/12/2569</td>
+                                            <td class="text-center"><span class="badge rounded-pill bg-label-success">ใช้งาน</span></td>
+                                            <td class="text-center text-nowrap">
+                                                <button class="btn btn-icon btn-sm btn-outline-primary me-1" title="แก้ไข"><i class="ri ri-pencil-line"></i></button>
+                                                <button class="btn btn-icon btn-sm btn-outline-danger" title="ระงับ"><i class="ri ri-forbid-line"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center text-muted">2</td>
+                                            <td><span class="badge bg-label-primary">ผู้อนุมัติ RMBS1</span></td>
+                                            <td>นางสาวพิมพ์ใจ สุวรรณชาติ</td>
+                                            <td>นักวิชาการชำนาญการ ชช.</td>
+                                            <td class="text-muted small">-</td>
+                                            <td class="text-center">01/01/2569</td>
+                                            <td class="text-center">31/12/2569</td>
+                                            <td class="text-center"><span class="badge rounded-pill bg-label-success">ใช้งาน</span></td>
+                                            <td class="text-center text-nowrap">
+                                                <button class="btn btn-icon btn-sm btn-outline-primary me-1" title="แก้ไข"><i class="ri ri-pencil-line"></i></button>
+                                                <button class="btn btn-icon btn-sm btn-outline-danger" title="ระงับ"><i class="ri ri-forbid-line"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center text-muted">3</td>
+                                            <td><span class="badge bg-label-info">ผู้รับรองเอกสาร</span></td>
+                                            <td>นายศิริพงษ์ สมุทรกิจ</td>
+                                            <td>นักวิชาการสัตว์น้ำชำนาญการ</td>
+                                            <td class="text-muted small">นายสมชาย รักษ์ทะเล</td>
+                                            <td class="text-center">01/03/2569</td>
+                                            <td class="text-center">28/02/2570</td>
+                                            <td class="text-center"><span class="badge rounded-pill bg-label-success">ใช้งาน</span></td>
+                                            <td class="text-center text-nowrap">
+                                                <button class="btn btn-icon btn-sm btn-outline-primary me-1" title="แก้ไข"><i class="ri ri-pencil-line"></i></button>
+                                                <button class="btn btn-icon btn-sm btn-outline-danger" title="ระงับ"><i class="ri ri-forbid-line"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center text-muted">4</td>
+                                            <td><span class="badge bg-label-warning">ผู้ลงนามใบรับรอง NMD</span></td>
+                                            <td>นางสาวอรัญญา ทองสุข</td>
+                                            <td>ผู้เชี่ยวชาญเฉพาะด้านสัตว์น้ำ</td>
+                                            <td class="text-muted small">-</td>
+                                            <td class="text-center">01/06/2568</td>
+                                            <td class="text-center text-danger">31/05/2569 <i class="ri ri-error-warning-line" title="ใกล้หมดอายุ"></i></td>
+                                            <td class="text-center"><span class="badge rounded-pill bg-label-warning">ใกล้หมดอายุ</span></td>
+                                            <td class="text-center text-nowrap">
+                                                <button class="btn btn-icon btn-sm btn-outline-primary me-1" title="ต่ออายุ"><i class="ri ri-refresh-line"></i></button>
+                                                <button class="btn btn-icon btn-sm btn-outline-danger" title="ระงับ"><i class="ri ri-forbid-line"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div id="govTab-area" class="tab-pane fade">
+                            <p class="text-muted small mb-3">จังหวัดที่อยู่ในความรับผิดชอบของหน่วยงานนี้</p>
+                            <div id="govDetailProvinces" class="d-flex flex-wrap gap-2 mb-4"></div>
+                            <hr class="my-3">
+                            <p class="fw-semibold mb-2 small">สถานประกอบการ RMBS1 ในพื้นที่รับผิดชอบ (mockup)</p>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-sm align-middle mb-0 organization-table-compact">
+                                    <thead class="text-center"><tr><th>#</th><th>รหัส RMBS1</th><th>ชื่อสถานประกอบการ</th><th>จังหวัด</th><th>สถานะ</th></tr></thead>
+                                    <tbody>
+                                        <tr><td class="text-center text-muted">1</td><td class="text-primary fw-semibold">RMBS-00128</td><td>บริษัท สยาม มารีน ฟู้ดส์ จำกัด</td><td>สมุทรสาคร</td><td class="text-center"><span class="badge rounded-pill bg-label-success">อนุมัติแล้ว</span></td></tr>
+                                        <tr><td class="text-center text-muted">2</td><td class="text-primary fw-semibold">RMBS-00449</td><td>บริษัท กัลฟ์ แคทช์ โปรเซสซิ่ง จำกัด</td><td>ชลบุรี</td><td class="text-center"><span class="badge rounded-pill bg-label-success">อนุมัติแล้ว</span></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div id="govTab-external" class="tab-pane fade">
+                            <div class="alert alert-warning d-flex align-items-start gap-2 mb-3">
+                                <i class="ri ri-error-warning-line mt-1 flex-shrink-0"></i>
+                                <div class="small">สิทธิ์นี้ให้หน่วยงานภายนอก (นอกสังกัด กตส.) เข้าถึงข้อมูล/ใบรับรองของ กตส. ได้ในขอบเขตที่กำหนด ทุกการให้สิทธิ์จะถูก log และแจ้งเตือน Admin ระดับสูงทันที</div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <p class="fw-semibold mb-0 small">หน่วยงานอื่นที่ได้รับสิทธิ์ตรวจสอบข้อมูล กตส.นี้</p>
+                                <button type="button" class="btn btn-sm btn-outline-orange" data-bs-toggle="modal" data-bs-target="#grantExternalAccessModal">
+                                    <i class="ri ri-link-m me-1"></i>เพิ่มหน่วยงานภายนอก
+                                </button>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-sm align-middle mb-0 organization-table-compact">
+                                    <thead class="text-center">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>ชื่อหน่วยงาน</th>
+                                            <th>ประเภท</th>
+                                            <th>สิทธิ์ที่ได้รับ</th>
+                                            <th>วันที่เริ่ม</th>
+                                            <th>วันหมดอายุ</th>
+                                            <th>ผู้อนุมัติ</th>
+                                            <th>สถานะ</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-center text-muted">1</td>
+                                            <td>
+                                                <div class="fw-semibold">กรมการค้าต่างประเทศ</div>
+                                                <div class="small text-muted">กระทรวงพาณิชย์</div>
+                                            </td>
+                                            <td><span class="badge bg-label-secondary">หน่วยงานราชการ</span></td>
+                                            <td>
+                                                <span class="badge bg-label-primary me-1">ดูใบรับรอง PS</span>
+                                                <span class="badge bg-label-primary me-1">ดูใบรับรอง NMD</span>
+                                                <span class="badge bg-label-success me-1">Export รายงาน</span>
+                                            </td>
+                                            <td class="text-center text-muted small">01/01/2569</td>
+                                            <td class="text-center text-muted small">31/12/2569</td>
+                                            <td class="text-muted small">นายสมชาย รักษ์ทะเล</td>
+                                            <td class="text-center"><span class="badge rounded-pill bg-label-success">ใช้งาน</span></td>
+                                            <td class="text-center text-nowrap">
+                                                <button class="btn btn-icon btn-sm btn-outline-warning" data-bs-toggle="tooltip" title="แก้ไขสิทธิ์"><i class="ri ri-pencil-line text-warning"></i></button>
+                                                <button class="btn btn-icon btn-sm btn-outline-danger" data-bs-toggle="tooltip" title="ถอนสิทธิ์"><i class="ri ri-link-unlink text-danger"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center text-muted">2</td>
+                                            <td>
+                                                <div class="fw-semibold">กรมศุลกากร</div>
+                                                <div class="small text-muted">กระทรวงการคลัง</div>
+                                            </td>
+                                            <td><span class="badge bg-label-secondary">หน่วยงานราชการ</span></td>
+                                            <td>
+                                                <span class="badge bg-label-primary me-1">ดูใบรับรอง PS</span>
+                                                <span class="badge bg-label-info me-1">ดูประวัติ RMBS1</span>
+                                                <span class="badge bg-label-danger me-1">ดู Traceability</span>
+                                            </td>
+                                            <td class="text-center text-muted small">15/02/2569</td>
+                                            <td class="text-center text-warning small fw-semibold">30/06/2569 <i class="ri ri-error-warning-line"></i></td>
+                                            <td class="text-muted small">นายสมชาย รักษ์ทะเล</td>
+                                            <td class="text-center"><span class="badge rounded-pill bg-label-warning">ใกล้หมดอายุ</span></td>
+                                            <td class="text-center text-nowrap">
+                                                <button class="btn btn-icon btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="ต่ออายุ"><i class="ri ri-refresh-line text-primary"></i></button>
+                                                <button class="btn btn-icon btn-sm btn-outline-danger" data-bs-toggle="tooltip" title="ถอนสิทธิ์"><i class="ri ri-link-unlink text-danger"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- Tab: ลายมือชื่ออิเล็กทรอนิกส์ -->
+                        <div id="govTab-esign" class="tab-pane fade">
+                            <div class="d-flex align-items-center justify-content-between mb-3">
+                                <div>
+                                    <p class="fw-semibold mb-1 small">ลายมือชื่ออิเล็กทรอนิกส์ของหน่วยงาน</p>
+                                    <p class="text-muted small mb-0">ลายมือชื่อที่ผูกกับหน่วยงานนี้สำหรับการออกใบรับรองอัตโนมัติ</p>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-primary btn-add-org-esign">
+                                    <i class="ri ri-pen-nib-line me-1"></i>เพิ่มลายมือชื่อ
+                                </button>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-sm align-middle mb-0 organization-table-compact">
+                                    <thead class="table-light text-center">
+                                        <tr>
+                                            <th>#</th>
+                                            <th class="text-start">ผู้ลงนาม</th>
+                                            <th class="text-start">ตำแหน่ง</th>
+                                            <th>วันที่เริ่ม</th>
+                                            <th>วันหมดอายุ</th>
+                                            <th>สถานะ</th>
+                                            <th>ไฟล์</th>
+                                            <th>จัดการ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="govESignTableBody">
+                                        <!-- JS-rendered -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="ri ri-close-line me-1"></i> ปิด
+                </button>
+                <button type="button" class="btn btn-warning">
+                    <i class="ri ri-pencil-line me-1"></i> แก้ไขข้อมูล
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: แก้ไขไฟล์ลายมือชื่ออิเล็กทรอนิกส์ -->
+<div class="modal fade" id="modalEditESignFile" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="ri ri-file-upload-line me-2 text-primary"></i>แก้ไขไฟล์ลายมือชื่ออิเล็กทรอนิกส์
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning d-flex align-items-center py-2 mb-4">
+                    <i class="ri ri-shield-keyhole-line me-2 text-warning flex-shrink-0"></i>
+                    <small>การเปลี่ยนแปลงจะถูก <strong>log</strong> และส่งการแจ้งเตือนไปยัง Admin ระดับสูง</small>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold small">ผู้ลงนาม</label>
+                    <div class="form-control-plaintext fw-semibold ps-0" id="editESignSigner">—</div>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">เปรียบเทียบลายมือชื่อ</label>
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <div class="card h-100">
+                                <div class="card-header py-2 bg-label-secondary text-center">
+                                    <small class="fw-semibold text-muted">ลายมือชื่อ <span class="text-danger">เดิม</span></small>
+                                </div>
+                                <div class="card-body d-flex align-items-center justify-content-center" style="min-height:90px;">
+                                    <div class="border border-dashed rounded text-center p-3 w-100" style="border-color:#94a3b8!important;">
+                                        <i class="ri ri-pen-nib-line fs-2 text-muted d-block mb-1"></i>
+                                        <div class="small text-muted">signature_current.png</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="card h-100">
+                                <div class="card-header py-2 bg-label-primary text-center">
+                                    <small class="fw-semibold text-primary">ลายมือชื่อ <span class="fw-bold">ใหม่</span></small>
+                                </div>
+                                <div class="card-body d-flex flex-column align-items-center justify-content-center" style="min-height:90px;">
+                                    <div class="border border-dashed rounded text-center p-3 w-100 mb-2"
+                                         id="editESign_newPreview"
+                                         style="border-color:#6366f1!important;cursor:pointer;background:#f8f7ff;">
+                                        <i class="ri ri-upload-cloud-2-line fs-2 text-primary d-block mb-1"></i>
+                                        <div class="small text-primary">คลิกเพื่อเลือกไฟล์ใหม่</div>
+                                        <div class="small text-muted">(PNG/SVG, max 500 KB)</div>
+                                    </div>
+                                    <input type="file" id="editESign_fileInput" accept=".png,.svg" class="d-none">
+                                    <div class="small text-muted" id="editESign_fileName"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="alert alert-info py-2 mt-2 small mb-0">
+                        <i class="ri ri-information-line me-1"></i>ไฟล์ต้องมีพื้นหลังโปร่งแสง (Transparent Background) รองรับ PNG, SVG เท่านั้น
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">เหตุผลการเปลี่ยน <span class="text-danger">*</span></label>
+                    <textarea class="form-control" id="editESign_reason" rows="3"
+                              placeholder="ระบุเหตุผลการเปลี่ยนไฟล์ลายมือชื่อ (เช่น: ลายมือชื่อเดิมชำรุด, เปลี่ยนแบบเซ็นชื่อ)"></textarea>
+                </div>
+                <div class="mb-1">
+                    <label class="form-label fw-semibold">วันที่มีผล <span class="text-danger">*</span></label>
+                    <input type="date" class="form-control" id="editESign_effectiveDate">
+                    <div class="form-text">ลายมือชื่อใหม่จะเริ่มใช้งานตั้งแต่วันที่ระบุ</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                <button type="button" class="btn btn-primary" id="btnConfirmEditESign">
+                    <i class="ri ri-check-line me-1"></i>ยืนยันเปลี่ยน
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: เพิ่มลายมือชื่อ -->
+<div class="modal fade" id="modalAddOrgESign" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="ri ri-pen-nib-line me-2 text-primary"></i>เพิ่มลายมือชื่ออิเล็กทรอนิกส์
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning d-flex align-items-center py-2 mb-4">
+                    <i class="ri ri-shield-keyhole-line me-2 flex-shrink-0"></i>
+                    <small>การเพิ่มลายมือชื่อจะถูก <strong>log</strong> และส่งการแจ้งเตือนไปยัง Admin ระดับสูง</small>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">ผู้ลงนาม <span class="text-danger">*</span></label>
+                    <select class="form-select" id="addOrgESign_signer">
+                        <option value="">— เลือกผู้ลงนาม (role: ผู้ลงนามใบรับรอง) —</option>
+                        <option value="นายอภิชาติ วงศ์พันธ์">นายอภิชาติ วงศ์พันธ์ — ผู้อำนวยการกองตรวจสอบรับรองมาตรฐาน</option>
+                        <option value="นายวีระ ทองดี">นายวีระ ทองดี — ผู้เชี่ยวชาญด้านการรับรองสินค้าประมง</option>
+                        <option value="น.ส.ปรียา ศรีสุข">น.ส.ปรียา ศรีสุข — หัวหน้ากลุ่มออกใบรับรอง</option>
+                        <option value="นายสมชาย เกษมสุข">นายสมชาย เกษมสุข — นักวิชาการประมงชำนาญการพิเศษ</option>
+                        <option value="น.ส.วิภาวดี รักษ์ทะเล">น.ส.วิภาวดี รักษ์ทะเล — นักวิชาการประมงชำนาญการ</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">อัปโหลดไฟล์ลายมือชื่อ <span class="text-danger">*</span></label>
+                    <div class="border border-dashed rounded p-4 text-center"
+                         id="addOrgESign_dropZone"
+                         style="border-color:#6366f1!important;background:#f8f7ff;cursor:pointer;">
+                        <i class="ri ri-upload-cloud-2-line fs-1 text-primary mb-2 d-block"></i>
+                        <div class="fw-semibold mb-1">คลิกเพื่อเลือกไฟล์หรือลากไฟล์มาวาง</div>
+                        <div class="text-muted small">PNG, SVG เท่านั้น | สูงสุด 500 KB | ต้องมี Transparent Background</div>
+                        <input type="file" id="addOrgESign_fileInput" accept=".png,.svg" class="d-none">
+                    </div>
+                    <div id="addOrgESign_filePreview" class="d-none mt-2">
+                        <div class="border rounded p-2 text-center" style="background:#f9f9f9;">
+                            <i class="ri ri-image-2-line text-primary me-1"></i>
+                            <span id="addOrgESign_fileName" class="small fw-semibold"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">ช่วงวันที่ใช้งาน <span class="text-danger">*</span></label>
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <label class="form-label small text-muted">วันที่เริ่มต้น</label>
+                            <input type="date" class="form-control" id="addOrgESign_validFrom">
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small text-muted">วันที่สิ้นสุด</label>
+                            <input type="date" class="form-control" id="addOrgESign_validTo">
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-1">
+                    <label class="form-label fw-semibold">หมายเหตุ</label>
+                    <textarea class="form-control" id="addOrgESign_note" rows="2" placeholder="ระบุหมายเหตุ (ถ้ามี)"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                <button type="button" class="btn btn-primary" id="btnSaveOrgESign">
+                    <i class="ri ri-save-line me-1"></i>บันทึก
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: เพิ่มสิทธิ์หน่วยงานภายนอก -->
+<div class="modal fade" id="grantExternalAccessModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header" style="background:rgba(253,126,20,0.08);">
+                <h5 class="modal-title text-orange">
+                    <i class="ri ri-link-m me-2"></i>เพิ่มสิทธิ์หน่วยงานภายนอก
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert d-flex align-items-start gap-2 mb-3" style="background:rgba(253,126,20,0.12);border-left:4px solid #fd7e14;">
+                    <i class="ri ri-error-warning-line mt-1 text-orange flex-shrink-0"></i>
+                    <div class="small text-orange">⚠️ การให้สิทธิ์นี้จะถูก log และแจ้งเตือน Admin ระดับสูงทันที ทุกการเข้าถึงจะถูกบันทึก Audit Log ครบถ้วน</div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">หน่วยงานที่ให้สิทธิ์ <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control mb-2" placeholder="ค้นหาชื่อหน่วยงาน..." id="extAgencySearch">
+                    <select class="form-select" id="extAgencySelect">
+                        <option value="">— เลือกหน่วยงาน —</option>
+                        <option value="DFT">กรมการค้าต่างประเทศ (กระทรวงพาณิชย์)</option>
+                        <option value="Customs">กรมศุลกากร (กระทรวงการคลัง)</option>
+                        <option value="FDA">สำนักงานคณะกรรมการอาหารและยา (อย.)</option>
+                        <option value="DSI">กรมสอบสวนคดีพิเศษ (DSI)</option>
+                        <option value="RFD">กรมป่าไม้</option>
+                        <option value="Other">อื่นๆ (ระบุด้านล่าง)</option>
+                    </select>
+                    <input type="text" class="form-control mt-2 d-none" id="extAgencyOther" placeholder="ระบุชื่อหน่วยงาน...">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">สิทธิ์ที่ให้ <span class="text-danger">*</span></label>
+                    <div class="row g-2">
+                        <div class="col-6"><div class="form-check"><input class="form-check-input" type="checkbox" id="extPermPS" checked><label class="form-check-label" for="extPermPS">ดูใบรับรอง PS</label></div></div>
+                        <div class="col-6"><div class="form-check"><input class="form-check-input" type="checkbox" id="extPermNMD" checked><label class="form-check-label" for="extPermNMD">ดูใบรับรอง NMD</label></div></div>
+                        <div class="col-6"><div class="form-check"><input class="form-check-input" type="checkbox" id="extPermRMBS1"><label class="form-check-label" for="extPermRMBS1">ดูประวัติ RMBS1</label></div></div>
+                        <div class="col-6"><div class="form-check"><input class="form-check-input" type="checkbox" id="extPermExport"><label class="form-check-label" for="extPermExport">Export รายงาน</label></div></div>
+                        <div class="col-6"><div class="form-check"><input class="form-check-input" type="checkbox" id="extPermTrace"><label class="form-check-label" for="extPermTrace">ดู Traceability</label></div></div>
+                    </div>
+                </div>
+                <div class="row g-3 mb-3">
+                    <div class="col-6">
+                        <label class="form-label fw-semibold">วันที่เริ่มต้น <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" id="extAccessStart" value="2026-04-27">
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label fw-semibold">วันหมดอายุ <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" id="extAccessExpire" value="2026-12-31">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">เหตุผล/บันทึก</label>
+                    <textarea class="form-control" rows="2" placeholder="ระบุเหตุผลการให้สิทธิ์ (จะถูกบันทึกใน Audit Log)"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                <button type="button" class="btn btn-sm" style="background:#fd7e14;color:#fff;" data-bs-dismiss="modal">
+                    <i class="ri ri-save-line me-1"></i>บันทึกและแจ้ง Admin
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: กำหนดผู้มีอำนาจลงนาม/อนุมัติ -->
+<div class="modal fade" id="assignSignatoryModal" tabindex="-1" aria-labelledby="assignSignatoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="assignSignatoryModalLabel">
+                    <i class="ri ri-user-star-line me-2 text-warning"></i>กำหนดผู้มีอำนาจลงนาม / อนุมัติ
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info d-flex align-items-start gap-2 mb-4 py-2">
+                    <i class="ri ri-information-line mt-1 flex-shrink-0"></i>
+                    <div class="small">
+                        กำหนดเจ้าหน้าที่ผู้มีอำนาจลงนามหรืออนุมัติใบรับรองในนามหน่วยงาน <strong><span id="signatoryModalAgencyName">-</span></strong>
+                        การเปลี่ยนแปลงจะถูกบันทึกเป็นประวัติและมีผลทันทีหลังบันทึก
+                    </div>
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">หน้าที่ <span class="text-danger">*</span></label>
+                        <select class="form-select" id="signatoryRole">
+                            <option value="">-- เลือกหน้าที่ --</option>
+                            <option value="sign-ps">ผู้ลงนามใบรับรอง PS</option>
+                            <option value="sign-nmd">ผู้ลงนามใบรับรอง NMD</option>
+                            <option value="approve-rmbs1">ผู้อนุมัติ RMBS1</option>
+                            <option value="certify-doc">ผู้รับรองเอกสาร</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">เจ้าหน้าที่ (สังกัดหน่วยงานนี้) <span class="text-danger">*</span></label>
+                        <select class="form-select" id="signatoryOfficer">
+                            <option value="">-- เลือกเจ้าหน้าที่ --</option>
+                            <option value="USR-001">นายสมชาย รักษ์ทะเล — ผู้อำนวยการกอง</option>
+                            <option value="USR-002">นางสาวพิมพ์ใจ สุวรรณชาติ — นักวิชาการ ชช.</option>
+                            <option value="USR-003">นายศิริพงษ์ สมุทรกิจ — นักวิชาการสัตว์น้ำ</option>
+                            <option value="USR-004">นางสาวอรัญญา ทองสุข — ผู้เชี่ยวชาญด้านสัตว์น้ำ</option>
+                            <option value="USR-005">นายวิรัช คำสัตย์ — นักวิชาการสัตว์น้ำชำนาญการ</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">วันที่มีผล <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control flatpickr-date" id="signatoryEffectiveDate" placeholder="วว/ดด/ปปปป">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">วันหมดอายุ</label>
+                        <input type="text" class="form-control flatpickr-date" id="signatoryExpireDate" placeholder="วว/ดด/ปปปป (ถ้าระบุ)">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">ผู้ทำหน้าที่แทน (กรณีหลักไม่อยู่)</label>
+                        <select class="form-select" id="signatoryDelegate">
+                            <option value="">-- ไม่ระบุ --</option>
+                            <option value="USR-002">นางสาวพิมพ์ใจ สุวรรณชาติ</option>
+                            <option value="USR-003">นายศิริพงษ์ สมุทรกิจ</option>
+                            <option value="USR-004">นางสาวอรัญญา ทองสุข</option>
+                            <option value="USR-005">นายวิรัช คำสัตย์</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">หมายเหตุ</label>
+                        <input type="text" class="form-control" placeholder="เช่น ตามคำสั่งแต่งตั้ง ที่ กป.xxx/2569">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="ri ri-close-line me-1"></i> ยกเลิก
+                </button>
+                <button type="button" class="btn btn-warning" data-bs-dismiss="modal">
+                    <i class="ri ri-user-star-line me-1"></i> บันทึกการกำหนด
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

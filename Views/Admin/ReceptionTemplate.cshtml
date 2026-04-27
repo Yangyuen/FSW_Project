@@ -120,79 +120,40 @@
 </style>
 }
 
-<div class="container-xxl flex-grow-1 container-p-y">
-    <!-- Header -->
-    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+<h4 class="mb-1">ต้นแบบการลงทะเบียนรับเรื่อง</h4>
+<p class="mb-1 text-muted">กำหนดกระบวนการรับเรื่อง + กำหนดผู้ทำหน้าที่แทน (Proxy/Delegate) สำหรับแต่ละประเภทใบรับรอง</p>
+
+<nav aria-label="breadcrumb" class="mb-6">
+    <ol class="breadcrumb breadcrumb-style1" style="--bs-breadcrumb-divider: '>'; font-size: 0.75rem;">
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("ReceptionTemplate", "Admin")" class="text-primary fw-semibold">ผู้ดูแลระบบ</a>
+        </li>
+        <li class="breadcrumb-item active text-secondary">ต้นแบบการรับเรื่อง</li>
+    </ol>
+</nav>
+
+<div class="row mb-6 g-6">
+    <div class="col-sm-6 col-xl-3"><div class="card"><div class="card-body"><div class="d-flex align-items-center justify-content-between"><div class="content-left"><h5 class="mb-1">@templates.Length</h5><small>ต้นแบบทั้งหมด</small></div><span class="badge bg-label-primary rounded-circle p-2"><i class="icon-base ri ri-file-list-3-line icon-24px"></i></span></div></div></div></div>
+    <div class="col-sm-6 col-xl-3"><div class="card"><div class="card-body"><div class="d-flex align-items-center justify-content-between"><div class="content-left"><h5 class="mb-1">@templates.Count(t => t.StatusText == "ใช้งาน")</h5><small>ใช้งาน</small></div><span class="badge bg-label-success rounded-circle p-2"><i class="icon-base ri ri-checkbox-circle-line icon-24px"></i></span></div></div></div></div>
+    <div class="col-sm-6 col-xl-3"><div class="card"><div class="card-body"><div class="d-flex align-items-center justify-content-between"><div class="content-left"><h5 class="mb-1">@templates.Count(t => t.StatusText == "รอทบทวน")</h5><small>รอทบทวน</small></div><span class="badge bg-label-warning rounded-circle p-2"><i class="icon-base ri ri-time-line icon-24px"></i></span></div></div></div></div>
+    <div class="col-sm-6 col-xl-3"><div class="card"><div class="card-body"><div class="d-flex align-items-center justify-content-between"><div class="content-left"><h5 class="mb-1">@templates.Count(t => t.ProxyActive)</h5><small>มีผู้แทนแอคทีฟ</small></div><span class="badge bg-label-info rounded-circle p-2"><i class="icon-base ri ri-user-shared-line icon-24px"></i></span></div></div></div></div>
+</div>
+
+<!-- Main Table -->
+<div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-3">
         <div>
-            <h4 class="mb-1">
-                <i class="ri ri-file-list-3-line me-2 text-primary"></i>ต้นแบบการลงทะเบียนรับเรื่อง
-            </h4>
-            <p class="text-muted mb-0">กำหนดกระบวนการรับเรื่อง + กำหนดผู้ทำหน้าที่แทน (Proxy/Delegate) สำหรับแต่ละประเภทใบรับรอง</p>
+            <h5 class="card-title mb-1">รายการต้นแบบการรับเรื่อง</h5>
+            <p class="text-muted small mb-0">ต้นแบบกระบวนการรับเรื่องและการกำหนดผู้ทำหน้าที่แทน</p>
         </div>
-        <button type="button" class="btn btn-primary"
+        <button type="button" class="btn btn-primary btn-sm"
                 data-bs-toggle="modal" data-bs-target="#modalAddTemplate"
                 data-mode="add">
             <i class="ri ri-file-list-3-line me-1"></i>เพิ่มต้นแบบ
         </button>
     </div>
-
-    <!-- Summary Cards -->
-    <div class="row g-4 mb-4">
-        <div class="col-6 col-md-3">
-            <div class="card text-center h-100">
-                <div class="card-body py-3">
-                    <div class="avatar avatar-md mx-auto mb-2" style="background:var(--bs-primary-bg-subtle);border-radius:50%;">
-                        <i class="ri ri-file-list-3-line fs-4 text-primary"></i>
-                    </div>
-                    <h3 class="mb-0 fw-bold">@templates.Length</h3>
-                    <small class="text-muted">ต้นแบบทั้งหมด</small>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-md-3">
-            <div class="card text-center h-100">
-                <div class="card-body py-3">
-                    <div class="avatar avatar-md mx-auto mb-2" style="background:var(--bs-success-bg-subtle);border-radius:50%;">
-                        <i class="ri ri-checkbox-circle-line fs-4 text-success"></i>
-                    </div>
-                    <h3 class="mb-0 fw-bold text-success">@templates.Count(t => t.StatusText == "ใช้งาน")</h3>
-                    <small class="text-muted">ใช้งาน</small>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-md-3">
-            <div class="card text-center h-100">
-                <div class="card-body py-3">
-                    <div class="avatar avatar-md mx-auto mb-2" style="background:var(--bs-warning-bg-subtle);border-radius:50%;">
-                        <i class="ri ri-time-line fs-4 text-warning"></i>
-                    </div>
-                    <h3 class="mb-0 fw-bold text-warning">@templates.Count(t => t.StatusText == "รอทบทวน")</h3>
-                    <small class="text-muted">รอทบทวน</small>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-md-3">
-            <div class="card text-center h-100">
-                <div class="card-body py-3">
-                    <div class="avatar avatar-md mx-auto mb-2" style="background:var(--bs-secondary-bg-subtle);border-radius:50%;">
-                        <i class="ri ri-user-shared-line fs-4 text-secondary"></i>
-                    </div>
-                    <h3 class="mb-0 fw-bold">@templates.Count(t => t.ProxyActive)</h3>
-                    <small class="text-muted">มีผู้แทนแอคทีฟ</small>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Table -->
-    <div class="card">
-        <div class="card-header d-flex align-items-center justify-content-between">
-            <h6 class="mb-0"><i class="ri ri-list-check me-1"></i>รายการต้นแบบการรับเรื่อง</h6>
-            <span class="text-muted small">ทั้งหมด @templates.Length รายการ</span>
-        </div>
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0" style="font-size:0.82rem;">
+    <div class="table-responsive p-1">
+        <table class="table table-bordered align-middle mb-0" style="font-size:0.82rem;">
                     <thead class="table-light">
                         <tr>
                             <th class="ps-3">รหัส</th>
@@ -278,8 +239,6 @@
                         }
                     </tbody>
                 </table>
-            </div>
-        </div>
     </div>
 </div>
 

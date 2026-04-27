@@ -272,6 +272,24 @@
         <div data-i18n="รูปแบบใบรับรอง">รูปแบบใบรับรอง</div>
       </a>
     </li>
+    <li class='menu-item@(currentPage == "/Admin/ReceptionTemplate" ? " active" : "")'>
+      <a asp-controller="Admin" asp-action="ReceptionTemplate" class="menu-link">
+        <i class="menu-icon icon-base ri ri-file-copy-2-line"></i>
+        <div data-i18n="ต้นแบบการรับเรื่อง">ต้นแบบการรับเรื่อง</div>
+      </a>
+    </li>
+    <li class='menu-item@(currentPage == "/Admin/ESignature" ? " active" : "")'>
+      <a asp-controller="Admin" asp-action="ESignature" class="menu-link">
+        <i class="menu-icon icon-base ri ri-pen-nib-line"></i>
+        <div data-i18n="ลายมือชื่ออิเล็กทรอนิกส์">ลายมือชื่ออิเล็กทรอนิกส์</div>
+      </a>
+    </li>
+    <li class='menu-item@(currentPage == "/Admin/Announcement" ? " active" : "")'>
+      <a asp-controller="Admin" asp-action="Announcement" class="menu-link">
+        <i class="menu-icon icon-base ri ri-megaphone-line"></i>
+        <div data-i18n="ประชาสัมพันธ์">ประชาสัมพันธ์</div>
+      </a>
+    </li>
   </ul>
 
 </aside>
