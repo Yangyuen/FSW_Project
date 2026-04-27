@@ -80,6 +80,7 @@ Controllers/
  OfficerController.cs
  PagesController.cs
  PSDeclarationController.cs
+ ScrapTradingController.cs
  TablesController.cs
  TransactionsController.cs
  UiController.cs
@@ -468,14 +469,14 @@ Program.cs
  system.security.cryptography.protecteddata/8.0.0/lib/net8.0/System.Security.Cryptography.ProtectedData.dll
 
 [analyzerReferences]
-../../../../../../usr/local/share/dotnet/sdk/10.0.103/Sdks/Microsoft.NET.Sdk.Razor/source-generators/
+<DOTNET>/sdk/10.0.103/Sdks/Microsoft.NET.Sdk.Razor/source-generators/
  Microsoft.AspNetCore.Razor.Utilities.Shared.dll
  Microsoft.CodeAnalysis.Razor.Compiler.dll
  Microsoft.Extensions.ObjectPool.dll
-../../../../../../usr/local/share/dotnet/sdk/10.0.103/Sdks/Microsoft.NET.Sdk.Web/analyzers/cs/
+<DOTNET>/sdk/10.0.103/Sdks/Microsoft.NET.Sdk.Web/analyzers/cs/
  Microsoft.AspNetCore.Analyzers.dll
  Microsoft.AspNetCore.Mvc.Analyzers.dll
-../../../../../../usr/local/share/dotnet/sdk/10.0.103/Sdks/Microsoft.NET.Sdk/analyzers/
+<DOTNET>/sdk/10.0.103/Sdks/Microsoft.NET.Sdk/analyzers/
  Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll
  Microsoft.CodeAnalysis.NetAnalyzers.dll
 <NUGET>/microsoft.aspnetcore.app.ref/9.0.13/analyzers/dotnet/cs/
@@ -499,7 +500,7 @@ Program.cs
   System.Text.RegularExpressions.Generator.dll
 
 [analyzerConfigFiles]
-../../../../../../usr/local/share/dotnet/sdk/10.0.103/Sdks/Microsoft.NET.Sdk/analyzers/build/config/analysislevel_9_default.globalconfig
+<DOTNET>/sdk/10.0.103/Sdks/Microsoft.NET.Sdk/analyzers/build/config/analysislevel_9_default.globalconfig
 obj/Debug/net9.0/AspnetCoreMvcFull.GeneratedMSBuildEditorConfig.editorconfig
 
 [additionalFiles]
@@ -667,9 +668,12 @@ Views/
   IndexSearchSelfDecl.cshtml
   IndexStatistics.cshtml
   IndexUserData.cshtml
+  ReviewDeclaration.cshtml
   ReviewReplacementDeclaration.cshtml
   ReviewReplacementProcessing.cshtml
   ReviewReturnWeight.cshtml
+  ReviewRMBS1PS.cshtml
+  ReviewUpdateCertificate.cshtml
  Pages/
   AccountSettings.cshtml
   AccountSettingsBilling.cshtml
@@ -703,8 +707,14 @@ Views/
   IndexReplacementCertificate.cshtml
   IndexTrackRequestStatus.cshtml
   IndexUpdateCertificate.cshtml
+  ReviewDeclaration.cshtml
+  ReviewProcessing.cshtml
   SelectType.cshtml
   SelectTypeReplacement.cshtml
+ ScrapTrading/
+  CreateBuyer.cshtml
+  CreateSeller.cshtml
+  Index.cshtml
  Shared/
   Error.cshtml
   Sections/Footer/
@@ -964,9 +974,12 @@ Views/
   IndexSearchSelfDecl.cshtml
   IndexStatistics.cshtml
   IndexUserData.cshtml
+  ReviewDeclaration.cshtml
   ReviewReplacementDeclaration.cshtml
   ReviewReplacementProcessing.cshtml
   ReviewReturnWeight.cshtml
+  ReviewRMBS1PS.cshtml
+  ReviewUpdateCertificate.cshtml
  Pages/
   AccountSettings.cshtml
   AccountSettingsBilling.cshtml
@@ -1000,8 +1013,14 @@ Views/
   IndexReplacementCertificate.cshtml
   IndexTrackRequestStatus.cshtml
   IndexUpdateCertificate.cshtml
+  ReviewDeclaration.cshtml
+  ReviewProcessing.cshtml
   SelectType.cshtml
   SelectTypeReplacement.cshtml
+ ScrapTrading/
+  CreateBuyer.cshtml
+  CreateSeller.cshtml
+  Index.cshtml
  Shared/
   Error.cshtml
   Sections/Footer/

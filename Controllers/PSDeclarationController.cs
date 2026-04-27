@@ -107,4 +107,14 @@ public class PSDeclarationController : Controller
     return View();
   }
 
+  public IActionResult ReviewDeclaration()
+  {
+    return View();
+  }
+
+  public IActionResult ReviewProcessing()
+  {
+    return View();
+  }
+
 }

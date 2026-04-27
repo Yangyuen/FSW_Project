@@ -503,7 +503,7 @@
                         data-change-type=""
                         data-tx-date="@rec.TransactionDate.ToString("yyyy-MM-ddTHH:mm:ss")">
                         <td>
-                            <a href="@Url.Action("CreateAdjustRMBS1PS", "ImportAdjustment")" class="fw-semibold text-primary text-decoration-none">@rec.Rmbs1Number</a>
+                            <a href="@Url.Action("ReviewRMBS1PS", "Officer")" class="fw-semibold text-primary text-decoration-none">@rec.Rmbs1Number</a>
                             <div class="mt-1">
                                 <div class="small text-muted d-flex align-items-center gap-1">
                                     <span class="badge @rec.CertificationStatusClass rounded-circle d-inline-flex align-items-center justify-content-center flex-shrink-0" style="width:1.4rem;height:1.4rem;">
@@ -532,7 +532,7 @@
                         </td>
                         <td class="text-center">
                             <div class="d-flex gap-1 justify-content-center">
-                                <a href="@Url.Action("CreateAdjustRMBS1PS", "ImportAdjustment")" class="btn btn-sm btn-icon btn-outline-secondary" data-bs-toggle="tooltip" title="ดูรายละเอียด">
+                                <a href="@Url.Action("ReviewRMBS1PS", "Officer")" class="btn btn-sm btn-icon btn-outline-secondary" data-bs-toggle="tooltip" title="ดูรายละเอียด">
                                     <i class="ri ri-eye-line"></i>
                                 </a>
                                 @if (rec.StatusText == "รออนุมัติ")

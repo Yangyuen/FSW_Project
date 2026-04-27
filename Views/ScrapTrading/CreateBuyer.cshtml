@@ -1,0 +1,843 @@
+@{
+    ViewData["Title"] = "ยืนยันรับซื้อและบันทึกขายต่อเศษเหลือ";
+}
+
+@section VendorStyles {
+<link rel="stylesheet" href="~/vendor/libs/select2/select2.css" />
+<link rel="stylesheet" href="~/vendor/libs/flatpickr/flatpickr.css" />
+}
+
+@section VendorScripts {
+<script src="~/vendor/libs/select2/select2.js"></script>
+<script src="~/vendor/libs/flatpickr/flatpickr.js"></script>
+}
+
+@* ============================================================ Content ============================================================ *@
+<h4 class="mb-1">ยืนยันรับซื้อและบันทึกขายต่อเศษเหลือ</h4>
+<p class="mb-1">ผู้ซื้อยืนยันรับซื้อเศษเหลือ และบันทึกการขายต่อหรือสร้างหนังสือรับรองแหล่งที่มาของปลาป่น</p>
+
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="mb-6">
+    <ol class="breadcrumb breadcrumb-style1" style="--bs-breadcrumb-divider: '>'; font-size: 0.75rem;">
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("Index", "ScrapTrading")" class="text-primary fw-semibold">การซื้อขายเศษเหลือ</a>
+        </li>
+        <li class="breadcrumb-item active text-secondary">ยืนยันรับซื้อ / บันทึกขายต่อ</li>
+    </ol>
+</nav>
+
+<div class="row">
+    <div class="col-12">
+
+        <!-- ── Status Banner ── -->
+        <div class="alert alert-warning d-flex align-items-center gap-3 mb-4" role="alert">
+            <i class="ri ri-time-line fs-4 flex-shrink-0"></i>
+            <div>
+                <strong>รอการยืนยันรับซื้อ</strong> — หนังสือกำกับเลขที่ <strong>SCR-2569-0003</strong>
+                กำลังรอการยืนยันจากผู้ซื้อ
+                <span class="text-muted small ms-2">ออกโดย: บริษัท ทูน่า เอ็กซ์พอร์ต จำกัด | วันที่: 18/04/2569</span>
+            </div>
+        </div>
+
+        <form method="post" action="#">
+        <div class="nav-align-top nav-tabs-shadow mb-4">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#tab-confirm" aria-controls="tab-confirm" aria-selected="true">
+                        <i class="ri ri-checkbox-circle-line me-1"></i> ยืนยันรับซื้อ
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#tab-resell" aria-controls="tab-resell" aria-selected="false">
+                        <i class="ri ri-arrow-right-up-line me-1"></i> บันทึกขายต่อ
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#tab-fishmeal" aria-controls="tab-fishmeal" aria-selected="false">
+                        <i class="ri ri-file-shield-2-line me-1"></i> สร้างหนังสือปลาป่น
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#tab-history" aria-controls="tab-history" aria-selected="false">
+                        <i class="ri ri-time-line me-1"></i> ประวัติการดำเนินการ
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+
+                <!-- ==================== TAB 1: ยืนยันรับซื้อ ==================== -->
+                <div id="tab-confirm" class="tab-pane fade show active">
+
+                    <!-- Accordion: ข้อมูลหนังสือกำกับจากผู้ขาย -->
+                    <div class="accordion accordion-custom-button mb-4" id="accordionSaleDoc">
+                        <div class="accordion-item active">
+                            <h2 class="accordion-header" id="headingSaleDoc">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseSaleDoc" aria-expanded="true" aria-controls="collapseSaleDoc">
+                                    <i class="icon-base ri ri-file-list-line me-2"></i>
+                                    ข้อมูลหนังสือกำกับการซื้อขายเศษเหลือ
+                                </button>
+                            </h2>
+                            <div id="collapseSaleDoc" class="accordion-collapse collapse show" aria-labelledby="headingSaleDoc">
+                                <div class="accordion-body p-0">
+
+                                    <!-- รายละเอียด -->
+                                    <div class="p-4 border-bottom">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-information-line fs-5"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">ข้อมูลเอกสาร</h6>
+                                        </div>
+                                        <div class="row g-3">
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" value="SCR-2569-0003" readonly />
+                                                    <label>เลขที่หนังสือกำกับ</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" value="18/04/2569" readonly />
+                                                    <label>วันที่ซื้อขาย</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <span class="form-control bg-light d-flex align-items-center">
+                                                        <span class="badge bg-label-warning">รอยืนยัน</span>
+                                                    </span>
+                                                    <label>สถานะ</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ผู้ขาย -->
+                                    <div class="p-4 border-bottom">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-danger rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-store-2-line fs-5"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">ข้อมูลผู้ขาย</h6>
+                                        </div>
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" value="บริษัท ทูน่า เอ็กซ์พอร์ต จำกัด" readonly />
+                                                    <label>ชื่อผู้ขาย</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" value="0105563011222" readonly />
+                                                    <label>เลขทะเบียนนิติบุคคล</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" value="TH-SMK-2025-0400" readonly />
+                                                    <label>เลขที่ใบอนุญาตโรงงาน</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light"
+                                                        value="200 ถนนรัชดาภิเษก เขตดินแดง กรุงเทพมหานคร 10400" readonly />
+                                                    <label>ที่อยู่ผู้ขาย</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- รายการเศษเหลือ -->
+                                    <div class="p-4">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-warning rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-archive-line fs-5"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">รายการเศษเหลือที่ซื้อขาย</h6>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered align-middle small mb-2">
+                                                <thead class="text-center">
+                                                    <tr>
+                                                        <th style="width:3rem;">#</th>
+                                                        <th>เลขที่ RMBS1</th>
+                                                        <th>เลขที่ RMBS2</th>
+                                                        <th>ชื่อผลิตภัณฑ์</th>
+                                                        <th>ประเภทเศษเหลือ</th>
+                                                        <th class="text-end">น้ำหนักที่ขาย (กก.)</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-center text-muted">1</td>
+                                                        <td class="text-primary">10604204211700000184</td>
+                                                        <td class="text-primary">RMBS2-003</td>
+                                                        <td>Yellowfin Tuna Canned</td>
+                                                        <td>เศษ Yellowfin tuna</td>
+                                                        <td class="text-end fw-semibold">3,400.000</td>
+                                                    </tr>
+                                                </tbody>
+                                                <tfoot class="table-light">
+                                                    <tr>
+                                                        <td colspan="5" class="text-end fw-semibold">น้ำหนักรวม (กก.)</td>
+                                                        <td class="text-end fw-bold">3,400.000</td>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Accordion: ยืนยันรับซื้อ -->
+                    <div class="accordion accordion-custom-button mb-4" id="accordionConfirmForm">
+                        <div class="accordion-item active">
+                            <h2 class="accordion-header" id="headingConfirmForm">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseConfirmForm" aria-expanded="true" aria-controls="collapseConfirmForm">
+                                    <i class="icon-base ri ri-checkbox-circle-line me-2"></i>
+                                    ข้อมูลการยืนยันรับซื้อ (ผู้ซื้อกรอก)
+                                </button>
+                            </h2>
+                            <div id="collapseConfirmForm" class="accordion-collapse collapse show" aria-labelledby="headingConfirmForm">
+                                <div class="accordion-body p-0">
+                                    <div class="p-4">
+                                        <div class="row g-3">
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" id="confirmDate" class="form-control flatpickr-date"
+                                                        placeholder="วว/ดด/ปปปป" value="@DateTime.Now.ToString("dd/MM/yyyy")" />
+                                                    <label for="confirmDate">วันที่ยืนยันรับซื้อ <span class="text-danger">●</span></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <select id="confirmPerson" class="select2 form-select">
+                                                        <option value="">-- เลือกผู้ยืนยัน --</option>
+                                                        <option value="1" selected>นาย วีระ จงเจริญ (ผู้จัดการฝ่ายจัดซื้อ)</option>
+                                                    </select>
+                                                    <label for="confirmPerson">ผู้ยืนยันรับซื้อ <span class="text-danger">●</span></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" id="receiveWeightTotal" class="form-control"
+                                                        placeholder="น้ำหนักรับจริง (กก.)" value="3400.000" />
+                                                    <label for="receiveWeightTotal">น้ำหนักรับจริง (กก.) <span class="text-danger">●</span></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-floating form-floating-outline">
+                                                    <textarea id="confirmRemark" class="form-control" style="height:80px;"
+                                                        placeholder="หมายเหตุ (ถ้ามี)"></textarea>
+                                                    <label for="confirmRemark">หมายเหตุ</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /TAB 1 -->
+
+                <!-- ==================== TAB 2: บันทึกขายต่อ ==================== -->
+                <div id="tab-resell" class="tab-pane fade" role="tabpanel">
+
+                    <!-- Alert: ต้องยืนยันก่อน -->
+                    <div class="alert alert-info d-flex align-items-center gap-2 mb-4" id="alertResellPending" role="alert">
+                        <i class="ri ri-information-line fs-5 flex-shrink-0"></i>
+                        <span>ต้องยืนยันรับซื้อก่อน จึงจะสามารถบันทึกการขายต่อได้</span>
+                    </div>
+
+                    <!-- Accordion: ข้อมูลผู้ซื้อต่อ -->
+                    <div class="accordion accordion-custom-button mb-4" id="accordionResellBuyer">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingResellBuyer">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseResellBuyer" aria-expanded="true" aria-controls="collapseResellBuyer">
+                                    <i class="icon-base ri ri-user-received-line me-2"></i>
+                                    ข้อมูลผู้ซื้อต่อ
+                                </button>
+                            </h2>
+                            <div id="collapseResellBuyer" class="accordion-collapse collapse show" aria-labelledby="headingResellBuyer">
+                                <div class="accordion-body p-0">
+                                    <div class="p-4">
+
+                                        <!-- ประเภทผู้ซื้อต่อ -->
+                                        <div class="row g-3 mb-4">
+                                            <div class="col-12">
+                                                <label class="form-label fw-semibold">ประเภทผู้ซื้อต่อ <span class="text-danger">●</span></label>
+                                                <div class="d-flex gap-4">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="resellBuyerType"
+                                                            id="resellBuyerTypeInside" value="inside" checked />
+                                                        <label class="form-check-label" for="resellBuyerTypeInside">
+                                                            <i class="ri ri-computer-line me-1 text-primary"></i>
+                                                            ผู้ซื้อต่ออยู่ <strong>ภายในระบบ</strong> [FSW]
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="resellBuyerType"
+                                                            id="resellBuyerTypeOutside" value="outside" />
+                                                        <label class="form-check-label" for="resellBuyerTypeOutside">
+                                                            <i class="ri ri-user-line me-1 text-secondary"></i>
+                                                            ผู้ซื้อต่ออยู่ <strong>ภายนอกระบบ</strong>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- In-system resell buyer -->
+                                        <div id="resellBuyerInsideSection" class="row g-3">
+                                            <div class="col-12">
+                                                <label class="form-label small">ค้นหาผู้ซื้อต่อในระบบ <span class="text-danger">●</span></label>
+                                                <div class="input-group">
+                                                    <button type="button" class="btn btn-outline-secondary" id="btnSearchResellBuyer">
+                                                        <i class="ri ri-search-line"></i>
+                                                    </button>
+                                                    <input type="text" id="resellBuyerName" class="form-control"
+                                                        placeholder="ชื่อผู้ซื้อต่อ / เลขทะเบียน" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" id="resellBuyerTaxId" readonly />
+                                                    <label>เลขทะเบียนนิติบุคคล</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" id="resellBuyerPhone" readonly />
+                                                    <label>เบอร์โทรศัพท์</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" id="resellBuyerLicense" readonly />
+                                                    <label>ทะเบียนโรงงาน (ถ้ามี)</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" id="resellBuyerAddress" readonly />
+                                                    <label>ที่อยู่ผู้ซื้อต่อ</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Out-of-system resell buyer -->
+                                        <div id="resellBuyerOutsideSection" class="row g-3 d-none">
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" id="extResellBuyerName" class="form-control" placeholder="ชื่อผู้ซื้อ" />
+                                                    <label>ชื่อผู้ซื้อต่อ / กิจการ <span class="text-danger">●</span></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" id="extResellBuyerTaxId" class="form-control" placeholder="เลขทะเบียน" />
+                                                    <label>เลขทะเบียน / เลขประจำตัว</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" id="extResellBuyerPhone" class="form-control" placeholder="เบอร์โทร" />
+                                                    <label>เบอร์โทรศัพท์</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" id="extResellBuyerAddress" class="form-control" placeholder="ที่อยู่" />
+                                                    <label>ที่อยู่ <span class="text-danger">●</span></label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Accordion: รายการที่ขายต่อ -->
+                    <div class="accordion accordion-custom-button mb-4" id="accordionResellItems">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingResellItems">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseResellItems" aria-expanded="true" aria-controls="collapseResellItems">
+                                    <i class="icon-base ri ri-archive-line me-2"></i>
+                                    รายการเศษเหลือที่ขายต่อ
+                                </button>
+                            </h2>
+                            <div id="collapseResellItems" class="accordion-collapse collapse show" aria-labelledby="headingResellItems">
+                                <div class="accordion-body p-0">
+                                    <div class="p-4">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered align-middle small mb-2">
+                                                <thead class="text-center">
+                                                    <tr>
+                                                        <th style="width:3rem;">#</th>
+                                                        <th>เลขที่ RMBS1</th>
+                                                        <th>ประเภทเศษเหลือ</th>
+                                                        <th class="text-end">น้ำหนักที่ได้รับ (กก.)</th>
+                                                        <th class="text-end">น้ำหนักที่ขายต่อ (กก.) <span class="text-danger">●</span></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-center text-muted">1</td>
+                                                        <td class="text-primary">10604204211700000184</td>
+                                                        <td>เศษ Yellowfin tuna</td>
+                                                        <td class="text-end">3,400.000</td>
+                                                        <td class="text-end">
+                                                            <input type="number" class="form-control form-control-sm text-end"
+                                                                style="min-width:120px;" placeholder="0.000"
+                                                                step="0.001" min="0" max="3400" id="resellWeight1" />
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                                <tfoot class="table-light">
+                                                    <tr>
+                                                        <td colspan="4" class="text-end fw-semibold small">น้ำหนักรวมที่ขายต่อ (กก.)</td>
+                                                        <td class="text-end fw-bold" id="totalResellWeight">0.000</td>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                        <div class="row g-3 mt-1">
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" id="resellDate" class="form-control flatpickr-date"
+                                                        placeholder="วว/ดด/ปปปป" />
+                                                    <label for="resellDate">วันที่ขายต่อ <span class="text-danger">●</span></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" id="resellVehicleNo" class="form-control" placeholder="ทะเบียนรถ" />
+                                                    <label for="resellVehicleNo">ทะเบียนรถขนส่ง (ถ้ามี)</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" id="resellDocNo" class="form-control bg-light"
+                                                        value="(ระบบจะออกเลขที่ให้อัตโนมัติ)" readonly />
+                                                    <label for="resellDocNo">เลขที่หนังสือกำกับ (ขายต่อ)</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /TAB 2 -->
+
+                <!-- ==================== TAB 3: สร้างหนังสือรับรองแหล่งที่มาของปลาป่น ==================== -->
+                <div id="tab-fishmeal" class="tab-pane fade" role="tabpanel">
+
+                    <div class="alert alert-success d-flex align-items-start gap-3 mb-4" role="alert">
+                        <i class="ri ri-file-shield-2-line fs-4 flex-shrink-0 mt-1"></i>
+                        <div>
+                            <strong>สร้างหนังสือรับรองแหล่งที่มาของปลาป่น</strong><br />
+                            <span class="small">ผู้ที่มีหนังสือกำกับการซื้อขายเศษเหลือสามารถนำเศษเหลือไปสร้างเป็นหนังสือรับรองแหล่งที่มาของปลาป่นได้
+                            โดยต้องยืนยันรับซื้อก่อน</span>
+                        </div>
+                    </div>
+
+                    <div class="accordion accordion-custom-button mb-4" id="accordionFishmealDoc">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingFishmealDoc">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseFishmealDoc" aria-expanded="true" aria-controls="collapseFishmealDoc">
+                                    <i class="icon-base ri ri-file-paper-2-line me-2"></i>
+                                    ข้อมูลหนังสือรับรองแหล่งที่มาของปลาป่น
+                                </button>
+                            </h2>
+                            <div id="collapseFishmealDoc" class="accordion-collapse collapse show" aria-labelledby="headingFishmealDoc">
+                                <div class="accordion-body p-0">
+                                    <div class="p-4">
+                                        <div class="row g-3">
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light"
+                                                        value="(ระบบจะออกเลขที่ให้อัตโนมัติ)" readonly />
+                                                    <label>เลขที่หนังสือรับรองปลาป่น</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" id="fishmealDocDate" class="form-control flatpickr-date"
+                                                        placeholder="วว/ดด/ปปปป" value="@DateTime.Now.ToString("dd/MM/yyyy")" />
+                                                    <label for="fishmealDocDate">วันที่ออกหนังสือ <span class="text-danger">●</span></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" id="fishmealPlant" class="form-control"
+                                                        placeholder="ชื่อโรงงานปลาป่น"
+                                                        value="บริษัท ปลาป่นไทย จำกัด" />
+                                                    <label for="fishmealPlant">โรงงานปลาป่น <span class="text-danger">●</span></label>
+                                                </div>
+                                            </div>
+
+                                            <!-- อ้างอิงหนังสือกำกับ -->
+                                            <div class="col-12">
+                                                <label class="form-label small fw-semibold">หนังสือกำกับการซื้อขายที่อ้างอิง</label>
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered align-middle small mb-0">
+                                                        <thead class="text-center">
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>เลขที่หนังสือกำกับ</th>
+                                                                <th>วันที่</th>
+                                                                <th>ผู้ขาย</th>
+                                                                <th>ประเภทเศษเหลือ</th>
+                                                                <th class="text-end">น้ำหนัก (กก.)</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="text-center text-muted">1</td>
+                                                                <td class="text-primary fw-semibold">SCR-2569-0003</td>
+                                                                <td>18/04/2569</td>
+                                                                <td>บริษัท ทูน่า เอ็กซ์พอร์ต จำกัด</td>
+                                                                <td>เศษ Yellowfin tuna</td>
+                                                                <td class="text-end">3,400.000</td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <tfoot class="table-light">
+                                                            <tr>
+                                                                <td colspan="5" class="text-end fw-semibold small">น้ำหนักรวม (กก.)</td>
+                                                                <td class="text-end fw-bold">3,400.000</td>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" id="fishmealProductWeight" class="form-control"
+                                                        placeholder="น้ำหนักปลาป่นที่ผลิต (กก.)" />
+                                                    <label for="fishmealProductWeight">น้ำหนักปลาป่นที่ผลิตได้ (กก.) <span class="text-danger">●</span></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <select id="fishmealGrade" class="select2 form-select">
+                                                        <option value="">-- เลือกเกรดปลาป่น --</option>
+                                                        <option value="60up">ไฮโปรตีน (โปรตีน ≥ 60%)</option>
+                                                        <option value="55up">โปรตีน 55-60%</option>
+                                                        <option value="other">อื่นๆ</option>
+                                                    </select>
+                                                    <label for="fishmealGrade">เกรดปลาป่น <span class="text-danger">●</span></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-floating form-floating-outline">
+                                                    <textarea id="fishmealRemark" class="form-control" style="height:80px;" placeholder="หมายเหตุ"></textarea>
+                                                    <label for="fishmealRemark">หมายเหตุ / รายละเอียดเพิ่มเติม</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /TAB 3 -->
+
+                <!-- ==================== TAB 4: ประวัติการดำเนินการ ==================== -->
+                <div id="tab-history" class="tab-pane fade" role="tabpanel">
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle small mb-0">
+                            <thead class="text-center">
+                                <tr>
+                                    <th style="width:3rem;">#</th>
+                                    <th>วันที่ / เวลา</th>
+                                    <th>ผู้ดำเนินการ</th>
+                                    <th>การดำเนินการ</th>
+                                    <th>หมายเหตุ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center text-muted">1</td>
+                                    <td>18/04/2569 10:15:22</td>
+                                    <td>นาย ธนกร พิทักษ์ผล (ผู้ขาย)</td>
+                                    <td><span class="badge bg-label-primary">สร้างหนังสือกำกับ</span></td>
+                                    <td class="text-muted">ออกเลขที่ SCR-2569-0003</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center text-muted">2</td>
+                                    <td>@DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                                    <td>นาย วีระ จงเจริญ (ผู้ซื้อ)</td>
+                                    <td><span class="badge bg-label-warning">รอการยืนยัน</span></td>
+                                    <td class="text-muted">—</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- /TAB 4 -->
+
+            </div><!-- /tab-content -->
+        </div><!-- /nav-align-top -->
+
+        <!-- Action Buttons -->
+        <div class="d-flex justify-content-between align-items-center mt-3">
+            <a href="@Url.Action("Index", "ScrapTrading")" class="btn btn-outline-secondary">
+                <i class="ri ri-arrow-left-line me-1"></i> กลับรายการ
+            </a>
+            <div class="d-flex gap-2">
+                <!-- Preview PDF -->
+                <button type="button" class="btn btn-outline-info" id="btnPreviewPdf">
+                    <i class="ri ri-file-pdf-line me-1"></i> พรีวิว PDF
+                </button>
+                <!-- พิมพ์ -->
+                <button type="button" class="btn btn-outline-secondary" onclick="window.print()">
+                    <i class="ri ri-printer-line me-1"></i> พิมพ์
+                </button>
+                <!-- ยืนยันรับซื้อ -->
+                <button type="button" class="btn btn-success" id="btnConfirmPurchase">
+                    <i class="ri ri-checkbox-circle-line me-1"></i> ยืนยันรับซื้อ
+                </button>
+                <!-- บันทึกขายต่อ -->
+                <button type="button" class="btn btn-primary" id="btnSaveResell">
+                    <i class="ri ri-arrow-right-up-line me-1"></i> บันทึกขายต่อและออกหนังสือกำกับ
+                </button>
+                <!-- สร้างหนังสือปลาป่น -->
+                <button type="button" class="btn btn-outline-success" id="btnCreateFishmeal">
+                    <i class="ri ri-file-shield-2-line me-1"></i> สร้างหนังสือรับรองปลาป่น
+                </button>
+            </div>
+        </div>
+
+        </form>
+    </div><!-- /col -->
+</div><!-- /row -->
+
+<!-- ==================== Modal: ค้นหาผู้ซื้อต่อในระบบ ==================== -->
+<div class="modal fade" id="modalSearchResellBuyer" tabindex="-1" aria-labelledby="modalSearchResellBuyerLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalSearchResellBuyerLabel">
+                    <i class="ri ri-search-line me-2"></i>ค้นหาผู้ซื้อต่อในระบบ [FSW]
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label small">ชื่อกิจการ / ชื่อผู้ซื้อต่อ</label>
+                        <input type="text" id="srchResellBuyerName" class="form-control form-control-sm" placeholder="ชื่อกิจการ" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small">เลขทะเบียนนิติบุคคล</label>
+                        <div class="input-group">
+                            <input type="text" id="srchResellBuyerTax" class="form-control form-control-sm" placeholder="เลขทะเบียน" />
+                            <button class="btn btn-outline-secondary btn-sm" type="button">
+                                <i class="ri ri-search-line"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover align-middle small">
+                        <thead class="text-center">
+                            <tr>
+                                <th style="width:3rem;"></th>
+                                <th>ชื่อกิจการ</th>
+                                <th>เลขทะเบียน</th>
+                                <th>ประเภทกิจการ</th>
+                                <th>ที่อยู่</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="resell-buyer-row" style="cursor:pointer;"
+                                data-name="บริษัท ปลาป่นสยาม จำกัด" data-tax="0105558077333"
+                                data-license="FM-TH-2025-0099" data-phone="034-222-3333"
+                                data-address="456/1 ถนนพระราม 2 สมุทรสาคร 74000">
+                                <td class="text-center"><input type="radio" name="resellBuyerSelect" class="form-check-input" /></td>
+                                <td class="text-primary fw-semibold">บริษัท ปลาป่นสยาม จำกัด</td>
+                                <td>0105558077333</td>
+                                <td>โรงงานผลิตปลาป่น</td>
+                                <td class="small">456/1 ถนนพระราม 2 สมุทรสาคร</td>
+                            </tr>
+                            <tr class="resell-buyer-row" style="cursor:pointer;"
+                                data-name="บริษัท อาหารสัตว์ไทย จำกัด" data-tax="0105560044555"
+                                data-license="AF-TH-2025-0210" data-phone="02-888-9999"
+                                data-address="789 ถนนบางนา บางนา กรุงเทพฯ 10260">
+                                <td class="text-center"><input type="radio" name="resellBuyerSelect" class="form-check-input" /></td>
+                                <td class="text-primary fw-semibold">บริษัท อาหารสัตว์ไทย จำกัด</td>
+                                <td>0105560044555</td>
+                                <td>โรงงานอาหารสัตว์</td>
+                                <td class="small">789 ถนนบางนา กรุงเทพฯ</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="ri ri-close-line me-1"></i> ยกเลิก
+                </button>
+                <button type="button" class="btn btn-primary" id="btnConfirmSelectResellBuyer">
+                    <i class="ri ri-check-line me-1"></i> เลือกผู้ซื้อต่อ
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== Modal: PDF Preview ==================== -->
+<div class="modal fade" id="modalPdfPreview" tabindex="-1" aria-labelledby="modalPdfPreviewLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalPdfPreviewLabel">
+                    <i class="ri ri-file-pdf-line me-2 text-danger"></i>
+                    พรีวิวหนังสือกำกับการซื้อขายเศษเหลือ — SCR-2569-0003
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center bg-light py-5">
+                <div class="border bg-white shadow-sm mx-auto p-5" style="max-width:794px; min-height:500px;">
+                    <div class="mb-3">
+                        <img src="~/img/branding/logo.png" alt="Logo" style="height:55px;" onerror="this.style.display='none'" />
+                    </div>
+                    <h5 class="fw-bold mb-1">หนังสือกำกับการซื้อขายเศษเหลือ</h5>
+                    <h6 class="text-muted mb-4">จากการแปรรูปสัตว์น้ำนำเข้า</h6>
+                    <div class="text-start mt-3 small">
+                        <div class="row mb-2"><div class="col-5 fw-semibold">เลขที่หนังสือ :</div><div class="col-7">SCR-2569-0003</div></div>
+                        <div class="row mb-2"><div class="col-5 fw-semibold">วันที่ออกเอกสาร :</div><div class="col-7">18/04/2569</div></div>
+                        <div class="row mb-2"><div class="col-5 fw-semibold">ผู้ขาย :</div><div class="col-7">บริษัท ทูน่า เอ็กซ์พอร์ต จำกัด</div></div>
+                        <div class="row mb-2"><div class="col-5 fw-semibold">ผู้ซื้อ :</div><div class="col-7">บริษัท ปลาป่นไทย จำกัด</div></div>
+                        <div class="row mb-2"><div class="col-5 fw-semibold">ประเภทเศษเหลือ :</div><div class="col-7">เศษ Yellowfin tuna</div></div>
+                        <div class="row mb-2"><div class="col-5 fw-semibold">น้ำหนักรวม (กก.) :</div><div class="col-7">3,400.000</div></div>
+                    </div>
+                    <p class="text-muted fst-italic small mt-4">(ตัวอย่างเอกสาร — ระบบจะสร้างเนื้อหาจริงจากข้อมูลที่บันทึก)</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="ri ri-close-line me-1"></i> ปิด
+                </button>
+                <button type="button" class="btn btn-primary" onclick="window.print()">
+                    <i class="ri ri-printer-line me-1"></i> พิมพ์
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section PageScripts {
+<script>
+$(document).ready(function () {
+
+    // ── Flatpickr ──
+    function initFp(el) {
+        if (el && !el._flatpickr) flatpickr(el, { dateFormat: 'd/m/Y', allowInput: true });
+    }
+    document.querySelectorAll('.flatpickr-date').forEach(function(el) { initFp(el); });
+
+    // ── Select2 ──
+    $('.select2').select2({ width: '100%' });
+
+    // ── ประเภทผู้ซื้อต่อ toggle ──
+    $('input[name="resellBuyerType"]').on('change', function () {
+        if ($(this).val() === 'inside') {
+            $('#resellBuyerInsideSection').removeClass('d-none');
+            $('#resellBuyerOutsideSection').addClass('d-none');
+        } else {
+            $('#resellBuyerInsideSection').addClass('d-none');
+            $('#resellBuyerOutsideSection').removeClass('d-none');
+        }
+    });
+
+    // ── เปิด modal ค้นหาผู้ซื้อต่อ ──
+    $('#btnSearchResellBuyer').on('click', function () {
+        new bootstrap.Modal(document.getElementById('modalSearchResellBuyer')).show();
+    });
+
+    $(document).on('click', '.resell-buyer-row', function () {
+        $('.resell-buyer-row').removeClass('table-active');
+        $(this).addClass('table-active').find('input[type=radio]').prop('checked', true);
+    });
+
+    $('#btnConfirmSelectResellBuyer').on('click', function () {
+        var $sel = $('input[name=resellBuyerSelect]:checked').closest('tr');
+        if ($sel.length === 0) { alert('กรุณาเลือกผู้ซื้อต่อก่อน'); return; }
+        $('#resellBuyerName').val($sel.data('name'));
+        $('#resellBuyerTaxId').val($sel.data('tax'));
+        $('#resellBuyerPhone').val($sel.data('phone'));
+        $('#resellBuyerLicense').val($sel.data('license'));
+        $('#resellBuyerAddress').val($sel.data('address'));
+        bootstrap.Modal.getInstance(document.getElementById('modalSearchResellBuyer')).hide();
+    });
+
+    // ── คำนวณน้ำหนักรวมขายต่อ ──
+    function recalcResell() {
+        var total = 0;
+        $('input[id^="resellWeight"]').each(function () {
+            total += parseFloat($(this).val()) || 0;
+        });
+        $('#totalResellWeight').text(total.toLocaleString('th-TH', { minimumFractionDigits: 3 }));
+    }
+    $(document).on('input', 'input[id^="resellWeight"]', function () { recalcResell(); });
+
+    // ── PDF Preview ──
+    $('#btnPreviewPdf').on('click', function () {
+        new bootstrap.Modal(document.getElementById('modalPdfPreview')).show();
+    });
+
+    // ── ยืนยันรับซื้อ ──
+    $('#btnConfirmPurchase').on('click', function () {
+        if (!$('#confirmDate').val()) { alert('กรุณาระบุวันที่ยืนยันรับซื้อ'); return; }
+        if (!$('#receiveWeightTotal').val()) { alert('กรุณาระบุน้ำหนักรับจริง'); return; }
+        if (!confirm('ยืนยันการรับซื้อเศษเหลือรายการนี้ใช่หรือไม่?')) return;
+        $('#alertResellPending').removeClass('alert-info').addClass('alert-success')
+            .html('<i class="ri ri-check-circle-line fs-5 flex-shrink-0"></i> <span>ยืนยันรับซื้อแล้ว — สามารถบันทึกขายต่อหรือสร้างหนังสือรับรองปลาป่นได้</span>');
+        alert('บันทึกยืนยันรับซื้อเรียบร้อยแล้ว (mockup)');
+    });
+
+    // ── บันทึกขายต่อ ──
+    $('#btnSaveResell').on('click', function () {
+        if (!$('#resellBuyerName').val() && !$('#extResellBuyerName').val()) {
+            alert('กรุณาระบุผู้ซื้อต่อ'); return;
+        }
+        if (!$('#resellDate').val()) { alert('กรุณาระบุวันที่ขายต่อ'); return; }
+        alert('บันทึกการขายต่อและออกหนังสือกำกับเรียบร้อยแล้ว (mockup)');
+    });
+
+    // ── สร้างหนังสือปลาป่น ──
+    $('#btnCreateFishmeal').on('click', function () {
+        if (!$('#fishmealPlant').val()) { alert('กรุณาระบุโรงงานปลาป่น'); return; }
+        if (!$('#fishmealProductWeight').val()) { alert('กรุณาระบุน้ำหนักปลาป่นที่ผลิตได้'); return; }
+        if (!confirm('ยืนยันการสร้างหนังสือรับรองแหล่งที่มาของปลาป่นใช่หรือไม่?')) return;
+        alert('สร้างหนังสือรับรองแหล่งที่มาของปลาป่นเรียบร้อยแล้ว (mockup)');
+    });
+});
+</script>
+}

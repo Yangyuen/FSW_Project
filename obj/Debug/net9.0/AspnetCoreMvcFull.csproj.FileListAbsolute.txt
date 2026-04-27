@@ -249,12 +249,14 @@
 /Users/adisaip/งาน/2026/FSW_กรมประมง/FSW_Project/obj/Debug/net9.0/AspnetCoreMvcFull.MvcApplicationPartsAssemblyInfo.cache
 /Users/adisaip/งาน/2026/FSW_กรมประมง/FSW_Project/obj/Debug/net9.0/AspnetCoreMvcFull.RazorAssemblyInfo.cache
 /Users/adisaip/งาน/2026/FSW_กรมประมง/FSW_Project/obj/Debug/net9.0/AspnetCoreMvcFull.RazorAssemblyInfo.cs
+/Users/adisaip/งาน/2026/FSW_กรมประมง/FSW_Project/obj/Debug/net9.0/AspnetCoreMvcFull.sourcelink.json
 /Users/adisaip/งาน/2026/FSW_กรมประมง/FSW_Project/obj/Debug/net9.0/rjimswa.dswa.cache.json
 /Users/adisaip/งาน/2026/FSW_กรมประมง/FSW_Project/obj/Debug/net9.0/rjsmrazor.dswa.cache.json
 /Users/adisaip/งาน/2026/FSW_กรมประมง/FSW_Project/obj/Debug/net9.0/rjsmcshtml.dswa.cache.json
 /Users/adisaip/งาน/2026/FSW_กรมประมง/FSW_Project/obj/Debug/net9.0/scopedcss/bundle/AspnetCoreMvcFull.styles.css
 /Users/adisaip/งาน/2026/FSW_กรมประมง/FSW_Project/obj/Debug/net9.0/compressed/qhh9rkgnga-{0}-h11fv93266-h11fv93266.gz
 /Users/adisaip/งาน/2026/FSW_กรมประมง/FSW_Project/obj/Debug/net9.0/compressed/7x0kp9048o-{0}-cga4aadds4-cga4aadds4.gz
+/Users/adisaip/งาน/2026/FSW_กรมประมง/FSW_Project/obj/Debug/net9.0/compressed/0394dugq0u-{0}-jwe7ey0tw7-jwe7ey0tw7.gz
 /Users/adisaip/งาน/2026/FSW_กรมประมง/FSW_Project/obj/Debug/net9.0/compressed/zx2l026h1h-{0}-61n19gt1b8-61n19gt1b8.gz
 /Users/adisaip/งาน/2026/FSW_กรมประมง/FSW_Project/obj/Debug/net9.0/compressed/zko4fauq8c-{0}-6d9zwr0nrt-6d9zwr0nrt.gz
 /Users/adisaip/งาน/2026/FSW_กรมประมง/FSW_Project/obj/Debug/net9.0/compressed/uf7dhb2af0-{0}-x6b946xo6w-x6b946xo6w.gz
@@ -313,6 +315,7 @@
 /Users/adisaip/งาน/2026/FSW_กรมประมง/FSW_Project/obj/Debug/net9.0/compressed/9rduz3jwr9-{0}-8v8mvv8lh5-8v8mvv8lh5.gz
 /Users/adisaip/งาน/2026/FSW_กรมประมง/FSW_Project/obj/Debug/net9.0/compressed/z1k47o3qr5-{0}-9ndtmi84ri-9ndtmi84ri.gz
 /Users/adisaip/งาน/2026/FSW_กรมประมง/FSW_Project/obj/Debug/net9.0/compressed/6482mb6fhz-{0}-295xqg18nm-295xqg18nm.gz
+/Users/adisaip/งาน/2026/FSW_กรมประมง/FSW_Project/obj/Debug/net9.0/compressed/8nf80lt16h-{0}-259bj8df5y-259bj8df5y.gz
 /Users/adisaip/งาน/2026/FSW_กรมประมง/FSW_Project/obj/Debug/net9.0/compressed/6otgcuyrsu-{0}-o96ocs021r-o96ocs021r.gz
 /Users/adisaip/งาน/2026/FSW_กรมประมง/FSW_Project/obj/Debug/net9.0/compressed/73dliq74fg-{0}-xmxmpyrrbl-xmxmpyrrbl.gz
 /Users/adisaip/งาน/2026/FSW_กรมประมง/FSW_Project/obj/Debug/net9.0/compressed/ck67kyvj0s-{0}-hcy2of656i-hcy2of656i.gz
@@ -1127,6 +1130,3 @@
 /Users/adisaip/งาน/2026/FSW_กรมประมง/FSW_Project/obj/Debug/net9.0/AspnetCoreMvcFull.pdb
 /Users/adisaip/งาน/2026/FSW_กรมประมง/FSW_Project/obj/Debug/net9.0/AspnetCoreMvcFull.genruntimeconfig.cache
 /Users/adisaip/งาน/2026/FSW_กรมประมง/FSW_Project/obj/Debug/net9.0/ref/AspnetCoreMvcFull.dll
-/Users/adisaip/งาน/2026/FSW_กรมประมง/FSW_Project/obj/Debug/net9.0/compressed/0394dugq0u-{0}-jwe7ey0tw7-jwe7ey0tw7.gz
-/Users/adisaip/งาน/2026/FSW_กรมประมง/FSW_Project/obj/Debug/net9.0/AspnetCoreMvcFull.sourcelink.json
-/Users/adisaip/งาน/2026/FSW_กรมประมง/FSW_Project/obj/Debug/net9.0/compressed/8nf80lt16h-{0}-259bj8df5y-259bj8df5y.gz

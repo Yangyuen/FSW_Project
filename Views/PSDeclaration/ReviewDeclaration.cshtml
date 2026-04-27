@@ -1,0 +1,655 @@
+@{
+    ViewData["Title"] = "ตรวจสอบคำขอใบรับรองสัตว์น้ำไม่แปรรูป";
+
+    // Mock data — ในระบบจริงรับจาก Model
+    var requestNo    = "REQ-2569-00847";
+    var submittedBy  = "บริษัท อินโนเวชั่นส์ โซลูชั่น แอนด์ เซอร์วิส จำกัด";
+    var submittedAt  = "18/04/2569 15:14 น.";
+    var statusKey    = "pending"; // pending | reviewing | approved | returned | rejected
+    var statusText   = "รอพิจารณา";
+    var statusClass  = "bg-label-warning";
+    var statusIcon   = "ri-time-line";
+}
+
+@* ************** Content ************** *@
+<h4 class="mb-1">ตรวจสอบคำขอ</h4>
+<p class="mb-1">ตรวจสอบและพิจารณาคำร้องขอใบรับรองสัตว์น้ำไม่แปรรูป</p>
+
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb breadcrumb-style1" style="--bs-breadcrumb-divider: '>'; font-size: 0.75rem;">
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("IndexIssueCertificate", "Officer")" class="text-primary fw-semibold">พิจารณาออกใบรับรอง</a>
+        </li>
+        <li class="breadcrumb-item active text-secondary">ใบรับรองสัตว์น้ำไม่แปรรูป (Declaration)</li>
+    </ol>
+</nav>
+
+<div class="alert alert-warning d-flex align-items-center gap-2 mb-4" role="alert">
+    <i class="ri ri-time-line fs-5"></i>
+    <span><strong>รออนุมัติ</strong> — คำขอนี้รอการพิจารณาจากเจ้าหน้าที่</span>
+</div>
+
+<div class="row">
+    <div class="col-12">
+
+        <!-- ===== Tabs ===== -->
+        <div class="nav-align-top nav-tabs-shadow mb-4">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#tab-detail" aria-controls="tab-detail" aria-selected="true">
+                        <i class="ri ri-file-list-2-line me-1"></i> รายละเอียดคำขอ
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#tab-production" aria-controls="tab-production" aria-selected="false">
+                        <i class="ri ri-list-check-3 me-1"></i> รายการข้อมูลการผลิต
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#tab-evidence" aria-controls="tab-evidence" aria-selected="false">
+                        <i class="ri ri-folder-open-line me-1"></i> หลักฐานประกอบ
+                    </button>
+                </li>
+            </ul>
+            <div class="tab-content">
+
+                <!-- ==================== TAB 1: รายละเอียดคำขอ ==================== -->
+                <div id="tab-detail" class="tab-pane fade show active">
+
+                    <!-- ===== Accordion: ส่วนหัว ===== -->
+                    <div class="accordion accordion-custom-button mb-4" id="accordionHeader">
+                        <div class="accordion-item active">
+                            <h2 class="accordion-header" id="headingHeader">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseHeaderContent" aria-expanded="true"
+                                    aria-controls="collapseHeaderContent">
+                                    <i class="icon-base ri ri-file-list-line me-2"></i>
+                                    รายละเอียดประเภทเอกสารส่วนหัว
+                                </button>
+                            </h2>
+                            <div id="collapseHeaderContent" class="accordion-collapse collapse show"
+                                aria-labelledby="headingHeader">
+                                <div class="accordion-body p-0">
+
+                                    <!-- รายละเอียด -->
+                                    <div class="p-4 border-bottom">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-information-line fs-5"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">รายละเอียด</h6>
+                                        </div>
+                                        <div class="row g-3">
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" id="requestName"
+                                                        value="คำขอใบรับรองสัตว์น้ำไม่แปรรูป" readonly disabled />
+                                                    <label for="requestName">ชื่อคำขอ</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" id="certName"
+                                                        value="ใบรับรองสัตว์น้ำไม่แปรรูป (Declaration)" readonly disabled />
+                                                    <label for="certName">ใบรับรอง</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" id="submitChannel"
+                                                        value="ออนไลน์" readonly disabled />
+                                                    <label for="submitChannel">ยื่นต่อหน่วยงานกรมประมงผ่าน</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ผู้ผ่านพิธีการ / ผู้รับมอบอำนาจ -->
+                                    <div class="p-4 border-bottom">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-user-star-line fs-5"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">ผู้ผ่านพิธีการ / ผู้รับมอบอำนาจ</h6>
+                                        </div>
+                                        <div class="row g-4">
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light"
+                                                        value="บริษัท อินโนเวชั่นส์ โซลูชั่น แอนด์ เซอร์วิส จำกัด (สาขาสำนักงานใหญ่)" readonly disabled />
+                                                    <label>ผู้ผ่านพิธีการ</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light"
+                                                        value="นาย สมชาย รักษาผล" readonly disabled />
+                                                    <label>ผู้รับมอบอำนาจ</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ข้อมูลผู้ส่งออก -->
+                                    <div class="p-4 border-bottom">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-building-2-line fs-5"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">ข้อมูลผู้ส่งออก</h6>
+                                        </div>
+                                        <div class="row g-4">
+                                            <div class="col-12">
+                                                <label class="form-label small">ผู้ส่งออก</label>
+                                                <input type="text" class="form-control bg-light"
+                                                    value="บริษัท อินโนเวชั่นส์ โซลูชั่น แอนด์ เซอร์วิส จำกัด (สาขาสำนักงานใหญ่)"
+                                                    readonly disabled />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- แจ้งความประสงค์ -->
+                                    <div class="p-4 border-bottom">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-file-text-line fs-5"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">แจ้งความประสงค์</h6>
+                                        </div>
+                                        <div class="row g-4">
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light"
+                                                        value="กองตรวจสอบคุณภาพสินค้าประมง" readonly disabled />
+                                                    <label>หน่วยงานหรือเอกสาร</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light"
+                                                        value="นางสาว วรรณา พิมพ์ทอง" readonly disabled />
+                                                    <label>ชื่อเจ้าหน้าที่</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light"
+                                                        value="ก่อนนำเข้า/ส่งออก/นำผ่าน" readonly disabled />
+                                                    <label>ช่วงเวลาดำเนินการ</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light"
+                                                        value="ขอใหม่" readonly disabled />
+                                                    <label>ลักษณะการขอ</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light"
+                                                        value="ส่งออก" readonly disabled />
+                                                    <label>ระเบียบข้อบังคับ</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light"
+                                                        value="อาร์เจนตินา" readonly disabled />
+                                                    <label>ชื่อประเทศปลายทาง</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light"
+                                                        value="25/04/2026" readonly disabled />
+                                                    <label>วันที่ส่งออก</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ข้อมูล Health Certificate -->
+                                    <div class="p-4">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-shield-check-line fs-5"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">ข้อมูล Health Certificate</h6>
+                                        </div>
+                                        <div class="row g-4">
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light"
+                                                        value="HC-TH-2569-00847" readonly disabled />
+                                                    <label>Health Certificate Number</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light"
+                                                        value="18/04/2026" readonly disabled />
+                                                    <label>Date</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /accordion ส่วนหัว -->
+
+                    <!-- ===== Accordion: ส่วนเนื้อหา ===== -->
+                    <div class="accordion accordion-custom-button mb-4" id="accordionDetail">
+                        <div class="accordion-item active">
+                            <h2 class="accordion-header" id="headingDetail">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseDetailContent" aria-expanded="true"
+                                    aria-controls="collapseDetailContent">
+                                    <i class="icon-base ri ri-article-line me-2"></i>
+                                    รายละเอียดประเภทเอกสารส่วนเนื้อหา
+                                </button>
+                            </h2>
+                            <div id="collapseDetailContent" class="accordion-collapse collapse show"
+                                aria-labelledby="headingDetail">
+                                <div class="accordion-body p-0">
+
+                                    <!-- Description of Product -->
+                                    <div class="p-4 border-bottom">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-box-3-line fs-5"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">Description of Product</h6>
+                                        </div>
+                                        <div class="row g-3">
+                                            <div class="col-md-4">
+                                                <label class="form-label small">HS Code (พิกัดศุลกากร)</label>
+                                                <input type="text" class="form-control bg-light" value="0306.17" readonly disabled />
+                                            </div>
+                                            <div class="col-md-8">
+                                                <label class="form-label small">Product Name</label>
+                                                <textarea class="form-control bg-light" rows="2" readonly disabled>กุ้งขาวแปรรูปแช่แข็ง (Frozen White Shrimp, Processed) / Penaeus vannamei</textarea>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small text-muted"># Total Weight of Product</label>
+                                                <input type="text" class="form-control bg-light" value="22,300.000" readonly disabled />
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small text-muted"># Total Weight of Product Unit</label>
+                                                <input type="text" class="form-control bg-light" value="KGM = กิโลกรัม" readonly disabled />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Establishment Plant -->
+                                    <div class="p-4">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-store-2-line fs-5"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">Establishment Plant</h6>
+                                        </div>
+                                        <div class="row g-3">
+                                            <div class="col-md-4">
+                                                <label class="form-label small">Approval Number</label>
+                                                <input type="text" class="form-control bg-light" value="TH-SMK-2025-0312" readonly disabled />
+                                            </div>
+                                            <div class="col-md-8">
+                                                <label class="form-label small">Name of the Establishment</label>
+                                                <input type="text" class="form-control bg-light" value="บริษัท อินโนเวชั่นส์ โซลูชั่น แอนด์ เซอร์วิส จำกัด" readonly disabled />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label small">ID of the Establishment</label>
+                                                <input type="text" class="form-control bg-light" value="0105566089321" readonly disabled />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label small">Branch of the Establishment</label>
+                                                <input type="text" class="form-control bg-light" value="สำนักงานใหญ่" readonly disabled />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label small">Place of the Establishment</label>
+                                                <input type="text" class="form-control bg-light" value="สมุทรสาคร" readonly disabled />
+                                            </div>
+                                            <div class="col-12">
+                                                <label class="form-label small">Address of the Establishment</label>
+                                                <textarea class="form-control bg-light" rows="2" readonly disabled>99/1 หมู่ 5 ถนนพระราม 2 ตำบลท่าทราย อำเภอเมืองสมุทรสาคร จังหวัดสมุทรสาคร 74000</textarea>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">Telephone of the Establishment</label>
+                                                <input type="text" class="form-control bg-light" value="034-456-789" readonly disabled />
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">Fax of the Establishment</label>
+                                                <input type="text" class="form-control bg-light" value="034-456-790" readonly disabled />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label small">ID of Responsible person</label>
+                                                <input type="text" class="form-control bg-light" value="3101200456789" readonly disabled />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label small">Responsible person</label>
+                                                <input type="text" class="form-control bg-light" value="นาย สมชาย รักษาผล" readonly disabled />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label small">Signature</label>
+                                                <input type="text" class="form-control bg-light" value="สมชาย รักษาผล" readonly disabled />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /accordion ส่วนเนื้อหา -->
+                </div>
+                <!-- /TAB 1 -->
+
+                <!-- ==================== TAB 2: รายการข้อมูลการผลิต ==================== -->
+                <div id="tab-production" class="tab-pane fade" role="tabpanel">
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle mb-0 small" id="productionTable">
+                            <thead class="text-center">
+                                <tr>
+                                    <th style="width:2.5rem;"></th>
+                                    <th style="width:2rem;">#</th>
+                                    <th>หมายเลข RMBS1</th>
+                                    <th>เลขที่ CC</th>
+                                    <th>วันที่ตรวจสอบ CC</th>
+                                    <th>ชื่อเรือ / ชะเรือ</th>
+                                    <th>Catch Description</th>
+                                    <th class="text-end">น้ำหนักอื่นๆ (กก.)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productionTbody">
+                                <!-- RMBS1 row 1 -->
+                                <tr class="rmbs1-main-row">
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-sm btn-link p-0 btn-toggle-sub"
+                                            data-target="sub-r1" title="แสดง/ซ่อนผลิตภัณฑ์">
+                                            <i class="ri ri-arrow-right-s-line fs-5 text-primary"></i>
+                                        </button>
+                                    </td>
+                                    <td class="text-center text-muted small">1</td>
+                                    <td class="text-primary fw-semibold">10604204211700000090</td>
+                                    <td>CC-TH-2569-0047</td>
+                                    <td>10/04/2026</td>
+                                    <td>เรือสมุทรทอง 1</td>
+                                    <td>Penaeus vannamei (กุ้งขาว)</td>
+                                    <td class="text-end">12,500.000</td>
+                                </tr>
+                                <!-- sub-row 1 -->
+                                <tr class="rmbs1-sub-row d-none" id="sub-r1">
+                                    <td colspan="8" class="p-0 border-0">
+                                        <div class="border-start border-4 border-primary ms-4 ps-3 pe-3 pb-3 pt-2" style="background-color:var(--bs-table-header-bg-color);">
+                                            <div class="d-flex align-items-center mb-2">
+                                                <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                    <i class="ri ri-box-3-line fs-5"></i>
+                                                </span>
+                                                <span class="fw-semibold text-primary">ข้อมูลผลิตภัณฑ์ที่ส่งออก (RMBS2) — RMBS1: 10604204211700000090</span>
+                                            </div>
+                                            <table class="table table-bordered table-sm mb-0 bg-white small">
+                                                <thead class="text-center">
+                                                    <tr>
+                                                        <th style="width:2rem;">#</th>
+                                                        <th>วันที่นำสัตว์น้ำมาแปรรูป</th>
+                                                        <th>รหัสสายการผลิต</th>
+                                                        <th>รหัสผลิตภัณฑ์</th>
+                                                        <th>ชื่อผลิตภัณฑ์</th>
+                                                        <th class="text-end">จำนวนกิโลผลิต</th>
+                                                        <th class="text-end">จำนวนที่ส่งออก</th>
+                                                        <th class="text-end">ปริมาณที่ส่งออกตามปริมาณภัณฑ์</th>
+                                                        <th class="text-end">N.W.</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-center text-muted small">1</td>
+                                                        <td>30/03/2026</td>
+                                                        <td>3AAOSO34</td>
+                                                        <td>1AK41</td>
+                                                        <td>CANNED TUNA IN OIL</td>
+                                                        <td class="text-end">1,000.000</td>
+                                                        <td class="text-end">200.000</td>
+                                                        <td class="text-end">35.800</td>
+                                                        <td class="text-end">70.000</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-center text-muted small">2</td>
+                                                        <td>30/03/2026</td>
+                                                        <td>3AAOSO34</td>
+                                                        <td>1AK42</td>
+                                                        <td>CANNED TUNA IN OIL</td>
+                                                        <td class="text-end">540.000</td>
+                                                        <td class="text-end">140.000</td>
+                                                        <td class="text-end">26.185</td>
+                                                        <td class="text-end">50.000</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- RMBS1 row 2 -->
+                                <tr class="rmbs1-main-row">
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-sm btn-link p-0 btn-toggle-sub"
+                                            data-target="sub-r2" title="แสดง/ซ่อนผลิตภัณฑ์">
+                                            <i class="ri ri-arrow-right-s-line fs-5 text-primary"></i>
+                                        </button>
+                                    </td>
+                                    <td class="text-center text-muted small">2</td>
+                                    <td class="text-primary fw-semibold">10604204211700000091</td>
+                                    <td>CC-TH-2569-0048</td>
+                                    <td>12/04/2026</td>
+                                    <td>เรือสมุทรทอง 2</td>
+                                    <td>Penaeus vannamei (กุ้งขาว)</td>
+                                    <td class="text-end">9,800.000</td>
+                                </tr>
+                                <!-- sub-row 2 -->
+                                <tr class="rmbs1-sub-row d-none" id="sub-r2">
+                                    <td colspan="8" class="p-0 border-0">
+                                        <div class="border-start border-4 border-primary ms-4 ps-3 pe-3 pb-3 pt-2" style="background-color:var(--bs-table-header-bg-color);">
+                                            <div class="d-flex align-items-center mb-2">
+                                                <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                    <i class="ri ri-box-3-line fs-5"></i>
+                                                </span>
+                                                <span class="fw-semibold text-primary">ข้อมูลผลิตภัณฑ์ที่ส่งออก (RMBS2) — RMBS1: 10604204211700000091</span>
+                                            </div>
+                                            <table class="table table-bordered table-sm mb-0 bg-white small">
+                                                <thead class="text-center">
+                                                    <tr>
+                                                        <th style="width:2rem;">#</th>
+                                                        <th>วันที่นำสัตว์น้ำมาแปรรูป</th>
+                                                        <th>รหัสสายการผลิต</th>
+                                                        <th>รหัสผลิตภัณฑ์</th>
+                                                        <th>ชื่อผลิตภัณฑ์</th>
+                                                        <th class="text-end">จำนวนกิโลผลิต</th>
+                                                        <th class="text-end">จำนวนที่ส่งออก</th>
+                                                        <th class="text-end">ปริมาณที่ส่งออกตามปริมาณภัณฑ์</th>
+                                                        <th class="text-end">N.W.</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="text-center text-muted">
+                                                        <td colspan="9" class="py-2 small fst-italic">ยังไม่มีรายการผลิตภัณฑ์</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="7" class="text-end fw-semibold small">รวมน้ำหนักทั้งหมด</td>
+                                    <td class="text-end fw-semibold">22,300.000</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <!-- /TAB 2 -->
+
+                <!-- ==================== TAB 3: หลักฐานประกอบ ==================== -->
+                <div id="tab-evidence" class="tab-pane fade" role="tabpanel">
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle small mb-3">
+                            <thead class="text-center">
+                                <tr>
+                                    <th style="width:2rem;">#</th>
+                                    <th>หลักฐานประกอบ</th>
+                                    <th>เลขที่เอกสาร</th>
+                                    <th>วันที่ออกเอกสาร</th>
+                                    <th>วันที่หมดอายุ / เทียบเท่า</th>
+                                    <th>ผู้ออกเอกสาร</th>
+                                    <th style="width:4rem;">ไฟล์</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center text-muted small">1</td>
+                                    <td>
+                                        <div class="fw-semibold text-primary">Catch Certificate (CC) ที่ออกโดย ต่างประเทศ</div>
+                                        <div class="mt-1">
+                                            <div class="small text-muted d-flex align-items-center gap-1 mb-1">
+                                                <span class="badge bg-label-success rounded-circle d-inline-flex align-items-center justify-content-center flex-shrink-0" style="width:1.4rem;height:1.4rem;"><i class="ri ri-file-check-line" style="font-size:0.65rem;"></i></span>
+                                                <span class="fw-semibold">แหล่งที่มา :</span> ภายนอกระบบ [FSW]
+                                            </div>
+                                            <div class="small text-muted d-flex align-items-center gap-1 mb-1">
+                                                <span class="badge bg-label-info rounded-circle d-inline-flex align-items-center justify-content-center flex-shrink-0" style="width:1.4rem;height:1.4rem;"><i class="ri ri-building-line" style="font-size:0.65rem;"></i></span>
+                                                <span class="fw-semibold">ประเภทเอกสาร :</span> Backend DOF
+                                            </div>
+                                            <div class="small text-muted d-flex align-items-center gap-1 mb-1">
+                                                <span class="badge bg-label-danger rounded-circle d-inline-flex align-items-center justify-content-center flex-shrink-0" style="width:1.4rem;height:1.4rem;"><i class="ri ri-file-warning-line" style="font-size:0.65rem;"></i></span>
+                                                <span class="fw-semibold">ตัวเอกสาร :</span> ต้นฉบับ
+                                            </div>
+                                            <div class="small text-muted d-flex align-items-center gap-1">
+                                                <span class="badge bg-label-danger rounded-circle d-inline-flex align-items-center justify-content-center flex-shrink-0" style="width:1.4rem;height:1.4rem;"><i class="ri ri-user-line" style="font-size:0.65rem;"></i></span>
+                                                <span class="fw-semibold">เจ้าของเอกสาร :</span> ของผู้ร้องขอ
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>KP-001022017-091</td>
+                                    <td>16/02/2026</td>
+                                    <td>16/02/2027</td>
+                                    <td>IPNLF</td>
+                                    <td class="text-center">
+                                        <a href="#" class="btn btn-sm btn-icon btn-outline-secondary" title="ดูเอกสาร">
+                                            <i class="ri ri-eye-line"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- /TAB 3 -->
+
+            </div><!-- /tab-content -->
+        </div><!-- /nav-align-top -->
+
+
+
+        <!-- ===== Action Buttons ===== -->
+        <div class="d-flex justify-content-end gap-2 mt-3">
+            <a href="@Url.Action("IndexIssueCertificate", "Officer")" class="btn btn-outline-secondary">
+                <i class="ri ri-close-line me-1"></i> ยกเลิก
+            </a>
+            <button type="button" class="btn btn-outline-danger" id="btnReject"
+                data-bs-toggle="modal" data-bs-target="#modalConfirmAction"
+                data-action="reject" data-action-text="ไม่อนุมัติ" data-action-class="btn-danger">
+                <i class="ri ri-close-circle-line me-1"></i> ไม่อนุมัติ
+            </button>
+            <button type="button" class="btn btn-success" id="btnApprove"
+                data-bs-toggle="modal" data-bs-target="#modalConfirmAction"
+                data-action="approve" data-action-text="อนุมัติ" data-action-class="btn-success">
+                <i class="ri ri-checkbox-circle-line me-1"></i> อนุมัติ
+            </button>
+        </div>
+
+    </div><!-- /col -->
+</div><!-- /row -->
+
+<!-- ==================== Modal: ยืนยันการดำเนินการ ==================== -->
+<div class="modal fade" id="modalConfirmAction" tabindex="-1" aria-labelledby="modalConfirmActionLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalConfirmActionLabel">
+                    <i class="ri ri-alert-line me-2 text-warning"></i> ยืนยันการดำเนินการ
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-2">คุณต้องการ <strong id="confirmActionText">ดำเนินการ</strong> คำขอนี้ใช่หรือไม่?</p>
+                <div class="alert alert-light border small mb-0">
+                    <div class="d-flex gap-2">
+                        <i class="ri ri-information-line text-primary mt-1"></i>
+                        <div>
+                            <div><span class="fw-semibold">เลขที่คำขอ:</span> @requestNo</div>
+                            <div><span class="fw-semibold">ผู้ยื่น:</span> @submittedBy</div>
+                            <div><span class="fw-semibold">ประเภท:</span> ใบรับรองสัตว์น้ำไม่แปรรูป (Declaration)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                <button type="button" class="btn btn-primary" id="btnConfirmAction">
+                    <i class="ri ri-check-line me-1"></i> <span id="confirmActionBtnText">ยืนยัน</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Modal ยืนยัน -->
+
+@section PageScripts {
+<script>
+    $(document).ready(function () {
+
+        // ── Toggle sub-row (expand/collapse) ──
+        $(document).on('click', '.btn-toggle-sub', function () {
+            var target = $(this).data('target');
+            var $sub = $('#' + target);
+            var $icon = $(this).find('i');
+            if ($sub.hasClass('d-none')) {
+                $sub.removeClass('d-none');
+                $icon.removeClass('ri-arrow-right-s-line').addClass('ri-arrow-down-s-line');
+            } else {
+                $sub.addClass('d-none');
+                $icon.removeClass('ri-arrow-down-s-line').addClass('ri-arrow-right-s-line');
+            }
+        });
+
+        // ── Action buttons → populate confirm modal ──
+        $('[data-bs-target="#modalConfirmAction"]').on('click', function () {
+            var actionText  = $(this).data('action-text');
+            var actionClass = $(this).data('action-class');
+            $('#confirmActionText').text(actionText);
+            $('#confirmActionBtnText').text(actionText);
+            $('#btnConfirmAction')
+                .removeClass('btn-primary btn-danger btn-warning btn-success')
+                .addClass(actionClass);
+        });
+
+        // ── Confirm action ──
+        $('#btnConfirmAction').on('click', function () {
+            // TODO: submit to server
+            bootstrap.Modal.getInstance(document.getElementById('modalConfirmAction')).hide();
+            // Placeholder feedback
+            alert('ดำเนินการเรียบร้อยแล้ว');
+        });
+
+    });
+</script>
+}

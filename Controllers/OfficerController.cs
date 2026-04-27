@@ -19,6 +19,11 @@ public class OfficerController : Controller
     return View();
   }
 
+  public IActionResult ReviewRMBS1PS()
+  {
+    return View();
+  }
+
   // 2.2 พิจารณาอนุมัติ %Yield
   public IActionResult IndexApproveYield()
   {
@@ -41,6 +46,16 @@ public class OfficerController : Controller
 
   // 2.5 พิจารณาการขอเปลี่ยนแปลงใบรับรอง
   public IActionResult IndexReviewChange()
+  {
+    return View();
+  }
+  public IActionResult ReviewUpdateCertificate()
+  {
+    return View();
+  }
+
+  // 2.6 พิจารณาออกใบรับรอง Declaration
+  public IActionResult ReviewDeclaration()
   {
     return View();
   }

@@ -81,6 +81,20 @@
       </ul>
     </li>
 
+    <li class='menu-item@(currentPage.StartsWith("/ScrapTrading") ? " active open" : "")'>
+      <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class="menu-icon icon-base ri ri-exchange-line"></i>
+        <div data-i18n="การซื้อขายเศษเหลือ">การซื้อขายเศษเหลือ</div>
+      </a>
+      <ul class="menu-sub">
+        <li class='menu-item@(currentPage == "/ScrapTrading" ? " active" : "")'>
+          <a asp-controller="ScrapTrading" asp-action="Index" class="menu-link">
+            <div data-i18n="รายการซื้อขายเศษเหลือ">รายการซื้อขายเศษเหลือ</div>
+          </a>
+        </li>
+      </ul>
+    </li>
+
     <li class='menu-item@(currentPage.StartsWith("/PSDeclaration") ? " active open" : "")'>
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon icon-base ri ri-file-list-2-line"></i>
@@ -210,6 +224,7 @@
         </li>
       </ul>
     </li>
+   
 
     <li class="menu-header mt-2">
       <span class="menu-header-text" data-i18n="ผู้ดูแลระบบ">ผู้ดูแลระบบ</span>

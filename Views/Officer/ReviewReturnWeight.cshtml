@@ -67,33 +67,6 @@ else
     </div>
 }
 
-<!-- Request Info Badge -->
-<div class="d-flex align-items-center gap-3 mb-4 flex-wrap">
-    <div>
-        <span class="text-muted small">เลขที่เอกสาร</span>
-        <div class="fw-bold text-primary fs-6">10611280616100005</div>
-    </div>
-    <div class="vr d-none d-md-block"></div>
-    <div>
-        <span class="text-muted small">เลขที่ใบอนุญาตนำเข้า</span>
-        <div class="fw-bold">23501100116100110</div>
-    </div>
-    <div class="vr d-none d-md-block"></div>
-    <div>
-        <span class="text-muted small">เลขที่ใบอายัดสินค้า</span>
-        <div class="fw-bold">23501200816100019</div>
-    </div>
-    <div class="vr d-none d-md-block"></div>
-    <div>
-        <span class="text-muted small">ผู้ประกอบการ</span>
-        <div class="fw-bold">Ocean Prime Export Co., Ltd.</div>
-    </div>
-    <div class="vr d-none d-md-block"></div>
-    <div>
-        <span class="text-muted small">วันที่เอกสาร</span>
-        <div class="fw-bold">19/04/2026 (08:20:00)</div>
-    </div>
-</div>
 
 <div class="row">
     <div class="col-12">
@@ -118,16 +91,7 @@ else
                         <i class="ri ri-folder-open-line me-1"></i> หลักฐานประกอบ
                     </button>
                 </li>
-                <li class="nav-item">
-                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
-                        data-bs-target="#tab-review" aria-controls="tab-review" aria-selected="false">
-                        <i class="ri ri-shield-check-line me-1"></i> ผลการพิจารณา
-                        @if (!isReadOnly)
-                        {
-                            <span class="badge bg-warning rounded-pill ms-1" style="font-size:0.65rem;">รอ</span>
-                        }
-                    </button>
-                </li>
+
             </ul>
 
             <div class="tab-content">
@@ -464,126 +428,7 @@ else
                 </div>
                 <!-- /TAB 3 -->
 
-                <!-- ==================== TAB 4: ผลการพิจารณา ==================== -->
-                <div id="tab-review" class="tab-pane fade" role="tabpanel">
-                    <div class="accordion accordion-custom-button" id="accordionReview">
-                        <div class="accordion-item active">
-                            <h2 class="accordion-header">
-                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseReviewContent" aria-expanded="true">
-                                    <i class="icon-base ri ri-shield-check-line me-2"></i>
-                                    ผลการพิจารณาของเจ้าหน้าที่
-                                </button>
-                            </h2>
-                            <div id="collapseReviewContent" class="accordion-collapse collapse show">
-                                <div class="accordion-body">
 
-                                    @if (isReadOnly)
-                                    {
-                                        <!-- แสดงผลเท่านั้น -->
-                                        <div class="row g-3">
-                                            <div class="col-md-4">
-                                                <label class="form-label small text-muted">ผลการพิจารณา</label>
-                                                <div>
-                                                    @if (returnWeightStatus == "อนุมัติให้คืนน้ำหนัก")
-                                                    {
-                                                        <span class="badge bg-label-success px-3 py-2 fs-6">
-                                                            <i class="ri ri-checkbox-circle-line me-1"></i> อนุมัติให้คืนน้ำหนัก
-                                                        </span>
-                                                    }
-                                                    else if (returnWeightStatus == "อนุมัติให้คืนน้ำหนักแบบมีเงื่อนไข")
-                                                    {
-                                                        <span class="badge bg-label-primary px-3 py-2 fs-6">
-                                                            <i class="ri ri-check-double-line me-1"></i> อนุมัติแบบมีเงื่อนไข
-                                                        </span>
-                                                    }
-                                                    else
-                                                    {
-                                                        <span class="badge bg-label-danger px-3 py-2 fs-6">
-                                                            <i class="ri ri-close-circle-line me-1"></i> ไม่อนุมัติให้คืนน้ำหนัก
-                                                        </span>
-                                                    }
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label class="form-label small text-muted">เจ้าหน้าที่ผู้พิจารณา</label>
-                                                <div class="fw-semibold">นางสาว วรรณา พิมพ์ทอง</div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label class="form-label small text-muted">วันที่พิจารณา</label>
-                                                <div class="fw-semibold">23/04/2026 (09:15:00)</div>
-                                            </div>
-                                            <div class="col-12">
-                                                <label class="form-label small text-muted">หมายเหตุ / เหตุผล</label>
-                                                <textarea class="form-control bg-light" rows="3" readonly>เอกสารครบถ้วน ตรวจสอบแล้วอนุมัติการคืนน้ำหนักสินค้าส่งคืน</textarea>
-                                            </div>
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <!-- ฟอร์มพิจารณา -->
-                                        <div class="row g-4">
-                                            <div class="col-12">
-                                                <label class="form-label fw-semibold">ผลการพิจารณา <span class="text-danger">●</span></label>
-                                                <div class="border rounded p-3">
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="reviewResult"
-                                                            id="resultApprove" value="approve" checked />
-                                                        <label class="form-check-label text-success fw-semibold" for="resultApprove">
-                                                            <i class="ri ri-checkbox-circle-line me-1"></i> อนุมัติให้คืนน้ำหนัก
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="reviewResult"
-                                                            id="resultApproveCondition" value="approve_condition" />
-                                                        <label class="form-check-label text-primary fw-semibold" for="resultApproveCondition">
-                                                            <i class="ri ri-check-double-line me-1"></i> อนุมัติแบบมีเงื่อนไข
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="reviewResult"
-                                                            id="resultReject" value="reject" />
-                                                        <label class="form-check-label text-danger fw-semibold" for="resultReject">
-                                                            <i class="ri ri-close-circle-line me-1"></i> ไม่อนุมัติให้คืนน้ำหนัก
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- เงื่อนไข (แสดงเฉพาะเมื่อเลือก "อนุมัติแบบมีเงื่อนไข") -->
-                                            <div class="col-12 d-none" id="conditionSection">
-                                                <label for="reviewCondition" class="form-label fw-semibold">เงื่อนไข <span class="text-danger">●</span></label>
-                                                <textarea id="reviewCondition" class="form-control" rows="3"
-                                                    placeholder="ระบุเงื่อนไขประกอบการอนุมัติ"></textarea>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="form-floating form-floating-outline">
-                                                    <input type="text" class="form-control bg-light" value="นางสาว วรรณา พิมพ์ทอง" readonly />
-                                                    <label>เจ้าหน้าที่ผู้พิจารณา</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-floating form-floating-outline">
-                                                    <input type="text" id="reviewDate" class="form-control flatpickr-date"
-                                                        value="23/04/2026" />
-                                                    <label for="reviewDate">วันที่พิจารณา</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-12">
-                                                <label for="reviewRemark" class="form-label">หมายเหตุ / เหตุผล <span class="text-danger">●</span></label>
-                                                <textarea id="reviewRemark" class="form-control" rows="4"
-                                                    placeholder="ระบุหมายเหตุหรือเหตุผลประกอบการพิจารณา" required></textarea>
-                                            </div>
-                                        </div>
-                                    }
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- /TAB 4 -->
 
             </div><!-- /tab-content -->
         </div><!-- /nav-align-top -->
@@ -591,18 +436,15 @@ else
         <!-- Action Buttons -->
         <div class="d-flex justify-content-end gap-2 mt-3">
             <a href="@Url.Action("IndexReturnWeight", "Officer")" class="btn btn-outline-secondary">
-                <i class="ri ri-arrow-left-line me-1"></i> ย้อนกลับ
+                <i class="ri ri-arrow-left-line me-1"></i> ยกเลิก
             </a>
             @if (!isReadOnly)
             {
                 <button type="button" class="btn btn-outline-danger" id="btnRejectRequest">
                     <i class="ri ri-close-circle-line me-1"></i> ไม่อนุมัติ
                 </button>
-                <button type="button" class="btn btn-outline-primary" id="btnApproveConditionRequest">
-                    <i class="ri ri-check-double-line me-1"></i> อนุมัติแบบมีเงื่อนไข
-                </button>
                 <button type="button" class="btn btn-success" id="btnApproveRequest">
-                    <i class="ri ri-checkbox-circle-line me-1"></i> อนุมัติให้คืนน้ำหนัก
+                    <i class="ri ri-checkbox-circle-line me-1"></i> อนุมัติ
                 </button>
             }
         </div>
