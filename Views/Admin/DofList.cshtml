@@ -900,7 +900,7 @@
         </div>
         <div class="d-flex align-items-center gap-2">
             <div class="dropdown">
-                <button type="button" class="btn btn-outline-success btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <button type="button" class="btn btn-outline-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="ri ri-file-excel-2-line me-1"></i>Export Excel
                 </button>
                 <ul class="dropdown-menu">
@@ -911,7 +911,7 @@
                     <li><a class="dropdown-item btn-export-dof" href="#" data-export-type="summary"><i class="ri ri-bar-chart-2-line me-1"></i>Export สรุปรายปี</a></li>
                 </ul>
             </div>
-            <button type="button" class="btn btn-outline-purple btn-sm" id="btnImportDof" data-bs-toggle="modal" data-bs-target="#dofImportModal">
+            <button type="button" class="btn btn-outline-primary btn-sm" id="btnImportDof" data-bs-toggle="modal" data-bs-target="#dofImportModal">
                 <i class="ri ri-upload-cloud-2-line me-1"></i>นำเข้าข้อมูล
             </button>
             <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#dofFactoryDetailModal">
@@ -1096,7 +1096,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><i class="ri ri-user-add-line me-2"></i>กำหนดสิทธิ์ผู้จัดการ DOF List</h5>
+                <h5 class="modal-title">กำหนดสิทธิ์ผู้จัดการ DOF List</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
@@ -1139,7 +1139,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="dofFactoryDetailModalLabel">
-                    <i class="ri ri-shield-star-line me-2"></i><span id="factoryModalTitle">รายละเอียดทะเบียน DOF</span>
+                    <span id="factoryModalTitle">รายละเอียดทะเบียน DOF</span>
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
@@ -1265,7 +1265,7 @@
                             </div>
                             <div class="table-responsive">
                                 <table class="table table-bordered table-sm align-middle mb-0 dof-table-compact">
-                                    <thead class="text-center table-light">
+                                    <thead class="text-center">
                                         <tr>
                                             <th style="width:40px;">#</th>
                                             <th>ประเทศ (TH)</th>
@@ -1307,7 +1307,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title text-warning"><i class="ri ri-forbid-2-line me-2"></i>ระงับโรงงานชั่วคราว</h5>
+                <h5 class="modal-title text-warning">ระงับโรงงานชั่วคราว</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
@@ -1336,7 +1336,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title text-danger"><i class="ri ri-close-circle-line me-2"></i>ยกเลิกการรับรอง</h5>
+                <h5 class="modal-title text-danger">ยกเลิกการรับรอง</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
@@ -1365,20 +1365,10 @@
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="dofImportModalLabel"><i class="ri ri-upload-cloud-2-line me-2 text-purple"></i>นำเข้าข้อมูล DOF List</h5>
+                <h5 class="modal-title" id="dofImportModalLabel">นำเข้าข้อมูล DOF List</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <!-- Step indicator -->
-                <div class="d-flex align-items-center justify-content-center gap-0 mb-4" id="importStepIndicator">
-                    <div class="import-step active" data-step="1"><span class="step-num">1</span><span class="step-label">ดาวน์โหลด Template</span></div>
-                    <div class="import-step-divider"></div>
-                    <div class="import-step" data-step="2"><span class="step-num">2</span><span class="step-label">อัปโหลดไฟล์</span></div>
-                    <div class="import-step-divider"></div>
-                    <div class="import-step" data-step="3"><span class="step-num">3</span><span class="step-label">ตรวจสอบข้อมูล</span></div>
-                    <div class="import-step-divider"></div>
-                    <div class="import-step" data-step="4"><span class="step-num">4</span><span class="step-label">ยืนยันนำเข้า</span></div>
-                </div>
 
                 <!-- Step 1: Download template -->
                 <div id="importStep1" class="import-step-content">
@@ -1409,7 +1399,7 @@
                         <input type="file" class="form-control" id="importFileInput" accept=".xlsx,.csv">
                         <div class="form-text text-muted">ขนาดไฟล์สูงสุด 5 MB | รองรับ .xlsx และ .csv เท่านั้น</div>
                     </div>
-                    <div id="importFileInfo" class="alert alert-info d-none py-2 small">
+                    <div id="importFileInfo" class="alert alert-primary d-none py-2 small">
                         <i class="ri ri-file-excel-2-line me-1"></i><span id="importFileName">-</span> &nbsp;|&nbsp; <span id="importFileSize">-</span>
                     </div>
                     <div id="importFileError" class="alert alert-danger d-none py-2 small"></div>
@@ -1419,12 +1409,12 @@
                 <div id="importStep3" class="import-step-content d-none">
                     <h6 class="fw-semibold mb-3"><i class="ri ri-table-line me-1 text-primary"></i>Step 3 — ตรวจสอบข้อมูล</h6>
                     <div class="d-flex gap-3 mb-3">
-                        <span class="badge bg-label-success px-3 py-2 fs-6" id="importOkCount">ผ่าน 3 รายการ</span>
+                        <span class="badge bg-label-primary px-3 py-2 fs-6" id="importOkCount">ผ่าน 3 รายการ</span>
                         <span class="badge bg-label-danger px-3 py-2 fs-6" id="importErrCount">มีข้อผิดพลาด 1 รายการ</span>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-bordered table-sm align-middle mb-0 dof-table-compact">
-                            <thead class="text-center table-light">
+                            <thead class="text-center">
                                 <tr>
                                     <th>#</th>
                                     <th>DofNumber</th>
@@ -1481,16 +1471,16 @@
                 <!-- Step 4: Confirm / progress -->
                 <div id="importStep4" class="import-step-content d-none">
                     <h6 class="fw-semibold mb-3"><i class="ri ri-check-double-line me-1 text-primary"></i>Step 4 — ยืนยันนำเข้า</h6>
-                    <div class="alert alert-warning py-2 small mb-3">
+                    <div class="alert alert-primary py-2 small mb-3">
                         <i class="ri ri-error-warning-line me-1"></i>ระบบจะนำเข้า <strong>3 รายการที่ผ่านการตรวจสอบ</strong> และข้าม 1 รายการที่มีข้อผิดพลาด
                     </div>
                     <div id="importProgressArea" class="d-none mb-3">
                         <label class="form-label small fw-semibold">กำลังนำเข้าข้อมูล...</label>
                         <div class="progress" style="height:18px;">
-                            <div id="importProgressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-purple" style="width:0%"></div>
+                            <div id="importProgressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-primary" style="width:0%"></div>
                         </div>
                     </div>
-                    <div id="importSuccessMsg" class="alert alert-success d-none py-2">
+                    <div id="importSuccessMsg" class="alert alert-primary d-none py-2">
                         <i class="ri ri-checkbox-circle-line me-1"></i><strong>นำเข้าสำเร็จ 3 รายการ</strong> — ข้อมูลได้รับการบันทึกลงในระบบแล้ว
                     </div>
                 </div>
@@ -1499,7 +1489,7 @@
                 <button type="button" class="btn btn-outline-secondary" id="btnImportPrev"><i class="ri ri-arrow-left-line me-1"></i>ย้อนกลับ</button>
                 <div class="d-flex gap-2">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">ยกเลิก</button>
-                    <button type="button" class="btn btn-purple" id="btnImportNext"><i class="ri ri-arrow-right-line me-1"></i>ถัดไป</button>
+                    <button type="button" class="btn btn-primary" id="btnImportNext"><i class="ri ri-arrow-right-line me-1"></i>ถัดไป</button>
                 </div>
             </div>
         </div>
