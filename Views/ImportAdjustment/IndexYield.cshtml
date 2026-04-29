@@ -30,119 +30,7 @@
     </ol>
 </nav>
 
-<!-- ── Certification Status Bar (TOR 1.5(7)) ──
-     Mockup: ตั้งค่า IS_CERTIFIED = true เพื่อแสดงสถานะในการรับรอง -->
-<div class="alert alert-primary d-flex align-items-center gap-3 py-2 mb-4" id="alertCertifiedStatus">
-    <i class="ri ri-shield-check-line fs-4 flex-shrink-0 text-primary"></i>
-    <div class="flex-grow-1">
-        <div class="d-flex align-items-center gap-2 flex-wrap">
-            <strong>สถานประกอบการ:</strong>
-            <span>Alpha Office Automation Co., Ltd. (สาขา 00001)</span>
-            <span class="badge bg-success ms-1">
-                <i class="ri ri-checkbox-circle-line me-1"></i>อยู่ในการรับรองของกรมประมง
-            </span>
-        </div>
-        <div class="small text-muted mt-1">
-            <i class="ri ri-check-double-line text-success me-1"></i>
-            <strong class="text-success">ระบบจะตรวจสอบ %Yield ทุกครั้ง</strong>ที่มีการบันทึกข้อมูลการผลิต —
-            สถานประกอบการนี้อยู่ในการรับรองของกรมประมงและต้องผ่านการตรวจสอบ %Yield ทุกครั้ง
-        </div>
-    </div>
-    <span class="badge bg-label-primary rounded-pill text-nowrap" style="font-size:0.7rem;">ใบอนุญาตเลขที่ FD-2567-1234</span>
-</div>
-
-<!-- ── (Reference: สถานการณ์นอกการรับรอง — แสดงเมื่อ IS_CERTIFIED = false)
-<div class="alert alert-secondary d-flex align-items-center gap-3 py-2 mb-4" style="display:none;">
-    <i class="ri ri-shield-line fs-4 flex-shrink-0 text-muted"></i>
-    <div>
-        <div class="d-flex align-items-center gap-2">
-            <strong>สถานประกอบการ:</strong> XYZ Cold Storage Co., Ltd.
-            <span class="badge bg-secondary ms-1">ไม่อยู่ในการรับรองของกรมประมง</span>
-        </div>
-        <div class="small text-muted mt-1">
-            <i class="ri ri-skip-right-line me-1"></i>
-            ระบบ<strong>ข้ามการตรวจสอบ %Yield อัตโนมัติ</strong>สำหรับสถานประกอบการนี้
-            (ไม่อยู่ในการรับรองของกรมประมง)
-        </div>
-    </div>
-</div>
-── end reference ── -->
-
-<!-- ── Alert สำเร็จ (แสดงหลังนำเข้า) ── -->
-<div class="alert alert-success d-flex align-items-center gap-2 py-2 mb-4" id="alertImportSuccess" style="display:none!important;">
-    <i class="ri ri-checkbox-circle-line fs-5"></i>
-    <div>
-        <strong>นำเข้าข้อมูล %Yield สำเร็จ!</strong>
-        <span id="alertImportSuccessMsg"> จำนวน 3 รายการเรียบร้อยแล้ว</span>
-    </div>
-    <button type="button" class="btn-close ms-auto" onclick="this.closest('.alert').style.setProperty('display','none','important');"></button>
-</div>
-
-<!-- ── Summary Cards ── -->
-<div class="row mb-4 g-4">
-    <div class="col-sm-6 col-xl-3">
-        <div class="card">
-            <div class="card-body">
-                <div class="d-flex align-items-center justify-content-between">
-                    <div>
-                        <h5 class="mb-1">12</h5>
-                        <small>คำขอทั้งหมด</small>
-                    </div>
-                    <span class="badge bg-label-primary rounded-circle p-2">
-                        <i class="icon-base ri ri-percent-line icon-24px"></i>
-                    </span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-6 col-xl-3">
-        <div class="card">
-            <div class="card-body">
-                <div class="d-flex align-items-center justify-content-between">
-                    <div>
-                        <h5 class="mb-1">5</h5>
-                        <small>รออนุมัติ</small>
-                    </div>
-                    <span class="badge bg-label-warning rounded-circle p-2">
-                        <i class="icon-base ri ri-time-line icon-24px"></i>
-                    </span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-6 col-xl-3">
-        <div class="card">
-            <div class="card-body">
-                <div class="d-flex align-items-center justify-content-between">
-                    <div>
-                        <h5 class="mb-1">6</h5>
-                        <small>อนุมัติแล้ว</small>
-                    </div>
-                    <span class="badge bg-label-success rounded-circle p-2">
-                        <i class="icon-base ri ri-checkbox-circle-line icon-24px"></i>
-                    </span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-6 col-xl-3">
-        <div class="card">
-            <div class="card-body">
-                <div class="d-flex align-items-center justify-content-between">
-                    <div>
-                        <h5 class="mb-1">1</h5>
-                        <small>ส่งคืนแก้ไข</small>
-                    </div>
-                    <span class="badge bg-label-danger rounded-circle p-2">
-                        <i class="icon-base ri ri-arrow-go-back-line icon-24px"></i>
-                    </span>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- ── Import Modal (TOR 1.5(1)) ── -->
+<!-- Import Modal -->
 <div class="modal fade" id="modalImportYield" tabindex="-1" aria-labelledby="modalImportYieldLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -156,21 +44,19 @@
                 <div class="alert alert-info py-2 small mb-3">
                     <i class="ri ri-information-line me-1"></i>
                     ดาวน์โหลด Template Excel กรอกข้อมูล %Yield ตามรูปแบบที่กำหนด จากนั้นอัปโหลดไฟล์เพื่อนำเข้าข้อมูลหลายรายการพร้อมกัน
-                    <br/>ใช้สำหรับ<strong>วัตถุดิบสัตว์น้ำนำเข้าที่ผ่านการพิจารณาแล้ว</strong>ของสถานประกอบการที่อยู่ในการรับรอง
                 </div>
-                <!-- Step 1: Download Template -->
+                <!-- Step 1 -->
                 <div class="border rounded p-3 mb-3">
                     <div class="d-flex align-items-center gap-2 mb-2">
                         <span class="badge bg-label-primary rounded-circle" style="width:1.6rem;height:1.6rem;line-height:1.6rem;text-align:center;font-weight:700;">1</span>
                         <span class="fw-semibold small">ดาวน์โหลด Template File</span>
                     </div>
                     <p class="text-muted small mb-2">ดาวน์โหลดไฟล์ต้นแบบ Excel สำหรับกรอกข้อมูล %Yield ตามรูปแบบที่ระบบกำหนด</p>
-                    <button type="button" class="btn btn-outline-success btn-sm"
-                        onclick="alert('ดาวน์โหลด Template %Yield.xlsx (mockup)')">
+                    <button type="button" class="btn btn-outline-success btn-sm" onclick="alert('ดาวน์โหลด Template %Yield.xlsx (mockup)')">
                         <i class="ri ri-file-excel-2-line me-1"></i> ดาวน์โหลด Template %Yield.xlsx
                     </button>
                 </div>
-                <!-- Step 2: Upload File -->
+                <!-- Step 2 -->
                 <div class="border rounded p-3 mb-3">
                     <div class="d-flex align-items-center gap-2 mb-2">
                         <span class="badge bg-label-primary rounded-circle" style="width:1.6rem;height:1.6rem;line-height:1.6rem;text-align:center;font-weight:700;">2</span>
@@ -186,28 +72,23 @@
                     </div>
                     <div id="selectedFileName" class="text-muted small"></div>
                 </div>
-                <!-- Step 3: Preview Table -->
+                <!-- Step 3 -->
                 <div class="border rounded p-3" id="previewSection" style="display:none;">
                     <div class="d-flex align-items-center gap-2 mb-2">
                         <span class="badge bg-label-primary rounded-circle" style="width:1.6rem;height:1.6rem;line-height:1.6rem;text-align:center;font-weight:700;">3</span>
                         <span class="fw-semibold small">ตรวจสอบข้อมูลก่อนนำเข้า</span>
                     </div>
-                    <div class="alert alert-warning py-2 small mb-2">
-                        <i class="ri ri-alert-line me-1"></i>
-                        กรุณาตรวจสอบข้อมูลด้านล่างให้ถูกต้องก่อนกดปุ่ม "ยืนยันนำเข้า"
-                    </div>
                     <div class="table-responsive">
                         <table class="table table-bordered table-sm small align-middle" id="previewTable">
                             <thead class="table-light text-center">
                                 <tr>
-                                    <th style="width:2rem;">#</th>
+                                    <th>#</th>
                                     <th>ชื่อผลิตภัณฑ์</th>
                                     <th>รหัสผลิตภัณฑ์</th>
-                                    <th>ประเภทวัตถุดิบ</th>
                                     <th>ชนิดสัตว์น้ำ</th>
                                     <th class="text-end">%Yield ที่ขอ</th>
                                     <th class="text-end">%Yield ปัจจุบัน</th>
-                                    <th>สถานะตรวจสอบ</th>
+                                    <th>สถานะ</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -215,8 +96,7 @@
                                     <td class="text-center text-muted">1</td>
                                     <td>Skipjack Tuna Canned in Brine</td>
                                     <td class="text-muted small">PROD-001</td>
-                                    <td>วัตถุดิบนำเข้า</td>
-                                    <td>ปลาทูน่าครีบเหลือง (YFT)</td>
+                                    <td>ปลาทูน่าท้องแถบ (SKJ)</td>
                                     <td class="text-end fw-semibold">42.50%</td>
                                     <td class="text-end text-muted">40.00%</td>
                                     <td class="text-center"><span class="badge bg-label-success rounded-pill small">ผ่านการตรวจสอบ</span></td>
@@ -225,8 +105,7 @@
                                     <td class="text-center text-muted">2</td>
                                     <td>Tuna Chunk in Sunflower Oil</td>
                                     <td class="text-muted small">PROD-002</td>
-                                    <td>วัตถุดิบนำเข้า</td>
-                                    <td>ปลาทูน่าท้องแถบ (SKJ)</td>
+                                    <td>ปลาทูน่าครีบเหลือง (YFT)</td>
                                     <td class="text-end fw-semibold">38.75%</td>
                                     <td class="text-end text-muted">40.00%</td>
                                     <td class="text-center"><span class="badge bg-label-success rounded-pill small">ผ่านการตรวจสอบ</span></td>
@@ -235,7 +114,6 @@
                                     <td class="text-center text-muted">3</td>
                                     <td>Mackerel Fillet Frozen</td>
                                     <td class="text-muted small">PROD-003</td>
-                                    <td>วัตถุดิบนำเข้า</td>
                                     <td>ปลาแมคเคอเรล (MKR)</td>
                                     <td class="text-end fw-semibold">55.00%</td>
                                     <td class="text-end text-muted">52.00%</td>
@@ -244,7 +122,7 @@
                             </tbody>
                             <tfoot class="table-light">
                                 <tr>
-                                    <td colspan="8" class="text-end small text-muted">พบข้อมูลทั้งหมด <strong>3 รายการ</strong></td>
+                                    <td colspan="7" class="text-end small text-muted">พบข้อมูลทั้งหมด <strong>3 รายการ</strong></td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -264,677 +142,643 @@
     </div>
 </div>
 
-<!-- ── Main Tabbed Card ── -->
-<div class="card">
-    <!-- Card header: title + action buttons -->
-    <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2 pb-0 border-bottom-0">
-        <div>
-            <h5 class="card-title mb-1">คำขออนุมัติ %Yield</h5>
-            <p class="text-muted small mb-0">จัดการคำขอ ตั้งค่า และฐานข้อมูล %Yield</p>
-        </div>
-        <div class="d-flex gap-2 align-items-center flex-wrap">
-            <button type="button" class="btn btn-outline-info btn-sm"
-                data-bs-toggle="modal" data-bs-target="#modalImportYield">
-                <i class="ri ri-upload-2-line me-1"></i> นำเข้าจาก Template
-                <span class="badge bg-label-info ms-1 small">รองรับหลายรายการ</span>
+<!-- ══ Main Nav Tabs ══ -->
+<div class="nav-align-top nav-tabs-shadow mb-4">
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button type="button" class="nav-link active waves-effect" role="tab"
+                data-bs-toggle="tab" data-bs-target="#tab-requests"
+                aria-controls="tab-requests" aria-selected="true">
+                <i class="ri ri-list-check me-1"></i> รายการคำขออนุมัติ
+                <span class="badge bg-label-warning rounded-pill ms-1" style="font-size:0.65rem;">5</span>
             </button>
-            <button type="button" class="btn btn-outline-success btn-sm"
-                onclick="alert('Export Excel รายการคำขอ %Yield (mockup)')">
-                <i class="ri ri-file-excel-2-line me-1"></i> Export Excel
+        </li>
+        <li class="nav-item" role="presentation">
+            <button type="button" class="nav-link waves-effect" role="tab"
+                data-bs-toggle="tab" data-bs-target="#tab-settings"
+                aria-controls="tab-settings" aria-selected="false" tabindex="-1">
+                <i class="ri ri-settings-3-line me-1"></i> การตั้งค่าการตรวจสอบ
+                <span class="badge bg-label-primary rounded-pill ms-1" style="font-size:0.65rem;">TOR 1.5(7)</span>
             </button>
-            <a href="@Url.Action("CreateYield", "ImportAdjustment")" class="btn btn-primary btn-sm">
-                <i class="ri ri-add-line me-1"></i> สร้างคำขอใหม่
-            </a>
-        </div>
-    </div>
-    <!-- Nav Tabs -->
-    <div class="card-header pt-2 border-bottom">
-        <ul class="nav nav-tabs card-header-tabs" id="yieldMainTabs" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="tab-requests-tab"
-                    data-bs-toggle="tab" data-bs-target="#tab-requests"
-                    type="button" role="tab" aria-controls="tab-requests" aria-selected="true">
-                    <i class="ri ri-list-check me-1"></i> รายการคำขออนุมัติ
-                    <span class="badge bg-label-warning rounded-pill ms-1" style="font-size:0.65rem;">5</span>
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="tab-settings-tab"
-                    data-bs-toggle="tab" data-bs-target="#tab-settings"
-                    type="button" role="tab" aria-controls="tab-settings" aria-selected="false">
-                    <i class="ri ri-settings-3-line me-1"></i> การตั้งค่าการตรวจสอบ
-                    <span class="badge bg-label-primary rounded-pill ms-1" style="font-size:0.65rem;">TOR 1.5(7)</span>
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="tab-database-tab"
-                    data-bs-toggle="tab" data-bs-target="#tab-database"
-                    type="button" role="tab" aria-controls="tab-database" aria-selected="false">
-                    <i class="ri ri-database-2-line me-1"></i> ฐานข้อมูล %Yield
-                    <span class="badge bg-label-info rounded-pill ms-1" style="font-size:0.65rem;">TOR 1.5(5)</span>
-                </button>
-            </li>
-        </ul>
-    </div>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button type="button" class="nav-link waves-effect" role="tab"
+                data-bs-toggle="tab" data-bs-target="#tab-database"
+                aria-controls="tab-database" aria-selected="false" tabindex="-1">
+                <i class="ri ri-database-2-line me-1"></i> ฐานข้อมูล %Yield
+                <span class="badge bg-label-info rounded-pill ms-1" style="font-size:0.65rem;">TOR 1.5(5)</span>
+            </button>
+        </li>
+    </ul>
 
-    <div class="tab-content" id="yieldMainTabsContent">
+    <div class="tab-content">
 
-        <!-- ─── Tab 1: รายการคำขออนุมัติ %Yield ─── -->
-        <div class="tab-pane fade show active" id="tab-requests" role="tabpanel" aria-labelledby="tab-requests-tab">
-            <!-- Filter -->
-            <div class="card-body border-bottom pb-3">
-        <div class="row g-3 align-items-end">
-            <div class="col-md-3">
-                <label class="form-label small">สถานะ</label>
-                <select class="form-select form-select-sm" id="filterYieldStatus">
-                    <option value="">ทั้งหมด</option>
-                    <option value="pending">รออนุมัติ</option>
-                    <option value="approved">อนุมัติแล้ว</option>
-                    <option value="returned">ส่งคืนแก้ไข</option>
-                    <option value="draft">ฉบับร่าง</option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <label class="form-label small">ประเภทคำขอ</label>
-                <select class="form-select form-select-sm" id="filterYieldType">
-                    <option value="">ทั้งหมด</option>
-                    <option value="import">วัตถุดิบนำเข้า</option>
-                    <option value="ps">ผลิตภัณฑ์แปรรูปเบื้องต้น (PS)</option>
-                    <option value="nmd">ผลิตภัณฑ์สำเร็จรูป (NMD)</option>
-                </select>
-            </div>
-            <div class="col-md-2">
-                <label class="form-label small">วันที่ (จาก)</label>
-                <input type="text" class="form-control form-control-sm flatpickr-date" placeholder="dd/mm/yyyy" />
-            </div>
-            <div class="col-md-2">
-                <label class="form-label small">วันที่ (ถึง)</label>
-                <input type="text" class="form-control form-control-sm flatpickr-date" placeholder="dd/mm/yyyy" />
-            </div>
-            <div class="col-md-2">
-                <div class="d-flex gap-2">
-                    <button type="button" class="btn btn-outline-primary btn-sm btn-square" title="ค้นหา">
-                        <i class="ri ri-search-line"></i>
-                    </button>
-                    <button type="button" class="btn btn-outline-secondary btn-sm btn-square" title="ล้างค่า">
-                        <i class="ri ri-refresh-line"></i>
-                    </button>
+        <!-- ══ Tab 1: รายการคำขออนุมัติ ══ -->
+        <div class="tab-pane fade show active" id="tab-requests" role="tabpanel">
+
+            <!-- Certification Status Bar -->
+            <div class="alert alert-primary d-flex align-items-center gap-3 py-2 mb-4" id="alertCertifiedStatus">
+                <i class="ri ri-shield-check-line fs-4 flex-shrink-0 text-primary"></i>
+                <div class="flex-grow-1">
+                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                        <strong>สถานประกอบการ:</strong>
+                        <span>Alpha Office Automation Co., Ltd. (สาขา 00001)</span>
+                        <span class="badge bg-success ms-1">
+                            <i class="ri ri-checkbox-circle-line me-1"></i>อยู่ในการรับรองของกรมประมง
+                        </span>
+                    </div>
+                    <div class="small text-muted mt-1">
+                        <i class="ri ri-check-double-line text-success me-1"></i>
+                        <strong class="text-success">ระบบจะตรวจสอบ %Yield ทุกครั้ง</strong>ที่มีการบันทึกข้อมูลการผลิต
+                    </div>
                 </div>
+                <span class="badge bg-label-primary rounded-pill text-nowrap" style="font-size:0.7rem;">ใบอนุญาตเลขที่ FD-2567-1234</span>
             </div>
-        </div>
-    </div>
-    <div class="table-responsive p-1">
-        <table class="table table-bordered align-middle small mb-0">
-            <thead class="text-center table-light">
-                <tr>
-                    <th style="width:2rem;">#</th>
-                    <th>เลขที่คำขอ</th>
-                    <th>วันที่ยื่น</th>
-                    <th>ชื่อผลิตภัณฑ์</th>
-                    <th>ประเภทคำขอ</th>
-                    <th class="text-end">%Yield ที่ขอ</th>
-                    <th class="text-end">%Yield ปัจจุบัน</th>
-                    <th>สถานะ</th>
-                    <th style="width:8rem;"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="text-center text-muted">1</td>
-                    <td><a href="@Url.Action("CreateYield", "ImportAdjustment")" class="text-primary fw-semibold">YLD-2569-001</a></td>
-                    <td>15/04/2569</td>
-                    <td>Skipjack Tuna Canned in Brine</td>
-                    <td><span class="badge bg-label-primary rounded-pill">วัตถุดิบนำเข้า</span></td>
-                    <td class="text-end fw-semibold">42.50%</td>
-                    <td class="text-end text-muted">40.00%</td>
-                    <td class="text-center"><span class="badge bg-label-warning rounded-pill yield-status-badge">รออนุมัติ</span></td>
-                    <td class="text-center">
-                        <div class="d-flex gap-1 justify-content-center">
-                            <a href="@Url.Action("CreateYield", "ImportAdjustment")" class="btn btn-sm btn-icon btn-outline-primary" title="ดูรายละเอียด"><i class="ri ri-eye-line"></i></a>
-                            <a href="@Url.Action("CreateYield", "ImportAdjustment")" class="btn btn-sm btn-icon btn-outline-warning" title="แก้ไข"><i class="ri ri-pencil-line"></i></a>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="text-center text-muted">2</td>
-                    <td><a href="@Url.Action("CreateYield", "ImportAdjustment")" class="text-primary fw-semibold">YLD-2569-002</a></td>
-                    <td>10/04/2569</td>
-                    <td>Tuna Chunk in Sunflower Oil</td>
-                    <td><span class="badge bg-label-primary rounded-pill">วัตถุดิบนำเข้า</span></td>
-                    <td class="text-end fw-semibold">38.75%</td>
-                    <td class="text-end text-muted">40.00%</td>
-                    <td class="text-center"><span class="badge bg-label-success rounded-pill yield-status-badge">อนุมัติแล้ว</span></td>
-                    <td class="text-center">
-                        <div class="d-flex gap-1 justify-content-center">
-                            <a href="@Url.Action("CreateYield", "ImportAdjustment")" class="btn btn-sm btn-icon btn-outline-primary" title="ดูรายละเอียด"><i class="ri ri-eye-line"></i></a>
-                            <button type="button" class="btn btn-sm btn-icon btn-outline-secondary" title="พิมพ์" onclick="alert('พิมพ์คำขอ (mockup)')"><i class="ri ri-printer-line"></i></button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="text-center text-muted">3</td>
-                    <td><a href="@Url.Action("CreateYield", "ImportAdjustment")" class="text-primary fw-semibold">YLD-2569-003</a></td>
-                    <td>05/04/2569</td>
-                    <td>Mackerel Fillet Frozen</td>
-                    <td><span class="badge bg-label-info rounded-pill">ผลิตภัณฑ์ PS/NMD</span></td>
-                    <td class="text-end fw-semibold">55.00%</td>
-                    <td class="text-end text-muted">52.00%</td>
-                    <td class="text-center"><span class="badge bg-label-danger rounded-pill yield-status-badge">ส่งคืนแก้ไข</span></td>
-                    <td class="text-center">
-                        <div class="d-flex gap-1 justify-content-center">
-                            <a href="@Url.Action("CreateYield", "ImportAdjustment")" class="btn btn-sm btn-icon btn-outline-primary" title="ดูรายละเอียด"><i class="ri ri-eye-line"></i></a>
-                            <a href="@Url.Action("CreateYield", "ImportAdjustment")" class="btn btn-sm btn-icon btn-outline-warning" title="แก้ไข"><i class="ri ri-pencil-line"></i></a>
-                            <button type="button" class="btn btn-sm btn-icon btn-outline-danger" title="ลบ" onclick="alert('ยืนยันลบคำขอ (mockup)')"><i class="ri ri-delete-bin-line"></i></button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="text-center text-muted">4</td>
-                    <td class="text-muted">YLD-2569-004 <span class="badge bg-label-secondary rounded-pill ms-1">ฉบับร่าง</span></td>
-                    <td class="text-muted">—</td>
-                    <td>Sardine in Tomato Sauce</td>
-                    <td><span class="badge bg-label-primary rounded-pill">วัตถุดิบนำเข้า</span></td>
-                    <td class="text-end fw-semibold">48.00%</td>
-                    <td class="text-end text-muted">45.00%</td>
-                    <td class="text-center"><span class="badge bg-label-secondary rounded-pill yield-status-badge">ฉบับร่าง</span></td>
-                    <td class="text-center">
-                        <div class="d-flex gap-1 justify-content-center">
-                            <a href="@Url.Action("CreateYield", "ImportAdjustment")" class="btn btn-sm btn-icon btn-outline-warning" title="แก้ไข"><i class="ri ri-pencil-line"></i></a>
-                            <button type="button" class="btn btn-sm btn-icon btn-outline-danger" title="ลบ" onclick="alert('ยืนยันลบคำขอ (mockup)')"><i class="ri ri-delete-bin-line"></i></button>
-                        </div>
-                    </td>
-                </tr>
-                <!-- แถว: ขอเปลี่ยนแปลงผลอนุมัติ (TOR 1.5(4)) -->
-                <tr>
-                    <td class="text-center text-muted">5</td>
-                    <td>
-                        <a href="@Url.Action("CreateYield", "ImportAdjustment")" class="text-primary fw-semibold">YLD-2569-005</a>
-                        <div class="text-muted small mt-1"><span class="badge bg-label-orange rounded-pill" style="background:#fff3e0;color:#e65100;font-size:0.65rem;">ขอเปลี่ยนแปลง</span></div>
-                    </td>
-                    <td>20/04/2569</td>
-                    <td>Tuna in Olive Oil (Premium)</td>
-                    <td><span class="badge bg-label-info rounded-pill">ผลิตภัณฑ์ PS/NMD</span></td>
-                    <td class="text-end">
-                        <span class="fw-semibold">44.00%</span>
-                        <div class="text-muted small">← จาก 41.50%</div>
-                    </td>
-                    <td class="text-end text-muted">41.50%</td>
-                    <td class="text-center"><span class="badge rounded-pill" style="background:#fff3e0;color:#e65100;">ขอเปลี่ยนแปลง</span></td>
-                    <td class="text-center">
-                        <div class="d-flex gap-1 justify-content-center">
-                            <a href="@Url.Action("CreateYield", "ImportAdjustment")" class="btn btn-sm btn-icon btn-outline-primary" title="ดูรายละเอียด"><i class="ri ri-eye-line"></i></a>
-                            <a href="@Url.Action("CreateYield", "ImportAdjustment")" class="btn btn-sm btn-icon btn-outline-warning" title="แก้ไข"><i class="ri ri-pencil-line"></i></a>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-        </div><!-- /tab-requests -->
 
-        <!-- ─── Tab 2: การตั้งค่าการตรวจสอบ %Yield ─── -->
-        <div class="tab-pane fade" id="tab-settings" role="tabpanel" aria-labelledby="tab-settings-tab">
-            <div class="card-body">
-                <div class="row g-3 align-items-start">
-                    <!-- สถานะการรับรอง -->
-                    <div class="col-md-4">
-                        <div class="border rounded p-3 h-100">
-                            <div class="d-flex align-items-center gap-2 mb-2">
-                                <i class="ri ri-award-line fs-5 text-success"></i>
-                                <span class="fw-semibold small">สถานะการรับรองของกรมประมง</span>
-                            </div>
-                            <div class="d-flex align-items-center gap-2 mb-2">
-                                <span class="badge bg-success px-3 py-2">
-                                    <i class="ri ri-shield-check-line me-1"></i>อยู่ในการรับรอง
+            <!-- Alert สำเร็จ -->
+            <div class="alert alert-success d-flex align-items-center gap-2 py-2 mb-4" id="alertImportSuccess" style="display:none!important;">
+                <i class="ri ri-checkbox-circle-line fs-5"></i>
+                <div>
+                    <strong>นำเข้าข้อมูล %Yield สำเร็จ!</strong>
+                    <span id="alertImportSuccessMsg"> จำนวน 3 รายการเรียบร้อยแล้ว</span>
+                </div>
+                <button type="button" class="btn-close ms-auto" onclick="this.closest('.alert').style.setProperty('display','none','important');"></button>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="d-flex justify-content-end gap-2 mb-4">
+                <button type="button" class="btn btn-outline-info btn-sm"
+                    data-bs-toggle="modal" data-bs-target="#modalImportYield">
+                    <i class="ri ri-upload-2-line me-1"></i> นำเข้าจาก Template
+                </button>
+                <button type="button" class="btn btn-outline-success btn-sm"
+                    onclick="alert('Export Excel (mockup)')">
+                    <i class="ri ri-file-excel-2-line me-1"></i> Export Excel
+                </button>
+                <a href="@Url.Action("CreateYield", "ImportAdjustment")" class="btn btn-primary btn-sm">
+                    <i class="ri ri-add-line me-1"></i> สร้างคำขอใหม่
+                </a>
+            </div>
+
+            <!-- Summary Cards -->
+            <div class="row mb-4 g-4">
+                <div class="col-sm-6 col-xl-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div><h5 class="mb-1">12</h5><small>คำขอทั้งหมด</small></div>
+                                <span class="badge bg-label-primary rounded-circle p-2">
+                                    <i class="icon-base ri ri-percent-line icon-24px"></i>
                                 </span>
-                                <span class="text-muted small">ใบอนุญาตเลขที่ FD-2567-1234</span>
-                            </div>
-                            <div class="text-muted small">
-                                วันหมดอายุใบรับรอง: <strong>31/12/2569</strong>
                             </div>
                         </div>
                     </div>
-                    <!-- การตรวจสอบ %Yield อัตโนมัติ -->
-                    <div class="col-md-4">
-                        <div class="border rounded p-3 h-100 bg-light-subtle">
-                            <div class="d-flex align-items-center gap-2 mb-2">
-                                <i class="ri ri-percent-line fs-5 text-primary"></i>
-                        <span class="fw-semibold small">การตรวจสอบ %Yield อัตโนมัติ</span>
+                </div>
+                <div class="col-sm-6 col-xl-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div><h5 class="mb-1">5</h5><small>รออนุมัติ</small></div>
+                                <span class="badge bg-label-warning rounded-circle p-2">
+                                    <i class="icon-base ri ri-time-line icon-24px"></i>
+                                </span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-check form-switch mb-2">
-                        <input class="form-check-input" type="checkbox" id="switchYieldCheck" checked disabled>
-                        <label class="form-check-label fw-semibold text-success" for="switchYieldCheck">
-                            เปิดใช้งาน (บังคับ — โรงงานในการรับรอง)
-                        </label>
+                </div>
+                <div class="col-sm-6 col-xl-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div><h5 class="mb-1">6</h5><small>อนุมัติแล้ว</small></div>
+                                <span class="badge bg-label-success rounded-circle p-2">
+                                    <i class="icon-base ri ri-checkbox-circle-line icon-24px"></i>
+                                </span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="alert alert-success py-1 px-2 small mb-0">
-                        <i class="ri ri-lock-line me-1"></i>
-                        ระบบจะตรวจสอบ %Yield <strong>ทุกครั้ง</strong> ที่บันทึกข้อมูลการผลิต
-                        <br/>ไม่สามารถปิดได้สำหรับสถานประกอบการที่อยู่ในการรับรอง
+                </div>
+                <div class="col-sm-6 col-xl-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div><h5 class="mb-1">1</h5><small>ส่งคืนแก้ไข</small></div>
+                                <span class="badge bg-label-danger rounded-circle p-2">
+                                    <i class="icon-base ri ri-arrow-go-back-line icon-24px"></i>
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <!-- ข้อมูลเปรียบเทียบ: นอกการรับรอง -->
-            <div class="col-md-4">
-                <div class="border rounded p-3 h-100" style="border-style:dashed!important;opacity:0.65;">
-                    <div class="d-flex align-items-center gap-2 mb-2">
-                        <i class="ri ri-shield-line fs-5 text-muted"></i>
-                        <span class="fw-semibold small text-muted">กรณีนอกการรับรอง (อ้างอิง)</span>
-                    </div>
-                    <div class="form-check form-switch mb-2">
-                        <input class="form-check-input" type="checkbox" id="switchYieldCheckOff" disabled>
-                        <label class="form-check-label text-muted" for="switchYieldCheckOff">
-                            ปิดใช้งาน (ข้าม %Yield อัตโนมัติ)
-                        </label>
-                    </div>
-                    <div class="alert alert-secondary py-1 px-2 small mb-0">
-                        <i class="ri ri-skip-right-line me-1"></i>
-                        สถานประกอบการ<strong>ไม่อยู่ในการรับรอง</strong> —
-                        ระบบข้ามการตรวจสอบ %Yield อัตโนมัติ ไม่จำเป็นต้องยื่นคำขออนุมัติ
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Info note -->
-        <div class="alert alert-info py-2 small mt-3 mb-0">
-            <i class="ri ri-information-line me-1"></i>
-            <strong>หมายเหตุ:</strong> เฉพาะ<strong>โรงงานที่อยู่ในการรับรองของกรมประมง</strong>เท่านั้นที่ระบบจะตรวจสอบ %Yield อัตโนมัติและบังคับให้ยื่นคำขออนุมัติ
-            โรงงานที่<strong>ไม่อยู่ในการรับรอง</strong>ระบบจะตั้งค่าข้ามการตรวจสอบ %Yield โดยอัตโนมัติ
-            โดยไม่ต้องให้เจ้าหน้าที่เข้าดำเนินการ
-        </div>
 
-        <!-- ── ผลิตภัณฑ์ที่ขอหนังสือรับรองตนเอง (TOR 1.5(8)) ── -->
-        <hr class="my-3">
-        <div class="d-flex align-items-center gap-2 mb-3">
-            <i class="ri ri-file-shield-2-line fs-5 text-warning"></i>
-            <span class="fw-semibold">ผลิตภัณฑ์ที่ขอหนังสือรับรองตนเอง (Self-Certification)</span>
-            <span class="badge bg-label-warning ms-1 small">TOR 1.5(8)</span>
-        </div>
-        <div class="alert alert-warning py-2 small mb-3">
-            <i class="ri ri-information-line me-1"></i>
-            ผลิตภัณฑ์ที่ยื่นขอ<strong>หนังสือรับรองตนเอง</strong>จะ<strong>ไม่ถูกตรวจสอบ %Yield
-            โดยเจ้าหน้าที่</strong> — ระบบจะข้ามการตรวจสอบอัตโนมัติ (ไม่ต้องให้เจ้าหน้าที่เข้าดำเนินการ)
-        </div>
-        <div class="row g-3">
-            <!-- ตาราง mockup ผลิตภัณฑ์ขอ Self-Cert -->
-            <div class="col-12">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-sm small align-middle mb-0">
-                        <thead class="table-light text-center">
+            <!-- Filter Card -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">ค้นหารายการคำขอ</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-3">
+                            <label class="form-label small">สถานะ</label>
+                            <select class="form-select form-select-sm" id="filterYieldStatus">
+                                <option value="">ทั้งหมด</option>
+                                <option value="pending">รออนุมัติ</option>
+                                <option value="approved">อนุมัติแล้ว</option>
+                                <option value="returned">ส่งคืนแก้ไข</option>
+                                <option value="draft">ฉบับร่าง</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small">ประเภทคำขอ</label>
+                            <select class="form-select form-select-sm" id="filterYieldType">
+                                <option value="">ทั้งหมด</option>
+                                <option value="import">วัตถุดิบนำเข้า</option>
+                                <option value="ps">ผลิตภัณฑ์แปรรูปเบื้องต้น (PS)</option>
+                                <option value="nmd">ผลิตภัณฑ์สำเร็จรูป (NMD)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label small">วันที่ (จาก)</label>
+                            <input type="text" class="form-control form-control-sm flatpickr-date" placeholder="dd/mm/yyyy" />
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label small">วันที่ (ถึง)</label>
+                            <input type="text" class="form-control form-control-sm flatpickr-date" placeholder="dd/mm/yyyy" />
+                        </div>
+                        <div class="col-md-2">
+                            <div class="d-flex gap-2">
+                                <button type="button" class="btn btn-primary btn-sm">
+                                    <i class="ri ri-search-line me-1"></i> ค้นหา
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary btn-sm">
+                                    <i class="ri ri-refresh-line"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- List Card -->
+            <div class="card">
+                <div class="table-responsive p-1">
+                    <table class="table table-bordered align-middle small mb-0">
+                        <thead class="text-center table-light">
                             <tr>
                                 <th style="width:2rem;">#</th>
+                                <th>เลขที่คำขอ</th>
+                                <th>วันที่ยื่น</th>
                                 <th>ชื่อผลิตภัณฑ์</th>
-                                <th>ชนิดสัตว์น้ำ</th>
-                                <th>ประเภทใบรับรอง</th>
-                                <th class="text-center">ตรวจสอบ %Yield</th>
-                                <th class="text-center">เหตุผลที่ข้าม</th>
+                                <th>ประเภทคำขอ</th>
+                                <th class="text-end">%Yield ที่ขอ</th>
+                                <th class="text-end">%Yield ปัจจุบัน</th>
+                                <th>สถานะ</th>
+                                <th style="width:8rem;"></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td class="text-center text-muted">1</td>
-                                <td>
-                                    <div class="fw-semibold">Sardine Fillet (Self-Cert)</div>
-                                    <div class="text-muted small">PROD-SC-001</div>
-                                </td>
-                                <td>ปลาซาร์ดีน (SAR)</td>
-                                <td><span class="badge bg-label-secondary rounded-pill">หนังสือรับรองตนเอง</span></td>
+                                <td><a href="@Url.Action("CreateYield", "ImportAdjustment")" class="text-primary fw-semibold">YLD-2569-001</a></td>
+                                <td>15/04/2569</td>
+                                <td>Skipjack Tuna Canned in Brine</td>
+                                <td><span class="badge bg-label-primary rounded-pill">วัตถุดิบนำเข้า</span></td>
+                                <td class="text-end fw-semibold">42.50%</td>
+                                <td class="text-end text-muted">40.00%</td>
+                                <td class="text-center"><span class="badge bg-label-warning rounded-pill yield-status-badge">รออนุมัติ</span></td>
                                 <td class="text-center">
-                                    <span class="badge bg-label-secondary rounded-pill">
-                                        <i class="ri ri-skip-right-line me-1"></i>ข้ามอัตโนมัติ
-                                    </span>
+                                    <div class="d-flex gap-1 justify-content-center">
+                                        <a href="@Url.Action("CreateYield", "ImportAdjustment")" class="btn btn-sm btn-icon btn-outline-primary" title="ดูรายละเอียด"><i class="ri ri-eye-line"></i></a>
+                                        <a href="@Url.Action("CreateYield", "ImportAdjustment")" class="btn btn-sm btn-icon btn-outline-warning" title="แก้ไข"><i class="ri ri-pencil-line"></i></a>
+                                    </div>
                                 </td>
-                                <td class="text-center text-muted small">ขอ Self-Certification — ไม่ต้องให้เจ้าหน้าที่อนุมัติ</td>
                             </tr>
                             <tr>
                                 <td class="text-center text-muted">2</td>
-                                <td>
-                                    <div class="fw-semibold">Mackerel NMD (Self-Cert)</div>
-                                    <div class="text-muted small">PROD-SC-002</div>
-                                </td>
-                                <td>ปลาแมคเคอเรล (MKR)</td>
-                                <td><span class="badge bg-label-secondary rounded-pill">หนังสือรับรองตนเอง</span></td>
+                                <td><a href="@Url.Action("CreateYield", "ImportAdjustment")" class="text-primary fw-semibold">YLD-2569-002</a></td>
+                                <td>10/04/2569</td>
+                                <td>Tuna Chunk in Sunflower Oil</td>
+                                <td><span class="badge bg-label-primary rounded-pill">วัตถุดิบนำเข้า</span></td>
+                                <td class="text-end fw-semibold">38.75%</td>
+                                <td class="text-end text-muted">40.00%</td>
+                                <td class="text-center"><span class="badge bg-label-success rounded-pill yield-status-badge">อนุมัติแล้ว</span></td>
                                 <td class="text-center">
-                                    <span class="badge bg-label-secondary rounded-pill">
-                                        <i class="ri ri-skip-right-line me-1"></i>ข้ามอัตโนมัติ
-                                    </span>
+                                    <div class="d-flex gap-1 justify-content-center">
+                                        <a href="@Url.Action("CreateYield", "ImportAdjustment")" class="btn btn-sm btn-icon btn-outline-primary" title="ดูรายละเอียด"><i class="ri ri-eye-line"></i></a>
+                                        <button type="button" class="btn btn-sm btn-icon btn-outline-secondary" title="พิมพ์" onclick="alert('พิมพ์คำขอ (mockup)')"><i class="ri ri-printer-line"></i></button>
+                                    </div>
                                 </td>
-                                <td class="text-center text-muted small">ขอ Self-Certification — ไม่ต้องให้เจ้าหน้าที่อนุมัติ</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center text-muted">3</td>
+                                <td><a href="@Url.Action("CreateYield", "ImportAdjustment")" class="text-primary fw-semibold">YLD-2569-003</a></td>
+                                <td>05/04/2569</td>
+                                <td>Mackerel Fillet Frozen</td>
+                                <td><span class="badge bg-label-info rounded-pill">ผลิตภัณฑ์ PS/NMD</span></td>
+                                <td class="text-end fw-semibold">55.00%</td>
+                                <td class="text-end text-muted">52.00%</td>
+                                <td class="text-center"><span class="badge bg-label-danger rounded-pill yield-status-badge">ส่งคืนแก้ไข</span></td>
+                                <td class="text-center">
+                                    <div class="d-flex gap-1 justify-content-center">
+                                        <a href="@Url.Action("CreateYield", "ImportAdjustment")" class="btn btn-sm btn-icon btn-outline-primary" title="ดูรายละเอียด"><i class="ri ri-eye-line"></i></a>
+                                        <a href="@Url.Action("CreateYield", "ImportAdjustment")" class="btn btn-sm btn-icon btn-outline-warning" title="แก้ไข"><i class="ri ri-pencil-line"></i></a>
+                                        <button type="button" class="btn btn-sm btn-icon btn-outline-danger" title="ลบ" onclick="alert('ยืนยันลบ (mockup)')"><i class="ri ri-delete-bin-line"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center text-muted">4</td>
+                                <td class="text-muted">YLD-2569-004</td>
+                                <td class="text-muted">—</td>
+                                <td>Sardine in Tomato Sauce</td>
+                                <td><span class="badge bg-label-primary rounded-pill">วัตถุดิบนำเข้า</span></td>
+                                <td class="text-end fw-semibold">48.00%</td>
+                                <td class="text-end text-muted">45.00%</td>
+                                <td class="text-center"><span class="badge bg-label-secondary rounded-pill yield-status-badge">ฉบับร่าง</span></td>
+                                <td class="text-center">
+                                    <div class="d-flex gap-1 justify-content-center">
+                                        <a href="@Url.Action("CreateYield", "ImportAdjustment")" class="btn btn-sm btn-icon btn-outline-warning" title="แก้ไข"><i class="ri ri-pencil-line"></i></a>
+                                        <button type="button" class="btn btn-sm btn-icon btn-outline-danger" title="ลบ" onclick="alert('ยืนยันลบ (mockup)')"><i class="ri ri-delete-bin-line"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center text-muted">5</td>
+                                <td><a href="@Url.Action("CreateYield", "ImportAdjustment")" class="text-primary fw-semibold">YLD-2569-005</a></td>
+                                <td>20/04/2569</td>
+                                <td>Tuna in Olive Oil (Premium)</td>
+                                <td><span class="badge bg-label-info rounded-pill">ผลิตภัณฑ์ PS/NMD</span></td>
+                                <td class="text-end fw-semibold">44.00%</td>
+                                <td class="text-end text-muted">41.50%</td>
+                                <td class="text-center"><span class="badge rounded-pill" style="background:#fff3e0;color:#e65100;">ขอเปลี่ยนแปลง</span></td>
+                                <td class="text-center">
+                                    <div class="d-flex gap-1 justify-content-center">
+                                        <a href="@Url.Action("CreateYield", "ImportAdjustment")" class="btn btn-sm btn-icon btn-outline-primary" title="ดูรายละเอียด"><i class="ri ri-eye-line"></i></a>
+                                        <a href="@Url.Action("CreateYield", "ImportAdjustment")" class="btn btn-sm btn-icon btn-outline-warning" title="แก้ไข"><i class="ri ri-pencil-line"></i></a>
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
-                        <tfoot class="table-light">
-                            <tr>
-                                <td colspan="6" class="text-end small text-muted">
-                                    ผลิตภัณฑ์ Self-Certification <strong>2 รายการ</strong> — ระบบตั้งค่าข้าม %Yield อัตโนมัติทั้งหมด
-                                </td>
-                            </tr>
-                        </tfoot>
                     </table>
                 </div>
             </div>
-        </div>
-            </div><!-- /card-body settings -->
+
+        </div><!-- /tab-requests -->
+
+        <!-- ══ Tab 2: การตั้งค่าการตรวจสอบ %Yield ══ -->
+        <div class="tab-pane fade" id="tab-settings" role="tabpanel">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row g-3 align-items-start">
+                        <div class="col-md-4">
+                            <div class="border rounded p-3 h-100">
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                    <i class="ri ri-award-line fs-5 text-success"></i>
+                                    <span class="fw-semibold small">สถานะการรับรองของกรมประมง</span>
+                                </div>
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                    <span class="badge bg-success px-3 py-2">
+                                        <i class="ri ri-shield-check-line me-1"></i>อยู่ในการรับรอง
+                                    </span>
+                                    <span class="text-muted small">ใบอนุญาตเลขที่ FD-2567-1234</span>
+                                </div>
+                                <div class="text-muted small">วันหมดอายุ: <strong>31/12/2569</strong></div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="border rounded p-3 h-100 bg-light-subtle">
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                    <i class="ri ri-percent-line fs-5 text-primary"></i>
+                                    <span class="fw-semibold small">การตรวจสอบ %Yield อัตโนมัติ</span>
+                                </div>
+                                <div class="form-check form-switch mb-2">
+                                    <input class="form-check-input" type="checkbox" id="switchYieldCheck" checked disabled>
+                                    <label class="form-check-label fw-semibold text-success" for="switchYieldCheck">
+                                        เปิดใช้งาน (บังคับ — โรงงานในการรับรอง)
+                                    </label>
+                                </div>
+                                <div class="alert alert-success py-1 px-2 small mb-0">
+                                    <i class="ri ri-lock-line me-1"></i>
+                                    ระบบจะตรวจสอบ %Yield <strong>ทุกครั้ง</strong>ที่บันทึกข้อมูลการผลิต
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="border rounded p-3 h-100" style="border-style:dashed!important;opacity:0.65;">
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                    <i class="ri ri-shield-line fs-5 text-muted"></i>
+                                    <span class="fw-semibold small text-muted">กรณีนอกการรับรอง (อ้างอิง)</span>
+                                </div>
+                                <div class="form-check form-switch mb-2">
+                                    <input class="form-check-input" type="checkbox" id="switchYieldCheckOff" disabled>
+                                    <label class="form-check-label text-muted" for="switchYieldCheckOff">
+                                        ปิดใช้งาน (ข้าม %Yield อัตโนมัติ)
+                                    </label>
+                                </div>
+                                <div class="alert alert-secondary py-1 px-2 small mb-0">
+                                    <i class="ri ri-skip-right-line me-1"></i>
+                                    ระบบข้ามการตรวจสอบ %Yield สำหรับสถานประกอบการที่ไม่อยู่ในการรับรอง
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="alert alert-info py-2 small mt-3 mb-0">
+                        <i class="ri ri-information-line me-1"></i>
+                        <strong>หมายเหตุ:</strong> เฉพาะ<strong>โรงงานที่อยู่ในการรับรองของกรมประมง</strong>เท่านั้นที่ระบบจะตรวจสอบ %Yield อัตโนมัติ
+                        โรงงานที่<strong>ไม่อยู่ในการรับรอง</strong>ระบบจะตั้งค่าข้ามการตรวจสอบ %Yield โดยอัตโนมัติ
+                    </div>
+                    <hr class="my-3">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <i class="ri ri-file-shield-2-line fs-5 text-warning"></i>
+                        <span class="fw-semibold">ผลิตภัณฑ์ที่ขอหนังสือรับรองตนเอง (Self-Certification)</span>
+                        <span class="badge bg-label-warning ms-1 small">TOR 1.5(8)</span>
+                    </div>
+                    <div class="alert alert-warning py-2 small mb-3">
+                        <i class="ri ri-information-line me-1"></i>
+                        ผลิตภัณฑ์ที่ยื่นขอ<strong>หนังสือรับรองตนเอง</strong>จะ<strong>ไม่ถูกตรวจสอบ %Yield โดยเจ้าหน้าที่</strong>
+                        — ระบบจะข้ามการตรวจสอบอัตโนมัติ
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-sm small align-middle mb-0">
+                            <thead class="table-light text-center">
+                                <tr>
+                                    <th style="width:2rem;">#</th>
+                                    <th>ชื่อผลิตภัณฑ์</th>
+                                    <th>ชนิดสัตว์น้ำ</th>
+                                    <th>ประเภทใบรับรอง</th>
+                                    <th>ตรวจสอบ %Yield</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center text-muted">1</td>
+                                    <td><div class="fw-semibold">Sardine Fillet (Self-Cert)</div><div class="text-muted small">PROD-SC-001</div></td>
+                                    <td>ปลาซาร์ดีน (SAR)</td>
+                                    <td><span class="badge bg-label-secondary rounded-pill">หนังสือรับรองตนเอง</span></td>
+                                    <td class="text-center"><span class="badge bg-label-secondary rounded-pill"><i class="ri ri-skip-right-line me-1"></i>ข้ามอัตโนมัติ</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center text-muted">2</td>
+                                    <td><div class="fw-semibold">Mackerel NMD (Self-Cert)</div><div class="text-muted small">PROD-SC-002</div></td>
+                                    <td>ปลาแมคเคอเรล (MKR)</td>
+                                    <td><span class="badge bg-label-secondary rounded-pill">หนังสือรับรองตนเอง</span></td>
+                                    <td class="text-center"><span class="badge bg-label-secondary rounded-pill"><i class="ri ri-skip-right-line me-1"></i>ข้ามอัตโนมัติ</span></td>
+                                </tr>
+                            </tbody>
+                            <tfoot class="table-light">
+                                <tr>
+                                    <td colspan="5" class="text-end small text-muted">ผลิตภัณฑ์ Self-Certification <strong>2 รายการ</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div><!-- /tab-settings -->
 
-        <!-- ─── Tab 3: ฐานข้อมูล %Yield ─── -->
-        <div class="tab-pane fade" id="tab-database" role="tabpanel" aria-labelledby="tab-database-tab">
+        <!-- ══ Tab 3: ฐานข้อมูล %Yield ══ -->
+        <div class="tab-pane fade" id="tab-database" role="tabpanel">
+
             <!-- Inner Nav Pills -->
-            <div class="card-body border-bottom pb-2 pt-3">
-                <ul class="nav nav-pills gap-1" id="yieldDbTabs" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active py-1 px-3 small" id="tab-own-yield-tab"
-                            data-bs-toggle="pill" data-bs-target="#tab-own-yield"
-                            type="button" role="tab">
-                            <i class="ri ri-building-line me-1"></i> %Yield โรงงานตนเอง
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link py-1 px-3 small" id="tab-seller-yield-tab"
-                            data-bs-toggle="pill" data-bs-target="#tab-seller-yield"
-                            type="button" role="tab">
-                            <i class="ri ri-store-line me-1"></i> %Yield โรงงานผู้ขาย (PS/NMD)
-                        </button>
-                    </li>
-                </ul>
-            </div>
-            <div class="tab-content" id="yieldDbTabsContent">
+            <ul class="nav nav-pills mb-4 gap-1" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active py-1 px-3 small"
+                        data-bs-toggle="pill" data-bs-target="#tab-own-yield"
+                        type="button" role="tab">
+                        <i class="ri ri-building-line me-1"></i> %Yield โรงงานตนเอง
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link py-1 px-3 small"
+                        data-bs-toggle="pill" data-bs-target="#tab-seller-yield"
+                        type="button" role="tab">
+                        <i class="ri ri-store-line me-1"></i> %Yield โรงงานผู้ขาย (PS/NMD)
+                    </button>
+                </li>
+            </ul>
 
-                <!-- ─────────── Tab 3a: %Yield โรงงานตนเอง ─────────── -->
+            <div class="tab-content">
+
+                <!-- Tab 3a: โรงงานตนเอง -->
                 <div class="tab-pane fade show active" id="tab-own-yield" role="tabpanel">
-                    <!-- Filter -->
-            <div class="card-body border-bottom pb-3">
-                <div class="alert alert-info py-2 small mb-3">
-                    <i class="ri ri-information-line me-1"></i>
-                    แสดงค่า <strong>%Yield ที่ได้รับการอนุมัติแล้ว</strong> ของสถานประกอบการตนเอง สำหรับแต่ละผลิตภัณฑ์และชนิดสัตว์น้ำ
-                    ใช้เป็นค่าอ้างอิงในการตรวจสอบการผลิตและการรับรอง
-                </div>
-                <div class="row g-3 align-items-end">
-                    <div class="col-md-3">
-                        <label class="form-label small">ชื่อ/รหัสผลิตภัณฑ์</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ค้นหาชื่อหรือรหัส..." />
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label small">ชนิดสัตว์น้ำ</label>
-                        <select class="form-select form-select-sm">
-                            <option value="">ทั้งหมด</option>
-                            <option>ปลาทูน่าครีบเหลือง (YFT)</option>
-                            <option>ปลาทูน่าท้องแถบ (SKJ)</option>
-                            <option>ปลาแมคเคอเรล (MKR)</option>
-                            <option>ปลาซาร์ดีน (SAR)</option>
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label small">สถานะ</label>
-                        <select class="form-select form-select-sm">
-                            <option value="">ทั้งหมด</option>
-                            <option>ใช้งานอยู่</option>
-                            <option>หมดอายุ</option>
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="d-flex gap-2">
-                            <button type="button" class="btn btn-outline-primary btn-sm btn-square" title="ค้นหา">
-                                <i class="ri ri-search-line"></i>
-                            </button>
-                            <button type="button" class="btn btn-outline-secondary btn-sm btn-square" title="ล้างค่า">
-                                <i class="ri ri-refresh-line"></i>
-                            </button>
-                            <button type="button" class="btn btn-outline-success btn-sm"
-                                onclick="alert('Export Excel ฐานข้อมูล %Yield โรงงาน (mockup)')">
-                                <i class="ri ri-file-excel-2-line me-1"></i> Export
-                            </button>
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="row g-3 align-items-end">
+                                <div class="col-md-3">
+                                    <label class="form-label small">ชื่อ/รหัสผลิตภัณฑ์</label>
+                                    <input type="text" class="form-control form-control-sm" placeholder="ค้นหา..." />
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label small">ชนิดสัตว์น้ำ</label>
+                                    <select class="form-select form-select-sm">
+                                        <option value="">ทั้งหมด</option>
+                                        <option>ปลาทูน่าครีบเหลือง (YFT)</option>
+                                        <option>ปลาทูน่าท้องแถบ (SKJ)</option>
+                                        <option>ปลาแมคเคอเรล (MKR)</option>
+                                        <option>ปลาซาร์ดีน (SAR)</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="form-label small">สถานะ</label>
+                                    <select class="form-select form-select-sm">
+                                        <option value="">ทั้งหมด</option>
+                                        <option>ใช้งานอยู่</option>
+                                        <option>หมดอายุ</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="d-flex gap-2">
+                                        <button type="button" class="btn btn-primary btn-sm"><i class="ri ri-search-line me-1"></i> ค้นหา</button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm"><i class="ri ri-refresh-line"></i></button>
+                                        <button type="button" class="btn btn-outline-success btn-sm" onclick="alert('Export (mockup)')"><i class="ri ri-file-excel-2-line me-1"></i> Export</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <!-- Table -->
-            <div class="table-responsive p-1">
-                <table class="table table-bordered align-middle small mb-0">
-                    <thead class="text-center table-light">
-                        <tr>
-                            <th style="width:2rem;">#</th>
-                            <th>รหัสผลิตภัณฑ์</th>
-                            <th>ชื่อผลิตภัณฑ์</th>
-                            <th>ชนิดสัตว์น้ำ</th>
-                            <th>ประเภทวัตถุดิบ</th>
-                            <th class="text-end">%Yield ที่อนุมัติ</th>
-                            <th class="text-center">Tolerance (±%)</th>
-                            <th class="text-center">ช่วงวันที่มีผล</th>
-                            <th>สถานะ</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="text-center text-muted">1</td>
-                            <td class="text-muted small">PROD-001</td>
-                            <td>
-                                <div class="fw-semibold">Skipjack Tuna Canned in Brine</div>
-                                <div class="text-muted small">YLD-2569-002 <i class="ri ri-checkbox-circle-line text-success"></i></div>
-                            </td>
-                            <td>ปลาทูน่าท้องแถบ (SKJ)</td>
-                            <td><span class="badge bg-label-primary rounded-pill">วัตถุดิบนำเข้า</span></td>
-                            <td class="text-end fw-semibold text-success fs-6">38.75%</td>
-                            <td class="text-center">± 2.0%</td>
-                            <td class="text-center small">
-                                <div>10/04/2569</div>
-                                <div class="text-muted">– 09/04/2570</div>
-                            </td>
-                            <td class="text-center"><span class="badge bg-label-success rounded-pill">ใช้งานอยู่</span></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center text-muted">2</td>
-                            <td class="text-muted small">PROD-004</td>
-                            <td>
-                                <div class="fw-semibold">Mackerel Fillet in Brine</div>
-                                <div class="text-muted small">YLD-2568-015 <i class="ri ri-checkbox-circle-line text-success"></i></div>
-                            </td>
-                            <td>ปลาแมคเคอเรล (MKR)</td>
-                            <td><span class="badge bg-label-primary rounded-pill">วัตถุดิบนำเข้า</span></td>
-                            <td class="text-end fw-semibold text-success fs-6">52.00%</td>
-                            <td class="text-center">± 3.0%</td>
-                            <td class="text-center small">
-                                <div>20/06/2568</div>
-                                <div class="text-muted">– 19/06/2569</div>
-                            </td>
-                            <td class="text-center"><span class="badge bg-label-success rounded-pill">ใช้งานอยู่</span></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center text-muted">3</td>
-                            <td class="text-muted small">PROD-005</td>
-                            <td>
-                                <div class="fw-semibold">Sardine in Tomato Sauce</div>
-                                <div class="text-muted small">YLD-2568-009 <i class="ri ri-checkbox-circle-line text-success"></i></div>
-                            </td>
-                            <td>ปลาซาร์ดีน (SAR)</td>
-                            <td><span class="badge bg-label-primary rounded-pill">วัตถุดิบนำเข้า</span></td>
-                            <td class="text-end fw-semibold text-success fs-6">45.00%</td>
-                            <td class="text-center">± 2.5%</td>
-                            <td class="text-center small text-muted">
-                                <div>15/03/2568</div>
-                                <div>– 14/03/2569</div>
-                            </td>
-                            <td class="text-center"><span class="badge bg-label-danger rounded-pill">หมดอายุ</span></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center text-muted">4</td>
-                            <td class="text-muted small">PROD-006</td>
-                            <td>
-                                <div class="fw-semibold">Tuna in Olive Oil (Premium)</div>
-                                <div class="text-muted small">YLD-2568-021 <i class="ri ri-checkbox-circle-line text-success"></i></div>
-                            </td>
-                            <td>ปลาทูน่าครีบเหลือง (YFT)</td>
-                            <td><span class="badge bg-label-info rounded-pill">ผลิตภัณฑ์ PS/NMD</span></td>
-                            <td class="text-end fw-semibold text-success fs-6">41.50%</td>
-                            <td class="text-center">± 2.5%</td>
-                            <td class="text-center small">
-                                <div>01/09/2568</div>
-                                <div class="text-muted">– 31/08/2569</div>
-                            </td>
-                            <td class="text-center"><span class="badge bg-label-success rounded-pill">ใช้งานอยู่</span></td>
-                        </tr>
-                    </tbody>
-                    <tfoot class="table-light">
-                        <tr>
-                            <td colspan="9" class="text-end small text-muted">
-                                แสดง 4 จาก <strong>4 รายการ</strong> |
-                                <span class="text-success">ใช้งานอยู่ 3 รายการ</span> /
-                                <span class="text-danger">หมดอายุ 1 รายการ</span>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
+                    <div class="card">
+                        <div class="table-responsive p-1">
+                            <table class="table table-bordered align-middle small mb-0">
+                                <thead class="text-center table-light">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>รหัส</th>
+                                        <th>ชื่อผลิตภัณฑ์</th>
+                                        <th>ชนิดสัตว์น้ำ</th>
+                                        <th>ประเภทวัตถุดิบ</th>
+                                        <th class="text-end">%Yield ที่อนุมัติ</th>
+                                        <th>Tolerance</th>
+                                        <th>ช่วงวันที่มีผล</th>
+                                        <th>สถานะ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center text-muted">1</td>
+                                        <td class="text-muted small">PROD-001</td>
+                                        <td><div class="fw-semibold">Skipjack Tuna Canned in Brine</div><div class="text-muted small">YLD-2569-002</div></td>
+                                        <td>ปลาทูน่าท้องแถบ (SKJ)</td>
+                                        <td><span class="badge bg-label-primary rounded-pill">วัตถุดิบนำเข้า</span></td>
+                                        <td class="text-end fw-semibold text-success">38.75%</td>
+                                        <td class="text-center">±2.0%</td>
+                                        <td class="text-center small">10/04/2569<br/><span class="text-muted">– 09/04/2570</span></td>
+                                        <td class="text-center"><span class="badge bg-label-success rounded-pill">ใช้งานอยู่</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center text-muted">2</td>
+                                        <td class="text-muted small">PROD-004</td>
+                                        <td><div class="fw-semibold">Mackerel Fillet in Brine</div><div class="text-muted small">YLD-2568-015</div></td>
+                                        <td>ปลาแมคเคอเรล (MKR)</td>
+                                        <td><span class="badge bg-label-primary rounded-pill">วัตถุดิบนำเข้า</span></td>
+                                        <td class="text-end fw-semibold text-success">52.00%</td>
+                                        <td class="text-center">±3.0%</td>
+                                        <td class="text-center small">20/06/2568<br/><span class="text-muted">– 19/06/2569</span></td>
+                                        <td class="text-center"><span class="badge bg-label-success rounded-pill">ใช้งานอยู่</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center text-muted">3</td>
+                                        <td class="text-muted small">PROD-005</td>
+                                        <td><div class="fw-semibold">Sardine in Tomato Sauce</div><div class="text-muted small">YLD-2568-009</div></td>
+                                        <td>ปลาซาร์ดีน (SAR)</td>
+                                        <td><span class="badge bg-label-primary rounded-pill">วัตถุดิบนำเข้า</span></td>
+                                        <td class="text-end fw-semibold text-muted">45.00%</td>
+                                        <td class="text-center">±2.5%</td>
+                                        <td class="text-center small text-muted">15/03/2568<br/>– 14/03/2569</td>
+                                        <td class="text-center"><span class="badge bg-label-danger rounded-pill">หมดอายุ</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center text-muted">4</td>
+                                        <td class="text-muted small">PROD-006</td>
+                                        <td><div class="fw-semibold">Tuna in Olive Oil (Premium)</div><div class="text-muted small">YLD-2568-021</div></td>
+                                        <td>ปลาทูน่าครีบเหลือง (YFT)</td>
+                                        <td><span class="badge bg-label-info rounded-pill">ผลิตภัณฑ์ PS/NMD</span></td>
+                                        <td class="text-end fw-semibold text-success">41.50%</td>
+                                        <td class="text-center">±2.5%</td>
+                                        <td class="text-center small">01/09/2568<br/><span class="text-muted">– 31/08/2569</span></td>
+                                        <td class="text-center"><span class="badge bg-label-success rounded-pill">ใช้งานอยู่</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div><!-- /tab-own-yield -->
 
-        <!-- ─────────── Tab 2: %Yield โรงงานผู้ขาย (PS/NMD) ─────────── -->
-        <div class="tab-pane fade" id="tab-seller-yield" role="tabpanel">
-            <!-- Filter -->
-            <div class="card-body border-bottom pb-3">
-                <div class="alert alert-warning py-2 small mb-3">
-                    <i class="ri ri-store-2-line me-1"></i>
-                    แสดงค่า <strong>%Yield ที่ได้รับการอนุมัติแล้วของโรงงานผู้ขาย</strong>
-                    สำหรับการซื้อขายผลิตภัณฑ์แปรรูปเบื้องต้น (PS) และผลิตภัณฑ์สำเร็จรูป (NMD)
-                    เพื่อใช้ตรวจสอบความถูกต้องเมื่อซื้อสินค้ามา
-                </div>
-                <div class="row g-3 align-items-end">
-                    <div class="col-md-3">
-                        <label class="form-label small">ชื่อ/รหัสโรงงานผู้ขาย</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ชื่อหรือรหัสโรงงาน..." />
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label small">ชื่อผลิตภัณฑ์</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ชื่อผลิตภัณฑ์..." />
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label small">ประเภท</label>
-                        <select class="form-select form-select-sm">
-                            <option value="">ทั้งหมด</option>
-                            <option>PS (ผลิตภัณฑ์แปรรูปเบื้องต้น)</option>
-                            <option>NMD (ผลิตภัณฑ์สำเร็จรูป)</option>
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="d-flex gap-2">
-                            <button type="button" class="btn btn-outline-primary btn-sm btn-square" title="ค้นหา">
-                                <i class="ri ri-search-line"></i>
-                            </button>
-                            <button type="button" class="btn btn-outline-secondary btn-sm btn-square" title="ล้างค่า">
-                                <i class="ri ri-refresh-line"></i>
-                            </button>
-                            <button type="button" class="btn btn-outline-success btn-sm"
-                                onclick="alert('Export Excel %Yield ผู้ขาย (mockup)')">
-                                <i class="ri ri-file-excel-2-line me-1"></i> Export
-                            </button>
+                <!-- Tab 3b: โรงงานผู้ขาย -->
+                <div class="tab-pane fade" id="tab-seller-yield" role="tabpanel">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="row g-3 align-items-end">
+                                <div class="col-md-3">
+                                    <label class="form-label small">ชื่อ/รหัสโรงงานผู้ขาย</label>
+                                    <input type="text" class="form-control form-control-sm" placeholder="ชื่อหรือรหัส..." />
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label small">ชื่อผลิตภัณฑ์</label>
+                                    <input type="text" class="form-control form-control-sm" placeholder="ชื่อผลิตภัณฑ์..." />
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="form-label small">ประเภท</label>
+                                    <select class="form-select form-select-sm">
+                                        <option value="">ทั้งหมด</option>
+                                        <option>PS (แปรรูปเบื้องต้น)</option>
+                                        <option>NMD (สำเร็จรูป)</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="d-flex gap-2">
+                                        <button type="button" class="btn btn-primary btn-sm"><i class="ri ri-search-line me-1"></i> ค้นหา</button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm"><i class="ri ri-refresh-line"></i></button>
+                                        <button type="button" class="btn btn-outline-success btn-sm" onclick="alert('Export (mockup)')"><i class="ri ri-file-excel-2-line me-1"></i> Export</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <!-- Table -->
-            <div class="table-responsive p-1">
-                <table class="table table-bordered align-middle small mb-0">
-                    <thead class="text-center table-light">
-                        <tr>
-                            <th style="width:2rem;">#</th>
-                            <th>รหัสโรงงานผู้ขาย</th>
-                            <th>ชื่อโรงงานผู้ขาย</th>
-                            <th>ชื่อผลิตภัณฑ์</th>
-                            <th>ชนิดสัตว์น้ำ</th>
-                            <th>ประเภท</th>
-                            <th class="text-end">%Yield ที่อนุมัติ</th>
-                            <th class="text-center">Tolerance (±%)</th>
-                            <th>วันที่อนุมัติ</th>
-                            <th>สถานะ</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="text-center text-muted">1</td>
-                            <td class="text-muted small">FAC-001</td>
-                            <td>
-                                <div class="fw-semibold">บ. ทะเลไทย โปรดักส์ จำกัด</div>
-                                <div class="text-muted small">เลขทะเบียน: ประมง-2567-11234</div>
-                            </td>
-                            <td>Tuna Loin IQF (PS Grade A)</td>
-                            <td>ปลาทูน่าครีบเหลือง (YFT)</td>
-                            <td><span class="badge bg-label-warning rounded-pill">PS</span></td>
-                            <td class="text-end fw-semibold text-success fs-6">72.50%</td>
-                            <td class="text-center">± 3.0%</td>
-                            <td>15/01/2569</td>
-                            <td class="text-center"><span class="badge bg-label-success rounded-pill">ใช้งานอยู่</span></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center text-muted">2</td>
-                            <td class="text-muted small">FAC-001</td>
-                            <td>
-                                <div class="fw-semibold">บ. ทะเลไทย โปรดักส์ จำกัด</div>
-                                <div class="text-muted small">เลขทะเบียน: ประมง-2567-11234</div>
-                            </td>
-                            <td>Skipjack Tuna Loin (PS Grade B)</td>
-                            <td>ปลาทูน่าท้องแถบ (SKJ)</td>
-                            <td><span class="badge bg-label-warning rounded-pill">PS</span></td>
-                            <td class="text-end fw-semibold text-success fs-6">65.00%</td>
-                            <td class="text-center">± 3.0%</td>
-                            <td>15/01/2569</td>
-                            <td class="text-center"><span class="badge bg-label-success rounded-pill">ใช้งานอยู่</span></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center text-muted">3</td>
-                            <td class="text-muted small">FAC-008</td>
-                            <td>
-                                <div class="fw-semibold">บ. สยาม ซีฟู้ด เอ็กซ์พอร์ต จำกัด</div>
-                                <div class="text-muted small">เลขทะเบียน: ประมง-2566-00892</div>
-                            </td>
-                            <td>Mackerel Fillet NMD (สำเร็จรูปบรรจุกระป๋อง)</td>
-                            <td>ปลาแมคเคอเรล (MKR)</td>
-                            <td><span class="badge bg-label-info rounded-pill">NMD</span></td>
-                            <td class="text-end fw-semibold text-success fs-6">48.50%</td>
-                            <td class="text-center">± 2.5%</td>
-                            <td>10/11/2568</td>
-                            <td class="text-center"><span class="badge bg-label-success rounded-pill">ใช้งานอยู่</span></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center text-muted">4</td>
-                            <td class="text-muted small">FAC-012</td>
-                            <td>
-                                <div class="fw-semibold">บ. โปรตีน มารีน อินดัสตรี จำกัด</div>
-                                <div class="text-muted small">เลขทะเบียน: ประมง-2565-04567</div>
-                            </td>
-                            <td>Sardine Fillet NMD</td>
-                            <td>ปลาซาร์ดีน (SAR)</td>
-                            <td><span class="badge bg-label-info rounded-pill">NMD</span></td>
-                            <td class="text-end fw-semibold text-muted">43.00%</td>
-                            <td class="text-center text-muted">± 2.0%</td>
-                            <td>05/03/2568</td>
-                            <td class="text-center"><span class="badge bg-label-danger rounded-pill">หมดอายุ</span></td>
-                        </tr>
-                    </tbody>
-                    <tfoot class="table-light">
-                        <tr>
-                            <td colspan="10" class="text-end small text-muted">
-                                แสดง 4 จาก <strong>4 รายการ</strong> (2 โรงงาน) |
-                                <span class="text-success">ใช้งานอยู่ 3 รายการ</span> /
-                                <span class="text-danger">หมดอายุ 1 รายการ</span>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
+                    <div class="card">
+                        <div class="table-responsive p-1">
+                            <table class="table table-bordered align-middle small mb-0">
+                                <thead class="text-center table-light">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>รหัสโรงงาน</th>
+                                        <th>ชื่อโรงงานผู้ขาย</th>
+                                        <th>ชื่อผลิตภัณฑ์</th>
+                                        <th>ชนิดสัตว์น้ำ</th>
+                                        <th>ประเภท</th>
+                                        <th class="text-end">%Yield ที่อนุมัติ</th>
+                                        <th>Tolerance</th>
+                                        <th>วันที่อนุมัติ</th>
+                                        <th>สถานะ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center text-muted">1</td>
+                                        <td class="text-muted small">FAC-001</td>
+                                        <td><div class="fw-semibold">บ. ทะเลไทย โปรดักส์ จำกัด</div><div class="text-muted small">ประมง-2567-11234</div></td>
+                                        <td>Tuna Loin IQF (PS Grade A)</td>
+                                        <td>ปลาทูน่าครีบเหลือง (YFT)</td>
+                                        <td><span class="badge bg-label-warning rounded-pill">PS</span></td>
+                                        <td class="text-end fw-semibold text-success">72.50%</td>
+                                        <td class="text-center">±3.0%</td>
+                                        <td>15/01/2569</td>
+                                        <td class="text-center"><span class="badge bg-label-success rounded-pill">ใช้งานอยู่</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center text-muted">2</td>
+                                        <td class="text-muted small">FAC-001</td>
+                                        <td><div class="fw-semibold">บ. ทะเลไทย โปรดักส์ จำกัด</div><div class="text-muted small">ประมง-2567-11234</div></td>
+                                        <td>Skipjack Tuna Loin (PS Grade B)</td>
+                                        <td>ปลาทูน่าท้องแถบ (SKJ)</td>
+                                        <td><span class="badge bg-label-warning rounded-pill">PS</span></td>
+                                        <td class="text-end fw-semibold text-success">65.00%</td>
+                                        <td class="text-center">±3.0%</td>
+                                        <td>15/01/2569</td>
+                                        <td class="text-center"><span class="badge bg-label-success rounded-pill">ใช้งานอยู่</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center text-muted">3</td>
+                                        <td class="text-muted small">FAC-008</td>
+                                        <td><div class="fw-semibold">บ. สยาม ซีฟู้ด เอ็กซ์พอร์ต จำกัด</div><div class="text-muted small">ประมง-2566-00892</div></td>
+                                        <td>Mackerel Fillet NMD</td>
+                                        <td>ปลาแมคเคอเรล (MKR)</td>
+                                        <td><span class="badge bg-label-info rounded-pill">NMD</span></td>
+                                        <td class="text-end fw-semibold text-success">48.50%</td>
+                                        <td class="text-center">±2.5%</td>
+                                        <td>10/11/2568</td>
+                                        <td class="text-center"><span class="badge bg-label-success rounded-pill">ใช้งานอยู่</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center text-muted">4</td>
+                                        <td class="text-muted small">FAC-012</td>
+                                        <td><div class="fw-semibold">บ. โปรตีน มารีน อินดัสตรี จำกัด</div><div class="text-muted small">ประมง-2565-04567</div></td>
+                                        <td>Sardine Fillet NMD</td>
+                                        <td>ปลาซาร์ดีน (SAR)</td>
+                                        <td><span class="badge bg-label-info rounded-pill">NMD</span></td>
+                                        <td class="text-end fw-semibold text-muted">43.00%</td>
+                                        <td class="text-center">±2.0%</td>
+                                        <td>05/03/2568</td>
+                                        <td class="text-center"><span class="badge bg-label-danger rounded-pill">หมดอายุ</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div><!-- /tab-seller-yield -->
-            </div><!-- /yieldDbTabsContent -->
+
+            </div><!-- /inner tab-content -->
         </div><!-- /tab-database -->
 
-    </div><!-- /yieldMainTabsContent -->
-</div><!-- /Main Tabbed Card -->
+    </div><!-- /tab-content -->
+</div><!-- /nav-align-top nav-tabs-shadow -->
 
 @section PageScripts {
 <script>
 $(document).ready(function () {
-    // Flatpickr for date filters
     if (typeof flatpickr !== 'undefined') {
         flatpickr('.flatpickr-date', { dateFormat: 'd/m/Y', locale: 'th' });
     }
-
-    // Drag-and-drop highlight
     var zone = document.getElementById('dropZoneYield');
     if (zone) {
         zone.addEventListener('dragover', function (e) { e.preventDefault(); zone.classList.add('dragover'); });
@@ -958,7 +802,6 @@ function handleYieldFileSelect(input) {
     }
     document.getElementById('selectedFileName').innerHTML =
         '<i class="ri ri-file-excel-2-line text-success me-1"></i><strong>' + file.name + '</strong> (' + (file.size/1024).toFixed(1) + ' KB)';
-    // Show preview section and confirm button
     document.getElementById('previewSection').style.display = '';
     document.getElementById('btnConfirmImport').style.display = '';
 }
@@ -971,14 +814,12 @@ function cancelPreview() {
 }
 
 function confirmImport() {
-    // Close modal
     var modalEl = document.getElementById('modalImportYield');
     if (modalEl) {
         var modal = bootstrap.Modal.getInstance(modalEl);
         if (modal) modal.hide();
     }
     cancelPreview();
-    // Mockup: show success alert
     var alertEl = document.getElementById('alertImportSuccess');
     alertEl.style.removeProperty('display');
     alertEl.style.display = 'flex';

@@ -1,0 +1,612 @@
+@{
+ViewData["Title"] = "คำขอใบรับรองการแปรรูปสัตว์น้ำ (PS Thailand)";
+}
+
+@section VendorStyles {
+<link rel="stylesheet" href="~/vendor/libs/select2/select2.css" />
+<link rel="stylesheet" href="~/vendor/libs/flatpickr/flatpickr.css" />
+}
+
+@section VendorScripts {
+<script src="~/vendor/libs/select2/select2.js"></script>
+<script src="~/vendor/libs/flatpickr/flatpickr.js"></script>
+}
+
+
+@* ************** Content ************** *@
+<h4 class="mb-1">รายละเอียดใบรับรองการแปรรูปสัตว์นํ้า (PS Thailand)</h4>
+<p class="mb-1">สำหรับดูรายละเอียดข้อมูลใบรับรองการแปรรูปสัตว์นํ้า — ประเภท Thailand</p>
+
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb breadcrumb-style1" style="--bs-breadcrumb-divider: '>'; font-size: 0.75rem;">
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("IndexManageCertificate", "PSDeclaration")" class="text-primary fw-semibold">ใบรับรองฯ</a>
+        </li>
+        <li class="breadcrumb-item active text-secondary">รายละเอียดใบรับรอง PS Thailand</li>
+    </ol>
+</nav>
+
+<!-- ====================================================================
+     TOR (10): Banner "ออกอัตโนมัติ" — แสดงเมื่อเจ้าหน้าที่อนุมัติแล้ว
+     ==================================================================== -->
+<div class="alert alert-success border-start border-success border-4 d-flex align-items-start gap-3 mb-4 shadow-sm" id="alertAutoIssue" role="alert">
+    <div class="flex-shrink-0 mt-1">
+        <span class="badge bg-success rounded-circle d-inline-flex align-items-center justify-content-center" style="width:2.4rem;height:2.4rem;">
+            <i class="ri ri-robot-2-line" style="font-size:1.1rem;color:#fff;"></i>
+        </span>
+    </div>
+    <div class="flex-grow-1">
+        <div class="d-flex align-items-center gap-2 mb-1">
+            <span class="fw-bold fs-6">ออกใบรับรองอัตโนมัติแล้ว</span>
+            <span class="badge bg-success">ออกอัตโนมัติ</span>
+        </div>
+        <p class="mb-1">
+            ระบบได้ออกใบรับรอง <strong class="text-success">[PS-TH-2569-00045]</strong> อัตโนมัติแล้ว
+            เมื่อเจ้าหน้าที่อนุมัติคำขอ
+        </p>
+        <div class="row g-2 small mt-1 text-success-emphasis">
+            <div class="col-auto">
+                <i class="ri ri-calendar-check-line me-1"></i>
+                วันที่ออก: <strong>29/04/2569</strong>
+            </div>
+            <div class="col-auto">
+                <i class="ri ri-user-star-line me-1"></i>
+                อนุมัติโดย: <strong>นางสาว วรรณา พิมพ์ทอง</strong>
+            </div>
+            <div class="col-auto">
+                <i class="ri ri-building-line me-1"></i>
+                หน่วยงาน: <strong>กองตรวจสอบคุณภาพสินค้าประมง</strong>
+            </div>
+        </div>
+        <div class="mt-2">
+            <button type="button" class="btn btn-sm btn-success me-2"
+                onclick="alert('ดาวน์โหลด PDF/A-3 ใบรับรอง PS-TH-2569-00045 (mockup)\n\nระบบจะดาวน์โหลดใบรับรอง PS Thailand ที่ออกอัตโนมัติ\nในรูปแบบ PDF/A-3 พร้อม QR Code ตรวจสอบ')">
+                <i class="ri ri-file-pdf-line me-1"></i> ดาวน์โหลดใบรับรอง
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-success"
+                onclick="alert('ส่งใบรับรอง PS-TH-2569-00045 ทาง Email (mockup)')">
+                <i class="ri ri-mail-send-line me-1"></i> ส่งทาง Email
+            </button>
+        </div>
+    </div>
+</div>
+<!-- /TOR (10) Banner ออกอัตโนมัติ -->
+
+<div class="row">
+    <div class="col-12">
+
+        <!-- ===== Tabs ===== -->
+        <form method="post" action="#">
+        <div class="nav-align-top nav-tabs-shadow mb-4">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#tab-detail" aria-controls="tab-detail" aria-selected="true">
+                        <i class="ri ri-file-list-2-line me-1"></i> รายละเอียดคำขอ
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#tab-production" aria-controls="tab-production" aria-selected="false">
+                        <i class="ri ri-list-check-3 me-1"></i> รายการข้อมูลการผลิต
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#tab-evidence" aria-controls="tab-evidence" aria-selected="false">
+                        <i class="ri ri-folder-open-line me-1"></i> หลักฐานประกอบ
+                    </button>
+                </li>
+            </ul>
+            <div class="tab-content">
+
+                <!-- ==================== TAB 1: รายละเอียดคำขอ ==================== -->
+                <div id="tab-detail" class="tab-pane fade show active">
+
+                    <!-- ===== Accordion: ส่วนหัว ===== -->
+                    <div class="accordion accordion-custom-button mb-4" id="accordionHeader">
+                        <div class="accordion-item active">
+                            <h2 class="accordion-header" id="headingHeader">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseHeaderContent" aria-expanded="true"
+                                    aria-controls="collapseHeaderContent">
+                                    <i class="icon-base ri ri-file-list-line me-2"></i>
+                                    รายละเอียดประเภทเอกสารส่วนหัว
+                                    <span class="badge bg-success ms-2">ออกอัตโนมัติ</span>
+                                </button>
+                            </h2>
+                            <div id="collapseHeaderContent" class="accordion-collapse collapse show"
+                                aria-labelledby="headingHeader">
+                                <div class="accordion-body p-0">
+
+                                    <!-- รายละเอียด -->
+                                    <div class="p-4 border-bottom">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-information-line fs-5"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">รายละเอียด</h6>
+                                        </div>
+                                        <div class="row g-3">
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" id="requestName"
+                                                        value="คำขอใบรับรองการแปรรูปสัตว์น้ำ (PS Thailand)" readonly />
+                                                    <label for="requestName">ชื่อคำขอ</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" id="certName"
+                                                        value="ใบรับรองการแปรรูปสัตว์น้ำ (PS Thailand)" readonly />
+                                                    <label for="certName">ใบรับรอง</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" id="submitChannel"
+                                                        value="ออนไลน์" readonly />
+                                                    <label for="submitChannel">ยื่นต่อหน่วยงานกรมประมงผ่าน</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" id="requestNumber"
+                                                        value="10611080320000055" readonly />
+                                                    <label for="requestNumber">เลขที่คำขอ</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control fw-bold text-success bg-light" id="certNumber"
+                                                        value="PS-TH-2569-00045" readonly />
+                                                    <label for="certNumber">เลขที่ใบรับรอง</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- TOR (10): สถานะ "ออกอัตโนมัติ" badge row -->
+                                        <div class="d-flex flex-wrap gap-2 mt-3 pt-3 border-top">
+                                            <span class="badge bg-label-success d-flex align-items-center gap-1 px-3 py-2">
+                                                <i class="ri ri-robot-2-line"></i>
+                                                ออกอัตโนมัติ
+                                            </span>
+                                            <span class="badge bg-label-primary d-flex align-items-center gap-1 px-3 py-2">
+                                                <i class="ri ri-check-double-line"></i>
+                                                อนุมัติแล้ว
+                                            </span>
+                                            <span class="badge bg-label-info d-flex align-items-center gap-1 px-3 py-2">
+                                                <i class="ri ri-global-line"></i>
+                                                PS Thailand
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <!-- ผู้ผ่านพิธีการ / ผู้รับมอบอำนาจ -->
+                                    <div class="p-4 border-bottom">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-user-star-line fs-5"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">ผู้ผ่านพิธีการ / ผู้รับมอบอำนาจ</h6>
+                                        </div>
+                                        <div class="row g-4">
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <select id="selectBroker" class="select2 form-select" disabled>
+                                                        <option value="1" selected>บริษัท อินโนเวชั่นส์ โซลูชั่น แอนด์ เซอร์วิส จำกัด (สาขาสำนักงานใหญ่)</option>
+                                                    </select>
+                                                    <label for="selectBroker">ผู้ผ่านพิธีการ</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <select id="selectAuthorized" class="select2 form-select" disabled>
+                                                        <option value="1" selected>นาย สมชาย รักษาผล</option>
+                                                    </select>
+                                                    <label for="selectAuthorized">ผู้รับมอบอำนาจ</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ข้อมูลผู้ส่งออก -->
+                                    <div class="p-4 border-bottom">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-building-2-line fs-5"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">ข้อมูลผู้ส่งออก</h6>
+                                        </div>
+                                        <div class="row g-4">
+                                            <div class="col-12">
+                                                <label class="form-label">ผู้ส่งออก</label>
+                                                <input type="text" id="exporterName" class="form-control bg-light"
+                                                    value="บริษัท อินโนเวชั่นส์ โซลูชั่น แอนด์ เซอร์วิส จำกัด (สาขาสำนักงานใหญ่)"
+                                                    readonly />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- แจ้งความประสงค์ -->
+                                    <div class="p-4 border-bottom">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-file-text-line fs-5"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">แจ้งความประสงค์</h6>
+                                        </div>
+                                        <div class="row g-4">
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <select id="selectDept" class="select2 form-select" disabled>
+                                                        <option value="1" selected>กองตรวจสอบคุณภาพสินค้าประมง</option>
+                                                    </select>
+                                                    <label for="selectDept">หน่วยงานหรือเอกสาร</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <select id="selectOfficer" class="select2 form-select" disabled>
+                                                        <option value="1" selected>นางสาว วรรณา พิมพ์ทอง</option>
+                                                    </select>
+                                                    <label for="selectOfficer">ชื่อเจ้าหน้าที่</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" id="timeFrame"
+                                                        value="ก่อนนำเข้า/ส่งออก/นำผ่าน" readonly />
+                                                    <label for="timeFrame">ช่วงเวลาดำเนินการ</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" id="requestType"
+                                                        value="ขอใหม่" readonly />
+                                                    <label for="requestType">ลักษณะการขอ</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control bg-light" id="regulation"
+                                                        value="ส่งออก" readonly />
+                                                    <label for="regulation">ระเบียบข้อบังคับ</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <select id="selectCountry" class="select2 form-select" disabled>
+                                                        <option value="TH" selected>ไทย (Thailand)</option>
+                                                    </select>
+                                                    <label for="selectCountry">ชื่อประเทศปลายทาง</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" id="exportDate"
+                                                        class="form-control bg-light" value="29/04/2026" readonly />
+                                                    <label for="exportDate">วันที่ส่งออก</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" id="issueDatePSTH"
+                                                        class="form-control bg-light fw-bold text-success" value="29/04/2569" readonly />
+                                                    <label for="issueDatePSTH">วันที่ตรวจปล่อย (Issue Date)</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 d-flex align-items-center">
+                                                <div class="small">
+                                                    <span class="badge bg-success me-1">
+                                                        <i class="ri ri-robot-2-line me-1"></i>ออกอัตโนมัติ
+                                                    </span>
+                                                    Issue Date ถูกกำหนดโดยระบบอัตโนมัติเมื่อเจ้าหน้าที่อนุมัติ
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ข้อมูล Health Certificate -->
+                                    <div class="p-4">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-shield-check-line fs-5"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">ข้อมูล Health Certificate</h6>
+                                        </div>
+                                        <div class="row g-4">
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" id="hcNumber" class="form-control bg-light"
+                                                        value="HC-TH-2569-00912" readonly />
+                                                    <label for="hcNumber">Health Certificate Number</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" id="hcDate" class="form-control bg-light"
+                                                        value="25/04/2026" readonly />
+                                                    <label for="hcDate">Date</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /accordion ส่วนหัว -->
+
+                    <!-- ===== Accordion: ส่วนเนื้อหา ===== -->
+                    <div class="accordion accordion-custom-button mb-4" id="accordionDetail">
+                        <div class="accordion-item active">
+                            <h2 class="accordion-header" id="headingDetail">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseDetailContent" aria-expanded="true"
+                                    aria-controls="collapseDetailContent">
+                                    <i class="icon-base ri ri-article-line me-2"></i>
+                                    รายละเอียดประเภทเอกสารส่วนเนื้อหา
+                                </button>
+                            </h2>
+                            <div id="collapseDetailContent" class="accordion-collapse collapse show"
+                                aria-labelledby="headingDetail">
+                                <div class="accordion-body p-0">
+
+                                    <!-- Description of Product -->
+                                    <div class="p-4 border-bottom">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-box-3-line fs-5"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">Description of Product</h6>
+                                        </div>
+                                        <div class="row g-3">
+                                            <div class="col-md-4">
+                                                <label class="form-label small">HS Code (พิกัดศุลกากร)</label>
+                                                <input type="text" class="form-control bg-light" id="hsCode" value="0306.17" readonly />
+                                            </div>
+                                            <div class="col-md-8">
+                                                <label class="form-label small">Product Name</label>
+                                                <textarea class="form-control bg-light" id="productName" rows="2" readonly>กุ้งขาวแปรรูปแช่แข็ง (Frozen White Shrimp, Processed) / Penaeus vannamei</textarea>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small text-muted"># Total Weight of Product</label>
+                                                <input type="text" class="form-control bg-light" id="totalWeight"
+                                                    value="18,750.000 KGM" readonly />
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small text-muted"># Total Weight of Product Unit</label>
+                                                <input type="text" class="form-control bg-light" id="totalWeightUnit"
+                                                    value="KGM = กิโลกรัม" readonly />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Establishment Plant -->
+                                    <div class="p-4">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-store-2-line fs-5"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">Establishment Plant</h6>
+                                        </div>
+                                        <div class="row g-3">
+                                            <div class="col-md-4">
+                                                <label class="form-label small">Approval Number</label>
+                                                <input type="text" class="form-control bg-light" id="approvalNumber" value="TH-SMK-2025-0312" readonly />
+                                            </div>
+                                            <div class="col-md-8">
+                                                <label class="form-label small">Name of the Establishment</label>
+                                                <input type="text" class="form-control bg-light" id="estName" value="บริษัท อินโนเวชั่นส์ โซลูชั่น แอนด์ เซอร์วิส จำกัด" readonly />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label small">ID of the Establishment</label>
+                                                <input type="text" class="form-control bg-light" id="estId" value="0105566089321" readonly />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label small">Branch of the Establishment</label>
+                                                <input type="text" class="form-control bg-light" id="estBranch" value="สำนักงานใหญ่" readonly />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label small">Place of the Establishment</label>
+                                                <input type="text" class="form-control bg-light" id="estPlace" value="สมุทรสาคร" readonly />
+                                            </div>
+                                            <div class="col-12">
+                                                <label class="form-label small">Address of the Establishment</label>
+                                                <textarea class="form-control bg-light" id="estAddress" rows="2" readonly>99/1 หมู่ 5 ถนนพระราม 2 ตำบลท่าทราย อำเภอเมืองสมุทรสาคร จังหวัดสมุทรสาคร 74000</textarea>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">Telephone of the Establishment</label>
+                                                <input type="text" class="form-control bg-light" id="estTel" value="034-456-789" readonly />
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">Fax of the Establishment</label>
+                                                <input type="text" class="form-control bg-light" id="estFax" value="034-456-790" readonly />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label small">ID of Responsible person</label>
+                                                <input type="text" class="form-control bg-light" id="respId" value="3101200456789" readonly />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label small">Responsible person</label>
+                                                <input type="text" class="form-control bg-light" id="respPerson" value="นาย สมชาย รักษาผล" readonly />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label small">Signature</label>
+                                                <input type="text" class="form-control bg-light" id="signature" value="สมชาย รักษาผล" readonly />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /accordion ส่วนเนื้อหา -->
+
+                </div>
+                <!-- /TAB 1 -->
+
+                <!-- ==================== TAB 2: รายการข้อมูลการผลิต ==================== -->
+                <div id="tab-production" class="tab-pane fade" role="tabpanel">
+                    <div class="d-flex justify-content-end mb-2">
+                        <button type="button" class="btn btn-outline-success btn-sm"
+                            onclick="alert('Export RMBS2/P2 รายการข้อมูลการผลิต PS Thailand (mockup)')">
+                            <i class="ri ri-file-excel-2-line me-1"></i> Export RMBS2/P2
+                        </button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle mb-0 small">
+                            <thead class="text-center">
+                                <tr>
+                                    <th style="width:2rem;">#</th>
+                                    <th>หมายเลข RMBS1</th>
+                                    <th>เลขที่ CC</th>
+                                    <th>วันที่ตรวจสอบ CC</th>
+                                    <th>ชื่อเรือ / ชะเรือ</th>
+                                    <th>Catch Description</th>
+                                    <th class="text-end">น้ำหนักอื่นๆ (กก.)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center text-muted small">1</td>
+                                    <td class="text-primary fw-semibold">10604204211700000094</td>
+                                    <td>CC-TH-2569-0055</td>
+                                    <td>20/04/2026</td>
+                                    <td>เรือสมุทรทอง 3</td>
+                                    <td>Penaeus vannamei (กุ้งขาว)</td>
+                                    <td class="text-end">18,750.000</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="6" class="text-end fw-semibold small">รวมน้ำหนักทั้งหมด</td>
+                                    <td class="text-end fw-semibold">18,750.000</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <!-- /TAB 2 -->
+
+                <!-- ==================== TAB 3: หลักฐานประกอบ ==================== -->
+                <div id="tab-evidence" class="tab-pane fade" role="tabpanel">
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle small mb-3">
+                            <thead class="text-center">
+                                <tr>
+                                    <th style="width:2rem;">#</th>
+                                    <th>หลักฐานประกอบ</th>
+                                    <th>เลขที่เอกสาร</th>
+                                    <th>วันที่ออกเอกสาร</th>
+                                    <th>วันที่หมดอายุ</th>
+                                    <th>ผู้ออกเอกสาร</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center text-muted small">1</td>
+                                    <td>
+                                        <div class="fw-semibold text-primary">Catch Certificate (CC) ที่ออกโดย ต่างประเทศ</div>
+                                    </td>
+                                    <td>KP-001022017-095</td>
+                                    <td>20/04/2026</td>
+                                    <td>20/04/2027</td>
+                                    <td>IPNLF</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- /TAB 3 -->
+
+            </div><!-- /tab-content -->
+        </div><!-- /nav-align-top -->
+
+        <!-- ==================== TOR 1.7(29): QR CODE ==================== -->
+        <div class="card mb-4">
+            <div class="card-header d-flex align-items-center gap-2">
+                <i class="ri ri-qr-code-line text-primary" style="font-size:1.25rem;"></i>
+                <h6 class="card-title mb-0">QR Code สำหรับตรวจสอบสถานะใบรับรองออนไลน์</h6>
+                <span class="badge bg-success ms-auto">
+                    <i class="ri ri-robot-2-line me-1"></i>ออกอัตโนมัติ
+                </span>
+            </div>
+            <div class="card-body">
+                <div class="row align-items-center g-4">
+                    <div class="col-auto text-center">
+                        @{
+                            var verifyCertNo = "PS-TH-2569-00045";
+                            var verifyUrl = $"http://localhost:5055/Verify/{verifyCertNo}";
+                            var qrApiUrl = $"https://api.qrserver.com/v1/create-qr-code/?size=160x160&data={Uri.EscapeDataString(verifyUrl)}";
+                        }
+                        <img src="@qrApiUrl"
+                             alt="QR Code ตรวจสอบใบรับรอง @verifyCertNo"
+                             style="width:160px;height:160px;border:1px solid #dee2e6;border-radius:0.375rem;padding:4px;background:#fff;"
+                             onerror="this.style.display='none';" />
+                        <div class="mt-2 small text-muted fw-semibold">สแกนเพื่อตรวจสอบสถานะ<br/>ใบรับรองออนไลน์</div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-2">
+                            <span class="badge bg-label-success me-2"><i class="ri ri-shield-check-line me-1"></i>ใบรับรองมีผลบังคับใช้</span>
+                            <span class="badge bg-success"><i class="ri ri-robot-2-line me-1"></i>ออกอัตโนมัติ</span>
+                        </div>
+                        <div class="row g-2 small">
+                            <div class="col-sm-6">
+                                <span class="text-muted">เลขที่ใบรับรอง:</span>
+                                <span class="fw-semibold ms-1 text-success">@verifyCertNo</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-muted">วันที่ออก:</span>
+                                <span class="ms-1">29/04/2569</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-muted">ประเภทใบรับรอง:</span>
+                                <span class="ms-1 fw-semibold">PS Thailand</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-muted">ชื่อโรงงาน:</span>
+                                <span class="ms-1">บริษัท อินโนเวชั่นส์ โซลูชั่น แอนด์ เซอร์วิส จำกัด</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-muted">URL ตรวจสอบ:</span>
+                                <a href="@verifyUrl" target="_blank" class="ms-1 text-break small">@verifyUrl</a>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <a href="@verifyUrl" target="_blank" class="btn btn-sm btn-outline-primary">
+                                <i class="ri ri-external-link-line me-1"></i>เปิดหน้าตรวจสอบ
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /QR CODE -->
+
+        <!-- Action Buttons -->
+        <div class="d-flex justify-content-between align-items-center mt-3 flex-wrap gap-2">
+            <div class="d-flex gap-2">
+                <button type="button" class="btn btn-outline-danger"
+                    onclick="alert('ดาวน์โหลด PDF/A-3 ใบรับรอง PS Thailand (PS-TH-2569-00045)\n\nระบบจะสร้าง PDF/A-3 พร้อม XML metadata\nลายมือชื่ออิเล็กทรอนิกส์ และ QR Code ตรวจสอบ')">
+                    <i class="ri ri-file-pdf-line me-1"></i> ดาวน์โหลด PDF/A-3
+                </button>
+                <button type="button" class="btn btn-outline-warning"
+                    onclick="alert('พิมพ์ฉบับ Copy ใบรับรอง PS Thailand (mockup)')">
+                    <i class="ri ri-printer-line me-1"></i> พิมพ์ฉบับ Copy
+                </button>
+            </div>
+            <div class="d-flex gap-2">
+                <a href="@Url.Action("IndexManageCertificate", "PSDeclaration")" class="btn btn-outline-secondary">
+                    <i class="ri ri-arrow-left-line me-1"></i> ย้อนกลับ
+                </a>
+            </div>
+        </div>
+
+        </form>
+
+    </div><!-- /col -->
+</div><!-- /row -->

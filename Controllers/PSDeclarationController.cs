@@ -57,6 +57,18 @@ public class PSDeclarationController : Controller
     return View();
   }
 
+  // TOR (10): PS Thailand — ออกใบรับรองอัตโนมัติ
+  public IActionResult CreateManageCertificatePSTH()
+  {
+    return View();
+  }
+
+  // TOR (10): NMD Thailand — ออกใบรับรองอัตโนมัติ
+  public IActionResult CreateManageCertificateNMDTH()
+  {
+    return View();
+  }
+
   public IActionResult IndexUpdateCertificate()
   {
     return View();

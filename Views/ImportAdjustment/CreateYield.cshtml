@@ -45,392 +45,433 @@
 <p class="mb-2 text-muted small">ยื่นคำขออนุมัติ %Yield สำหรับวัตถุดิบนำเข้า / ผลิตภัณฑ์แปรรูปเบื้องต้น / ผลิตภัณฑ์สำเร็จรูป (PS/NMD)</p>
 
 <!-- Breadcrumb -->
-<nav aria-label="breadcrumb" class="mb-4">
+<nav aria-label="breadcrumb" class="mb-6">
     <ol class="breadcrumb breadcrumb-style1" style="--bs-breadcrumb-divider: '>'; font-size: 0.75rem;">
         <li class="breadcrumb-item"><a href="@Url.Action("IndexYield", "ImportAdjustment")" class="text-primary fw-semibold">คำขออนุมัติ %Yield</a></li>
-        <li class="breadcrumb-item active">@(isCreate ? "สร้างคำขอใหม่" : docNo)</li>
+        <li class="breadcrumb-item active text-secondary">@(isCreate ? "สร้างคำขอใหม่" : docNo)</li>
     </ol>
 </nav>
 
-<!-- Action Bar -->
-<div class="card mb-4">
-    <div class="card-body py-2 d-flex align-items-center justify-content-between flex-wrap gap-2">
-        <div class="d-flex align-items-center gap-2">
-            @if (!isCreate) {
-                <span class="text-muted small">เลขที่คำขอ: <strong class="text-dark">@docNo</strong></span>
-                <span class="text-muted">|</span>
-                <span class="text-muted small">วันที่ยื่น: <strong class="text-dark">15/04/2569</strong></span>
-            }
-        </div>
-        <div class="d-flex gap-2 flex-wrap">
-            <a href="@Url.Action("IndexYield", "ImportAdjustment")" class="btn btn-outline-secondary btn-sm">
-                <i class="ri ri-arrow-left-line me-1"></i> กลับ
-            </a>
-            @if (!isView) {
-                <button type="button" class="btn btn-outline-secondary btn-sm"
-                    onclick="alert('บันทึกฉบับร่างเรียบร้อย (mockup)')">
-                    <i class="ri ri-draft-line me-1"></i> บันทึกฉบับร่าง
-                </button>
-            }
-            @if (!isCreate) {
-                <button type="button" class="btn btn-outline-danger btn-sm"
-                    onclick="alert('ยกเลิกคำขอ (mockup)')">
-                    <i class="ri ri-close-circle-line me-1"></i> ยกเลิกคำขอ
-                </button>
-                <button type="button" class="btn btn-outline-danger btn-sm"
-                    onclick="alert('ยืนยันลบคำขอ (mockup)')">
-                    <i class="ri ri-delete-bin-line me-1"></i> ลบ
-                </button>
-            }
-            @if (!isView) {
-                <button type="button" class="btn btn-primary btn-sm"
-                    data-bs-toggle="modal" data-bs-target="#modalConfirmSubmit">
-                    <i class="ri ri-send-plane-line me-1"></i> ยื่นคำขอ
-                </button>
-            }
-            @if (isView) {
-                <!-- ปุ่ม พิมพ์แบบฟอร์ม %Yield (TOR 1.5(9)) -->
-                <button type="button" class="btn btn-outline-secondary btn-sm"
-                    data-bs-toggle="modal" data-bs-target="#modalYieldFormPDF">
-                    <i class="ri ri-printer-line me-1"></i> พิมพ์แบบฟอร์ม %Yield
-                </button>
-            }
-        </div>
-    </div>
-</div>
+<div class="row">
+    <div class="col-12">
 
-<!-- Tab Nav -->
-<ul class="nav nav-pills mb-4 gap-1 flex-wrap" id="yieldTabs" role="tablist">
-    <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="tab-info-btn" data-bs-toggle="pill" data-bs-target="#tab-info" type="button" role="tab">
-            <i class="ri ri-file-list-2-line me-1"></i> รายละเอียดคำขอ
-        </button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="tab-evidence-btn" data-bs-toggle="pill" data-bs-target="#tab-evidence" type="button" role="tab">
-            <i class="ri ri-attachment-line me-1"></i> หลักฐานประกอบ
-        </button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="tab-history-btn" data-bs-toggle="pill" data-bs-target="#tab-history" type="button" role="tab">
-            <i class="ri ri-history-line me-1"></i> ประวัติการดำเนินการ
-        </button>
-    </li>
-</ul>
+        <form method="post" action="#" id="formYield">
+        <div class="nav-align-top nav-tabs-shadow mb-4">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#tab-info" aria-controls="tab-info" aria-selected="true">
+                        <i class="ri ri-file-list-2-line me-1"></i> รายละเอียดคำขอ
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#tab-evidence" aria-controls="tab-evidence" aria-selected="false">
+                        <i class="ri ri-attachment-line me-1"></i> หลักฐานประกอบ
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#tab-history" aria-controls="tab-history" aria-selected="false">
+                        <i class="ri ri-history-line me-1"></i> ประวัติการดำเนินการ
+                    </button>
+                </li>
+            </ul>
+            <div class="tab-content">
 
-<div class="tab-content">
+                <!-- ==================== TAB 1: รายละเอียดคำขอ ==================== -->
+                <div id="tab-info" class="tab-pane fade show active" role="tabpanel">
 
-    <!-- ==================== TAB 1: รายละเอียดคำขอ ==================== -->
-    <div id="tab-info" class="tab-pane fade show active" role="tabpanel">
-
-        <form action="#" method="post" id="formYield">
-
-            <!-- Section A: ข้อมูลสถานประกอบการ (readonly) -->
-            <div class="card border mb-4">
-                <div class="card-header d-flex align-items-center gap-2 py-2">
-                    <i class="ri ri-building-2-line text-primary"></i>
-                    <span class="fw-semibold small">ข้อมูลสถานประกอบการ</span>
-                    <span class="badge bg-label-secondary ms-auto small">ดึงจากการล็อกอิน</span>
-                </div>
-                <div class="card-body field-readonly">
-                    <div class="row g-3 small">
-                        <div class="col-md-6">
-                            <label class="form-label text-muted">ชื่อสถานประกอบการ</label>
-                            <input type="text" class="form-control bg-light" value="Alpha Office Automation Co., Ltd." readonly />
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label text-muted">เลขทะเบียนสถานประกอบการ</label>
-                            <input type="text" class="form-control bg-light" value="0105563089444" readonly />
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label text-muted">สถานะการรับรอง</label>
-                            <input type="text" class="form-control bg-light text-success fw-semibold" value="อยู่ในการรับรอง ✓" readonly />
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Section B: ประเภทคำขอ + ผลิตภัณฑ์ -->
-            <div class="card border mb-4">
-                <div class="card-header d-flex align-items-center gap-2 py-2">
-                    <i class="ri ri-percent-line text-warning"></i>
-                    <span class="fw-semibold small">รายละเอียดคำขออนุมัติ %Yield</span>
-                </div>
-                <div class="card-body">
-                    <div class="row g-3 small">
-                        <!-- ประเภทคำขอ -->
-                        <div class="col-md-4">
-                            <label class="form-label">ประเภทคำขอ <span class="text-danger">*</span></label>
-                            <select class="form-select" id="yieldRequestType" @(isView ? "disabled" : "") onchange="onYieldTypeChange(this.value)">
-                                <option value="">-- เลือกประเภทคำขอ --</option>
-                                <option value="import" selected>วัตถุดิบสัตว์น้ำนำเข้า</option>
-                                <option value="ps">ผลิตภัณฑ์แปรรูปเบื้องต้น (PS)</option>
-                                <option value="nmd">ผลิตภัณฑ์สำเร็จรูป (NMD)</option>
-                            </select>
-                            <div class="text-muted mt-1" style="font-size:0.72rem;" id="yieldTypeNote">
-                                วัตถุดิบที่ผ่านการพิจารณาแล้วของสถานประกอบการที่อยู่ในการรับรอง
-                            </div>
-                        </div>
-
-                        <!-- ชื่อผลิตภัณฑ์ -->
-                        <div class="col-md-5">
-                            <label class="form-label">ชื่อผลิตภัณฑ์ <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="productName"
-                                value="Skipjack Tuna Canned in Brine" @(isView ? "readonly" : "")
-                                placeholder="ระบุชื่อผลิตภัณฑ์" />
-                        </div>
-
-                        <!-- รหัสผลิตภัณฑ์ -->
-                        <div class="col-md-3">
-                            <label class="form-label">รหัสผลิตภัณฑ์</label>
-                            <input type="text" class="form-control" id="productCode"
-                                value="PROD-001" @(isView ? "readonly" : "")
-                                placeholder="รหัสผลิตภัณฑ์ (ถ้ามี)" />
-                        </div>
-
-                        <!-- ชนิดสัตว์น้ำ -->
-                        <div class="col-md-4">
-                            <label class="form-label">ชนิดสัตว์น้ำ <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="speciesName"
-                                value="ปลาทูน่าครีบเหลือง (Yellowfin Tuna — YFT)"
-                                @(isView ? "readonly" : "") placeholder="ชนิดสัตว์น้ำ" />
-                        </div>
-
-                        <!-- แหล่งที่มา / เลขที่ใบรับรอง (แสดงเมื่อ import) -->
-                        <div class="col-md-4" id="fieldImportRef">
-                            <label class="form-label">เลขที่ใบอนุญาตนำเข้า / IMD</label>
-                            <input type="text" class="form-control" id="importRef"
-                                value="IMD-2567-001234" @(isView ? "readonly" : "")
-                                placeholder="เลขที่ใบอนุญาต/IMD (ถ้ามี)" />
-                        </div>
-
-                        <!-- %Yield เดิมที่อนุมัติ (readonly) -->
-                        <div class="col-md-2">
-                            <label class="form-label">%Yield ปัจจุบัน (อนุมัติแล้ว)</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control bg-light text-muted fw-semibold"
-                                    id="approvedYield" value="40.00" readonly />
-                                <span class="input-group-text bg-light text-muted">%</span>
-                            </div>
-                            <div class="text-muted mt-1" style="font-size:0.72rem;">ค่าที่เจ้าหน้าที่อนุมัติล่าสุด</div>
-                        </div>
-
-                        <!-- %Yield ที่ขอ -->
-                        <div class="col-md-2">
-                            <label class="form-label">%Yield ที่ขออนุมัติ <span class="text-danger">*</span></label>
-                            <div class="input-group">
-                                <input type="number" class="form-control" id="requestedYield"
-                                    value="42.50" step="0.01" min="0" max="100"
-                                    @(isView ? "readonly" : "")
-                                    oninput="calcYieldDiff()" />
-                                <span class="input-group-text">%</span>
-                            </div>
-                        </div>
-
-                        <!-- ผลต่าง -->
-                        <div class="col-md-2">
-                            <label class="form-label">ผลต่าง</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control bg-light text-center fw-semibold"
-                                    id="yieldDiff" value="+2.50" readonly />
-                                <span class="input-group-text bg-light">%</span>
-                            </div>
-                            <div class="text-muted mt-1" style="font-size:0.72rem;" id="yieldDiffNote">
-                                <span class="text-success">เพิ่มขึ้น 2.50%</span>
-                            </div>
-                        </div>
-
-                        <!-- ค่าการยอมรับ (tolerance) -->
-                        <div class="col-md-2">
-                            <label class="form-label">ค่าการยอมรับ (Tolerance) <span class="text-danger">*</span></label>
-                            <div class="input-group">
-                                <span class="input-group-text">±</span>
-                                <input type="number" class="form-control text-center" id="yieldTolerance"
-                                    value="2.5" step="0.1" min="0" max="20"
-                                    @(isView ? "readonly" : "")
-                                    oninput="calcYieldDiff()" />
-                                <span class="input-group-text">%</span>
-                            </div>
-                            <div class="text-muted mt-1" style="font-size:0.72rem;">ช่วงเบี่ยงเบนที่ยอมรับได้</div>
-                        </div>
-
-                        <!-- Alert: Tolerance warning -->
-                        <div class="col-12" id="alertToleranceWarn" style="display:none;">
-                            <div class="alert alert-danger py-2 small d-flex align-items-center gap-2">
-                                <i class="ri ri-error-warning-line fs-5 flex-shrink-0"></i>
-                                <div>
-                                    <strong>⚠️ %Yield เบี่ยงเบนเกินค่าการยอมรับ!</strong>
-                                    <span id="alertToleranceMsg"></span><br/>
-                                    กรุณาระบุเหตุผลประกอบให้ชัดเจน และแนบหลักฐานผลการทดสอบ %Yield
+                    <!-- ===== Accordion: ข้อมูลสถานประกอบการ ===== -->
+                    <div class="accordion accordion-custom-button mb-4" id="accordionEstInfo">
+                        <div class="accordion-item active">
+                            <h2 class="accordion-header" id="headingEstInfo">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseEstInfo" aria-expanded="true"
+                                    aria-controls="collapseEstInfo">
+                                    <i class="icon-base ri ri-building-2-line me-2"></i>
+                                    ข้อมูลสถานประกอบการ
+                                    <span class="badge bg-label-secondary ms-2 small">ดึงจากการล็อกอิน</span>
+                                </button>
+                            </h2>
+                            <div id="collapseEstInfo" class="accordion-collapse collapse show"
+                                aria-labelledby="headingEstInfo">
+                                <div class="accordion-body p-0">
+                                    <div class="p-4">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-building-2-line fs-5"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">ข้อมูลสถานประกอบการ</h6>
+                                        </div>
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label small">ชื่อสถานประกอบการ</label>
+                                                <input type="text" class="form-control bg-light" value="Alpha Office Automation Co., Ltd." readonly />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label small">เลขทะเบียนสถานประกอบการ</label>
+                                                <input type="text" class="form-control bg-light" value="0105563089444" readonly />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label small">สถานะการรับรอง</label>
+                                                <input type="text" class="form-control bg-light text-success fw-semibold" value="อยู่ในการรับรอง ✓" readonly />
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <!-- /accordion ข้อมูลสถานประกอบการ -->
 
-                        <!-- Alert: Within tolerance -->
-                        <div class="col-12" id="alertToleranceOk" style="display:none;">
-                            <div class="alert alert-success py-2 small d-flex align-items-center gap-2">
-                                <i class="ri ri-checkbox-circle-line fs-5 flex-shrink-0"></i>
-                                <div><strong>%Yield อยู่ในช่วงค่าการยอมรับ ✓</strong> <span id="alertToleranceOkMsg"></span></div>
+                    <!-- ===== Accordion: รายละเอียดคำขออนุมัติ %Yield ===== -->
+                    <div class="accordion accordion-custom-button mb-4" id="accordionYieldDetail">
+                        <div class="accordion-item active">
+                            <h2 class="accordion-header" id="headingYieldDetail">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseYieldDetail" aria-expanded="true"
+                                    aria-controls="collapseYieldDetail">
+                                    <i class="icon-base ri ri-percent-line me-2"></i>
+                                    รายละเอียดคำขออนุมัติ %Yield
+                                </button>
+                            </h2>
+                            <div id="collapseYieldDetail" class="accordion-collapse collapse show"
+                                aria-labelledby="headingYieldDetail">
+                                <div class="accordion-body p-0">
+
+                                    <!-- Sub-section: ข้อมูลผลิตภัณฑ์ -->
+                                    <div class="p-4 border-bottom">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-box-3-line fs-5"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">ข้อมูลผลิตภัณฑ์</h6>
+                                        </div>
+                                        <div class="row g-3">
+                                            <!-- ประเภทคำขอ -->
+                                            <div class="col-md-4">
+                                                <label class="form-label small">ประเภทคำขอ <span class="text-danger">*</span></label>
+                                                <select class="form-select" id="yieldRequestType" @(isView ? "disabled" : "") onchange="onYieldTypeChange(this.value)">
+                                                    <option value="">-- เลือกประเภทคำขอ --</option>
+                                                    <option value="import" selected>วัตถุดิบสัตว์น้ำนำเข้า</option>
+                                                    <option value="ps">ผลิตภัณฑ์แปรรูปเบื้องต้น (PS)</option>
+                                                    <option value="nmd">ผลิตภัณฑ์สำเร็จรูป (NMD)</option>
+                                                </select>
+                                                <div class="text-muted mt-1" style="font-size:0.72rem;" id="yieldTypeNote">
+                                                    วัตถุดิบที่ผ่านการพิจารณาแล้วของสถานประกอบการที่อยู่ในการรับรอง
+                                                </div>
+                                            </div>
+                                            <!-- ชื่อผลิตภัณฑ์ -->
+                                            <div class="col-md-5">
+                                                <label class="form-label small">ชื่อผลิตภัณฑ์ <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="productName"
+                                                    value="Skipjack Tuna Canned in Brine" @(isView ? "readonly" : "")
+                                                    placeholder="ระบุชื่อผลิตภัณฑ์" />
+                                            </div>
+                                            <!-- รหัสผลิตภัณฑ์ -->
+                                            <div class="col-md-3">
+                                                <label class="form-label small">รหัสผลิตภัณฑ์</label>
+                                                <input type="text" class="form-control" id="productCode"
+                                                    value="PROD-001" @(isView ? "readonly" : "")
+                                                    placeholder="รหัสผลิตภัณฑ์ (ถ้ามี)" />
+                                            </div>
+                                            <!-- ชนิดสัตว์น้ำ -->
+                                            <div class="col-md-4">
+                                                <label class="form-label small">ชนิดสัตว์น้ำ <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="speciesName"
+                                                    value="ปลาทูน่าครีบเหลือง (Yellowfin Tuna — YFT)"
+                                                    @(isView ? "readonly" : "") placeholder="ชนิดสัตว์น้ำ" />
+                                            </div>
+                                            <!-- เลขที่ใบอนุญาตนำเข้า / IMD -->
+                                            <div class="col-md-4" id="fieldImportRef">
+                                                <label class="form-label small">เลขที่ใบอนุญาตนำเข้า / IMD</label>
+                                                <input type="text" class="form-control" id="importRef"
+                                                    value="IMD-2567-001234" @(isView ? "readonly" : "")
+                                                    placeholder="เลขที่ใบอนุญาต/IMD (ถ้ามี)" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Sub-section: ค่า %Yield -->
+                                    <div class="p-4 border-bottom">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-warning rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-percent-line fs-5"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">ค่า %Yield</h6>
+                                        </div>
+                                        <div class="row g-3">
+                                            <!-- %Yield ปัจจุบัน (readonly) -->
+                                            <div class="col-md-3">
+                                                <label class="form-label small">%Yield ปัจจุบัน (อนุมัติแล้ว)</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control bg-light text-muted fw-semibold"
+                                                        id="approvedYield" value="40.00" readonly />
+                                                    <span class="input-group-text bg-light text-muted">%</span>
+                                                </div>
+                                                <div class="text-muted mt-1" style="font-size:0.72rem;">ค่าที่เจ้าหน้าที่อนุมัติล่าสุด</div>
+                                            </div>
+                                            <!-- %Yield ที่ขอ -->
+                                            <div class="col-md-3">
+                                                <label class="form-label small">%Yield ที่ขออนุมัติ <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" id="requestedYield"
+                                                        value="42.50" step="0.01" min="0" max="100"
+                                                        @(isView ? "readonly" : "")
+                                                        oninput="calcYieldDiff()" />
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                            </div>
+                                            <!-- ผลต่าง -->
+                                            <div class="col-md-3">
+                                                <label class="form-label small">ผลต่าง</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control bg-light text-center fw-semibold"
+                                                        id="yieldDiff" value="+2.50" readonly />
+                                                    <span class="input-group-text bg-light">%</span>
+                                                </div>
+                                                <div class="text-muted mt-1" style="font-size:0.72rem;" id="yieldDiffNote">
+                                                    <span class="text-success">เพิ่มขึ้น 2.50%</span>
+                                                </div>
+                                            </div>
+                                            <!-- ค่าการยอมรับ (tolerance) -->
+                                            <div class="col-md-3">
+                                                <label class="form-label small">ค่าการยอมรับ (Tolerance) <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">±</span>
+                                                    <input type="number" class="form-control text-center" id="yieldTolerance"
+                                                        value="2.5" step="0.1" min="0" max="20"
+                                                        @(isView ? "readonly" : "")
+                                                        oninput="calcYieldDiff()" />
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                                <div class="text-muted mt-1" style="font-size:0.72rem;">ช่วงเบี่ยงเบนที่ยอมรับได้</div>
+                                            </div>
+                                            <!-- Alert: Tolerance warning -->
+                                            <div class="col-12" id="alertToleranceWarn" style="display:none;">
+                                                <div class="alert alert-danger py-2 small d-flex align-items-center gap-2">
+                                                    <i class="ri ri-error-warning-line fs-5 flex-shrink-0"></i>
+                                                    <div>
+                                                        <strong>⚠️ %Yield เบี่ยงเบนเกินค่าการยอมรับ!</strong>
+                                                        <span id="alertToleranceMsg"></span><br/>
+                                                        กรุณาระบุเหตุผลประกอบให้ชัดเจน และแนบหลักฐานผลการทดสอบ %Yield
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Alert: Within tolerance -->
+                                            <div class="col-12" id="alertToleranceOk" style="display:none;">
+                                                <div class="alert alert-success py-2 small d-flex align-items-center gap-2">
+                                                    <i class="ri ri-checkbox-circle-line fs-5 flex-shrink-0"></i>
+                                                    <div><strong>%Yield อยู่ในช่วงค่าการยอมรับ ✓</strong> <span id="alertToleranceOkMsg"></span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Sub-section: เหตุผลและหมายเหตุ -->
+                                    <div class="p-4">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-label-primary rounded-circle me-2 d-inline-flex align-items-center justify-content-center" style="width:2.2rem;height:2.2rem;">
+                                                <i class="ri ri-file-text-line fs-5"></i>
+                                            </span>
+                                            <h6 class="mb-0 fw-semibold">เหตุผลและหมายเหตุ</h6>
+                                        </div>
+                                        <div class="row g-3">
+                                            <!-- เหตุผลประกอบการขอ -->
+                                            <div class="col-12">
+                                                <label class="form-label small">เหตุผลประกอบการขออนุมัติ <span class="text-danger">*</span></label>
+                                                <textarea class="form-control" id="yieldReason" rows="3"
+                                                    @(isView ? "readonly" : "")
+                                                    placeholder="อธิบายเหตุผลที่ขอเปลี่ยนแปลง %Yield เช่น วิธีการแปรรูปเปลี่ยน / ส่วนผสมใหม่ / ผลการทดสอบล่าสุด">ปรับปรุงกระบวนการแปรรูปโดยใช้เทคโนโลยีการแล่ปลาแบบใหม่ ทำให้ได้ %Yield สูงขึ้น ผลการทดสอบล่าสุด 3 ครั้งได้ค่าเฉลี่ย 42.5% อย่างสม่ำเสมอ</textarea>
+                                            </div>
+                                            <!-- หมายเหตุ -->
+                                            <div class="col-12">
+                                                <label class="form-label small">หมายเหตุเพิ่มเติม</label>
+                                                <textarea class="form-control" id="yieldNote" rows="2"
+                                                    @(isView ? "readonly" : "")
+                                                    placeholder="หมายเหตุ (ถ้ามี)"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
-
-                        <!-- เหตุผลประกอบการขอ -->
-                        <div class="col-12">
-                            <label class="form-label">เหตุผลประกอบการขออนุมัติ <span class="text-danger">*</span></label>
-                            <textarea class="form-control" id="yieldReason" rows="3"
-                                @(isView ? "readonly" : "")
-                                placeholder="อธิบายเหตุผลที่ขอเปลี่ยนแปลง %Yield เช่น วิธีการแปรรูปเปลี่ยน / ส่วนผสมใหม่ / ผลการทดสอบล่าสุด">ปรับปรุงกระบวนการแปรรูปโดยใช้เทคโนโลยีการแล่ปลาแบบใหม่ ทำให้ได้ %Yield สูงขึ้น ผลการทดสอบล่าสุด 3 ครั้งได้ค่าเฉลี่ย 42.5% อย่างสม่ำเสมอ</textarea>
-                        </div>
-
-                        <!-- หมายเหตุ -->
-                        <div class="col-12">
-                            <label class="form-label">หมายเหตุเพิ่มเติม</label>
-                            <textarea class="form-control" id="yieldNote" rows="2"
-                                @(isView ? "readonly" : "")
-                                placeholder="หมายเหตุ (ถ้ามี)"></textarea>
-                        </div>
                     </div>
+                    <!-- /accordion รายละเอียดคำขออนุมัติ %Yield -->
+
                 </div>
+                <!-- /TAB 1 -->
+
+                <!-- ==================== TAB 2: หลักฐานประกอบ ==================== -->
+                <div id="tab-evidence" class="tab-pane fade" role="tabpanel">
+
+                    <!-- Toolbar -->
+                    <div class="d-flex align-items-center justify-content-end mb-3">
+                        @if (!isView) {
+                            <button type="button" class="btn btn-outline-primary btn-sm"
+                                onclick="document.getElementById('fileEvidenceInput').click()">
+                                <i class="ri ri-upload-2-line me-1"></i> เพิ่มไฟล์หลักฐาน
+                            </button>
+                            <input type="file" id="fileEvidenceInput" class="d-none" multiple
+                                accept=".pdf,.jpg,.jpeg,.png,.xlsx,.xls,.doc,.docx"
+                                onchange="handleEvidenceUpload(this)" />
+                        }
+                    </div>
+
+                    <div class="alert alert-info py-2 small mb-3">
+                        <i class="ri ri-information-line me-1"></i>
+                        แนบเอกสารประกอบ เช่น ผลการทดสอบ %Yield / ใบรับรองห้องปฏิบัติการ / รายงานการผลิต / เอกสารอื่นๆ ที่เกี่ยวข้อง
+                        <br/>รองรับไฟล์ PDF, JPG, PNG, Excel, Word (ขนาดไม่เกิน 10 MB ต่อไฟล์)
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle small mb-0" id="evidenceTable">
+                            <thead class="table-light text-center">
+                                <tr>
+                                    <th style="width:2rem;">#</th>
+                                    <th>ชื่อไฟล์ / เอกสาร</th>
+                                    <th>ประเภทหลักฐาน</th>
+                                    <th>วันที่แนบ</th>
+                                    <th style="width:5rem;"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="evidenceTbody">
+                                <tr>
+                                    <td class="text-center text-muted">1</td>
+                                    <td>
+                                        <i class="ri ri-file-pdf-line text-danger me-1"></i>
+                                        <a href="#" onclick="alert('ดูไฟล์ (mockup)'); return false;" class="text-primary">ผลทดสอบ_Yield_SKJ_Q1_2569.pdf</a>
+                                    </td>
+                                    <td>ผลการทดสอบ %Yield</td>
+                                    <td class="text-muted">14/04/2569</td>
+                                    <td class="text-center">
+                                        @if (!isView) {
+                                            <button type="button" class="btn btn-sm btn-icon btn-outline-danger" title="ลบ"
+                                                onclick="alert('ลบไฟล์ (mockup)')">
+                                                <i class="ri ri-delete-bin-line"></i>
+                                            </button>
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center text-muted">2</td>
+                                    <td>
+                                        <i class="ri ri-file-excel-2-line text-success me-1"></i>
+                                        <a href="#" onclick="alert('ดูไฟล์ (mockup)'); return false;" class="text-primary">รายงานการผลิต_มีค_2569.xlsx</a>
+                                    </td>
+                                    <td>รายงานการผลิต</td>
+                                    <td class="text-muted">14/04/2569</td>
+                                    <td class="text-center">
+                                        @if (!isView) {
+                                            <button type="button" class="btn btn-sm btn-icon btn-outline-danger" title="ลบ"
+                                                onclick="alert('ลบไฟล์ (mockup)')">
+                                                <i class="ri ri-delete-bin-line"></i>
+                                            </button>
+                                        }
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <!-- /TAB 2 -->
+
+                <!-- ==================== TAB 3: ประวัติการดำเนินการ ==================== -->
+                <div id="tab-history" class="tab-pane fade" role="tabpanel">
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle small mb-0">
+                            <thead class="table-light text-center">
+                                <tr>
+                                    <th style="width:2rem;">#</th>
+                                    <th>วันที่/เวลา</th>
+                                    <th>ผู้ดำเนินการ</th>
+                                    <th>การดำเนินการ</th>
+                                    <th>หมายเหตุ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center text-muted">1</td>
+                                    <td class="text-muted">15/04/2569 09:32</td>
+                                    <td>นาย ก สมใจ (ผู้ประกอบการ)</td>
+                                    <td><span class="badge bg-label-primary rounded-pill">สร้างคำขอ</span></td>
+                                    <td class="text-muted">สร้างคำขออนุมัติ %Yield ครั้งแรก</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center text-muted">2</td>
+                                    <td class="text-muted">15/04/2569 09:45</td>
+                                    <td>นาย ก สมใจ (ผู้ประกอบการ)</td>
+                                    <td><span class="badge bg-label-info rounded-pill">แนบหลักฐาน</span></td>
+                                    <td class="text-muted">แนบไฟล์ผลทดสอบ %Yield 2 รายการ</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center text-muted">3</td>
+                                    <td class="text-muted">15/04/2569 10:00</td>
+                                    <td>นาย ก สมใจ (ผู้ประกอบการ)</td>
+                                    <td><span class="badge bg-label-warning rounded-pill">ยื่นคำขอ</span></td>
+                                    <td class="text-muted">ยื่นคำขอให้เจ้าหน้าที่พิจารณา</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <!-- /TAB 3 -->
+
+            </div><!-- /tab-content -->
+        </div><!-- /nav-align-top -->
+
+        <!-- Action Buttons -->
+        <div class="d-flex justify-content-between align-items-center mt-3 flex-wrap gap-2">
+            <div>
+                @if (!isCreate) {
+                    <span class="text-muted small">เลขที่คำขอ: <strong class="text-dark">@docNo</strong></span>
+                    <span class="text-muted ms-2 me-2">|</span>
+                    <span class="text-muted small">วันที่ยื่น: <strong class="text-dark">15/04/2569</strong></span>
+                }
             </div>
+            <div class="d-flex gap-2 flex-wrap">
+                <a href="@Url.Action("IndexYield", "ImportAdjustment")" class="btn btn-outline-secondary">
+                    <i class="ri ri-arrow-left-line me-1"></i> กลับ
+                </a>
+                @if (!isView) {
+                    <button type="button" class="btn btn-outline-secondary"
+                        onclick="alert('บันทึกฉบับร่างเรียบร้อย (mockup)')">
+                        <i class="ri ri-draft-line me-1"></i> บันทึกฉบับร่าง
+                    </button>
+                }
+                @if (!isCreate) {
+                    <button type="button" class="btn btn-outline-danger"
+                        onclick="alert('ยกเลิกคำขอ (mockup)')">
+                        <i class="ri ri-close-circle-line me-1"></i> ยกเลิกคำขอ
+                    </button>
+                    <button type="button" class="btn btn-outline-danger"
+                        onclick="alert('ยืนยันลบคำขอ (mockup)')">
+                        <i class="ri ri-delete-bin-line me-1"></i> ลบ
+                    </button>
+                }
+                @if (isView) {
+                    <button type="button" class="btn btn-outline-secondary"
+                        data-bs-toggle="modal" data-bs-target="#modalYieldFormPDF">
+                        <i class="ri ri-printer-line me-1"></i> พิมพ์แบบฟอร์ม %Yield
+                    </button>
+                }
+                @if (!isView) {
+                    <button type="button" class="btn btn-primary" id="btnSubmitYield"
+                        data-bs-toggle="modal" data-bs-target="#modalConfirmSubmit">
+                        <i class="ri ri-send-plane-line me-1"></i> ยื่นคำขอ
+                    </button>
+                }
+            </div>
+        </div>
 
         </form>
 
-    </div>
-    <!-- /TAB 1 -->
-
-    <!-- ==================== TAB 2: หลักฐานประกอบ ==================== -->
-    <div id="tab-evidence" class="tab-pane fade" role="tabpanel">
-
-        <div class="card border">
-            <div class="card-header d-flex align-items-center justify-content-between py-2">
-                <div class="d-flex align-items-center gap-2">
-                    <i class="ri ri-attachment-line text-primary"></i>
-                    <span class="fw-semibold small">หลักฐานประกอบการขออนุมัติ %Yield</span>
-                </div>
-                @if (!isView) {
-                    <button type="button" class="btn btn-outline-primary btn-sm"
-                        onclick="document.getElementById('fileEvidenceInput').click()">
-                        <i class="ri ri-upload-2-line me-1"></i> เพิ่มไฟล์หลักฐาน
-                    </button>
-                    <input type="file" id="fileEvidenceInput" class="d-none" multiple
-                        accept=".pdf,.jpg,.jpeg,.png,.xlsx,.xls,.doc,.docx"
-                        onchange="handleEvidenceUpload(this)" />
-                }
-            </div>
-            <div class="card-body">
-                <div class="alert alert-info py-2 small mb-3">
-                    <i class="ri ri-information-line me-1"></i>
-                    แนบเอกสารประกอบ เช่น ผลการทดสอบ %Yield / ใบรับรองห้องปฏิบัติการ / รายงานการผลิต / เอกสารอื่นๆ ที่เกี่ยวข้อง
-                    <br/>รองรับไฟล์ PDF, JPG, PNG, Excel, Word (ขนาดไม่เกิน 10 MB ต่อไฟล์)
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-bordered align-middle small mb-0" id="evidenceTable">
-                        <thead class="table-light text-center">
-                            <tr>
-                                <th style="width:2rem;">#</th>
-                                <th>ชื่อไฟล์ / เอกสาร</th>
-                                <th>ประเภทหลักฐาน</th>
-                                <th>วันที่แนบ</th>
-                                <th style="width:5rem;"></th>
-                            </tr>
-                        </thead>
-                        <tbody id="evidenceTbody">
-                            <tr>
-                                <td class="text-center text-muted">1</td>
-                                <td>
-                                    <i class="ri ri-file-pdf-line text-danger me-1"></i>
-                                    <a href="#" onclick="alert('ดูไฟล์ (mockup)'); return false;" class="text-primary">ผลทดสอบ_Yield_SKJ_Q1_2569.pdf</a>
-                                </td>
-                                <td>ผลการทดสอบ %Yield</td>
-                                <td class="text-muted">14/04/2569</td>
-                                <td class="text-center">
-                                    @if (!isView) {
-                                        <button type="button" class="btn btn-sm btn-icon btn-outline-danger" title="ลบ"
-                                            onclick="alert('ลบไฟล์ (mockup)')">
-                                            <i class="ri ri-delete-bin-line"></i>
-                                        </button>
-                                    }
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center text-muted">2</td>
-                                <td>
-                                    <i class="ri ri-file-excel-2-line text-success me-1"></i>
-                                    <a href="#" onclick="alert('ดูไฟล์ (mockup)'); return false;" class="text-primary">รายงานการผลิต_มีค_2569.xlsx</a>
-                                </td>
-                                <td>รายงานการผลิต</td>
-                                <td class="text-muted">14/04/2569</td>
-                                <td class="text-center">
-                                    @if (!isView) {
-                                        <button type="button" class="btn btn-sm btn-icon btn-outline-danger" title="ลบ"
-                                            onclick="alert('ลบไฟล์ (mockup)')">
-                                            <i class="ri ri-delete-bin-line"></i>
-                                        </button>
-                                    }
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-    </div>
-    <!-- /TAB 2 -->
-
-    <!-- ==================== TAB 3: ประวัติการดำเนินการ ==================== -->
-    <div id="tab-history" class="tab-pane fade" role="tabpanel">
-
-        <div class="card border">
-            <div class="card-header d-flex align-items-center gap-2 py-2">
-                <i class="ri ri-history-line text-secondary"></i>
-                <span class="fw-semibold small">ประวัติการดำเนินการ</span>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered align-middle small mb-0">
-                        <thead class="table-light text-center">
-                            <tr>
-                                <th style="width:2rem;">#</th>
-                                <th>วันที่/เวลา</th>
-                                <th>ผู้ดำเนินการ</th>
-                                <th>การดำเนินการ</th>
-                                <th>หมายเหตุ</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="text-center text-muted">1</td>
-                                <td class="text-muted">15/04/2569 09:32</td>
-                                <td>นาย ก สมใจ (ผู้ประกอบการ)</td>
-                                <td><span class="badge bg-label-primary rounded-pill">สร้างคำขอ</span></td>
-                                <td class="text-muted">สร้างคำขออนุมัติ %Yield ครั้งแรก</td>
-                            </tr>
-                            <tr>
-                                <td class="text-center text-muted">2</td>
-                                <td class="text-muted">15/04/2569 09:45</td>
-                                <td>นาย ก สมใจ (ผู้ประกอบการ)</td>
-                                <td><span class="badge bg-label-info rounded-pill">แนบหลักฐาน</span></td>
-                                <td class="text-muted">แนบไฟล์ผลทดสอบ %Yield 2 รายการ</td>
-                            </tr>
-                            <tr>
-                                <td class="text-center text-muted">3</td>
-                                <td class="text-muted">15/04/2569 10:00</td>
-                                <td>นาย ก สมใจ (ผู้ประกอบการ)</td>
-                                <td><span class="badge bg-label-warning rounded-pill">ยื่นคำขอ</span></td>
-                                <td class="text-muted">ยื่นคำขอให้เจ้าหน้าที่พิจารณา</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-    </div>
-    <!-- /TAB 3 -->
-
-</div>
-<!-- /tab-content -->
+    </div><!-- /col -->
+</div><!-- /row -->
 
 <!-- ==================== Modal: ยืนยันยื่นคำขอ ==================== -->
 <div class="modal fade" id="modalConfirmSubmit" tabindex="-1" aria-labelledby="modalConfirmSubmitLabel" aria-hidden="true">

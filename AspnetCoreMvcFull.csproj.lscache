@@ -713,8 +713,10 @@ Views/
   CreateApproveReturnWeight.cshtml
   CreateCancelCertificate.cshtml
   CreateDeclaration.cshtml
+  CreateManageCertificateNMDTH.cshtml
   CreateManageCertificateNoPS.cshtml
   CreateManageCertificatePS.cshtml
+  CreateManageCertificatePSTH.cshtml
   CreateProcessing.cshtml
   CreateReplacementDeclaration.cshtml
   CreateReplacementProcessing.cshtml
@@ -1040,8 +1042,10 @@ Views/
   CreateApproveReturnWeight.cshtml
   CreateCancelCertificate.cshtml
   CreateDeclaration.cshtml
+  CreateManageCertificateNMDTH.cshtml
   CreateManageCertificateNoPS.cshtml
   CreateManageCertificatePS.cshtml
+  CreateManageCertificatePSTH.cshtml
   CreateProcessing.cshtml
   CreateReplacementDeclaration.cshtml
   CreateReplacementProcessing.cshtml
